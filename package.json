@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./initApp.js"
+    "start": "babel-node ./initApp.js"
   },
   "dependencies": {
     "body-parser": "~1.15.2",
