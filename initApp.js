@@ -3,7 +3,8 @@
 const app = require('./app'),
     http = require('http'),
     config = require('./config.js'),
-    server = http.createServer(app);
+    server = http.createServer(app),
+    io = require('socket.io')(server);
 
 app.set('port', config.port);
 
@@ -20,3 +21,7 @@ function onListening() {
     console.log('Listening on port ' + server.address().port);
     console.log('http://localhost:' + server.address().port + '/');
 }
+
+io.on('connection', function (socket) {
+    console.log('a user connected');
+});
