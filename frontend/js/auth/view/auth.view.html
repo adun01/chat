@@ -1,0 +1,17 @@
+<form name="auth" novalidate>
+    <md-input-container>
+        <label>Логин</label>
+        <input type="text"
+               required
+               placeholder="Введитя ваш логин"
+               data-ng-minlength="2"
+               data-ng-model="_ctrlAuth.login">
+    </md-input-container>
+    <md-input-container>
+        <label>Пароль</label>
+        <input type="password"
+               required
+               placeholder="Введитя ваш пароль"
+               data-ng-model="_ctrlAuth.password">
+    </md-input-container>
+</form>
