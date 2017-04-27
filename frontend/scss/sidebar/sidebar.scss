@@ -1,0 +1,11 @@
+.sidebar {
+  &-opener {
+    position: absolute;
+    left: -8px;
+    transition: left 0.3s ease-out 0.5s;
+
+    &--hide {
+      left: -250px;
+    }
+  }
+}

@@ -1,1 +1,37 @@
-<div layout="row" layout-xs="column" data-ui-view layout-align="center"></div>
+<div>
+    <div class="sidebar-opener"
+         data-ng-class="{'sidebar-opener--hide': _ctrlMain.data.opened}">
+        <md-button class="md-primary md-raised"
+                   data-ng-click="_ctrlMain.toggleMenu()">
+            Открыть навигацию
+        </md-button>
+    </div>
+    <md-sidenav class="md-sidenav-left"
+                md-component-id="{{_ctrlMain.data.id}}"
+                md-disable-backdrop md-whiteframe="4">
+
+        <md-toolbar class="md-theme-indigo">
+            <h1 class="md-toolbar-tools">Навигация</h1>
+        </md-toolbar>
+
+        <md-content layout-margin data-ng-if="!_ctrlMain.data.isAuth">
+            <md-list ng-cloak>
+                <md-subheader class="md-no-sticky">Выберите действие</md-subheader>
+                <md-list-item data-ng-repeat="action in _ctrlMain.data.listAuth">
+                    <a data-ui-sref="{{action.state}}" class="md-primary md-button">
+                        {{action.name}}
+                    </a>
+                </md-list-item>
+            </md-list>
+            <md-button ng-click="_ctrlMain.toggleMenu()">
+                Свернуть
+            </md-button>
+        </md-content>
+
+    </md-sidenav>
+</div>
+<div layout="row"
+     layout-xs="column"
+     layout-align="center"
+     data-ui-view>
+</div>

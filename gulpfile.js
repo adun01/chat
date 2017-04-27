@@ -20,7 +20,7 @@ gulp.task('main', function () {
 });
 
 gulp.task('default', function () {
-    return watch(['./frontend/scss/*.scss'], function () {
+    return watch(['./frontend/scss/**/*.scss'], function () {
         gulp.start('main');
     });
 });
