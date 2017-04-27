@@ -6,7 +6,7 @@ export default module.config(function ($stateProvider) {
         .state('main.auth', {
             url: 'auth/',
             controller: 'authController',
-            controllerAs: '_ctrlAth',
+            controllerAs: '_ctrlAuth',
             template: authTpl
         })
 });

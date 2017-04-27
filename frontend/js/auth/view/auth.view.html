@@ -1,6 +1,6 @@
 <div flex="30">
     <form name="auth"
-          class="auth-form"
+          class="chat-form"
           novalidate
           md-content
           data-ng-controller="authController">
@@ -12,14 +12,14 @@
                 </md-card-header-text>
             </md-card-header>
             <md-card-content>
-                <md-input-container class="auth-form__row">
+                <md-input-container class="chat-form__row">
                     <label>Логин</label>
                     <input type="text"
                            required
                            data-ng-minlength="2"
                            data-ng-model="_ctrlAuth.login">
                 </md-input-container>
-                <md-input-container class="auth-form__row">
+                <md-input-container class="chat-form__row">
                     <label>Пароль</label>
                     <input type="password"
                            required

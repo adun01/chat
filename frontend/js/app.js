@@ -10,7 +10,7 @@ function importAll(r) {
 
 importAll(require.context('./', true, /\.js$/));
 
-angular.module('chat', ['ngMaterial', 'ui.router', 'main', 'auth'])
+angular.module('chat', ['ngMaterial', 'ui.router', 'main', 'auth', 'registration'])
     .config(function ($stateProvider, $locationProvider) {
 
         $locationProvider.html5Mode(true);
