@@ -15,7 +15,8 @@ module.controller('mainController', function ($mdSidenav) {
                 name: 'Регистрация',
                 state: 'main.registration'
             }
-        ]
+        ],
+        user: null
     };
 
     _ctrlMain.toggleMenu = function () {

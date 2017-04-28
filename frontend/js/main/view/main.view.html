@@ -18,9 +18,24 @@
                         icon="close"
                         data-ng-click="_ctrlMain.toggleMenu()">
             </ng-md-icon>
+
+            <div class="chat-user-intro"
+                 data-ng-cloak
+                 data-ng-if="_ctrlMain.data.isAuth">
+
+                <img class="md-user-avatar chat-user-intro__avatar"
+                     data-ng-src="{{_ctrlMain.data.user.photo}}">
+                <div class="md-caption chat-user-intro__info">
+                    Alexey Ubaev
+                </div>
+                <div class="md-caption chat-user-intro__info">
+                    ubaev.alexey@gmail.com
+                </div>
+            </div>
+
         </md-toolbar>
 
-        <md-content layout-margin data-ng-if="!_ctrlMain.data.isAuth">
+        <md-content layout-margin>
             <md-list data-ng-cloak data-ng-if="!_ctrlMain.data.isAuth">
                 <md-subheader class="md-no-sticky">Выберите действие</md-subheader>
                 <md-list-item data-ng-repeat="action in _ctrlMain.data.listAuth">
@@ -29,10 +44,6 @@
                     </a>
                 </md-list-item>
             </md-list>
-
-            <md-card-avatar data-ng-cloak data-ng-if="_ctrlMain.data.isAuth">
-                <img class="md-user-avatar chat-user__avatar" src="/images/users/0/photo.jpg">
-            </md-card-avatar>
         </md-content>
 
         <md-button class="sidebar-closener" data-ng-click="_ctrlMain.toggleMenu()">

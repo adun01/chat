@@ -24707,7 +24707,8 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('mainController', function
                 name: 'Регистрация',
                 state: 'main.registration'
             }
-        ]
+        ],
+        user: null
     };
 
     _ctrlMain.toggleMenu = function () {
@@ -99960,7 +99961,7 @@ module.exports = "<div class=chat-form-container flex=60 flex-xs=60 flex-gt-xs=5
 /* 25 */
 /***/ (function(module, exports) {
 
-module.exports = "<div> <div class=sidebar-opener data-ng-class=\"{'sidebar-opener--hide': _ctrlMain.data.opened}\"> <md-button class=\"md-primary md-raised\" data-ng-click=_ctrlMain.toggleMenu()> Открыть навигацию </md-button> </div> <md-sidenav class=md-sidenav-left md-component-id={{_ctrlMain.data.id}} md-disable-backdrop md-whiteframe=4> <md-toolbar class=md-theme-indigo> <h1 class=md-toolbar-tools>Навигация</h1> <ng-md-icon class=\"sidebar-closener sidebar-closener--icon\" size=30 style=fill:#fff icon=close data-ng-click=_ctrlMain.toggleMenu()> </ng-md-icon> </md-toolbar> <md-content layout-margin data-ng-if=!_ctrlMain.data.isAuth> <md-list data-ng-cloak data-ng-if=!_ctrlMain.data.isAuth> <md-subheader class=md-no-sticky>Выберите действие</md-subheader> <md-list-item data-ng-repeat=\"action in _ctrlMain.data.listAuth\"> <a data-ui-sref={{action.state}} class=\"md-primary md-button\"> {{action.name}} </a> </md-list-item> </md-list> <md-card-avatar data-ng-cloak data-ng-if=_ctrlMain.data.isAuth> <img class=\"md-user-avatar chat-user__avatar\" src=/images/users/0/photo.jpg> </md-card-avatar> </md-content> <md-button class=sidebar-closener data-ng-click=_ctrlMain.toggleMenu()> Свернуть </md-button> </md-sidenav> </div> <div class=chat-layout layout=row layout-align=\"center center\" data-ui-view> </div>";
+module.exports = "<div> <div class=sidebar-opener data-ng-class=\"{'sidebar-opener--hide': _ctrlMain.data.opened}\"> <md-button class=\"md-primary md-raised\" data-ng-click=_ctrlMain.toggleMenu()> Открыть навигацию </md-button> </div> <md-sidenav class=md-sidenav-left md-component-id={{_ctrlMain.data.id}} md-disable-backdrop md-whiteframe=4> <md-toolbar class=md-theme-indigo> <h1 class=md-toolbar-tools>Навигация</h1> <ng-md-icon class=\"sidebar-closener sidebar-closener--icon\" size=30 style=fill:#fff icon=close data-ng-click=_ctrlMain.toggleMenu()> </ng-md-icon> <div class=chat-user-intro data-ng-cloak data-ng-if=_ctrlMain.data.isAuth> <img class=\"md-user-avatar chat-user-intro__avatar\" data-ng-src={{_ctrlMain.data.user.photo}}> <div class=\"md-caption chat-user-intro__info\"> Alexey Ubaev </div> <div class=\"md-caption chat-user-intro__info\"> ubaev.alexey@gmail.com </div> </div> </md-toolbar> <md-content layout-margin> <md-list data-ng-cloak data-ng-if=!_ctrlMain.data.isAuth> <md-subheader class=md-no-sticky>Выберите действие</md-subheader> <md-list-item data-ng-repeat=\"action in _ctrlMain.data.listAuth\"> <a data-ui-sref={{action.state}} class=\"md-primary md-button\"> {{action.name}} </a> </md-list-item> </md-list> </md-content> <md-button class=sidebar-closener data-ng-click=_ctrlMain.toggleMenu()> Свернуть </md-button> </md-sidenav> </div> <div class=chat-layout layout=row layout-align=\"center center\" data-ui-view> </div>";
 
 /***/ }),
 /* 26 */
