@@ -9,6 +9,7 @@ webpack({
     resolve: {
         modules: [
             'node_modules',
+            'public',
             path.resolve(__dirname, 'frontend/js/')
         ],
         extensions: [".js", ".json", ".jsx", ".css"],

@@ -1,4 +1,14 @@
-<div flex="30">
+<div class="chat-form-container"
+     flex="60"
+     flex-xs="60"
+     flex-gt-xs="50"
+     flex-sm="50"
+     flex-gt-sm="50"
+     flex-md="40"
+     flex-gt-md="40"
+     flex-lg="40"
+     flex-gt-lg="30"
+     flex-xl="30">
     <form name="reg"
           class="chat-form"
           novalidate
@@ -6,11 +16,14 @@
           data-ng-controller="registrationController">
 
         <md-card>
-            <md-card-header>
-                <md-card-header-text>
-                    <span class="md-title">Регистрация</span>
-                </md-card-header-text>
-            </md-card-header>
+            <md-toolbar class="md-theme-indigo">
+                <h2 class="md-toolbar-tools">Регистрация</h2>
+                <ng-md-icon class="chat-form-header-icon"
+                            size="30"
+                            style="fill: white"
+                            icon="login">
+                </ng-md-icon>
+            </md-toolbar>
             <md-card-content>
                 <md-input-container class="chat-form__row">
                     <label>Логин</label>

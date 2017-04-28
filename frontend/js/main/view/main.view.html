@@ -12,10 +12,16 @@
 
         <md-toolbar class="md-theme-indigo">
             <h1 class="md-toolbar-tools">Навигация</h1>
+            <ng-md-icon class="sidebar-closener sidebar-closener--icon"
+                        size="30"
+                        style="fill: white"
+                        icon="close"
+                        data-ng-click="_ctrlMain.toggleMenu()">
+            </ng-md-icon>
         </md-toolbar>
 
         <md-content layout-margin data-ng-if="!_ctrlMain.data.isAuth">
-            <md-list ng-cloak>
+            <md-list data-ng-cloak data-ng-if="!_ctrlMain.data.isAuth">
                 <md-subheader class="md-no-sticky">Выберите действие</md-subheader>
                 <md-list-item data-ng-repeat="action in _ctrlMain.data.listAuth">
                     <a data-ui-sref="{{action.state}}" class="md-primary md-button">
@@ -23,15 +29,19 @@
                     </a>
                 </md-list-item>
             </md-list>
-            <md-button ng-click="_ctrlMain.toggleMenu()">
-                Свернуть
-            </md-button>
+
+            <md-card-avatar data-ng-cloak data-ng-if="_ctrlMain.data.isAuth">
+                <img class="md-user-avatar chat-user__avatar" src="/images/users/0/photo.jpg">
+            </md-card-avatar>
         </md-content>
 
+        <md-button class="sidebar-closener" data-ng-click="_ctrlMain.toggleMenu()">
+            Свернуть
+        </md-button>
     </md-sidenav>
 </div>
-<div layout="row"
-     layout-xs="column"
-     layout-align="center"
+<div class="chat-layout"
+     layout="row"
+     layout-align="center center"
      data-ui-view>
 </div>

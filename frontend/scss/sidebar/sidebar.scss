@@ -8,4 +8,20 @@
       left: -250px;
     }
   }
+
+  &-closener {
+    position: absolute;
+    bottom: 0;
+    left: 5px;
+  }
+
+  &-closener--icon {
+    width: 30px;
+    height: 30px;
+    left: auto;
+    bottom: auto;
+    top: 16px;
+    right: 10px;
+    cursor: pointer;
+  }
 }
