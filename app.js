@@ -3,7 +3,10 @@ const express = require('express')
     , favicon = require('serve-favicon')
     , logger = require('morgan')
     , cookieParser = require('cookie-parser')
-    , bodyParser = require('body-parser');
+    , bodyParser = require('body-parser')
+    , mongoose = require('./db')
+    , session = require('express-session')
+    , MongoStore = require('connect-mongo')(session);
 
 let index = require('./routes/index'),
     api = require('./routes/api');
@@ -21,6 +24,18 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
+
+app.use(session({
+    secret: 'geawgagadg',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        maxAge: 6000000
+    },
+    store: new MongoStore({mongooseConnection: mongoose.connection})
+}));
+
 
 app.use(express.static(path.join(__dirname, 'public/')));
 
