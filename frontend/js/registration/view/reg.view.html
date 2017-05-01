@@ -29,6 +29,7 @@
                     <label>Логин</label>
                     <input type="text"
                            required
+                           name="login"
                            data-ng-minlength="2"
                            data-ng-model="_ctrlReg.login">
                 </md-input-container>
@@ -36,20 +37,30 @@
                     <label>Email</label>
                     <input type="text"
                            required
-                           data-ng-minlength="2"
+                           name="email"
+                           data-ng-pattern="/^([\w-]+.)*[\w-]+@[\w-]+(\.[\w-]+)*\.[a-z]{2,6}$/"
                            data-ng-model="_ctrlReg.email">
                 </md-input-container>
                 <md-input-container class="chat-form__row">
                     <label>Пароль</label>
                     <input type="password"
                            required
+                           name="password"
+                           data-ng-pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z0-9!@#$%]+$/"
                            data-ng-model="_ctrlReg.password">
                 </md-input-container>
                 <md-input-container class="chat-form__row">
                     <label>Повторите пароль</label>
-                    <input type="password-duble"
+                    <input type="password"
                            required
+                           name="password_duble"
+                           data-identity="_ctrlReg.password"
                            data-ng-model="_ctrlReg.password_duble">
+                    <div data-ng-messages="reg.password_duble.$error">
+                        <div data-ng-message="identity">
+                            Пароли должны совпадать
+                        </div>
+                    </div>
                 </md-input-container>
             </md-card-content>
             <div layout layout-align="end">
