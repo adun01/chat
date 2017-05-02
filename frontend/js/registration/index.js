@@ -1,1 +1,1 @@
-export default angular.module('registration', []);
+export default angular.module('registration', ['user']);
