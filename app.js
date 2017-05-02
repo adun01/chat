@@ -81,4 +81,4 @@ function onListening() {
     console.log('http://localhost:' + server.address().port + '/');
 }
 
-require('./eventsManager')(io);
+require('./eventsMediator')(io);

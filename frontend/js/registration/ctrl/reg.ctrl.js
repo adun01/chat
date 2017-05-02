@@ -24,6 +24,8 @@ module.controller('registrationController', function ($scope, userService, subsc
                 _ctrlReg.error.create = true;
             });
             $timeout(function () {
+                _ctrlReg.error = {};
+                _ctrlReg.errorMessage = null;
             }, 5000);
         } else {
             $state.go('room');

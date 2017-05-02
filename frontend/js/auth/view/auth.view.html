@@ -38,9 +38,15 @@
                            required
                            data-ng-model="_ctrlAuth.password">
                 </md-input-container>
+                <div data-ng-messages="_ctrlAuth.error">
+                    <div class="alert alert-danger" data-ng-message="logIn">
+                        {{_ctrlAuth.errorMessage}}
+                    </div>
+                </div>
             </md-card-content>
             <div layout layout-align="end">
                 <md-button class="md-primary md-raised"
+                           data-ng-click="_ctrlAuth.logIn()"
                            data-ng-disabled="auth.$invalid">Войти
                 </md-button>
             </div>

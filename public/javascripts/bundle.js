@@ -163,8 +163,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var map = {
 	"./app.js": 4,
 	"./auth/config/index.js": 15,
-	"./auth/ctrl/reg.ctrl.js": 16,
+	"./auth/ctrl/auth.ctrl.js": 41,
 	"./auth/index.js": 0,
+	"./auth/model/auth.service.js": 40,
 	"./common/direcrive/identity.directive.js": 17,
 	"./common/index.js": 5,
 	"./main/config/index.js": 18,
@@ -24683,19 +24684,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 }));
 
 /***/ }),
-/* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
-
-
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('authController', function () {
-    const _ctrlAuth = this;
-});
-
-/***/ }),
+/* 16 */,
 /* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -24846,6 +24835,8 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('registrationController', 
                 _ctrlReg.error.create = true;
             });
             $timeout(function () {
+                _ctrlReg.error = {};
+                _ctrlReg.errorMessage = null;
             }, 5000);
         } else {
             $state.go('room');
@@ -100804,7 +100795,7 @@ $provide.value("$locale", {
 /* 32 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=chat-form-container flex=60 flex-xs=60 flex-gt-xs=50 flex-sm=50 flex-gt-sm=50 flex-md=40 flex-gt-md=40 flex-lg=40 flex-gt-lg=30 flex-xl=30> <form name=auth class=chat-form novalidate md-content data-ng-controller=authController> <md-card> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Авторизация</h2> <ng-md-icon class=chat-form-header-icon size=30 style=fill:#fff icon=login> </ng-md-icon> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required data-ng-minlength=2 data-ng-model=_ctrlAuth.login> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required data-ng-model=_ctrlAuth.password> </md-input-container> </md-card-content> <div layout layout-align=end> <md-button class=\"md-primary md-raised\" data-ng-disabled=auth.$invalid>Войти </md-button> </div> </md-card> </form> </div>";
+module.exports = "<div class=chat-form-container flex=60 flex-xs=60 flex-gt-xs=50 flex-sm=50 flex-gt-sm=50 flex-md=40 flex-gt-md=40 flex-lg=40 flex-gt-lg=30 flex-xl=30> <form name=auth class=chat-form novalidate md-content data-ng-controller=authController> <md-card> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Авторизация</h2> <ng-md-icon class=chat-form-header-icon size=30 style=fill:#fff icon=login> </ng-md-icon> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required data-ng-minlength=2 data-ng-model=_ctrlAuth.login> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required data-ng-model=_ctrlAuth.password> </md-input-container> <div data-ng-messages=_ctrlAuth.error> <div class=\"alert alert-danger\" data-ng-message=logIn> {{_ctrlAuth.errorMessage}} </div> </div> </md-card-content> <div layout layout-align=end> <md-button class=\"md-primary md-raised\" data-ng-click=_ctrlAuth.logIn() data-ng-disabled=auth.$invalid>Войти </md-button> </div> </md-card> </form> </div>";
 
 /***/ }),
 /* 33 */
@@ -100953,6 +100944,70 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('subscriberPublisher', functi
     }());
 
     return subscribe;
+});
+
+/***/ }),
+/* 40 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].service('authService', function (socketService, subscriberPublisher, $state) {
+
+    socketService.on('logInAnswer', function (data) {
+        subscriberPublisher.callSubscriber('logInAnswer', data);
+    });
+
+    function logIn(data) {
+        socketService.emit('logIn', data);
+    }
+
+    return {
+        logIn: logIn
+    }
+});
+
+/***/ }),
+/* 41 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('authController', function ($scope, authService, subscriberPublisher, $timeout) {
+    const _ctrlAuth = this;
+
+    _ctrlAuth.error = {};
+    _ctrlAuth.errorMessage = null;
+
+    _ctrlAuth.logIn = function () {
+        authService.logIn({
+            login: _ctrlAuth.login,
+            password: _ctrlAuth.password
+        });
+    };
+
+    subscriberPublisher.addChannels('logInAnswer', function (data) {
+        _ctrlAuth.error = {};
+        _ctrlAuth.errorMessage = null;
+        if (!data.success) {
+            $scope.$apply(function () {
+                _ctrlAuth.errorMessage = data.message;
+                _ctrlAuth.error.logIn = true;
+            });
+            $timeout(function () {
+                _ctrlAuth.error = {};
+                _ctrlAuth.errorMessage = null;
+            }, 5000);
+        } else {
+            $state.go('room');
+        }
+    });
 });
 
 /***/ })
