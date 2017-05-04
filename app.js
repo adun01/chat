@@ -4,14 +4,20 @@ const http = require('http')
     , express = require('express')
     , path = require('path')
     , favicon = require('serve-favicon')
-    , logger = require('morgan')
     , cookieParser = require('cookie-parser')
     , bodyParser = require('body-parser')
-    , mongoose = require('./db')
     , socketIo = require('socket.io')
     , sharedsession = require("express-socket.io-session")
     , session = require('express-session')
-    , MongoStore = require('connect-mongo')(session);
+    , ioRouter = require('socket.io-events')();
+
+
+const store = require('./store-session');
+
+// проверка авторизован ли пользователь
+ioRouter.on('*', function (socket, args, next) {
+    next();
+});
 
 // init
 const app = express(),
@@ -20,13 +26,21 @@ const app = express(),
     sessionInstance = session({
         secret: 'geawgagadg',
         resave: false,
-        saveUninitialized: true,
+        saveUninitialized: false,
         cookie: {
-            httpOnly: true,
-            maxAge: 6000000
+            httpOnly: true
         },
-        store: new MongoStore({mongooseConnection: mongoose.connection})
+        store: store
     });
+
+io.set('authorization', function (handshakeData, callback) {
+    //console.log(handshakeData.headers.cookie);
+    callback(null, true); // error first, 'authorized' boolean second
+});
+
+io.use(ioRouter);
+
+app.use(sessionInstance);
 
 io.use(sharedsession(sessionInstance, {
     autoSave: true
@@ -34,10 +48,6 @@ io.use(sharedsession(sessionInstance, {
 
 // public directory
 app.use(express.static(path.join(__dirname, 'public/')));
-
-// singe route
-let route = require('./routes/index');
-app.use('/', route);
 
 app.set('port', config.port);
 
@@ -53,6 +63,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
+// singe route
+let route = require('./routes/index'),
+    registration = require('./routes/registration'),
+    auth = require('./routes/auth');
+
+app.use(auth);
+app.use(registration);
+app.use('/', route);
 
 app.use(function (req, res, next) {
     let err = new Error('Not Found');

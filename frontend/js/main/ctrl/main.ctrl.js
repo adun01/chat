@@ -1,6 +1,6 @@
 import module from '../';
 
-module.controller('mainController', function ($mdSidenav) {
+module.controller('mainController', function ($mdSidenav, subscriberPublisher, userService, authService) {
     const _ctrlMain = this;
 
     _ctrlMain.data = {
@@ -23,5 +23,16 @@ module.controller('mainController', function ($mdSidenav) {
         _ctrlMain.data.opened = !_ctrlMain.data.opened;
         $mdSidenav(_ctrlMain.data.id).toggle();
     };
+
+    subscriberPublisher.addChannels('userAuth', function () {
+        _ctrlMain.data.isAuth = true;
+        _ctrlMain.data.user = userService.get();
+    });
+
+    authService.isLogin().then(function (response) {
+        if(response.success) {
+            subscriberPublisher.callSubscriber('userAuth', response.user);
+        }
+    })
 
 });

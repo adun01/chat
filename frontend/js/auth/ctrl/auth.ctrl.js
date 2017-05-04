@@ -1,6 +1,6 @@
 import module from '../';
 
-module.controller('authController', function ($scope, authService, subscriberPublisher, $timeout) {
+module.controller('authController', function (authService, $timeout, $state, subscriberPublisher) {
     const _ctrlAuth = this;
 
     _ctrlAuth.error = {};
@@ -10,23 +10,22 @@ module.controller('authController', function ($scope, authService, subscriberPub
         authService.logIn({
             login: _ctrlAuth.login,
             password: _ctrlAuth.password
-        });
-    };
+        }).then(function (data) {
+            _ctrlAuth.error = {};
+            _ctrlAuth.errorMessage = null;
+            if (!data.success) {
 
-    subscriberPublisher.addChannels('logInAnswer', function (data) {
-        _ctrlAuth.error = {};
-        _ctrlAuth.errorMessage = null;
-        if (!data.success) {
-            $scope.$apply(function () {
                 _ctrlAuth.errorMessage = data.message;
                 _ctrlAuth.error.logIn = true;
-            });
-            $timeout(function () {
-                _ctrlAuth.error = {};
-                _ctrlAuth.errorMessage = null;
-            }, 5000);
-        } else {
-            $state.go('room');
-        }
-    });
+
+                $timeout(function () {
+                    _ctrlAuth.error = {};
+                    _ctrlAuth.errorMessage = null;
+                }, 5000);
+            } else {
+                subscriberPublisher.callSubscriber('userAuth', data.user);
+                $state.go('main.room');
+            }
+        });
+    };
 });

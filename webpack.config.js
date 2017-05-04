@@ -8,6 +8,7 @@ webpack({
     },
     resolve: {
         modules: [
+            'bower_components',
             'node_modules',
             'public',
             path.resolve(__dirname, 'frontend/js/')

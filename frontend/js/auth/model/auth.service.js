@@ -1,16 +1,17 @@
 import module from '../';
 
-module.service('authService', function (socketService, subscriberPublisher, $state) {
-
-    socketService.on('logInAnswer', function (data) {
-        subscriberPublisher.callSubscriber('logInAnswer', data);
-    });
+module.service('authService', function (socketService, subscriberPublisher, authResource) {
 
     function logIn(data) {
-        socketService.emit('logIn', data);
+        return authResource.save(data).$promise;
+    }
+
+    function isLogin() {
+        return authResource.get().$promise;
     }
 
     return {
-        logIn: logIn
+        logIn: logIn,
+        isLogin: isLogin
     }
 });

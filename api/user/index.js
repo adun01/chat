@@ -1,20 +1,24 @@
 const userModel = require('../../db/user/user.model'),
-    sessions = require('../../db/session/sessions.model'),
+    config = require('../../config'),
+    sessionEvents = require('../session/'),
     _ = require('lodash');
 
-
 module.exports = {
-    create: function (data) {
+    create: function (req) {
         let self = this;
         return new Promise(function (resolve, reject) {
-            self.search(data).then(function (result) {
+            self.search(req.body).then(function (result) {
 
                 if (!result.user) {
                     new userModel({
-                        login: data.login,
-                        password: data.password,
-                        email: data.email
+                        login: req.body.login,
+                        password: req.body.password,
+                        email: req.body.email
                     }).save(function (err, user) {
+                        sessionEvents.save({
+                            session: req.session,
+                            extend: {user: user}
+                        });
                         resolve({
                             success: true,
                             user: user
