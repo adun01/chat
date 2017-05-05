@@ -19,6 +19,10 @@ var userSchema = new Schema({
         type: String,
         unique: true
     },
+    photo: {
+        type: String,
+        default: ''
+    },
     date: {type: Date, default: Date.now}
 });
 

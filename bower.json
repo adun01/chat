@@ -1,0 +1,13 @@
+{
+  "name": "chat",
+  "description": "",
+  "main": "",
+  "authors": [
+    "adun01 <ubaev.alexey@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/adun01/chat",
+  "dependencies": {
+    "angular-post-fix": "^0.1.0"
+  }
+}
