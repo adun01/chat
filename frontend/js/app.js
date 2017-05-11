@@ -6,6 +6,7 @@ import 'angular-resource';
 import '../../bower_components/angular-post-fix/postfix';
 import 'angular-material-icons';
 import 'angular-messages';
+import 'angular-file-upload';
 import 'hammerjs';
 
 function importAll(r) {
@@ -16,6 +17,7 @@ importAll(require.context('./', true, /\.js$/));
 
 angular.module('chat', [
     'httpPostFix',
+    'angularFileUpload',
     'ngMaterial',
     'ngMessages',
     'ngResource',
@@ -27,7 +29,9 @@ angular.module('chat', [
     'auth',
     'registration',
     'room'])
-    .config(function ($stateProvider, $locationProvider) {
+    .config(function ($stateProvider, $locationProvider, $httpProvider) {
+
+        $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 
         $locationProvider.html5Mode(true);
 

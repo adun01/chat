@@ -1,0 +1,63 @@
+<md-card data-ng-form="userEdit">
+    <md-toolbar class="md-theme-indigo">
+        <h2 class="md-toolbar-tools">Редактирование профиля</h2>
+        <ng-md-icon class="chat-form-header-icon"
+                    size="30"
+                    style="fill: white"
+                    icon="mode_edit"
+                    data-ng-click="_ctrlUserEdit.close()">
+        </ng-md-icon>
+    </md-toolbar>
+    <md-card-avatar layout layout-align="center center">
+        <div class="chat-user-edit__action-photo" flex="40">
+            <img class="md-user-avatar chat-user-edit__photo" data-ng-src="{{_ctrlUserEdit.getPathPhoto()}}">
+            <ng-md-icon class="chat-user-edit__add-photo"
+                        size="100"
+                        style="fill: #fff"
+                        icon="add_a_photo"
+                        data-ng-click="_ctrlUserEdit.close()">
+            </ng-md-icon>
+            <input type="file"
+                   nv-file-select
+                   class="chat-user-edit__uploader"
+                   uploader="_ctrlUserEdit.uploader"/>
+        </div>
+    </md-card-avatar>
+
+    <md-card-content>
+        <div layout layout-align="center center">
+            <div flex="60">
+                <div flex="100">
+                    <div class="alert alert-danger"
+                         data-ng-if="_ctrlUserEdit.data.form.error.length">
+                        <div data-ng-repeat="message in _ctrlUserEdit.data.form.error">
+                            {{message}}
+                        </div>
+                    </div>
+                    <div class="alert alert-success"
+                         data-ng-if="_ctrlUserEdit.data.form.success.status">
+                        {{_ctrlUserEdit.data.form.success.message}}
+                    </div>
+
+                </div>
+                <div flex="100">
+                    <md-input-container class="chat-form__row">
+                        <label>Логин</label>
+                        <input type="text"
+                               required
+                               data-ng-minlength="2"
+                               data-ng-model="_ctrlUserEdit.data.user.login">
+                    </md-input-container>
+                </div>
+            </div>
+        </div>
+    </md-card-content>
+    <md-cart-footer>
+        <div layout layout-align="end">
+            <md-button class="md-primary md-raised"
+                       data-ng-click="_ctrlUserEdit.update()"
+                       data-ng-disabled="userEdit.$invalid">Изменить
+            </md-button>
+        </div>
+    </md-cart-footer>
+</md-card>

@@ -1,23 +1,32 @@
 import module from '../';
 
-module.service('userService', function (socketService, subscriberPublisher, userResource) {
+module.service('userService', function (socketService, userResource) {
 
     let user = null;
 
-    subscriberPublisher.addChannels('userAuth', function (userAuth) {
+    function set(userAuth) {
         user = userAuth;
-    });
+    }
 
     function create(data) {
         return userResource.save(data).$promise;
     }
 
-    function getUser() {
+    function update(data) {
+        return userResource.update(data).$promise;
+    }
+
+    function get() {
         return user;
     }
 
     return {
         create: create,
-        get: getUser
+        get: get,
+        set: set,
+        update: update,
+        photo: function () {
+            return user && user.photo ? '/images/users/' + user.id + '/' + user.photo : '/images/user_null.png';
+        }
     }
 });

@@ -1,6 +1,6 @@
 import module from '../';
 
-module.controller('registrationController', function (userService, $timeout, $state, subscriberPublisher) {
+module.controller('registrationController', function ($rootScope, userService, $timeout, $state) {
 
     const _ctrlReg = this;
 
@@ -24,8 +24,7 @@ module.controller('registrationController', function (userService, $timeout, $st
                     _ctrlReg.errorMessage = null;
                 }, 5000);
             } else {
-                subscriberPublisher.callSubscriber('userAuth', data.user);
-                $state.go('main.room');
+                $state.go('resolve.main.room');
             }
         });
     };

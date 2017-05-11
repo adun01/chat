@@ -12,7 +12,71 @@
     <link rel="stylesheet" href="/stylesheets/core.css">
 </head>
 <body>
-<div data-ui-view></div>
+<div>
+    <div data-ng-controller="sideBarController as _ctrlSideBar">
+        <div class="sidebar-opener"
+             data-ng-class="{'sidebar-opener--hide': _ctrlSideBar.data.opened}">
+            <md-button class="md-primary md-raised"
+                       data-ng-click="_ctrlSideBar.toggleMenu()">
+                Открыть навигацию
+            </md-button>
+        </div>
+        <md-sidenav class="md-sidenav-left"
+                    md-component-id="{{_ctrlSideBar.data.id}}"
+                    md-disable-backdrop md-whiteframe="4">
+
+            <md-toolbar class="md-theme-indigo">
+                <h1 class="md-toolbar-tools">Навигация</h1>
+                <ng-md-icon class="sidebar-closener sidebar-closener--icon"
+                            size="30"
+                            style="fill: white"
+                            icon="close"
+                            data-ng-click="_ctrlSideBar.toggleMenu()">
+                </ng-md-icon>
+
+                <div class="chat-user-intro"
+                     data-ng-cloak
+                     data-ng-if="_ctrlSideBar.data.isAuth">
+
+                    <img class="chat-user-intro__avatar"
+                         data-ng-src="{{_ctrlSideBar.getPathPhoto(_ctrlSideBar.data.user.photo)}}">
+                    <a data-ui-sref="resolve.main.user-edit">
+                        <ng-md-icon class="chat-user-intro__add-photo"
+                                    size="30"
+                                    style="fill: white"
+                                    icon="mode_edit">
+                        </ng-md-icon>
+                    </a>
+
+                    <div class="md-caption chat-user-intro__info">
+                        {{_ctrlSideBar.data.user.login}}
+                    </div>
+                    <div class="md-caption chat-user-intro__info">
+                        {{_ctrlSideBar.data.user.email}}
+                    </div>
+                </div>
+
+            </md-toolbar>
+
+            <md-content layout-margin>
+                <md-list data-ng-cloak data-ng-if="!_ctrlSideBar.data.isAuth">
+                    <md-subheader class="md-no-sticky">Выберите действие</md-subheader>
+                    <md-list-item data-ng-repeat="action in _ctrlSideBar.data.listAuth">
+                        <a data-ui-sref="{{action.state}}" class="md-primary md-button">
+                            {{action.name}}
+                        </a>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+
+            <md-button class="sidebar-closener" data-ng-click="_ctrlSideBar.toggleMenu()">
+                Свернуть
+            </md-button>
+        </md-sidenav>
+    </div>
+    <div data-ui-view></div>
+    </div>
+</div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/javascripts/bundle.js"></script>
 </body>

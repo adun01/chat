@@ -1,6 +1,6 @@
 import module from '../';
 
-module.controller('authController', function (authService, $timeout, $state, subscriberPublisher) {
+module.controller('authController', function ($rootScope, authService, $timeout, $state, userService) {
     const _ctrlAuth = this;
 
     _ctrlAuth.error = {};
@@ -23,8 +23,7 @@ module.controller('authController', function (authService, $timeout, $state, sub
                     _ctrlAuth.errorMessage = null;
                 }, 5000);
             } else {
-                subscriberPublisher.callSubscriber('userAuth', data.user);
-                $state.go('main.room');
+                $state.go('resolve.main.room');
             }
         });
     };

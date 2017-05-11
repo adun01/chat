@@ -65,11 +65,19 @@ app.use(cookieParser());
 
 // singe route
 let route = require('./routes/index'),
-    registration = require('./routes/registration'),
-    auth = require('./routes/auth');
+    auth = require('./routes/auth'),
+    user = require('./routes/user');
 
+app.use(function (req, res, next) {
+    if (req.originalUrl[req.originalUrl.length - 1] !== '/') {
+        res.redirect(301, req.originalUrl + '/');
+    } else {
+        next();
+    }
+});
+
+app.use(user);
 app.use(auth);
-app.use(registration);
 app.use('/', route);
 
 app.use(function (req, res, next) {
@@ -81,7 +89,6 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
     res.locals.message = err.message;
     res.locals.error = err;
-
     res.status(err.status || 500);
     res.render('error');
 });

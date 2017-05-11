@@ -1,0 +1,59 @@
+<form data-ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Редактирование профиля</h2>
+            <ng-md-icon class="chat-user-edit__icon-close"
+                        size="30"
+                        style="fill: white"
+                        icon="close"
+                        data-ng-click="_ctrlEditUser.close()">
+            </ng-md-icon>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <div class="alert alert-danger" data-ng-if="_ctrlEditUser.error.uploader.length">
+                    <span data-ng-repeat="error in _ctrlEditUser.error.uploader">
+                        {{error.message}}
+                    </span>
+            </div>
+
+            <img class="chat-user-edit__photo"
+                 data-ng-src="{{_ctrlEditUser.getPathPhoto(_ctrlEditUser.data.user.photo)}}"
+                 alt="">
+            <div layout="row">
+                <div flex="50"
+                     flex-xs="100"
+                     flex-gt-xs="100"
+                     flex-sm="100"
+                     flex-gt-sm="50"
+                     flex-md="50"
+                     flex-gt-md="50"
+                     flex-lg="50"
+                     flex-gt-lg="50"
+                     flex-xl="50">
+                    gegggsg
+                </div>
+                <div flex="50"
+                     flex-xs="100"
+                     flex-gt-xs="100"
+                     flex-sm="100"
+                     flex-gt-sm="50"
+                     flex-md="50"
+                     flex-gt-md="50"
+                     flex-lg="50"
+                     flex-gt-lg="50"
+                     flex-xl="50">
+                    fjfkk
+                </div>
+            </div>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <md-button data-ng-click="_ctrlEditUser.close()">
+            Закрыть
+        </md-button>
+    </md-dialog-actions>
+</form>

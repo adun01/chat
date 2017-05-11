@@ -19,7 +19,6 @@ module.exports = {
         });
     },
     save: function (data) {
-        debugger;
         let session = data.session;
         if (data.extend) {
             session = _.assign(session, data.extend);
