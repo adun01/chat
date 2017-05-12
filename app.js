@@ -66,6 +66,7 @@ app.use(cookieParser());
 // singe route
 let route = require('./routes/index'),
     auth = require('./routes/auth'),
+    room = require('./routes/room'),
     user = require('./routes/user');
 
 app.use(function (req, res, next) {
@@ -77,6 +78,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(user);
+app.use(room);
 app.use(auth);
 app.use('/', route);
 

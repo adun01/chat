@@ -1,59 +1,48 @@
-<form data-ng-cloak>
-    <md-toolbar>
-        <div class="md-toolbar-tools">
-            <h2>Редактирование профиля</h2>
-            <ng-md-icon class="chat-user-edit__icon-close"
-                        size="30"
-                        style="fill: white"
-                        icon="close"
-                        data-ng-click="_ctrlEditUser.close()">
-            </ng-md-icon>
-        </div>
+<md-card data-ng-form="userEdit">
+    <md-toolbar class="md-theme-indigo">
+        <h2 class="md-toolbar-tools">Профиль пользователя {{_ctrlUserEdit.data.user.login}}</h2>
+        <ng-md-icon class="chat-form-header-icon"
+                    size="30"
+                    style="fill: white"
+                    icon="remove_red_eye">
+        </ng-md-icon>
     </md-toolbar>
+    <md-card-avatar layout layout-align="center center">
+        <div class="chat-user-edit__action-photo" flex="40">
+            <img class="md-user-avatar chat-user-edit__photo" data-ng-src="{{_ctrlUserEdit.getPathPhoto()}}">
+        </div>
+    </md-card-avatar>
 
-    <md-dialog-content>
-        <div class="md-dialog-content">
-            <div class="alert alert-danger" data-ng-if="_ctrlEditUser.error.uploader.length">
-                    <span data-ng-repeat="error in _ctrlEditUser.error.uploader">
-                        {{error.message}}
-                    </span>
-            </div>
-
-            <img class="chat-user-edit__photo"
-                 data-ng-src="{{_ctrlEditUser.getPathPhoto(_ctrlEditUser.data.user.photo)}}"
-                 alt="">
-            <div layout="row">
-                <div flex="50"
-                     flex-xs="100"
-                     flex-gt-xs="100"
-                     flex-sm="100"
-                     flex-gt-sm="50"
-                     flex-md="50"
-                     flex-gt-md="50"
-                     flex-lg="50"
-                     flex-gt-lg="50"
-                     flex-xl="50">
-                    gegggsg
+    <md-card-content>
+        <div layout layout-align="center center">
+            <div flex="60">
+                <div flex="100">
+                    <md-input-container class="chat-form__row">
+                        <label>Email</label>
+                        <input type="text"
+                               required
+                               disabled
+                               data-ng-model="_ctrlUserEdit.data.user.email">
+                    </md-input-container>
                 </div>
-                <div flex="50"
-                     flex-xs="100"
-                     flex-gt-xs="100"
-                     flex-sm="100"
-                     flex-gt-sm="50"
-                     flex-md="50"
-                     flex-gt-md="50"
-                     flex-lg="50"
-                     flex-gt-lg="50"
-                     flex-xl="50">
-                    fjfkk
+                <div flex="100">
+                    <md-input-container class="chat-form__row">
+                        <label>Логин</label>
+                        <input type="text"
+                               required
+                               disabled
+                               data-ng-model="_ctrlUserEdit.data.user.login">
+                    </md-input-container>
                 </div>
             </div>
         </div>
-    </md-dialog-content>
-
-    <md-dialog-actions layout="row">
-        <md-button data-ng-click="_ctrlEditUser.close()">
-            Закрыть
-        </md-button>
-    </md-dialog-actions>
-</form>
+    </md-card-content>
+    <md-cart-footer>
+        <div layout layout-align="end">
+            <md-button class="md-primary md-raised"
+                       data-ng-click="_ctrlUserEdit.update()"
+                       data-ng-disabled="userEdit.$invalid">Изменить
+            </md-button>
+        </div>
+    </md-cart-footer>
+</md-card>

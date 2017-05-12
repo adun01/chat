@@ -1,4 +1,15 @@
 .sidebar {
+  background-color: rgb(63, 81, 181);
+  padding: 15px;
+
+  &__header {
+    height: 30px;
+  }
+
+  &__content {
+    background-color: rgb(63, 81, 181);
+  }
+
   &-opener {
     position: absolute;
     left: -8px;

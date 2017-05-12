@@ -1,7 +1,6 @@
-const roomsModel = require('../../dbsettings/room/room.model'),
-    roomModel = require('../../dbsettings/room/room.model'),
+const roomModel = require('../../db/room/room.model'),
     _ = require('lodash'),
-    fieldAllow = ['name', 'id', 'modify'];
+    fieldAllow = ['name', 'id', 'modify', 'photo'];
 
 function clearRoomField(rooms) {
     if (_.isArray(rooms)) {
@@ -28,16 +27,20 @@ module.exports = {
         });
         return promise;
     },
-    get: function (data, userId) {
+    get: function (roomId, userId) {
 
         'use strict';
         let promise = new Promise(function (resolve) {
-            if (!data) {
-                roomsModel.find({userAgreed: {$elemMatch: {id: userId}}}).then(function (rooms) {
-                    resolve(clearRoomField(rooms));
+            if (!roomId) {
+                roomModel.findOne({creatorId: 0}).then(function (mainRoom) {
+                    roomModel.find({userAgreed: {$elemMatch: {id: userId}}}).then(function (rooms) {
+                        rooms.push(mainRoom);
+                        resolve(clearRoomField(rooms));
+                    });
+
                 });
             } else {
-                roomsModel.findOne({name: data.name}).then(function (room) {
+                roomModel.findOne({id: roomId}).then(function (room) {
                     resolve(clearRoomField(room));
                 });
             }
@@ -50,7 +53,7 @@ module.exports = {
 
         let promise = new Promise(function (resolve, reject) {
 
-            roomsModel.findOne({id: data.id}, function (err, room) {
+            roomModel.findOne({id: data.id}, function (err, room) {
 
                 if (room.creatorId !== userId) {
                     reject(new Error('not quite right!'));
