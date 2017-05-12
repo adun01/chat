@@ -3,7 +3,13 @@
   padding: 15px;
 
   &__header {
-    height: 30px;
+    color: #fff;
+    text-transform: uppercase;
+  }
+
+  &__row {
+    border-bottom: 1px solid #fff;
+    padding: 15px 0;
   }
 
   &__content {
@@ -26,13 +32,4 @@
     left: 5px;
   }
 
-  &-closener--icon {
-    width: 30px;
-    height: 30px;
-    left: auto;
-    bottom: auto;
-    top: 16px;
-    right: 10px;
-    cursor: pointer;
-  }
 }

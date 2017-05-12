@@ -25,20 +25,26 @@
                     md-component-id="{{_ctrlSideBar.data.id}}"
                     md-disable-backdrop md-whiteframe="4">
 
-            <div class="sidebar__header"
+            <div class="sidebar__row sidebar__header"
                  layout="row"
-                 layout-align="end center">
-                <ng-md-icon class="sidebar-closener sidebar-closener--icon"
-                            size="30"
-                            style="fill: white"
-                            icon="close"
-                            data-ng-click="_ctrlSideBar.toggleMenu()">
-                </ng-md-icon>
+                 layout-align="left center">
+                <div flex="75">
+                    НАВИГАЦИЯ
+                </div>
+                <div flex="25">
+                    <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-close">
+                        <ng-md-icon size="30"
+                                    style="fill: white"
+                                    icon="forward"
+                                    data-ng-click="_ctrlSideBar.toggleMenu()">
+                        </ng-md-icon>
+                    </md--button>
+                </div>
             </div>
 
             <md-content class="sidebar__content">
 
-                <div class="chat-user-intro"
+                <div class="sidebar__row chat-user-intro"
                      data-ng-cloak
                      layout="row"
                      layout-align="left center"
@@ -60,40 +66,67 @@
                     <div flex="30">
                         <div layout="row" layout-align="end center">
                             <a data-ui-sref="resolve.main.user-edit">
-                                <ng-md-icon class="chat-user-intro__add-photo"
-                                            size="30"
-                                            style="fill: white"
-                                            icon="mode_edit">
-                                </ng-md-icon>
+                                <md--button class="md-fab md-mini chat-icon-action">
+                                    <ng-md-icon size="25"
+                                                style="fill: white"
+                                                icon="mode_edit">
+                                    </ng-md-icon>
+                                </md--button>
                             </a>
                         </div>
                     </div>
                 </div>
 
 
-                <md-list data-ng-cloak data-ng-if="!_ctrlSideBar.data.isAuth">
+                <div class="sidebar__row chat-room-list-nav"
+                     data-ng-cloak
+                     data-ng-if="_ctrlSideBar.data.isAuth">
+                    <div layout="row"
+                         layout-align="left center">
+                        <div flex="70">
+                            <div>
+                                Комнаты
+                            </div>
+                        </div>
+                        <div flex="30">
+                            <div layout="row"
+                                 layout-align="end center">
+                                <a data-ui-sref="resolve.main.user-edit">
+                                    <md-button class="md-fab md-mini chat-icon-action">
+                                        <ng-md-icon size="30"
+                                                    style="fill: white"
+                                                    icon="add">
+                                        </ng-md-icon>
+                                    </md-button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div layout="row"
+                         layout-align="left center">
+                        <md-list class="chat-room-list"
+                                 data-ng-cloak
+                                 data-ng-if="_ctrlSideBar.data.isAuth"
+                                 data-ng-controller="roomListController as roomListCtrl">
+                            <md-list-item class="chat-room-list__item"
+                                          data-ng-repeat="room in roomListCtrl.data.list">
+                                <a class="chat-room-list__link"
+                                   data-ui-sref="resolve.main.room({name: room.name})">
+                                    <button class="md-fab md-button md-ink-ripple">
+                                        {{!room.photo ? room.shortName.toUpperCase() : ''}}
+                                    </button>
+                                    {{room.name}}
+                                </a>
+                            </md-list-item>
+                        </md-list>
+                    </div>
+                </div>
+
+                <md-list class="sidebar__row" data-ng-cloak data-ng-if="!_ctrlSideBar.data.isAuth">
                     <md-subheader class="md-no-sticky">Выберите действие</md-subheader>
                     <md-list-item data-ng-repeat="action in _ctrlSideBar.data.listAuth">
                         <a data-ui-sref="{{action.state}}" class="md-primary md-button">
                             {{action.name}}
-                        </a>
-                    </md-list-item>
-                </md-list>
-                <md-list class="chat-room-list"
-                         data-ng-cloak
-                         data-ng-if="_ctrlSideBar.data.isAuth"
-                         data-ng-controller="roomListController as roomListCtrl">
-                    <md-list-item class="chat-room-list__item">
-                        Комнаты
-                    </md-list-item>
-                    <md-list-item class="chat-room-list__item"
-                                  data-ng-repeat="room in roomListCtrl.data.list">
-                        <a class="chat-room-list__link"
-                           data-ui-sref="resolve.main.room({name: room.name})">
-                            <button class="md-fab md-button md-ink-ripple">
-                                {{!room.photo ? room.shortName.toUpperCase() : ''}}
-                            </button>
-                            {{room.name}}
                         </a>
                     </md-list-item>
                 </md-list>

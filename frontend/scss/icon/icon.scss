@@ -1,0 +1,15 @@
+.chat-icon {
+  &-action {
+
+    & svg {
+      margin: 5px 0 0 -1px;
+    }
+
+    &--sidebar-close {
+
+      & svg {
+        margin: 12px 0 0 0px;
+      }
+    }
+  }
+}
