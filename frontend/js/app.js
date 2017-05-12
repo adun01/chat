@@ -35,5 +35,12 @@ angular.module('chat', [
 
         $locationProvider.html5Mode(true);
 
-    }).run(function () {
+    }).run(function ($rootScope, $state) {
+    $rootScope.$on('$stateChangeStart',
+        function (event, toState, toParams, fromState, fromParams, options) {
+            if (toState.name === 'resolve') {
+                event.preventDefault();
+                $state.go('resolve.main.room', {name: 'main'});
+            }
+        });
 });
