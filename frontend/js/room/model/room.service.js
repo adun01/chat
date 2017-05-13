@@ -1,6 +1,7 @@
 import module from '../';
+import roomAddTpl from '../view/room.add.html';
 
-module.service('roomService', function (roomResource, $q) {
+module.service('roomService', function (roomResource, $q, $mdDialog) {
 
     function shortName(room) {
         return room[0] + room[1];
@@ -18,7 +19,19 @@ module.service('roomService', function (roomResource, $q) {
         return defer.promise;
     }
 
+    function addRoom(ev) {
+        $mdDialog.show({
+            controller: 'roomAddController',
+            controllerAs: 'roomAddCtrl',
+            template: roomAddTpl,
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: true
+        });
+    }
+
     return {
-        get: get
+        get: get,
+        addRoom: addRoom
     }
 });

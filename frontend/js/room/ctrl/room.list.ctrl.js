@@ -7,6 +7,8 @@ module.controller('roomListController', function (roomService) {
         list: []
     };
 
+    roomListCtrl.addRoom = roomService.addRoom;
+
     function getListRoom() {
         roomService.get().then(function (response) {
             roomListCtrl.data.list = response.list;

@@ -1,0 +1,72 @@
+<md-dialog flex="40">
+    <form data-ng-cloak name="addRoom">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Создать комнату</h2>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-input-container class="chat-form__row">
+                    <label>Название комнаты</label>
+                    <input type="text"
+                           required
+                           name="name"
+                           data-ng-model="roomAddCtrl.name">
+                    <div data-ng-messages="addRoom.$error">
+                        <div class="alert alert-danger"
+                             data-ng-message="name">
+                            Введите название комнаты
+                        </div>
+                    </div>
+                </md-input-container>
+
+                <md-contact-chips
+                        data-ng-model="roomAddCtrl.userInvited"
+                        md-contacts="roomAddCtrl.searchUsers($query)"
+                        md-contact-name="login"
+                        md-contact-image="photo"
+                        md-contact-email="email"
+                        md-require-match="true"
+                        md-highlight-flags="i"
+                        filter-selected="true"
+                        placeholder="Пригласите участников">
+                </md-contact-chips>
+
+                <md-input-container class="chat-form__row">
+                    <input type="file"
+                           name="photo"
+                           nv-file-select
+                           uploader="roomAddCtrl.uploader"
+                           data-ng-model="roomAddCtrl.photo">
+                    <div data-ng-if="roomAddCtrl.data.error.length">
+                        <div class="alert alert-danger"
+                             data-ng-repeat="error in roomAddCtrl.data.error">
+                            {{error}}
+                        </div>
+                    </div>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <md-button class="md-fab md-mini chat-icon-action"
+                       aria-label="Создать комнату"
+                       data-ng-click="roomAddCtrl.addRoom($event)">
+                <ng-md-icon size="30"
+                            style="fill: white"
+                            icon="add">
+                </ng-md-icon>
+            </md-button>
+            <md-button class="md-fab md-mini chat-icon-action"
+                       aria-label="Отмена"
+                       data-ng-click="roomAddCtrl.addRoom($event)">
+                <ng-md-icon size="30"
+                            style="fill: white"
+                            icon="close">
+                </ng-md-icon>
+            </md-button>
+
+        </md-dialog-actions>
+    </form>
+</md-dialog>

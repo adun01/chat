@@ -16,7 +16,7 @@ module.controller('userEditController', function (FileUploader, userService, use
     };
 
     _ctrlUserEdit.uploader = new FileUploader({
-        url: 'api/user',
+        url: 'api/user/',
         filters: [
             {
                 name: 'extensions',

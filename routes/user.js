@@ -13,4 +13,10 @@ router.put('/api/user', function (req, res) {
     });
 });
 
+router.get('/api/user', function (req, res) {
+    userApi.searchQuery(req).then(function (response) {
+        res.send(JSON.stringify(response));
+    });
+});
+
 module.exports = router;

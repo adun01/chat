@@ -77,48 +77,45 @@
                     </div>
                 </div>
 
-
-                <div class="sidebar__row chat-room-list-nav"
-                     data-ng-cloak
-                     data-ng-if="_ctrlSideBar.data.isAuth">
-                    <div layout="row"
-                         layout-align="left center">
-                        <div flex="70">
-                            <div>
-                                Комнаты
+                <div data-ng-cloak
+                     data-ng-if="_ctrlSideBar.data.isAuth"
+                     data-ng-controller="roomListController as roomListCtrl">
+                    <div class="sidebar__row">
+                        <div layout="row"
+                             layout-align="left center">
+                            <div flex="70" class="chat-room-list-nav">
+                                <div>
+                                    Комнаты
+                                </div>
                             </div>
-                        </div>
-                        <div flex="30">
-                            <div layout="row"
-                                 layout-align="end center">
-                                <a data-ui-sref="resolve.main.user-edit">
-                                    <md-button class="md-fab md-mini chat-icon-action">
+                            <div flex="30">
+                                <div layout="row"
+                                     layout-align="end center">
+                                    <md-button class="md-fab md-mini chat-icon-action"
+                                               data-ng-click="roomListCtrl.addRoom($event)">
                                         <ng-md-icon size="30"
                                                     style="fill: white"
                                                     icon="add">
                                         </ng-md-icon>
                                     </md-button>
-                                </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div layout="row"
-                         layout-align="left center">
-                        <md-list class="chat-room-list"
-                                 data-ng-cloak
-                                 data-ng-if="_ctrlSideBar.data.isAuth"
-                                 data-ng-controller="roomListController as roomListCtrl">
-                            <md-list-item class="chat-room-list__item"
-                                          data-ng-repeat="room in roomListCtrl.data.list">
-                                <a class="chat-room-list__link"
-                                   data-ui-sref="resolve.main.room({name: room.name})">
-                                    <button class="md-fab md-button md-ink-ripple">
-                                        {{!room.photo ? room.shortName.toUpperCase() : ''}}
-                                    </button>
-                                    {{room.name}}
-                                </a>
-                            </md-list-item>
-                        </md-list>
+                        <div layout="row"
+                             layout-align="left center">
+                            <md-list class="chat-room-list">
+                                <md-list-item class="chat-room-list__item"
+                                              data-ng-repeat="room in roomListCtrl.data.list">
+                                    <a class="chat-room-list__link"
+                                       data-ui-sref="resolve.main.room({name: room.name})">
+                                        <button class="md-fab md-button md-ink-ripple">
+                                            {{!room.photo ? room.shortName.toUpperCase() : ''}}
+                                        </button>
+                                        {{room.name}}
+                                    </a>
+                                </md-list-item>
+                            </md-list>
+                        </div>
                     </div>
                 </div>
 

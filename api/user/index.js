@@ -59,7 +59,7 @@ module.exports = {
             if (!searchCollection.length) {
                 reject({
                     success: false,
-                    message: 'search only by name, id, email'
+                    message: 'Поиск осуществляется только по разрешенным полям : имя, идентификатор, емайл'
                 });
             }
 
@@ -67,6 +67,26 @@ module.exports = {
                 resolve({
                     success: true,
                     user: user
+                });
+            });
+        });
+    },
+    searchQuery: function (data) {
+        return new Promise(function (resolve) {
+            let reg = new RegExp(data.query.query, 'img');
+            userModel.find({login: {$regex: reg, $options: "sig"}}).then(function (result) {
+                let users = result.map(function (user) {
+                    return clearUserData(user);
+                });
+                if (!users.length) {
+                    return resolve({
+                        users: users,
+                        success: false
+                    });
+                }
+                resolve({
+                    users: users,
+                    success: true
                 });
             });
         });

@@ -9,6 +9,7 @@ const http = require('http')
     , socketIo = require('socket.io')
     , sharedsession = require("express-socket.io-session")
     , session = require('express-session')
+    , url = require('url')
     , ioRouter = require('socket.io-events')();
 
 
@@ -70,8 +71,10 @@ let route = require('./routes/index'),
     user = require('./routes/user');
 
 app.use(function (req, res, next) {
-    if (req.originalUrl[req.originalUrl.length - 1] !== '/') {
-        res.redirect(301, req.originalUrl + '/');
+    let originalQueery = url.parse(req.originalUrl),
+        pathName = originalQueery.pathname;
+    if (!originalQueery.query && pathName[pathName.length - 1] !== '/') {
+        res.redirect(301, pathName + '/');
     } else {
         next();
     }
