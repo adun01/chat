@@ -110,7 +110,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(47);
+__webpack_require__(48);
 module.exports = angular;
 
 
@@ -287,12 +287,13 @@ var map = {
 	"./room/index.js": 0,
 	"./room/model/room.resource.js": 32,
 	"./room/model/room.service.js": 33,
-	"./user/config/index.js": 34,
-	"./user/controller/user.edit.controller.js": 35,
-	"./user/controller/user.show.controller.js": 36,
+	"./user/config/index.js": 35,
+	"./user/controller/user.edit.controller.js": 36,
+	"./user/controller/user.show.controller.js": 37,
+	"./user/directive/user-filter.directive.js": 58,
 	"./user/index.js": 1,
-	"./user/model/user.resource.js": 37,
-	"./user/model/user.service.js": 38
+	"./user/model/user.resource.js": 38,
+	"./user/model/user.service.js": 39
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -2408,7 +2409,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(43);
+__webpack_require__(44);
 module.exports = 'ngMdIcons';
 
 
@@ -2420,11 +2421,11 @@ module.exports = 'ngMdIcons';
 __webpack_require__(5);
 
 // Load Angular and dependent libs
-__webpack_require__(40);
-__webpack_require__(42);
+__webpack_require__(41);
+__webpack_require__(43);
 
 // Now load Angular Material
-__webpack_require__(44);
+__webpack_require__(45);
 
 // Export namespace
 module.exports = 'ngMaterial';
@@ -2434,7 +2435,7 @@ module.exports = 'ngMaterial';
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(45);
+__webpack_require__(46);
 module.exports = 'ngMessages';
 
 
@@ -2442,7 +2443,7 @@ module.exports = 'ngMessages';
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(46);
+__webpack_require__(47);
 module.exports = 'ngResource';
 
 
@@ -26875,7 +26876,7 @@ if (true) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54), __webpack_require__(55)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(56), __webpack_require__(57)(module)))
 
 /***/ }),
 /* 18 */
@@ -26884,7 +26885,7 @@ if (true) {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_auth_view_html__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_auth_view_html__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_auth_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_auth_view_html__);
 
 
@@ -27152,7 +27153,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('socketService', function () 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_reg_view_html__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_reg_view_html__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_reg_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_reg_view_html__);
 
 
@@ -27214,7 +27215,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('registrationController', 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_view_html__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_view_html__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_room_view_html__);
 
 
@@ -27245,26 +27246,11 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomAddController', funct
 
     const roomAddCtrl = this;
 
-    roomAddCtrl.searchUsers = searchUsers;
-
     roomAddCtrl.userInvited = [];
 
     roomAddCtrl.data = {
         error: []
     };
-
-    function searchUsers(query) {
-        var deferred = $q.defer();
-        if (query) {
-            userService.search({query: query}).then(function (users) {
-                roomAddCtrl.users = users;
-                deferred.resolve(users);
-            });
-        } else {
-            deferred.resolve([]);
-        }
-        return deferred.promise;
-    }
 
     roomAddCtrl.uploader = new FileUploader({
         url: 'api/room/',
@@ -27373,7 +27359,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomResource', function ($re
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_add_html__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_add_html__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_add_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_room_add_html__);
 
 
@@ -27414,15 +27400,16 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomService', function (room
 });
 
 /***/ }),
-/* 34 */
+/* 34 */,
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_show_view_html__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_show_view_html__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_show_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_user_show_view_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__view_user_edit_view_html__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__view_user_edit_view_html__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__view_user_edit_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__view_user_edit_view_html__);
 
 
@@ -27443,7 +27430,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].config(function ($stateProvider) {
 });
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27543,7 +27530,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userEditController', func
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27567,7 +27554,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('editUserController', func
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27584,7 +27571,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('userResource', function ($re
 });
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27641,7 +27628,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('userService', function (sock
 });
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports) {
 
 /**
@@ -31802,15 +31789,15 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(39);
+__webpack_require__(40);
 module.exports = 'ngAnimate';
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports) {
 
 /**
@@ -32219,15 +32206,15 @@ ngAriaModule.directive('ngShow', ['$aria', function($aria) {
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(41);
+__webpack_require__(42);
 module.exports = 'ngAria';
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33452,7 +33439,7 @@ angular.module('ngMdIcons', [])
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports) {
 
 /*!
@@ -69462,7 +69449,7 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })(window, window.angular);;window.ngMaterial={version:{full: "1.1.4"}};
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports) {
 
 /**
@@ -70208,7 +70195,7 @@ function ngMessageDirectiveFactory() {
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports) {
 
 /**
@@ -71072,7 +71059,7 @@ angular.module('ngResource', ['ng']).
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports) {
 
 /**
@@ -104449,43 +104436,49 @@ $provide.value("$locale", {
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=chat-form-container flex=60 flex-xs=60 flex-gt-xs=50 flex-sm=50 flex-gt-sm=50 flex-md=40 flex-gt-md=40 flex-lg=40 flex-gt-lg=30 flex-xl=30> <form name=auth class=chat-form novalidate md-content data-ng-controller=authController> <md-card> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Авторизация</h2> <ng-md-icon class=chat-form-header-icon size=30 style=fill:#fff icon=login> </ng-md-icon> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required data-ng-minlength=2 data-ng-model=_ctrlAuth.login> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required data-ng-model=_ctrlAuth.password> </md-input-container> <div data-ng-messages=_ctrlAuth.error> <div class=\"alert alert-danger\" data-ng-message=logIn> {{_ctrlAuth.errorMessage}} </div> </div> </md-card-content> <div layout layout-align=end> <md-button class=\"md-primary md-raised\" data-ng-click=_ctrlAuth.logIn() data-ng-disabled=auth.$invalid>Войти </md-button> </div> </md-card> </form> </div>";
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=chat-form-container flex=60 flex-xs=60 flex-gt-xs=50 flex-sm=50 flex-gt-sm=50 flex-md=40 flex-gt-md=40 flex-lg=40 flex-gt-lg=30 flex-xl=30> <form name=reg class=chat-form novalidate md-content> <md-card> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Регистрация</h2> <ng-md-icon class=chat-form-header-icon size=30 style=fill:#fff icon=login> </ng-md-icon> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required name=login data-ng-minlength=2 data-ng-model=_ctrlReg.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text required name=email data-ng-pattern=/^([\\w-]+.)*[\\w-]+@[\\w-]+(\\.[\\w-]+)*\\.[a-z]{2,6}$/ data-ng-model=_ctrlReg.email> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required name=password data-ng-pattern=\"/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9!@#$%]+$/\" data-ng-model=_ctrlReg.password> </md-input-container> <md-input-container class=chat-form__row> <label>Повторите пароль</label> <input type=password required name=password_duble data-identity=_ctrlReg.password data-ng-model=_ctrlReg.password_duble> <div data-ng-messages=reg.password_duble.$error> <div data-ng-message=identity> Пароли должны совпадать </div> </div> </md-input-container> <div data-ng-messages=_ctrlReg.error> <div class=\"alert alert-danger\" data-ng-message=create> {{_ctrlReg.errorMessage}} </div> </div> </md-card-content> <div layout layout-align=end> <md-button class=\"md-primary md-raised\" data-ng-click=_ctrlReg.create() data-ng-disabled=reg.$invalid>Зарегестрироваться </md-button> </div> </md-card> </form> </div>";
 
 /***/ }),
-/* 50 */
-/***/ (function(module, exports) {
-
-module.exports = "<md-dialog flex=40> <form data-ng-cloak name=addRoom> <md-toolbar> <div class=md-toolbar-tools> <h2>Создать комнату</h2> </div> </md-toolbar> <md-dialog-content> <div class=md-dialog-content> <md-input-container class=chat-form__row> <label>Название комнаты</label> <input type=text required name=name data-ng-model=roomAddCtrl.name> <div data-ng-messages=addRoom.$error> <div class=\"alert alert-danger\" data-ng-message=name> Введите название комнаты </div> </div> </md-input-container> <md-contact-chips data-ng-model=roomAddCtrl.userInvited md-contacts=roomAddCtrl.searchUsers($query) md-contact-name=login md-contact-image=photo md-contact-email=email md-require-match=true md-highlight-flags=i filter-selected=true placeholder=\"Пригласите участников\"> </md-contact-chips> <md-input-container class=chat-form__row> <input type=file name=photo nv-file-select uploader=roomAddCtrl.uploader data-ng-model=roomAddCtrl.photo> <div data-ng-if=roomAddCtrl.data.error.length> <div class=\"alert alert-danger\" data-ng-repeat=\"error in roomAddCtrl.data.error\"> {{error}} </div> </div> </md-input-container> </div> </md-dialog-content> <md-dialog-actions layout=row> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=\"Создать комнату\" data-ng-click=roomAddCtrl.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Отмена data-ng-click=roomAddCtrl.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </form> </md-dialog>";
-
-/***/ }),
 /* 51 */
 /***/ (function(module, exports) {
 
-module.exports = "ROOM:NAME";
+module.exports = "<md-dialog flex=40> <form data-ng-cloak name=addRoom> <md-toolbar> <div class=md-toolbar-tools> <h2>Создать комнату</h2> </div> </md-toolbar> <md-dialog-content> <div class=md-dialog-content> <md-input-container class=chat-form__row> <label>Название комнаты</label> <input type=text required name=name data-ng-model=roomAddCtrl.name> <div data-ng-messages=addRoom.$error> <div class=\"alert alert-danger\" data-ng-message=name> Введите название комнаты </div> </div> </md-input-container> <user-filter data-room-id=1 data-collection=roomAddCtrl.userInvited data-placeholder=\"Пригласите участников\"></user-filter> <md-input-container class=chat-form__row> <input type=file name=photo nv-file-select uploader=roomAddCtrl.uploader data-ng-model=roomAddCtrl.photo> <div data-ng-if=roomAddCtrl.data.error.length> <div class=\"alert alert-danger\" data-ng-repeat=\"error in roomAddCtrl.data.error\"> {{error}} </div> </div> </md-input-container> </div> </md-dialog-content> <md-dialog-actions layout=row> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=\"Создать комнату\" data-ng-click=roomAddCtrl.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Отмена data-ng-click=roomAddCtrl.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </form> </md-dialog>";
 
 /***/ }),
 /* 52 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-card data-ng-form=userEdit> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Редактирование профиля</h2> <ng-md-icon class=chat-form-header-icon size=30 style=fill:#fff icon=mode_edit> </ng-md-icon> </md-toolbar> <md-card-avatar layout layout-align=\"center center\"> <div class=chat-user-edit__action-photo flex=40> <img class=\"md-user-avatar chat-user-edit__photo\" data-ng-src={{_ctrlUserEdit.getPathPhoto()}}> <ng-md-icon class=chat-user-edit__add-photo size=100 style=fill:#fff icon=add_a_photo data-ng-click=_ctrlUserEdit.close()> </ng-md-icon> <input type=file nv-file-select class=chat-user-edit__uploader uploader=_ctrlUserEdit.uploader /> </div> </md-card-avatar> <md-card-content> <div layout layout-align=\"center center\"> <div flex=60> <div flex=100> <div class=\"alert alert-danger\" data-ng-if=_ctrlUserEdit.data.form.error.length> <div data-ng-repeat=\"message in _ctrlUserEdit.data.form.error\"> {{message}} </div> </div> <div class=\"alert alert-success\" data-ng-if=_ctrlUserEdit.data.form.success.status> {{_ctrlUserEdit.data.form.success.message}} </div> </div> <div flex=100> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required data-ng-minlength=2 data-ng-model=_ctrlUserEdit.data.user.login> </md-input-container> </div> </div> </div> </md-card-content> <md-cart-footer> <div layout layout-align=end> <md-button class=\"md-primary md-raised\" data-ng-click=_ctrlUserEdit.update() data-ng-disabled=userEdit.$invalid>Изменить </md-button> </div> </md-cart-footer> </md-card>";
+module.exports = "ROOM:NAME";
 
 /***/ }),
 /* 53 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-card data-ng-form=userEdit> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Профиль пользователя {{_ctrlUserEdit.data.user.login}}</h2> <ng-md-icon class=chat-form-header-icon size=30 style=fill:#fff icon=remove_red_eye> </ng-md-icon> </md-toolbar> <md-card-avatar layout layout-align=\"center center\"> <div class=chat-user-edit__action-photo flex=40> <img class=\"md-user-avatar chat-user-edit__photo\" data-ng-src={{_ctrlUserEdit.getPathPhoto()}}> </div> </md-card-avatar> <md-card-content> <div layout layout-align=\"center center\"> <div flex=60> <div flex=100> <md-input-container class=chat-form__row> <label>Email</label> <input type=text required disabled=disabled data-ng-model=_ctrlUserEdit.data.user.email> </md-input-container> </div> <div flex=100> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required disabled=disabled data-ng-model=_ctrlUserEdit.data.user.login> </md-input-container> </div> </div> </div> </md-card-content> <md-cart-footer> <div layout layout-align=end> <md-button class=\"md-primary md-raised\" data-ng-click=_ctrlUserEdit.update() data-ng-disabled=userEdit.$invalid>Изменить </md-button> </div> </md-cart-footer> </md-card>";
+module.exports = "<md-contact-chips data-ng-model=userFilter.userInvited md-contacts=userFilter.searchUsers($query) md-contact-name=login md-contact-image=photo md-contact-email=email md-require-match=true md-highlight-flags=i filter-selected=true placeholder={{userFilter.placeholder}}> </md-contact-chips>";
 
 /***/ }),
 /* 54 */
+/***/ (function(module, exports) {
+
+module.exports = "<md-card data-ng-form=userEdit> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Редактирование профиля</h2> <ng-md-icon class=chat-form-header-icon size=30 style=fill:#fff icon=mode_edit> </ng-md-icon> </md-toolbar> <md-card-avatar layout layout-align=\"center center\"> <div class=chat-user-edit__action-photo flex=40> <img class=\"md-user-avatar chat-user-edit__photo\" data-ng-src={{_ctrlUserEdit.getPathPhoto()}}> <ng-md-icon class=chat-user-edit__add-photo size=100 style=fill:#fff icon=add_a_photo data-ng-click=_ctrlUserEdit.close()> </ng-md-icon> <input type=file nv-file-select class=chat-user-edit__uploader uploader=_ctrlUserEdit.uploader /> </div> </md-card-avatar> <md-card-content> <div layout layout-align=\"center center\"> <div flex=60> <div flex=100> <div class=\"alert alert-danger\" data-ng-if=_ctrlUserEdit.data.form.error.length> <div data-ng-repeat=\"message in _ctrlUserEdit.data.form.error\"> {{message}} </div> </div> <div class=\"alert alert-success\" data-ng-if=_ctrlUserEdit.data.form.success.status> {{_ctrlUserEdit.data.form.success.message}} </div> </div> <div flex=100> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required data-ng-minlength=2 data-ng-model=_ctrlUserEdit.data.user.login> </md-input-container> </div> </div> </div> </md-card-content> <md-cart-footer> <div layout layout-align=end> <md-button class=\"md-primary md-raised\" data-ng-click=_ctrlUserEdit.update() data-ng-disabled=userEdit.$invalid>Изменить </md-button> </div> </md-cart-footer> </md-card>";
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports) {
+
+module.exports = "<md-card data-ng-form=userEdit> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Профиль пользователя {{_ctrlUserEdit.data.user.login}}</h2> <ng-md-icon class=chat-form-header-icon size=30 style=fill:#fff icon=remove_red_eye> </ng-md-icon> </md-toolbar> <md-card-avatar layout layout-align=\"center center\"> <div class=chat-user-edit__action-photo flex=40> <img class=\"md-user-avatar chat-user-edit__photo\" data-ng-src={{_ctrlUserEdit.getPathPhoto()}}> </div> </md-card-avatar> <md-card-content> <div layout layout-align=\"center center\"> <div flex=60> <div flex=100> <md-input-container class=chat-form__row> <label>Email</label> <input type=text required disabled=disabled data-ng-model=_ctrlUserEdit.data.user.email> </md-input-container> </div> <div flex=100> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required disabled=disabled data-ng-model=_ctrlUserEdit.data.user.login> </md-input-container> </div> </div> </div> </md-card-content> <md-cart-footer> <div layout layout-align=end> <md-button class=\"md-primary md-raised\" data-ng-click=_ctrlUserEdit.update() data-ng-disabled=userEdit.$invalid>Изменить </md-button> </div> </md-cart-footer> </md-card>";
+
+/***/ }),
+/* 56 */
 /***/ (function(module, exports) {
 
 var g;
@@ -104512,7 +104505,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -104538,6 +104531,64 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+/* 58 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_filter_view_html__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_filter_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_user_filter_view_html__);
+
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].directive('userFilter', function () {
+    return {
+        template: __WEBPACK_IMPORTED_MODULE_1__view_user_filter_view_html___default.a,
+        controller: userFilterController,
+        controllerAs: 'userFilter',
+        scope: {
+            collection: '=collection'
+        },
+    }
+});
+
+function userFilterController($scope, $attrs, $q, userService) {
+
+    const userFilter = this;
+
+    userFilter.placeholder = $attrs.placeholder;
+
+    userFilter.roomId = $attrs.roomId;
+
+    userFilter.searchUsers = searchUsers;
+
+    userFilter.userInvited = $scope.collection;
+
+    userFilter.oldQuery;
+
+    function searchUsers(query) {
+        var deferred = $q.defer();
+
+        if (query) {
+            if (userFilter.oldQuery === query) {
+                deferred.resolve(userFilter.users);
+            } else {
+                userFilter.oldQuery = query;
+                userService.search({query: query}).then(function (users) {
+                    userFilter.users = users;
+                    deferred.resolve(users);
+                });
+            }
+
+        } else {
+            deferred.resolve([]);
+        }
+        return deferred.promise;
+    }
+}
 
 /***/ })
 /******/ ]);

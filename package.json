@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "supervisor --inspect ./app.js",
+    "start": "supervisor -i frontend,public --inspect ./app.js",
     "build": "node ./webpack.config.js",
     "style": "node ./gulpfile.js"
   },

@@ -21,17 +21,9 @@
                     </div>
                 </md-input-container>
 
-                <md-contact-chips
-                        data-ng-model="roomAddCtrl.userInvited"
-                        md-contacts="roomAddCtrl.searchUsers($query)"
-                        md-contact-name="login"
-                        md-contact-image="photo"
-                        md-contact-email="email"
-                        md-require-match="true"
-                        md-highlight-flags="i"
-                        filter-selected="true"
-                        placeholder="Пригласите участников">
-                </md-contact-chips>
+                <user-filter data-room-id="1"
+                             data-collection="roomAddCtrl.userInvited"
+                             data-placeholder="Пригласите участников"></user-filter>
 
                 <md-input-container class="chat-form__row">
                     <input type="file"

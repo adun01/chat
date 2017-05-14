@@ -4,26 +4,11 @@ module.controller('roomAddController', function (FileUploader, $q, $timeout, use
 
     const roomAddCtrl = this;
 
-    roomAddCtrl.searchUsers = searchUsers;
-
     roomAddCtrl.userInvited = [];
 
     roomAddCtrl.data = {
         error: []
     };
-
-    function searchUsers(query) {
-        var deferred = $q.defer();
-        if (query) {
-            userService.search({query: query}).then(function (users) {
-                roomAddCtrl.users = users;
-                deferred.resolve(users);
-            });
-        } else {
-            deferred.resolve([]);
-        }
-        return deferred.promise;
-    }
 
     roomAddCtrl.uploader = new FileUploader({
         url: 'api/room/',
