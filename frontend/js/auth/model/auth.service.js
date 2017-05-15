@@ -6,12 +6,17 @@ module.service('authService', function (socketService, authResource) {
         return authResource.save(data).$promise;
     }
 
+    function logOut() {
+        return authResource.delete().$promise;
+    }
+
     function isLogin() {
         return authResource.get().$promise;
     }
 
     return {
         logIn: logIn,
-        isLogin: isLogin
+        isLogin: isLogin,
+        logOut: logOut
     }
 });

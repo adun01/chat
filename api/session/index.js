@@ -25,5 +25,8 @@ module.exports = {
         }
 
         store.set(session.id, session);
+    },
+    destroy: function (sessionId) {
+        store.destroy(sessionId);
     }
 };

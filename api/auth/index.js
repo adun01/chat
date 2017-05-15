@@ -46,5 +46,8 @@ module.exports = {
     },
     isAuth: function (req) {
         return session.get(req.sessionID);
+    },
+    logOut: function (req) {
+        return session.destroy(req.sessionID);
     }
 };

@@ -26994,13 +26994,18 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('authService', function (sock
         return authResource.save(data).$promise;
     }
 
+    function logOut() {
+        return authResource.delete().$promise;
+    }
+
     function isLogin() {
         return authResource.get().$promise;
     }
 
     return {
         logIn: logIn,
-        isLogin: isLogin
+        isLogin: isLogin,
+        logOut: logOut
     }
 });
 
@@ -27100,7 +27105,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('sideBarController',
-    function ($rootScope, $mdSidenav, userService, authService) {
+    function ($rootScope, $mdSidenav, userService, authService, $state) {
         const _ctrlMain = this;
 
         _ctrlMain.data = {
@@ -27122,6 +27127,12 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('sideBarController',
         _ctrlMain.toggleMenu = function () {
             _ctrlMain.data.opened = !_ctrlMain.data.opened;
             $mdSidenav(_ctrlMain.data.id).toggle();
+        };
+
+        _ctrlMain.logOut = function () {
+            authService.logOut().then(function () {
+                $state.go('resolve.auth');
+            });
         };
 
         _ctrlMain.getPathPhoto = userService.photo;

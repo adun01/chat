@@ -1,7 +1,7 @@
 import module from '../';
 
 module.controller('sideBarController',
-    function ($rootScope, $mdSidenav, userService, authService) {
+    function ($rootScope, $mdSidenav, userService, authService, $state) {
         const _ctrlMain = this;
 
         _ctrlMain.data = {
@@ -26,7 +26,9 @@ module.controller('sideBarController',
         };
 
         _ctrlMain.logOut = function () {
-            //authService.logOut();
+            authService.logOut().then(function () {
+                $state.go('resolve.auth');
+            });
         };
 
         _ctrlMain.getPathPhoto = userService.photo;
