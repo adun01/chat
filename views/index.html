@@ -21,23 +21,32 @@
                 Открыть навигацию
             </md-button>
         </div>
+        <!--md-disable-backdrop-->
         <md-sidenav class="md-sidenav-left sidebar"
-                    md-component-id="{{_ctrlSideBar.data.id}}"
+                    data-ng-cloak
                     md-disable-backdrop
+                    md-component-id="{{_ctrlSideBar.data.id}}"
                     md-whiteframe="4">
 
             <div class="sidebar__row sidebar__header"
+                 style="height: 100px;"
                  layout="row"
                  layout-align="left center">
                 <div flex="75">
-                    НАВИГАЦИЯ
-                </div>
-                <div flex="25">
                     <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-close">
                         <ng-md-icon size="30"
                                     style="fill: white"
                                     icon="forward"
                                     data-ng-click="_ctrlSideBar.toggleMenu()">
+                        </ng-md-icon>
+                    </md--button>
+                </div>
+                <div flex="25">
+                    <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-log-out">
+                        <ng-md-icon size="30"
+                                    style="fill: white"
+                                    icon="logout"
+                                    data-ng-click="_ctrlSideBar.logOut()">
                         </ng-md-icon>
                     </md--button>
                 </div>

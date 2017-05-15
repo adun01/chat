@@ -5,10 +5,15 @@
       margin: 5px 0 0 -1px;
     }
 
+    &--sidebar-log-out {
+      & svg {
+        margin: 12px 0 0 5px;
+      }
+    }
     &--sidebar-close {
 
       transform: rotate(180deg);
-        & svg {
+      & svg {
         margin: 14px 0 0;
       }
     }

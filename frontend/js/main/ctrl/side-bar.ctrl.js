@@ -25,6 +25,10 @@ module.controller('sideBarController',
             $mdSidenav(_ctrlMain.data.id).toggle();
         };
 
+        _ctrlMain.logOut = function () {
+            //authService.logOut();
+        };
+
         _ctrlMain.getPathPhoto = userService.photo;
 
         $rootScope.$on('isAuth', function () {
