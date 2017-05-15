@@ -28,6 +28,8 @@ module.controller('sideBarController',
         _ctrlMain.logOut = function () {
             authService.logOut().then(function () {
                 $state.go('resolve.auth');
+                userService.set(null);
+                $rootScope.$emit('isAuth');
             });
         };
 
@@ -35,6 +37,10 @@ module.controller('sideBarController',
 
         $rootScope.$on('isAuth', function () {
             _ctrlMain.data.user = userService.get();
-            _ctrlMain.data.isAuth = true;
+            if (_ctrlMain.data.user) {
+                _ctrlMain.data.isAuth = true;
+            } else {
+                _ctrlMain.data.isAuth = false;
+            }
         });
     });

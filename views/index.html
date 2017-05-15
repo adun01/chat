@@ -29,7 +29,6 @@
                     md-whiteframe="4">
 
             <div class="sidebar__row sidebar__header"
-                 style="height: 100px;"
                  layout="row"
                  layout-align="left center">
                 <div flex="75">
@@ -41,7 +40,7 @@
                         </ng-md-icon>
                     </md--button>
                 </div>
-                <div flex="25">
+                <div flex="25" data-ng-if="_ctrlSideBar.data.isAuth">
                     <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-log-out">
                         <ng-md-icon size="30"
                                     style="fill: white"
