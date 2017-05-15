@@ -58,7 +58,7 @@
                      layout="row"
                      layout-align="left center"
                      data-ng-if="_ctrlSideBar.data.isAuth">
-                    <div flex="70">
+                    <div flex="80">
                         <div layout="row" layout-align="left center">
                             <img class="chat-user-intro__avatar"
                                  data-ng-src="{{_ctrlSideBar.getPathPhoto(_ctrlSideBar.data.user.photo)}}">
@@ -72,8 +72,9 @@
                             </div>
                         </div>
                     </div>
-                    <div flex="30">
-                        <div layout="row" layout-align="end center">
+                    <div flex="20">
+                        <div layout="row"
+                             layout-align="end center">
                             <md--button class="md-fab md-mini chat-icon-action"
                                         data-ng-click="_ctrlSideBar.editUser($event)">
                                 <ng-md-icon size="25"
@@ -91,12 +92,12 @@
                     <div class="sidebar__row">
                         <div layout="row"
                              layout-align="left center">
-                            <div flex="70" class="chat-room-list-nav">
+                            <div flex="80" class="chat-room-list-nav">
                                 <div>
                                     Комнаты
                                 </div>
                             </div>
-                            <div flex="30">
+                            <div flex="20">
                                 <div layout="row"
                                      layout-align="end center">
                                     <md-button class="md-fab md-mini chat-icon-action"
