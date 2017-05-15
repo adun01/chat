@@ -27244,9 +27244,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             controller: 'roomController',
             controllerAs: '_ctrlRoom',
             template: __WEBPACK_IMPORTED_MODULE_1__view_room_view_html___default.a,
-            default: {
-                name: 'main'
-            }
+            params: {
+                name: {value: 'main'}
+            },
         })
 }));
 

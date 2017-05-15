@@ -8,8 +8,8 @@ export default module.config(function ($stateProvider) {
             controller: 'roomController',
             controllerAs: '_ctrlRoom',
             template: roomTpl,
-            default: {
-                name: 'main'
-            }
+            params: {
+                name: {value: 'main'}
+            },
         })
 });
