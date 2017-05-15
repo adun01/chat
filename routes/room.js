@@ -7,4 +7,10 @@ router.get('/api/room', function (req, res) {
     });
 });
 
+router.post('/api/room', function (req, res) {
+    roomApi.create(req.body, req.session.user.id).then(function (response) {
+        res.send(JSON.stringify({room: response}));
+    });
+});
+
 module.exports = router;

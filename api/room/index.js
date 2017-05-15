@@ -13,14 +13,19 @@ function clearRoomField(rooms) {
 }
 
 module.exports = {
-    add: function (data) {
+    create: function (data, creatorId) {
         'use strict';
+        let userInvited = data.userInvited ? data.userInvited.split(',') : [];
+
+        userInvited = userInvited.map(function (id) {
+            return +id;
+        });
 
         let promise = new Promise(function (resolve) {
             new roomModel({
-                id: data.id,
                 name: data.name,
-                creatorId: data.creatorId
+                creatorId: creatorId,
+                userInvited: userInvited
             }).save().then(function (room) {
                 resolve(clearRoomField(room));
             });
@@ -33,11 +38,11 @@ module.exports = {
         let promise = new Promise(function (resolve) {
             if (!roomId) {
                 roomModel.findOne({creatorId: 0}).then(function (mainRoom) {
-                    roomModel.find({userAgreed: {$elemMatch: {id: userId}}}).then(function (rooms) {
+
+                    roomModel.find({ $or: [ { userAgreed: userId }, { creatorId: userId } ] }).then(function (rooms) {
                         rooms.push(mainRoom);
                         resolve(clearRoomField(rooms));
                     });
-
                 });
             } else {
                 roomModel.findOne({id: roomId}).then(function (room) {

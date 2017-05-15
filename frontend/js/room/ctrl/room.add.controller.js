@@ -1,53 +1,33 @@
 import module from '../';
 
-module.controller('roomAddController', function (FileUploader, $q, $timeout, userService) {
+module.controller('roomAddController', function (FileUploader, $mdDialog, roomService, $rootScope, $state) {
 
     const roomAddCtrl = this;
 
     roomAddCtrl.userInvited = [];
 
-    roomAddCtrl.data = {
-        error: []
+    roomAddCtrl.addRoom = function () {
+        roomService.create({
+            name: roomAddCtrl.name,
+            userInvited: roomAddCtrl.userInvited.reduce(function (prev, current) {
+                if (prev === '') {
+                    prev += current.id;
+                } else {
+                    prev += ',' + current.id;
+                }
+                return prev;
+            }, '')
+        }).then(function (response) {
+            roomAddCtrl.close();
+            $rootScope.$emit('roomListReInit', null);
+            $state.go('resolve.main.room', {
+                name: response.room.name
+            });
+        });
     };
 
-    roomAddCtrl.uploader = new FileUploader({
-        url: 'api/room/',
-        filters: [
-            {
-                name: 'extensions',
-                fn: function (item) {
-                    if (!(/\.(jpg|jpeg|png)$/i).test(item.name)) {
-                        roomAddCtrl.data.error.push('Формат файла должен быть jpg, jpeg, png');
-                    } else {
-                        roomAddCtrl.removeError();
-                        return true;
-                    }
-                }
-            }, {
-                name: 'fileSize',
-                fn: function (item) {
-                    if (item.size > 200000) {
-                        roomAddCtrl.data.error.push('Размер файла не должен превышать 2мб');
-                    } else {
-                        roomAddCtrl.removeError();
-                        return true;
-                    }
-                }
-            }
-        ],
-        queueLimit: 1,
-        method: 'PUT',
-        removeAfterUpload: true,
-        onErrorItem: function () {
-            roomAddCtrl.data.error.push('Сервер погиб. Попробуйте позже');
-        },
-        onCompleteItem: function (item, response) {
-            roomAddCtrl.handlerResponse(response);
-        }
-    });
-
-    roomAddCtrl.removeError = function () {
-        roomAddCtrl.data.error = [];
+    roomAddCtrl.close = function () {
+        $mdDialog.cancel();
     };
 
 });

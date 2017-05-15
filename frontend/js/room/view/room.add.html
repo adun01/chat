@@ -12,11 +12,19 @@
                     <input type="text"
                            required
                            name="name"
+                           data-ng-minlength="2"
+                           data-ng-pattern="/^[a-zA-Z0-9_.-]*$/"
                            data-ng-model="roomAddCtrl.name">
-                    <div data-ng-messages="addRoom.$error">
-                        <div class="alert alert-danger"
-                             data-ng-message="name">
-                            Введите название комнаты
+
+                    <div data-ng-messages="addRoom.name.$error">
+                        <div data-ng-message="required">
+                            Поля обязательное для заполнения
+                        </div>
+                        <div data-ng-message="minlength">
+                            Название не может быть короче 2 символов.
+                        </div>
+                        <div data-ng-message="pattern">
+                            Название должно начиться с латинского символа и содержать только латинские символы и цифры
                         </div>
                     </div>
                 </md-input-container>
@@ -24,26 +32,13 @@
                 <user-filter data-room-id="1"
                              data-collection="roomAddCtrl.userInvited"
                              data-placeholder="Пригласите участников"></user-filter>
-
-                <md-input-container class="chat-form__row">
-                    <input type="file"
-                           name="photo"
-                           nv-file-select
-                           uploader="roomAddCtrl.uploader"
-                           data-ng-model="roomAddCtrl.photo">
-                    <div data-ng-if="roomAddCtrl.data.error.length">
-                        <div class="alert alert-danger"
-                             data-ng-repeat="error in roomAddCtrl.data.error">
-                            {{error}}
-                        </div>
-                    </div>
-                </md-input-container>
             </div>
         </md-dialog-content>
 
         <md-dialog-actions layout="row">
             <md-button class="md-fab md-mini chat-icon-action"
                        aria-label="Создать комнату"
+                       data-ng-disabled="addRoom.$invalid"
                        data-ng-click="roomAddCtrl.addRoom($event)">
                 <ng-md-icon size="30"
                             style="fill: white"
@@ -52,7 +47,7 @@
             </md-button>
             <md-button class="md-fab md-mini chat-icon-action"
                        aria-label="Отмена"
-                       data-ng-click="roomAddCtrl.addRoom($event)">
+                       data-ng-click="roomAddCtrl.close()">
                 <ng-md-icon size="30"
                             style="fill: white"
                             icon="close">

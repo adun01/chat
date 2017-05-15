@@ -1,6 +1,6 @@
 import module from '../';
 
-module.controller('roomListController', function (roomService) {
+module.controller('roomListController', function (roomService, $rootScope) {
     const roomListCtrl = this;
 
     roomListCtrl.data = {
@@ -14,6 +14,10 @@ module.controller('roomListController', function (roomService) {
             roomListCtrl.data.list = response.list;
         });
     }
+
+    $rootScope.$on('roomListReInit', function () {
+        getListRoom();
+    });
 
     getListRoom();
 });

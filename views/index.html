@@ -23,7 +23,8 @@
         </div>
         <md-sidenav class="md-sidenav-left sidebar"
                     md-component-id="{{_ctrlSideBar.data.id}}"
-                    md-disable-backdrop md-whiteframe="4">
+                    md-disable-backdrop
+                    md-whiteframe="4">
 
             <div class="sidebar__row sidebar__header"
                  layout="row"
@@ -119,12 +120,15 @@
                     </div>
                 </div>
 
-                <md-list class="sidebar__row" data-ng-cloak data-ng-if="!_ctrlSideBar.data.isAuth">
+                <md-list class="sidebar__row sidebar__eventsList"
+                         data-ng-cloak
+                         data-ng-if="!_ctrlSideBar.data.isAuth">
                     <md-subheader class="md-no-sticky">Выберите действие</md-subheader>
                     <md-list-item data-ng-repeat="action in _ctrlSideBar.data.listAuth">
-                        <a data-ui-sref="{{action.state}}" class="md-primary md-button">
+                        <md-button class="md-raised"
+                           data-ui-sref="{{action.state}}">
                             {{action.name}}
-                        </a>
+                        </md-button>
                     </md-list-item>
                 </md-list>
             </md-content>

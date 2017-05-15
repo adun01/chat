@@ -7,8 +7,9 @@
 
     &--sidebar-close {
 
-      & svg {
-        margin: 12px 0 0 0px;
+      transform: rotate(180deg);
+        & svg {
+        margin: 14px 0 0;
       }
     }
   }

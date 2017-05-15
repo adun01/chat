@@ -32,4 +32,11 @@
     left: 5px;
   }
 
+  &__eventsList {
+    & > .md-subheader {
+      background: none;
+      color: #fff;
+    }
+  }
+
 }

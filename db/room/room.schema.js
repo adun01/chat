@@ -12,18 +12,8 @@ const Schema = require('mongoose').Schema,
             type: Date,
             default: Date.now
         },
-        userAgreed: [
-            {
-                name: String,
-                id: Number
-            }
-        ],
-        userInvited: [
-            {
-                name: String,
-                id: Number
-            }
-        ],
+        userAgreed: [Number],
+        userInvited: [Number],
         creatorId: {
             type: Number,
             default: 0

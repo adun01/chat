@@ -7,6 +7,10 @@ module.service('roomService', function (roomResource, $q, $mdDialog) {
         return room[0] + room[1];
     }
 
+    function create(data) {
+        return roomResource.save(data).$promise;
+    }
+
     function get() {
         let defer = $q.defer();
         roomResource.get().$promise.then(function (response) {
@@ -32,6 +36,7 @@ module.service('roomService', function (roomResource, $q, $mdDialog) {
 
     return {
         get: get,
-        addRoom: addRoom
+        addRoom: addRoom,
+        create: create
     }
 });

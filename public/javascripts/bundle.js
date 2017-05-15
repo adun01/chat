@@ -287,10 +287,10 @@ var map = {
 	"./room/index.js": 0,
 	"./room/model/room.resource.js": 32,
 	"./room/model/room.service.js": 33,
-	"./user/config/index.js": 35,
-	"./user/controller/user.edit.controller.js": 36,
-	"./user/controller/user.show.controller.js": 37,
-	"./user/directive/user-filter.directive.js": 58,
+	"./user/config/index.js": 34,
+	"./user/controller/user.edit.controller.js": 35,
+	"./user/controller/user.show.controller.js": 36,
+	"./user/directive/user-filter.directive.js": 37,
 	"./user/index.js": 1,
 	"./user/model/user.resource.js": 38,
 	"./user/model/user.service.js": 39
@@ -27242,54 +27242,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomAddController', function (FileUploader, $q, $timeout, userService) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomAddController', function (FileUploader, $mdDialog, roomService, $rootScope, $state) {
 
     const roomAddCtrl = this;
 
     roomAddCtrl.userInvited = [];
 
-    roomAddCtrl.data = {
-        error: []
+    roomAddCtrl.addRoom = function () {
+        roomService.create({
+            name: roomAddCtrl.name,
+            userInvited: roomAddCtrl.userInvited.reduce(function (prev, current) {
+                if (prev === '') {
+                    prev += current.id;
+                } else {
+                    prev += ',' + current.id;
+                }
+                return prev;
+            }, '')
+        }).then(function (response) {
+            roomAddCtrl.close();
+            $rootScope.$emit('roomListReInit', null);
+            $state.go('resolve.main.room', {
+                name: response.room.name
+            });
+        });
     };
 
-    roomAddCtrl.uploader = new FileUploader({
-        url: 'api/room/',
-        filters: [
-            {
-                name: 'extensions',
-                fn: function (item) {
-                    if (!(/\.(jpg|jpeg|png)$/i).test(item.name)) {
-                        roomAddCtrl.data.error.push('Формат файла должен быть jpg, jpeg, png');
-                    } else {
-                        roomAddCtrl.removeError();
-                        return true;
-                    }
-                }
-            }, {
-                name: 'fileSize',
-                fn: function (item) {
-                    if (item.size > 200000) {
-                        roomAddCtrl.data.error.push('Размер файла не должен превышать 2мб');
-                    } else {
-                        roomAddCtrl.removeError();
-                        return true;
-                    }
-                }
-            }
-        ],
-        queueLimit: 1,
-        method: 'PUT',
-        removeAfterUpload: true,
-        onErrorItem: function () {
-            roomAddCtrl.data.error.push('Сервер погиб. Попробуйте позже');
-        },
-        onCompleteItem: function (item, response) {
-            roomAddCtrl.handlerResponse(response);
-        }
-    });
-
-    roomAddCtrl.removeError = function () {
-        roomAddCtrl.data.error = [];
+    roomAddCtrl.close = function () {
+        $mdDialog.cancel();
     };
 
 });
@@ -27317,7 +27297,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomListController', function (roomService) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomListController', function (roomService, $rootScope) {
     const roomListCtrl = this;
 
     roomListCtrl.data = {
@@ -27331,6 +27311,10 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomListController', func
             roomListCtrl.data.list = response.list;
         });
     }
+
+    $rootScope.$on('roomListReInit', function () {
+        getListRoom();
+    });
 
     getListRoom();
 });
@@ -27370,6 +27354,10 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomService', function (room
         return room[0] + room[1];
     }
 
+    function create(data) {
+        return roomResource.save(data).$promise;
+    }
+
     function get() {
         let defer = $q.defer();
         roomResource.get().$promise.then(function (response) {
@@ -27395,13 +27383,13 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomService', function (room
 
     return {
         get: get,
-        addRoom: addRoom
+        addRoom: addRoom,
+        create: create
     }
 });
 
 /***/ }),
-/* 34 */,
-/* 35 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27430,7 +27418,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].config(function ($stateProvider) {
 });
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27530,7 +27518,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userEditController', func
 
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27552,6 +27540,64 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('editUserController', func
     };
 });
 
+
+/***/ }),
+/* 37 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_filter_view_html__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_filter_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_user_filter_view_html__);
+
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].directive('userFilter', function () {
+    return {
+        template: __WEBPACK_IMPORTED_MODULE_1__view_user_filter_view_html___default.a,
+        controller: userFilterController,
+        controllerAs: 'userFilter',
+        scope: {
+            collection: '=collection'
+        },
+    }
+});
+
+function userFilterController($scope, $attrs, $q, userService) {
+
+    const userFilter = this;
+
+    userFilter.placeholder = $attrs.placeholder;
+
+    userFilter.roomId = $attrs.roomId;
+
+    userFilter.searchUsers = searchUsers;
+
+    userFilter.userInvited = $scope.collection;
+
+    userFilter.oldQuery;
+
+    function searchUsers(query) {
+        var deferred = $q.defer();
+
+        if (query) {
+            if (userFilter.oldQuery === query) {
+                deferred.resolve(userFilter.users);
+            } else {
+                userFilter.oldQuery = query;
+                userService.search({query: query}).then(function (users) {
+                    userFilter.users = users;
+                    deferred.resolve(users);
+                });
+            }
+
+        } else {
+            deferred.resolve([]);
+        }
+        return deferred.promise;
+    }
+}
 
 /***/ }),
 /* 38 */
@@ -104451,7 +104497,7 @@ module.exports = "<div class=chat-form-container flex=60 flex-xs=60 flex-gt-xs=5
 /* 51 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-dialog flex=40> <form data-ng-cloak name=addRoom> <md-toolbar> <div class=md-toolbar-tools> <h2>Создать комнату</h2> </div> </md-toolbar> <md-dialog-content> <div class=md-dialog-content> <md-input-container class=chat-form__row> <label>Название комнаты</label> <input type=text required name=name data-ng-model=roomAddCtrl.name> <div data-ng-messages=addRoom.$error> <div class=\"alert alert-danger\" data-ng-message=name> Введите название комнаты </div> </div> </md-input-container> <user-filter data-room-id=1 data-collection=roomAddCtrl.userInvited data-placeholder=\"Пригласите участников\"></user-filter> <md-input-container class=chat-form__row> <input type=file name=photo nv-file-select uploader=roomAddCtrl.uploader data-ng-model=roomAddCtrl.photo> <div data-ng-if=roomAddCtrl.data.error.length> <div class=\"alert alert-danger\" data-ng-repeat=\"error in roomAddCtrl.data.error\"> {{error}} </div> </div> </md-input-container> </div> </md-dialog-content> <md-dialog-actions layout=row> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=\"Создать комнату\" data-ng-click=roomAddCtrl.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Отмена data-ng-click=roomAddCtrl.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </form> </md-dialog>";
+module.exports = "<md-dialog flex=40> <form data-ng-cloak name=addRoom> <md-toolbar> <div class=md-toolbar-tools> <h2>Создать комнату</h2> </div> </md-toolbar> <md-dialog-content> <div class=md-dialog-content> <md-input-container class=chat-form__row> <label>Название комнаты</label> <input type=text required name=name data-ng-minlength=2 data-ng-pattern=/^[a-zA-Z0-9_.-]*$/ data-ng-model=roomAddCtrl.name> <div data-ng-messages=addRoom.name.$error> <div data-ng-message=required> Поля обязательное для заполнения </div> <div data-ng-message=minlength> Название не может быть короче 2 символов. </div> <div data-ng-message=pattern> Название должно начиться с латинского символа и содержать только латинские символы и цифры </div> </div> </md-input-container> <user-filter data-room-id=1 data-collection=roomAddCtrl.userInvited data-placeholder=\"Пригласите участников\"></user-filter> </div> </md-dialog-content> <md-dialog-actions layout=row> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=\"Создать комнату\" data-ng-disabled=addRoom.$invalid data-ng-click=roomAddCtrl.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Отмена data-ng-click=roomAddCtrl.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </form> </md-dialog>";
 
 /***/ }),
 /* 52 */
@@ -104463,7 +104509,7 @@ module.exports = "ROOM:NAME";
 /* 53 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-contact-chips data-ng-model=userFilter.userInvited md-contacts=userFilter.searchUsers($query) md-contact-name=login md-contact-image=photo md-contact-email=email md-require-match=true md-highlight-flags=i filter-selected=true placeholder={{userFilter.placeholder}}> </md-contact-chips>";
+module.exports = "<md-contact-chips name=userInvited data-ng-model=userFilter.userInvited md-contacts=userFilter.searchUsers($query) md-contact-name=login md-contact-image=photo md-contact-email=email md-require-match=true md-highlight-flags=i filter-selected=true placeholder={{userFilter.placeholder}}> </md-contact-chips>";
 
 /***/ }),
 /* 54 */
@@ -104531,64 +104577,6 @@ module.exports = function(module) {
 	return module;
 };
 
-
-/***/ }),
-/* 58 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_filter_view_html__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_filter_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_user_filter_view_html__);
-
-
-
-__WEBPACK_IMPORTED_MODULE_0____["default"].directive('userFilter', function () {
-    return {
-        template: __WEBPACK_IMPORTED_MODULE_1__view_user_filter_view_html___default.a,
-        controller: userFilterController,
-        controllerAs: 'userFilter',
-        scope: {
-            collection: '=collection'
-        },
-    }
-});
-
-function userFilterController($scope, $attrs, $q, userService) {
-
-    const userFilter = this;
-
-    userFilter.placeholder = $attrs.placeholder;
-
-    userFilter.roomId = $attrs.roomId;
-
-    userFilter.searchUsers = searchUsers;
-
-    userFilter.userInvited = $scope.collection;
-
-    userFilter.oldQuery;
-
-    function searchUsers(query) {
-        var deferred = $q.defer();
-
-        if (query) {
-            if (userFilter.oldQuery === query) {
-                deferred.resolve(userFilter.users);
-            } else {
-                userFilter.oldQuery = query;
-                userService.search({query: query}).then(function (users) {
-                    userFilter.users = users;
-                    deferred.resolve(users);
-                });
-            }
-
-        } else {
-            deferred.resolve([]);
-        }
-        return deferred.promise;
-    }
-}
 
 /***/ })
 /******/ ]);

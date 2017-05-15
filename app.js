@@ -74,7 +74,7 @@ app.use(function (req, res, next) {
     let originalQueery = url.parse(req.originalUrl),
         pathName = originalQueery.pathname;
     if (!originalQueery.query && pathName[pathName.length - 1] !== '/') {
-        res.redirect(301, pathName + '/');
+        res.redirect(307, pathName + '/');
     } else {
         next();
     }
