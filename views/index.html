@@ -16,10 +16,13 @@
     <div data-ng-controller="sideBarController as _ctrlSideBar">
         <div class="sidebar-opener"
              data-ng-class="{'sidebar-opener--hide': _ctrlSideBar.data.opened}">
-            <md-button class="md-primary md-raised"
-                       data-ng-click="_ctrlSideBar.toggleMenu()">
-                Открыть навигацию
-            </md-button>
+            <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-open"
+                        data-ng-click="_ctrlSideBar.toggleMenu()">
+                <ng-md-icon size="30"
+                            style="fill: white"
+                            icon="forward">
+                </ng-md-icon>
+            </md--button>
         </div>
         <!--md-disable-backdrop-->
         <md-sidenav class="md-sidenav-left sidebar"
@@ -40,8 +43,9 @@
                         </ng-md-icon>
                     </md--button>
                 </div>
-                <div flex="25" data-ng-if="_ctrlSideBar.data.isAuth">
+                <div flex="25">
                     <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-log-out"
+                                data-ng-if="_ctrlSideBar.data.isAuth"
                                 data-ng-click="_ctrlSideBar.logOut()">
                         <ng-md-icon size="30"
                                     style="fill: white"

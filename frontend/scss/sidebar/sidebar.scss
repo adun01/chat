@@ -19,7 +19,8 @@
 
   &-opener {
     position: absolute;
-    left: -8px;
+    left: 16px;
+    top: 30px;
     transition: left 0.3s ease-out 0.5s;
 
     &--hide {
