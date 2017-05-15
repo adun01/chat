@@ -31,6 +31,8 @@ $photo_size: 74px;
   }
 
   &-edit {
+    margin-top: 20px;
+
     &__photo {
       background-color: #e8e8e8;
     }
@@ -46,7 +48,7 @@ $photo_size: 74px;
       margin-top: -50px;
     }
     &__action-photo {
-      margin: 8px 0;
+      margin: 8px auto;
       position: relative;
       overflow: hidden;
 

@@ -1,6 +1,6 @@
 import module from '../';
 
-module.controller('userEditController', function (FileUploader, userService, userResource, $timeout, $rootScope) {
+module.controller('userEditController', function (FileUploader, userService, $timeout, $rootScope, $mdDialog) {
     const _ctrlUserEdit = this;
 
     _ctrlUserEdit.data = {
@@ -22,7 +22,7 @@ module.controller('userEditController', function (FileUploader, userService, use
                 name: 'extensions',
                 fn: function (item) {
                     if (!(/\.(jpg|jpeg|png)$/i).test(item.name)) {
-                        _ctrlUserEdit.data.form.error.uploader.push('Формат файла должен быть jpg, jpeg, png');
+                        _ctrlUserEdit.data.form.error.push('Формат файла должен быть jpg, jpeg, png');
                     } else {
                         _ctrlUserEdit.removeError();
                         return true;
@@ -32,7 +32,7 @@ module.controller('userEditController', function (FileUploader, userService, use
                 name: 'fileSize',
                 fn: function (item) {
                     if (item.size > 200000) {
-                        _ctrlUserEdit.data.form.error.uploader.push('Размер файла не должен превышать 2мб');
+                        _ctrlUserEdit.data.form.error.push('Размер файла не должен превышать 2мб');
                     } else {
                         _ctrlUserEdit.removeError();
                         return true;
@@ -45,7 +45,7 @@ module.controller('userEditController', function (FileUploader, userService, use
         method: 'PUT',
         removeAfterUpload: true,
         onErrorItem: function () {
-            _ctrlUserEdit.data.form.error.uploader.push('Сервер погиб. Попробуйте позже');
+            _ctrlUserEdit.data.form.error.push('Сервер погиб. Попробуйте позже');
         },
         onCompleteItem: function (item, response) {
             _ctrlUserEdit.handlerResponse(response);
@@ -65,6 +65,10 @@ module.controller('userEditController', function (FileUploader, userService, use
         }).then(function (response) {
             _ctrlUserEdit.handlerResponse(response);
         });
+    };
+
+    _ctrlUserEdit.close = function () {
+        $mdDialog.cancel();
     };
 
     _ctrlUserEdit.handlerResponse = function (response) {

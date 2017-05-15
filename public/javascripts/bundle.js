@@ -287,7 +287,6 @@ var map = {
 	"./room/index.js": 0,
 	"./room/model/room.resource.js": 32,
 	"./room/model/room.service.js": 33,
-	"./user/config/index.js": 34,
 	"./user/controller/user.edit.controller.js": 35,
 	"./user/controller/user.show.controller.js": 36,
 	"./user/directive/user-filter.directive.js": 37,
@@ -27106,9 +27105,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('sideBarController',
     function ($rootScope, $mdSidenav, userService, authService, $state) {
-        const _ctrlMain = this;
+        const _ctrlSideBar = this;
 
-        _ctrlMain.data = {
+        _ctrlSideBar.data = {
             id: 'side-bar',
             opened: false,
             isAuth: false,
@@ -27124,12 +27123,12 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('sideBarController',
             user: null
         };
 
-        _ctrlMain.toggleMenu = function () {
-            _ctrlMain.data.opened = !_ctrlMain.data.opened;
-            $mdSidenav(_ctrlMain.data.id).toggle();
+        _ctrlSideBar.toggleMenu = function () {
+            _ctrlSideBar.data.opened = !_ctrlSideBar.data.opened;
+            $mdSidenav(_ctrlSideBar.data.id).toggle();
         };
 
-        _ctrlMain.logOut = function () {
+        _ctrlSideBar.logOut = function () {
             authService.logOut().then(function () {
                 $state.go('resolve.auth');
                 userService.set(null);
@@ -27137,14 +27136,16 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('sideBarController',
             });
         };
 
-        _ctrlMain.getPathPhoto = userService.photo;
+        _ctrlSideBar.editUser = userService.editUser;
+
+        _ctrlSideBar.getPathPhoto = userService.photo;
 
         $rootScope.$on('isAuth', function () {
-            _ctrlMain.data.user = userService.get();
-            if (_ctrlMain.data.user) {
-                _ctrlMain.data.isAuth = true;
+            _ctrlSideBar.data.user = userService.get();
+            if (_ctrlSideBar.data.user) {
+                _ctrlSideBar.data.isAuth = true;
             } else {
-                _ctrlMain.data.isAuth = false;
+                _ctrlSideBar.data.isAuth = false;
             }
         });
     });
@@ -27406,35 +27407,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomService', function (room
 });
 
 /***/ }),
-/* 34 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_show_view_html__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_show_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_user_show_view_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__view_user_edit_view_html__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__view_user_edit_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__view_user_edit_view_html__);
-
-
-
-
-__WEBPACK_IMPORTED_MODULE_0____["default"].config(function ($stateProvider) {
-    $stateProvider
-        .state('resolve.main.user-edit', {
-            url: 'user/edit/',
-            template: __WEBPACK_IMPORTED_MODULE_2__view_user_edit_view_html___default.a,
-            controller: 'userEditController',
-            controllerAs: '_ctrlUserEdit'
-        })
-        .state('resolve.main.user-show', {
-            url: 'user/:name/',
-            template: __WEBPACK_IMPORTED_MODULE_1__view_user_show_view_html___default.a
-        })
-});
-
-/***/ }),
+/* 34 */,
 /* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -27443,7 +27416,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('userEditController', function (FileUploader, userService, userResource, $timeout, $rootScope) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('userEditController', function (FileUploader, userService, $timeout, $rootScope, $mdDialog) {
     const _ctrlUserEdit = this;
 
     _ctrlUserEdit.data = {
@@ -27465,7 +27438,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userEditController', func
                 name: 'extensions',
                 fn: function (item) {
                     if (!(/\.(jpg|jpeg|png)$/i).test(item.name)) {
-                        _ctrlUserEdit.data.form.error.uploader.push('Формат файла должен быть jpg, jpeg, png');
+                        _ctrlUserEdit.data.form.error.push('Формат файла должен быть jpg, jpeg, png');
                     } else {
                         _ctrlUserEdit.removeError();
                         return true;
@@ -27475,7 +27448,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userEditController', func
                 name: 'fileSize',
                 fn: function (item) {
                     if (item.size > 200000) {
-                        _ctrlUserEdit.data.form.error.uploader.push('Размер файла не должен превышать 2мб');
+                        _ctrlUserEdit.data.form.error.push('Размер файла не должен превышать 2мб');
                     } else {
                         _ctrlUserEdit.removeError();
                         return true;
@@ -27488,7 +27461,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userEditController', func
         method: 'PUT',
         removeAfterUpload: true,
         onErrorItem: function () {
-            _ctrlUserEdit.data.form.error.uploader.push('Сервер погиб. Попробуйте позже');
+            _ctrlUserEdit.data.form.error.push('Сервер погиб. Попробуйте позже');
         },
         onCompleteItem: function (item, response) {
             _ctrlUserEdit.handlerResponse(response);
@@ -27508,6 +27481,10 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userEditController', func
         }).then(function (response) {
             _ctrlUserEdit.handlerResponse(response);
         });
+    };
+
+    _ctrlUserEdit.close = function () {
+        $mdDialog.cancel();
     };
 
     _ctrlUserEdit.handlerResponse = function (response) {
@@ -27640,9 +27617,15 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('userResource', function ($re
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_show_view_html__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_show_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_user_show_view_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__view_user_edit_view_html__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__view_user_edit_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__view_user_edit_view_html__);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].service('userService', function (socketService, userResource, $q) {
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].service('userService', function (socketService, userResource, $q, $mdDialog) {
 
     let user = null;
 
@@ -27676,8 +27659,18 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('userService', function (sock
     }
 
     function photoPath(userCur) {
-        let currentUser = userCur ? userCur : user;
-        return currentUser && currentUser.photo ? '/images/users/' + currentUser.id + '/' + currentUser.photo : '/images/user_null.png';
+        return user.photo ? '/images/users/' + user.id + '/' + user.photo : '/images/user_null.png';
+    }
+
+    function editUser(e) {
+        $mdDialog.show({
+            controller: 'userEditController',
+            controllerAs: '_ctrlUserEdit',
+            template: __WEBPACK_IMPORTED_MODULE_2__view_user_edit_view_html___default.a,
+            parent: angular.element(document.body),
+            targetEvent: e,
+            clickOutsideToClose: true
+        });
     }
 
     return {
@@ -27686,7 +27679,8 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('userService', function (sock
         set: set,
         search: search,
         update: update,
-        photo: photoPath
+        photo: photoPath,
+        editUser: editUser
     }
 });
 
@@ -104502,13 +104496,13 @@ $provide.value("$locale", {
 /* 49 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=chat-form-container flex=60 flex-xs=60 flex-gt-xs=50 flex-sm=50 flex-gt-sm=50 flex-md=40 flex-gt-md=40 flex-lg=40 flex-gt-lg=30 flex-xl=30> <form name=auth class=chat-form novalidate md-content data-ng-controller=authController> <md-card> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Авторизация</h2> <ng-md-icon class=chat-form-header-icon size=30 style=fill:#fff icon=login> </ng-md-icon> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required data-ng-minlength=2 data-ng-model=_ctrlAuth.login> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required data-ng-model=_ctrlAuth.password> </md-input-container> <div data-ng-messages=_ctrlAuth.error> <div class=\"alert alert-danger\" data-ng-message=logIn> {{_ctrlAuth.errorMessage}} </div> </div> </md-card-content> <div layout layout-align=end> <md-button class=\"md-primary md-raised\" data-ng-click=_ctrlAuth.logIn() data-ng-disabled=auth.$invalid>Войти </md-button> </div> </md-card> </form> </div>";
+module.exports = "<div class=chat-form-container flex=60 flex-xs=60 flex-gt-xs=50 flex-sm=50 flex-gt-sm=50 flex-md=40 flex-gt-md=40 flex-lg=40 flex-gt-lg=30 flex-xl=30> <form name=auth class=chat-form novalidate md-content data-ng-controller=authController> <md-card> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Авторизация</h2> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required data-ng-minlength=2 data-ng-model=_ctrlAuth.login> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required data-ng-model=_ctrlAuth.password> </md-input-container> <div data-ng-messages=_ctrlAuth.error> <div class=\"alert alert-danger\" data-ng-message=logIn> {{_ctrlAuth.errorMessage}} </div> </div> </md-card-content> <md-card-footer layout layout-align=end> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Войти data-ng-click=_ctrlAuth.logIn() data-ng-disabled=auth.$invalid> <ng-md-icon size=30 style=fill:#fff icon=login> </ng-md-icon> </md-button> </md-card-footer> </md-card> </form> </div>";
 
 /***/ }),
 /* 50 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=chat-form-container flex=60 flex-xs=60 flex-gt-xs=50 flex-sm=50 flex-gt-sm=50 flex-md=40 flex-gt-md=40 flex-lg=40 flex-gt-lg=30 flex-xl=30> <form name=reg class=chat-form novalidate md-content> <md-card> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Регистрация</h2> <ng-md-icon class=chat-form-header-icon size=30 style=fill:#fff icon=login> </ng-md-icon> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required name=login data-ng-minlength=2 data-ng-model=_ctrlReg.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text required name=email data-ng-pattern=/^([\\w-]+.)*[\\w-]+@[\\w-]+(\\.[\\w-]+)*\\.[a-z]{2,6}$/ data-ng-model=_ctrlReg.email> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required name=password data-ng-pattern=\"/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9!@#$%]+$/\" data-ng-model=_ctrlReg.password> </md-input-container> <md-input-container class=chat-form__row> <label>Повторите пароль</label> <input type=password required name=password_duble data-identity=_ctrlReg.password data-ng-model=_ctrlReg.password_duble> <div data-ng-messages=reg.password_duble.$error> <div data-ng-message=identity> Пароли должны совпадать </div> </div> </md-input-container> <div data-ng-messages=_ctrlReg.error> <div class=\"alert alert-danger\" data-ng-message=create> {{_ctrlReg.errorMessage}} </div> </div> </md-card-content> <div layout layout-align=end> <md-button class=\"md-primary md-raised\" data-ng-click=_ctrlReg.create() data-ng-disabled=reg.$invalid>Зарегестрироваться </md-button> </div> </md-card> </form> </div>";
+module.exports = "<div class=chat-form-container flex=60 flex-xs=60 flex-gt-xs=50 flex-sm=50 flex-gt-sm=50 flex-md=40 flex-gt-md=40 flex-lg=40 flex-gt-lg=30 flex-xl=30> <form name=reg class=chat-form novalidate md-content> <md-card> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Регистрация</h2> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required name=login data-ng-minlength=2 data-ng-model=_ctrlReg.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text required name=email data-ng-pattern=/^([\\w-]+.)*[\\w-]+@[\\w-]+(\\.[\\w-]+)*\\.[a-z]{2,6}$/ data-ng-model=_ctrlReg.email> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required name=password data-ng-pattern=\"/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9!@#$%]+$/\" data-ng-model=_ctrlReg.password> </md-input-container> <md-input-container class=chat-form__row> <label>Повторите пароль</label> <input type=password required name=password_duble data-identity=_ctrlReg.password data-ng-model=_ctrlReg.password_duble> <div data-ng-messages=reg.password_duble.$error> <div data-ng-message=identity> Пароли должны совпадать </div> </div> </md-input-container> <div data-ng-messages=_ctrlReg.error> <div class=\"alert alert-danger\" data-ng-message=create> {{_ctrlReg.errorMessage}} </div> </div> </md-card-content> <md-card-footer layout layout-align=end> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Зарегестрироваться data-ng-click=_ctrlReg.create() data-ng-disabled=reg.$invalid> <ng-md-icon size=30 style=fill:#fff icon=done> </ng-md-icon> </md-button> </md-card-footer> </md-card> </form> </div>";
 
 /***/ }),
 /* 51 */
@@ -104532,7 +104526,7 @@ module.exports = "<md-contact-chips name=userInvited data-ng-model=userFilter.us
 /* 54 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-card data-ng-form=userEdit> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Редактирование профиля</h2> <ng-md-icon class=chat-form-header-icon size=30 style=fill:#fff icon=mode_edit> </ng-md-icon> </md-toolbar> <md-card-avatar layout layout-align=\"center center\"> <div class=chat-user-edit__action-photo flex=40> <img class=\"md-user-avatar chat-user-edit__photo\" data-ng-src={{_ctrlUserEdit.getPathPhoto()}}> <ng-md-icon class=chat-user-edit__add-photo size=100 style=fill:#fff icon=add_a_photo data-ng-click=_ctrlUserEdit.close()> </ng-md-icon> <input type=file nv-file-select class=chat-user-edit__uploader uploader=_ctrlUserEdit.uploader /> </div> </md-card-avatar> <md-card-content> <div layout layout-align=\"center center\"> <div flex=60> <div flex=100> <div class=\"alert alert-danger\" data-ng-if=_ctrlUserEdit.data.form.error.length> <div data-ng-repeat=\"message in _ctrlUserEdit.data.form.error\"> {{message}} </div> </div> <div class=\"alert alert-success\" data-ng-if=_ctrlUserEdit.data.form.success.status> {{_ctrlUserEdit.data.form.success.message}} </div> </div> <div flex=100> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required data-ng-minlength=2 data-ng-model=_ctrlUserEdit.data.user.login> </md-input-container> </div> </div> </div> </md-card-content> <md-cart-footer> <div layout layout-align=end> <md-button class=\"md-primary md-raised\" data-ng-click=_ctrlUserEdit.update() data-ng-disabled=userEdit.$invalid>Изменить </md-button> </div> </md-cart-footer> </md-card>";
+module.exports = "<md-dialog flex=40> <form data-ng-cloak name=userEdit> <md-toolbar> <div class=md-toolbar-tools> <h2>Редактирование профиля</h2> </div> </md-toolbar> <md-dialog-content class=chat-user-edit> <div class=chat-user-edit__action-photo flex=40> <img class=\"md-user-avatar chat-user-edit__photo\" data-ng-src={{_ctrlUserEdit.getPathPhoto()}}> <ng-md-icon class=chat-user-edit__add-photo size=100 style=fill:#fff icon=add_a_photo data-ng-click=_ctrlUserEdit.close()> </ng-md-icon> <input type=file nv-file-select class=chat-user-edit__uploader uploader=_ctrlUserEdit.uploader /> </div> <div layout layout-align=\"center center\"> <div flex=60> <div flex=100> <div class=\"alert alert-danger\" data-ng-if=_ctrlUserEdit.data.form.error.length> <div data-ng-repeat=\"message in _ctrlUserEdit.data.form.error\"> {{message}} </div> </div> <div class=\"alert alert-success\" data-ng-if=_ctrlUserEdit.data.form.success.status> {{_ctrlUserEdit.data.form.success.message}} </div> </div> <div flex=100> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required data-ng-minlength=2 data-ng-model=_ctrlUserEdit.data.user.login> </md-input-container> </div> </div> </div> </md-dialog-content> <md-dialog-actions layout=row> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Изменить data-ng-disabled=userEdit.$invalid data-ng-click=_ctrlUserEdit.update()> <ng-md-icon size=30 style=fill:#fff icon=mode_edit> </ng-md-icon> </md-button> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Отмена data-ng-click=_ctrlUserEdit.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </form> </md-dialog>";
 
 /***/ }),
 /* 55 */

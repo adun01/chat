@@ -32,20 +32,20 @@
                  layout="row"
                  layout-align="left center">
                 <div flex="75">
-                    <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-close">
+                    <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-close"
+                                data-ng-click="_ctrlSideBar.toggleMenu()">
                         <ng-md-icon size="30"
                                     style="fill: white"
-                                    icon="forward"
-                                    data-ng-click="_ctrlSideBar.toggleMenu()">
+                                    icon="forward">
                         </ng-md-icon>
                     </md--button>
                 </div>
                 <div flex="25" data-ng-if="_ctrlSideBar.data.isAuth">
-                    <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-log-out">
+                    <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-log-out"
+                                data-ng-click="_ctrlSideBar.logOut()">
                         <ng-md-icon size="30"
                                     style="fill: white"
-                                    icon="logout"
-                                    data-ng-click="_ctrlSideBar.logOut()">
+                                    icon="logout">
                         </ng-md-icon>
                     </md--button>
                 </div>
@@ -74,14 +74,13 @@
                     </div>
                     <div flex="30">
                         <div layout="row" layout-align="end center">
-                            <a data-ui-sref="resolve.main.user-edit">
-                                <md--button class="md-fab md-mini chat-icon-action">
-                                    <ng-md-icon size="25"
-                                                style="fill: white"
-                                                icon="mode_edit">
-                                    </ng-md-icon>
-                                </md--button>
-                            </a>
+                            <md--button class="md-fab md-mini chat-icon-action"
+                                        data-ng-click="_ctrlSideBar.editUser($event)">
+                                <ng-md-icon size="25"
+                                            style="fill: white"
+                                            icon="mode_edit">
+                                </ng-md-icon>
+                            </md--button>
                         </div>
                     </div>
                 </div>
@@ -134,7 +133,7 @@
                     <md-subheader class="md-no-sticky">Выберите действие</md-subheader>
                     <md-list-item data-ng-repeat="action in _ctrlSideBar.data.listAuth">
                         <md-button class="md-raised"
-                           data-ui-sref="{{action.state}}">
+                                   data-ui-sref="{{action.state}}">
                             {{action.name}}
                         </md-button>
                     </md-list-item>

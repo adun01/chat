@@ -2,9 +2,9 @@ import module from '../';
 
 module.controller('sideBarController',
     function ($rootScope, $mdSidenav, userService, authService, $state) {
-        const _ctrlMain = this;
+        const _ctrlSideBar = this;
 
-        _ctrlMain.data = {
+        _ctrlSideBar.data = {
             id: 'side-bar',
             opened: false,
             isAuth: false,
@@ -20,12 +20,12 @@ module.controller('sideBarController',
             user: null
         };
 
-        _ctrlMain.toggleMenu = function () {
-            _ctrlMain.data.opened = !_ctrlMain.data.opened;
-            $mdSidenav(_ctrlMain.data.id).toggle();
+        _ctrlSideBar.toggleMenu = function () {
+            _ctrlSideBar.data.opened = !_ctrlSideBar.data.opened;
+            $mdSidenav(_ctrlSideBar.data.id).toggle();
         };
 
-        _ctrlMain.logOut = function () {
+        _ctrlSideBar.logOut = function () {
             authService.logOut().then(function () {
                 $state.go('resolve.auth');
                 userService.set(null);
@@ -33,14 +33,16 @@ module.controller('sideBarController',
             });
         };
 
-        _ctrlMain.getPathPhoto = userService.photo;
+        _ctrlSideBar.editUser = userService.editUser;
+
+        _ctrlSideBar.getPathPhoto = userService.photo;
 
         $rootScope.$on('isAuth', function () {
-            _ctrlMain.data.user = userService.get();
-            if (_ctrlMain.data.user) {
-                _ctrlMain.data.isAuth = true;
+            _ctrlSideBar.data.user = userService.get();
+            if (_ctrlSideBar.data.user) {
+                _ctrlSideBar.data.isAuth = true;
             } else {
-                _ctrlMain.data.isAuth = false;
+                _ctrlSideBar.data.isAuth = false;
             }
         });
     });

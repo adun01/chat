@@ -1,6 +1,8 @@
 import module from '../';
+import userShowTpl from '../view/user.show.view.html';
+import userEditTpl from '../view/user.edit.view.html';
 
-module.service('userService', function (socketService, userResource, $q) {
+module.service('userService', function (socketService, userResource, $q, $mdDialog) {
 
     let user = null;
 
@@ -34,8 +36,18 @@ module.service('userService', function (socketService, userResource, $q) {
     }
 
     function photoPath(userCur) {
-        let currentUser = userCur ? userCur : user;
-        return currentUser && currentUser.photo ? '/images/users/' + currentUser.id + '/' + currentUser.photo : '/images/user_null.png';
+        return user.photo ? '/images/users/' + user.id + '/' + user.photo : '/images/user_null.png';
+    }
+
+    function editUser(e) {
+        $mdDialog.show({
+            controller: 'userEditController',
+            controllerAs: '_ctrlUserEdit',
+            template: userEditTpl,
+            parent: angular.element(document.body),
+            targetEvent: e,
+            clickOutsideToClose: true
+        });
     }
 
     return {
@@ -44,6 +56,7 @@ module.service('userService', function (socketService, userResource, $q) {
         set: set,
         search: search,
         update: update,
-        photo: photoPath
+        photo: photoPath,
+        editUser: editUser
     }
 });
