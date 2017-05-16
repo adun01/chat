@@ -1,15 +1,17 @@
 import module from '../';
 
-module.controller('editUserController', function (FileUploader, userService, $mdDialog) {
-    const _ctrlShowUser = this;
+module.controller('userShowController', function ($mdDialog, userService, userData, commonService) {
+    const _ctrlUserShow = this;
 
-    _ctrlShowUser.data = {
-        user: userService.get()
+    _ctrlUserShow.data = {
+        user: angular.copy(userData)
     };
 
-    _ctrlShowUser.getPathPhoto = userService.photo;
+    _ctrlUserShow.data.user.date = commonService.createDateFromW3C(_ctrlUserShow.data.user.date);
 
-    _ctrlShowUser.close = function () {
-        $mdDialog.hide();
+    _ctrlUserShow.getPathPhoto = userService.photo;
+
+    _ctrlUserShow.close = function () {
+        $mdDialog.cancel();
     };
 });

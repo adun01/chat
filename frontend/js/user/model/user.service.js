@@ -36,10 +36,13 @@ module.service('userService', function (socketService, userResource, $q, $mdDial
     }
 
     function photoPath(userCur) {
+        if (userCur) {
+            return userCur.photo ? '/images/users/' + userCur.id + '/' + userCur.photo : '/images/user_null.png';
+        }
         return user.photo ? '/images/users/' + user.id + '/' + user.photo : '/images/user_null.png';
     }
 
-    function editUser(e) {
+    function editUser(e, user) {
         $mdDialog.show({
             controller: 'userEditController',
             controllerAs: '_ctrlUserEdit',
@@ -50,6 +53,22 @@ module.service('userService', function (socketService, userResource, $q, $mdDial
         });
     }
 
+    function showUser(e, user) {
+        $mdDialog.show({
+            controller: 'userShowController',
+            controllerAs: '_ctrlUserShow',
+            template: userShowTpl,
+            parent: angular.element(document.body),
+            targetEvent: e,
+            clickOutsideToClose: true,
+            resolve: {
+                userData: function () {
+                    return user;
+                }
+            }
+        });
+    }
+
     return {
         create: create,
         get: get,
@@ -57,6 +76,7 @@ module.service('userService', function (socketService, userResource, $q, $mdDial
         search: search,
         update: update,
         photo: photoPath,
-        editUser: editUser
+        editUser: editUser,
+        showUser: showUser
     }
 });

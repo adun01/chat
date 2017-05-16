@@ -21,7 +21,7 @@ module.controller('roomAddController', function (FileUploader, $mdDialog, roomSe
             roomAddCtrl.close();
             $rootScope.$emit('roomListReInit', null);
             $state.go('resolve.main.room', {
-                name: response.room.name
+                id: response.room.id
             });
         });
     };

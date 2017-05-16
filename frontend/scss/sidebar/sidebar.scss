@@ -1,16 +1,20 @@
 .sidebar {
   background-color: rgb(63, 81, 181);
-  padding: 15px;
+  padding: 15px 15px 0 15px;
   display: block !important;
-
-  &__header {
-    color: #fff;
-    text-transform: uppercase;
-  }
 
   &__row {
     border-bottom: 1px solid #fff;
     padding: 15px 0;
+  }
+
+  &__header {
+    height: 84px;
+    padding-top: 0;
+
+    &--search {
+      padding: 0 8px 15px;
+    }
   }
 
   &__content {
@@ -20,7 +24,7 @@
   &-opener {
     position: absolute;
     left: 16px;
-    top: 30px;
+    top: 14px;
     transition: left 0.3s ease-out 0.5s;
 
     &--hide {

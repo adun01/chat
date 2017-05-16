@@ -40,7 +40,9 @@ angular.module('chat', [
         function (event, toState, toParams, fromState, fromParams, options) {
             if (toState.name === 'resolve') {
                 event.preventDefault();
-                $state.go('resolve.main.room', {name: 'main'});
+                $state.go('resolve.main.room', {
+                    id: 0
+                });
             }
         });
 });

@@ -33,24 +33,31 @@ module.exports = {
         return promise;
     },
     get: function (roomId, userId) {
+        return new Promise(function (resolve) {
 
-        'use strict';
-        let promise = new Promise(function (resolve) {
             if (!roomId) {
                 roomModel.findOne({creatorId: 0}).then(function (mainRoom) {
-
-                    roomModel.find({ $or: [ { userAgreed: userId }, { creatorId: userId } ] }).then(function (rooms) {
+                    roomModel.find({$or: [{userAgreed: userId}, {creatorId: userId}]}).then(function (rooms) {
                         rooms.push(mainRoom);
-                        resolve(clearRoomField(rooms));
+                        resolve({success: true, list: clearRoomField(rooms)});
                     });
                 });
             } else {
-                roomModel.findOne({id: roomId}).then(function (room) {
-                    resolve(clearRoomField(room));
+                roomModel.findOne({id: roomId}, function (err, room) {
+                    if (err) {
+                        resolve({
+                            success: false,
+                            message: 'Нет такой комнаты'
+                        });
+                    } else {
+                        resolve({
+                            success: true,
+                            room: clearRoomField(room)
+                        })
+                    }
                 });
             }
         });
-        return promise;
     },
     updateRoom: function (data, userId) {
 

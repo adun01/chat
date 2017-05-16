@@ -24,7 +24,7 @@ const Schema = require('mongoose').Schema,
         }
     });
 
-autoIncrement = require('mongoose-auto-increment')
+autoIncrement = require('mongoose-auto-increment');
 
 roomSchema.plugin(autoIncrement.plugin, {model: 'room', field: 'id'});
 

@@ -1,48 +1,51 @@
-<md-card data-ng-form="userEdit">
-    <md-toolbar class="md-theme-indigo">
-        <h2 class="md-toolbar-tools">Профиль пользователя {{_ctrlUserEdit.data.user.login}}</h2>
-        <ng-md-icon class="chat-form-header-icon"
-                    size="30"
-                    style="fill: white"
-                    icon="remove_red_eye">
-        </ng-md-icon>
-    </md-toolbar>
-    <md-card-avatar layout layout-align="center center">
-        <div class="chat-user-edit__action-photo" flex="40">
-            <img class="md-user-avatar chat-user-edit__photo" data-ng-src="{{_ctrlUserEdit.getPathPhoto()}}">
+<md-dialog flex="40">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Просмотр профиля</h2>
         </div>
-    </md-card-avatar>
-
-    <md-card-content>
+    </md-toolbar>
+    <md-dialog-content class="chat-user-show">
+        <div class="chat-user-show__action-photo" flex="40">
+            <img class="md-user-avatar chat-user-show__photo"
+                 data-ng-src="{{_ctrlUserShow.getPathPhoto(_ctrlUserShow.data.user)}}">
+        </div>
         <div layout layout-align="center center">
             <div flex="60">
                 <div flex="100">
                     <md-input-container class="chat-form__row">
-                        <label>Email</label>
-                        <input type="text"
-                               required
-                               disabled
-                               data-ng-model="_ctrlUserEdit.data.user.email">
-                    </md-input-container>
-                </div>
-                <div flex="100">
-                    <md-input-container class="chat-form__row">
                         <label>Логин</label>
                         <input type="text"
-                               required
                                disabled
-                               data-ng-model="_ctrlUserEdit.data.user.login">
+                               data-ng-value="_ctrlUserShow.data.user.login">
+                    </md-input-container>
+
+                    <md-input-container class="chat-form__row">
+                        <label>Email</label>
+                        <input type="text"
+                               disabled
+                               data-ng-value="_ctrlUserShow.data.user.email">
+                    </md-input-container>
+
+                    <md-input-container class="chat-form__row">
+                        <label>Дата регистрации</label>
+                        <input type="text"
+                               disabled
+                               data-ng-value="_ctrlUserShow.data.user.date | date : 'yyyy-MM-dd'">
                     </md-input-container>
                 </div>
             </div>
         </div>
-    </md-card-content>
-    <md-cart-footer>
-        <div layout layout-align="end">
-            <md-button class="md-primary md-raised"
-                       data-ng-click="_ctrlUserEdit.update()"
-                       data-ng-disabled="userEdit.$invalid">Изменить
-            </md-button>
-        </div>
-    </md-cart-footer>
-</md-card>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row" class="chat-dialog__actions">
+        <md-button class="md-fab md-mini chat-icon-action"
+                   aria-label="Отмена"
+                   data-ng-click="_ctrlUserShow.close()">
+            <ng-md-icon size="30"
+                        style="fill: white"
+                        icon="close">
+            </ng-md-icon>
+        </md-button>
+
+    </md-dialog-actions>
+</md-dialog>

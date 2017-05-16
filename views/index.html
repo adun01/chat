@@ -120,11 +120,13 @@
                                 <md-list-item class="chat-room-list__item"
                                               data-ng-repeat="room in roomListCtrl.data.list">
                                     <a class="chat-room-list__link"
-                                       data-ui-sref="resolve.main.room({name: room.name})">
-                                        <button class="md-fab md-button md-ink-ripple">
-                                            {{!room.photo ? room.shortName.toUpperCase() : ''}}
-                                        </button>
-                                        {{room.name}}
+                                       data-ui-sref="resolve.main.room({id: room.id})">
+                                        <md-button class="chat-room-list__button">
+                                            <button class="md-fab md-button md-ink-ripple">
+                                                {{!room.photo ? room.shortName.toUpperCase() : ''}}
+                                            </button>
+                                            {{room.name}}
+                                        </md-button>
                                     </a>
                                 </md-list-item>
                             </md-list>

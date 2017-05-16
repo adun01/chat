@@ -11,14 +11,22 @@ module.service('roomService', function (roomResource, $q, $mdDialog) {
         return roomResource.save(data).$promise;
     }
 
-    function get() {
+    function get(data) {
         let defer = $q.defer();
-        roomResource.get().$promise.then(function (response) {
-            response.list = response.list.map(function (room) {
-                room.shortName = shortName(room.name);
-                return room;
-            });
-            defer.resolve(response);
+        roomResource.get(data).$promise.then(function (response) {
+            if (response.success) {
+                if (response.list) {
+                    response.list = response.list.map(function (room) {
+                        room.shortName = shortName(room.name);
+                        return room;
+                    });
+                } else {
+                    response.room.shortName = shortName(response.room.name)
+                }
+                defer.resolve(response);
+            } else {
+                defer.resolve(response);
+            }
         });
         return defer.promise;
     }

@@ -1,19 +1,43 @@
-const roomsModel = require('../../dbsettings/room/room.model'),
+const roomsModel = require('../../db/room/room.model'),
+    userApi = require('../user/'),
+    config = require('../../config'),
     _ = require('lodash');
+
+function clearUserData(obj) {
+    return _.pick(obj, config.user.field);
+}
 
 module.exports = {
     get: function (data) {
-        'use strict';
-        let promise = new Promise(function (resp, reject) {
+        return new Promise(function (resp, reject) {
             roomsModel.findOne({id: data.id}).then(function (room) {
                 if (!room) {
-                    reject('There is no such room');
+                    resp({
+                        success: false,
+                        message: 'Комната не найдена'
+                    });
+                } else {
+
+                    let promiseAll = [], users = [];
+
+                    room.userAgreed.forEach(function (id) {
+                        let defer = userApi.search({id: id});
+                        promiseAll.push(defer);
+                        defer.then(function (result) {
+                            users.push(clearUserData(result.user));
+                        });
+                    });
+
+                    Promise.all(promiseAll).then(function () {
+                        resp({
+                            success: true,
+                            userAgreed: users
+                        });
+                    });
+
                 }
-                resp(room.userAgreed);
             });
         });
-
-        return promise;
     },
     add: function (data) {
         'use strict';

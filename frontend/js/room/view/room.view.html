@@ -1,1 +1,45 @@
-ROOM:NAME
+<div flex="25" class="sidebar">
+    <div class="sidebar__row sidebar__header sidebar__header--search" layout layout-align="end center">
+        <div flex="10">
+            <ng-md-icon class="chat-icon-action chat-icon-action--search"
+                        size="30"
+                        style="fill: white"
+                        icon="search">
+            </ng-md-icon>
+        </div>
+    </div>
+    <md-content class="sidebar__content chat-user-list"
+                data-ng-controller="userListController as _ctrlUserList">
+
+        <div class="sidebar__row chat-user-list__nav"
+             layout
+             layout-align="left center">
+            <div flex="50">
+                <md-button class="md-raised">Онлайн</md-button>
+            </div>
+            <div flex="50" style="text-align: right;">
+                <md-button class="md-warn">Все</md-button>
+            </div>
+        </div>
+        <div layout="row"
+             layout-align="left center">
+            <div flex="100">
+                <md-list class="chat-user-list">
+                    <md-list-item class="chat-user-list__item"
+                                  data-ng-repeat="user in _ctrlUserList.data.userAgreed"
+                                  data-id="0"
+                                  data-ng-click="_ctrlUserList.showUser($event, user)">
+
+                        <img class="chat-user-list__photo"
+                             alt="{{user.login}}"
+                             data-ng-src="{{_ctrlUserList.getPathPhoto(user)}}">
+                        <span class="chat-user-list__login">{{user.login}}</span>
+                    </md-list-item>
+                </md-list>
+            </div>
+        </div>
+    </md-content>
+</div>
+<div flex="75">
+    message
+</div>
