@@ -1,5 +1,7 @@
 'use strict';
 const roomModel = require('../../db/room/room.model'),
+    userApi = require('../user/'),
+    config = require('../../config'),
     roomUserAgreed = require('../room/room.userAgreed'),
     _ = require('lodash');
 
@@ -12,6 +14,10 @@ function searchAccessRoom(roomId, userId) {
             resolve(access);
         });
     });
+}
+
+function clearMesagerData(obj) {
+    return _.pick(obj, config.message.field);
 }
 
 module.exports = {
@@ -48,9 +54,28 @@ module.exports = {
             searchAccessRoom(data.roomId, data.creatorId).then(function (access) {
                 if (access) {
                     roomModel.findOne({id: data.roomId}, function (err, room) {
-                        resolve({
-                            success: true,
-                            message: room.message
+                        let promiseAll = [];
+
+                        let messages = room.message.map(function (mess) {
+                            let currPromise = userApi.search({
+                                id: mess.creatorId
+                            });
+                            mess = clearMesagerData(mess);
+                            currPromise.then(function (result) {
+
+                                mess.user = result.user;
+                            });
+
+                            promiseAll.push(currPromise);
+
+                            return mess;
+                        });
+                        Promise.all(promiseAll).then(function () {
+
+                            resolve({
+                                success: true,
+                                message: messages
+                            });
                         });
                     });
                 } else {

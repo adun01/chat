@@ -7,5 +7,8 @@ module.exports = {
     },
     user: {
         field: ['login', 'id', 'photo', 'email', 'date']
+    },
+    message: {
+        field: ['id', 'text', 'date', 'creatorId']
     }
 };

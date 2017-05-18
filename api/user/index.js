@@ -66,7 +66,7 @@ module.exports = {
             userModel.findOne({$or: searchCollection}, function (err, user) {
                 resolve({
                     success: true,
-                    user: user
+                    user: clearUserData(user)
                 });
             });
         });
