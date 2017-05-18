@@ -7,7 +7,7 @@ export default module.config(function ($stateProvider) {
             url: '/',
             template: '<div class="chat-layout"' +
             'layout="row"' +
-            'layout-align="center center"' +
+            'layout-align="left center"' +
             'data-ui-view>',
             resolve: {
                 userData: function ($q, authService, $rootScope, userService) {

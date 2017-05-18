@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -80,7 +80,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony default export */ __webpack_exports__["default"] = (angular.module('user', []));
+/* harmony default export */ __webpack_exports__["default"] = (angular.module('main', []));
 
 /***/ }),
 /* 2 */
@@ -88,7 +88,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony default export */ __webpack_exports__["default"] = (angular.module('auth', []));
+/* harmony default export */ __webpack_exports__["default"] = (angular.module('user', []));
 
 /***/ }),
 /* 3 */
@@ -96,10 +96,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony default export */ __webpack_exports__["default"] = (angular.module('main', []));
+/* harmony default export */ __webpack_exports__["default"] = (angular.module('notifications', []));
 
 /***/ }),
 /* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony default export */ __webpack_exports__["default"] = (angular.module('auth', []));
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports) {
 
 const common = angular.module('common', []);
@@ -107,7 +115,7 @@ const common = angular.module('common', []);
 module.exports = common;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -115,38 +123,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = (angular.module('registration', ['user']));
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(52);
+__webpack_require__(63);
 module.exports = angular;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_angular__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular_ui_router__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular_ui_router__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular_ui_router___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_angular_ui_router__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular_material__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular_material__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular_material___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_angular_material__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular_resource__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular_resource__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular_resource___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_angular_resource__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__bower_components_angular_post_fix_postfix__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__bower_components_angular_post_fix_postfix__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__bower_components_angular_post_fix_postfix___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__bower_components_angular_post_fix_postfix__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angular_material_icons__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angular_material_icons__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angular_material_icons___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_angular_material_icons__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angular_messages__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angular_messages__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angular_messages___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_angular_messages__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angular_file_upload__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angular_file_upload__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angular_file_upload___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_angular_file_upload__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_hammerjs__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_hammerjs__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_hammerjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_hammerjs__);
 
 
@@ -163,7 +171,7 @@ function importAll(r) {
     r.keys().forEach(r);
 }
 
-importAll(__webpack_require__(9));
+importAll(__webpack_require__(10));
 
 angular.module('chat', [
     'httpPostFix',
@@ -173,32 +181,34 @@ angular.module('chat', [
     'ngResource',
     'ui.router',
     'ngMdIcons',
+    'notifications',
     'user',
     'common',
     'main',
     'auth',
     'registration',
     'room'])
-    .config(function ($stateProvider, $locationProvider, $httpProvider) {
+    .config(function ($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider) {
 
         $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 
         $locationProvider.html5Mode(true);
 
+        $urlRouterProvider.otherwise('/room/');
+
     }).run(function ($rootScope, $state) {
+
     $rootScope.$on('$stateChangeStart',
-        function (event, toState, toParams, fromState, fromParams, options) {
+        function (event, toState) {
             if (toState.name === 'resolve') {
                 event.preventDefault();
-                $state.go('resolve.main.room', {
-                    id: 0
-                });
+                $state.go('resolve.main');
             }
         });
 });
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 // Orginal code from: http://victorblog.com/2012/12/20/make-angularjs-http-service-behave-like-jquery-ajax/
@@ -263,43 +273,54 @@ angular.module('httpPostFix', [], function($httpProvider)
 });
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./app.js": 7,
-	"./auth/config/index.js": 18,
-	"./auth/ctrl/auth.ctrl.js": 19,
-	"./auth/index.js": 2,
-	"./auth/model/auth.resourse.js": 20,
-	"./auth/model/auth.service.js": 21,
-	"./common/direcrive/identity.directive.js": 22,
-	"./common/index.js": 4,
-	"./common/model/common.service.js": 23,
-	"./main/config/index.js": 24,
-	"./main/ctrl/side-bar.ctrl.js": 25,
-	"./main/index.js": 3,
-	"./main/model/socket.service.js": 26,
-	"./registration/config/index.js": 27,
-	"./registration/ctrl/reg.ctrl.js": 28,
-	"./registration/index.js": 5,
-	"./room/config/index.js": 29,
-	"./room/ctrl/room.add.controller.js": 30,
-	"./room/ctrl/room.ctrl.js": 31,
-	"./room/ctrl/room.list.ctrl.js": 32,
-	"./room/ctrl/room.not.found.controller.js": 33,
+	"./app.js": 8,
+	"./auth/config/index.js": 19,
+	"./auth/ctrl/auth.ctrl.js": 20,
+	"./auth/index.js": 4,
+	"./auth/model/auth.resourse.js": 21,
+	"./auth/model/auth.service.js": 22,
+	"./common/direcrive/identity.directive.js": 23,
+	"./common/index.js": 5,
+	"./common/model/common.service.js": 24,
+	"./main/config/index.js": 25,
+	"./main/ctrl/main.controller.js": 26,
+	"./main/ctrl/main.message.controller.js": 27,
+	"./main/ctrl/side-bar.ctrl.js": 28,
+	"./main/index.js": 1,
+	"./main/model/side-bar.service.js": 29,
+	"./main/model/socket.service.js": 30,
+	"./notification/index.js": 3,
+	"./notification/room/controller/notification.room.controller.js": 31,
+	"./notification/room/controller/notification.show.controller.js": 32,
+	"./notification/room/index.js": 33,
+	"./notification/room/model/notification.room.resource.js": 34,
+	"./notification/room/model/notification.room.service.js": 35,
+	"./registration/config/index.js": 36,
+	"./registration/ctrl/reg.ctrl.js": 37,
+	"./registration/index.js": 6,
+	"./room/component/controller/room.list.ctrl.js": 38,
+	"./room/component/index.js": 39,
+	"./room/config/index.js": 40,
+	"./room/ctrl/room.add.controller.js": 41,
+	"./room/ctrl/room.ctrl.js": 42,
 	"./room/index.js": 0,
-	"./room/model/room.resource.js": 34,
-	"./room/model/room.service.js": 35,
-	"./room/model/room.user.agreed.resource.js": 36,
-	"./room/model/room.user.agreed.service.js": 37,
-	"./user/controller/user.edit.controller.js": 38,
-	"./user/controller/user.list.controller.js": 39,
-	"./user/controller/user.show.controller.js": 40,
-	"./user/directive/user-filter.directive.js": 41,
-	"./user/index.js": 1,
-	"./user/model/user.resource.js": 42,
-	"./user/model/user.service.js": 43
+	"./room/model/room.message.resource.js": 43,
+	"./room/model/room.message.service.js": 44,
+	"./room/model/room.resource.js": 45,
+	"./room/model/room.service.js": 46,
+	"./room/model/room.user.agreed.resource.js": 47,
+	"./room/model/room.user.agreed.service.js": 48,
+	"./user/controller/user.edit.controller.js": 49,
+	"./user/controller/user.list.controller.js": 50,
+	"./user/controller/user.show.controller.js": 51,
+	"./user/directive/user-filter.directive.js": 52,
+	"./user/index.js": 2,
+	"./user/model/user.resource.js": 53,
+	"./user/model/user.service.js": 54
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -315,10 +336,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 9;
+webpackContext.id = 10;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -2412,49 +2433,49 @@ return /******/ (function(modules) { // webpackBootstrap
 //# sourceMappingURL=angular-file-upload.js.map
 
 /***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(48);
-module.exports = 'ngMdIcons';
-
-
-/***/ }),
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// Should already be required, here for clarity
-__webpack_require__(6);
-
-// Load Angular and dependent libs
-__webpack_require__(45);
-__webpack_require__(47);
-
-// Now load Angular Material
-__webpack_require__(49);
-
-// Export namespace
-module.exports = 'ngMaterial';
+__webpack_require__(59);
+module.exports = 'ngMdIcons';
 
 
 /***/ }),
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(50);
-module.exports = 'ngMessages';
+// Should already be required, here for clarity
+__webpack_require__(7);
+
+// Load Angular and dependent libs
+__webpack_require__(56);
+__webpack_require__(58);
+
+// Now load Angular Material
+__webpack_require__(60);
+
+// Export namespace
+module.exports = 'ngMaterial';
 
 
 /***/ }),
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(51);
-module.exports = 'ngResource';
+__webpack_require__(61);
+module.exports = 'ngMessages';
 
 
 /***/ }),
 /* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(62);
+module.exports = 'ngResource';
+
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports) {
 
 /**
@@ -7143,7 +7164,7 @@ angular.module('ui.router.state')
 })(window, window.angular);
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*! Hammer.JS - v2.0.7 - 2016-04-22
@@ -9793,7 +9814,7 @@ if (true) {
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -26882,16 +26903,16 @@ if (true) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(61), __webpack_require__(62)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(76), __webpack_require__(77)(module)))
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_auth_view_html__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_auth_view_html__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_auth_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_auth_view_html__);
 
 
@@ -26902,7 +26923,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             url: '/',
             template: '<div class="chat-layout"' +
             'layout="row"' +
-            'layout-align="center center"' +
+            'layout-align="left center"' +
             'data-ui-view>',
             resolve: {
                 userData: function ($q, authService, $rootScope, userService) {
@@ -26931,12 +26952,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 }));
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(4);
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('authController', function ($rootScope, authService, $timeout, $state, userService) {
@@ -26962,21 +26983,19 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('authController', function
                     _ctrlAuth.errorMessage = null;
                 }, 5000);
             } else {
-                $state.go('resolve.main.room', {
-                    id: 0
-                });
+                $state.go('resolve.main');
             }
         });
     };
 });
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(4);
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].service('authResource', function ($resource) {
@@ -26988,12 +27007,12 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('authResource', function ($re
 });
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(4);
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].service('authService', function (socketService, authResource) {
@@ -27018,12 +27037,12 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('authService', function (sock
 });
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_____default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0____);
 
 
@@ -27057,12 +27076,12 @@ __WEBPACK_IMPORTED_MODULE_0_____default.a.directive('identity', function () {
 });
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_____default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0____);
 
 
@@ -27089,21 +27108,28 @@ __WEBPACK_IMPORTED_MODULE_0_____default.a.service('commonService', function () {
 });
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_main_view_html__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_main_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_room_main_view_html__);
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0____["default"].config(function ($stateProvider) {
     $stateProvider
         .state('resolve.main', {
-            abstract: true,
-            template: '<div style="width: 100%;min-height: 100vh" layout="row" layout-align="left top" data-ui-view></div>',
+            url: 'room/',
+            controller: 'mainController',
+            template: __WEBPACK_IMPORTED_MODULE_1__view_room_main_view_html___default.a,
+            params: {
+                message: null
+            },
             resolve: {
-                userData: function (userService, authService, $q, $rootScope, $state) {
+                mainControllerData: function ($stateParams, userService, authService, $q, $rootScope, $state) {
                     let defer = $q.defer();
 
                     if (!userService.get()) {
@@ -27114,11 +27140,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             } else {
                                 userService.set(response.user);
                                 $rootScope.$emit('isAuth');
-                                defer.resolve('isAuth');
+                                defer.resolve($stateParams);
                             }
                         });
                     } else {
-                        defer.resolve('isAuth');
+                        defer.resolve($stateParams);
                     }
                     return defer.promise;
                 }
@@ -27127,16 +27153,72 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 }));
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_main_message_html__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_main_message_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_main_message_html__);
+
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('mainController', function (mainControllerData, $mdDialog, sideBarService, $stateParams) {
+
+    sideBarService.open();
+    sideBarService.locked();
+    if ($stateParams.message) {
+        $mdDialog.show({
+            controller: 'mainMessageController',
+            controllerAs: '_ctrlMainMessage',
+            template: __WEBPACK_IMPORTED_MODULE_1__view_main_message_html___default.a,
+            parent: angular.element(document.body),
+            resolve: {
+                roomNotFoundData: function () {
+                    return $stateParams;
+                }
+            }
+        });
+    }
+});
+
+/***/ }),
+/* 27 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('mainMessageController', function (roomNotFoundData, sideBarService, $timeout, $mdDialog) {
+    const _ctrlMainMessage = this;
+
+    _ctrlMainMessage.data = {
+        message: roomNotFoundData.message || 'Не известная ошибка',
+        code: 'Ошибка'
+    };
+
+    $timeout(function () {
+        $mdDialog.cancel();
+    }, 3000);
+
+    sideBarService.open();
+});
+
+/***/ }),
+/* 28 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
+
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('sideBarController',
-    function ($rootScope, $mdSidenav, userService, authService, $state) {
+    function ($rootScope, $mdSidenav, userService, authService, $state, $mdDialog, sideBarService) {
         const _ctrlSideBar = this;
 
         _ctrlSideBar.data = {
@@ -27156,8 +27238,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('sideBarController',
         };
 
         _ctrlSideBar.toggleMenu = function () {
-            _ctrlSideBar.data.opened = !_ctrlSideBar.data.opened;
-            $mdSidenav(_ctrlSideBar.data.id).toggle();
+            sideBarService.toggle();
         };
 
         _ctrlSideBar.logOut = function () {
@@ -27183,12 +27264,54 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('sideBarController',
     });
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].service('sideBarService', function ($mdSidenav) {
+
+    const sidebar = this;
+
+    sidebar.data = {
+        id: 'side-bar',
+        locked: false
+    };
+
+    return {
+        open: function () {
+            $mdSidenav(sidebar.data.id).open();
+        },
+        toggle: function () {
+            if (!sidebar.data.locked) {
+                $mdSidenav(sidebar.data.id).toggle();
+            }
+        },
+        close: function () {
+            if (!sidebar.data.locked) {
+                $mdSidenav(sidebar.data.id).close();
+            }
+        },
+        locked: function () {
+            sidebar.data.locked = true;
+        },
+        unLocked: function () {
+            sidebar.data.locked = false;
+        }
+    };
+
+});
+
+/***/ }),
+/* 30 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].service('socketService', function () {
@@ -27197,13 +27320,186 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('socketService', function () 
 });
 
 /***/ }),
-/* 27 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_reg_view_html__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_notification_room_show_view_html__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_notification_room_show_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_notification_room_show_view_html__);
+
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('notificationRoomController', function ($mdDialog, notificationRoomService) {
+    const _ctrlNotificationRoom = this;
+
+    _ctrlNotificationRoom.data = {
+        notifications: []
+    };
+
+    _ctrlNotificationRoom.showNotification = function (e) {
+        $mdDialog.show({
+            template: __WEBPACK_IMPORTED_MODULE_1__view_notification_room_show_view_html___default.a,
+            controller: 'notificationShowController',
+            controllerAs: '_ctrlNSRoom',
+            parent: angular.element(document.body),
+            targetEvent: e,
+            clickOutsideToClose: true,
+            resolve: {
+                notificationsData: function () {
+                    return _ctrlNotificationRoom.data.notifications;
+                }
+            }
+        }).then(function (notifications) {
+            _ctrlNotificationRoom.data.notifications = notifications;
+        });
+    };
+
+    _ctrlNotificationRoom.init = function () {
+        notificationRoomService.get().then(function (rooms) {
+            _ctrlNotificationRoom.data.notifications = rooms;
+        });
+    };
+
+    _ctrlNotificationRoom.init();
+});
+
+/***/ }),
+/* 32 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(3);
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('notificationShowController', function ($rootScope, notificationsData, $mdDialog, notificationRoomService) {
+    const _ctrlNSRoom = this;
+
+    _ctrlNSRoom.data = {
+        list: notificationsData
+    };
+
+    _ctrlNSRoom.remove = _ctrlNSRoom.save = function (room) {
+        notificationRoomService.remove(room).then(function (response) {
+            if (response.success) {
+                _ctrlNSRoom.clear(room);
+            }
+        });
+    };
+
+    _ctrlNSRoom.save = function (room) {
+        notificationRoomService.save(room).then(function (response) {
+            if (response.success) {
+                _ctrlNSRoom.clear(room);
+            }
+        });
+    };
+
+    _ctrlNSRoom.clear = function (room) {
+        _ctrlNSRoom.data.list = _ctrlNSRoom.data.list.filter(function (iRoom) {
+            return iRoom.id !== room.id;
+        });
+        if (!_ctrlNSRoom.data.list.length) {
+            _ctrlNSRoom.close();
+        }
+    };
+
+    _ctrlNSRoom.close = function () {
+        $rootScope.$emit('roomListReInit');
+        $mdDialog.hide(_ctrlNSRoom.data.list);
+    };
+});
+
+/***/ }),
+/* 33 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_notification_room_view_html__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_notification_room_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_notification_room_view_html__);
+
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].component('notificationRoom', {
+    template: __WEBPACK_IMPORTED_MODULE_1__view_notification_room_view_html___default.a,
+    controller: 'notificationRoomController',
+    controllerAs: '_ctrlNotificationRoom'
+});
+
+/***/ }),
+/* 34 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(3);
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].service('notificationRoomResource', function ($resource) {
+    return $resource('api/notification/room', {}, {
+        update: {
+            method: 'PUT'
+        }
+    });
+});
+
+/***/ }),
+/* 35 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(3);
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].service('notificationRoomService', function (notificationRoomResource, $q, roomService) {
+
+
+    function get() {
+        let defer = $q.defer();
+
+        notificationRoomResource.get().$promise.then(function (response) {
+            let rooms = response.rooms.map(function (room) {
+                room.shortName = roomService.shortName(room.name);
+                return room;
+            });
+            defer.resolve(rooms);
+        });
+        return defer.promise;
+    }
+
+    function save(room) {
+
+        return notificationRoomResource.save({
+            id: room.id
+        }).$promise;
+    }
+
+    function remove(room) {
+        return notificationRoomResource.delete({
+            id: room.id
+        }).$promise;
+    }
+
+    return {
+        get: get,
+        save: save,
+        remove: remove
+    }
+});
+
+/***/ }),
+/* 36 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_reg_view_html__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_reg_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_reg_view_html__);
 
 
@@ -27219,12 +27515,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 }));
 
 /***/ }),
-/* 28 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(6);
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('registrationController', function ($rootScope, userService, $timeout, $state) {
@@ -27251,9 +27547,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('registrationController', 
                     _ctrlReg.errorMessage = null;
                 }, 5000);
             } else {
-                $state.go('resolve.main.room', {
-                    id: 0
-                });
+                $state.go('resolve.main');
             }
         });
     };
@@ -27261,13 +27555,62 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('registrationController', 
 });
 
 /***/ }),
-/* 29 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_view_html__ = __webpack_require__(57);
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomListController', function (roomService, $rootScope) {
+    const _ctrlRoomList = this;
+    
+    _ctrlRoomList.data = {
+        list: []
+    };
+
+    _ctrlRoomList.addRoom = roomService.addRoom;
+
+    function getListRoom() {
+        roomService.get().then(function (response) {
+            _ctrlRoomList.data.list = response.list;
+        });
+    }
+
+    $rootScope.$on('roomListReInit', function () {
+        getListRoom();
+    });
+
+    getListRoom();
+});
+
+/***/ }),
+/* 39 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_list_view_html__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_list_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_room_list_view_html__);
+
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].component('roomList', {
+    controller: 'roomListController',
+    controllerAs: '_ctrlRoomList',
+    template: __WEBPACK_IMPORTED_MODULE_1__view_room_list_view_html___default.a
+});
+
+/***/ }),
+/* 40 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_view_html__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_room_view_html__);
 
 
@@ -27275,18 +27618,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0____["default"].config(function ($stateProvider) {
     $stateProvider
         .state('resolve.main.room', {
-            url: 'room/:id/',
+            url: ':id/',
             controller: 'roomController',
             controllerAs: '_ctrlRoom',
             template: __WEBPACK_IMPORTED_MODULE_1__view_room_view_html___default.a,
-            params: {
-                id: {value: '0'}
-            },
-        })
+            resolve: {
+                roomData: function ($stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
+                    let defer = $q.defer();
+
+                    roomService.get({id: $stateParams.id}).then(function (response) {
+
+                        if (response.success) {
+                            $mdDialog.cancel();
+                            sideBarService.unLocked();
+                            defer.resolve(response.room);
+                        } else {
+                            $state.go('resolve.main', {
+                                message: response.message
+                            });
+                        }
+                    });
+
+                    return defer.promise;
+                }
+            }
+        });
 }));
 
 /***/ }),
-/* 30 */
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27327,7 +27687,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomAddController', funct
 });
 
 /***/ }),
-/* 31 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27335,18 +27695,44 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomController', function (userData, $state) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomController', function (userService, roomService, roomMessageService, roomData, sideBarService) {
 
     const _ctrlRoom = this;
 
+    sideBarService.unLocked();
+    sideBarService.close();
+
     _ctrlRoom.data = {
-        name: $state.params.name,
-        users: []
+        room: roomData,
+        messages: [],
+        message: null,
+        user: userService.get()
     };
+
+    _ctrlRoom.getMessage = function () {
+        roomMessageService.get({id: _ctrlRoom.data.room.id}).then(function (resp) {
+            _ctrlRoom.data.messages = resp.message;
+        });
+    };
+
+    _ctrlRoom.toggleMenu = sideBarService.toggle;
+
+    _ctrlRoom.send = function () {
+        roomMessageService.save({
+            id: _ctrlRoom.data.room.id,
+            message: _ctrlRoom.data.message
+        }).then(function (response) {
+            if (response.success) {
+                _ctrlRoom.data.message = null;
+            }
+        });
+    };
+
+    _ctrlRoom.getMessage();
 });
 
 /***/ }),
-/* 32 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27354,48 +27740,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomListController', function (roomService, $rootScope) {
-    const roomListCtrl = this;
+__WEBPACK_IMPORTED_MODULE_0____["default"].service('roomMessageResource', function ($resource) {
+    return $resource('api/room/:id/message/', {
+        id: '@id'
+    }, {
+        update: {
+            method: 'PUT'
+        }
+    })
+});
 
-    roomListCtrl.data = {
-        list: []
-    };
+/***/ }),
+/* 44 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-    roomListCtrl.addRoom = roomService.addRoom;
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
 
-    function getListRoom() {
-        roomService.get().then(function (response) {
-            roomListCtrl.data.list = response.list;
-        });
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].service('roomMessageService', function (roomMessageResource) {
+
+    function get(data) {
+        return roomMessageResource.get(data).$promise;
     }
 
-    $rootScope.$on('roomListReInit', function () {
-        getListRoom();
-    });
+    function save(data) {
+        return roomMessageResource.save(data).$promise;
+    }
 
-    getListRoom();
+    return {
+        get: get,
+        save: save
+    }
 });
 
 /***/ }),
-/* 33 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
-
-
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomNotFoundController', function ($mdDialog, $timeout, $state) {
-    $timeout(function () {
-        $state.go('resolve.main.room', {
-            id: 0
-        });
-        $mdDialog.cancel();
-    }, 5000);
-});
-
-/***/ }),
-/* 34 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27412,21 +27793,23 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomResource', function ($re
 });
 
 /***/ }),
-/* 35 */
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_add_html__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_add_html__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_add_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_room_add_html__);
 
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomService', function (roomResource, $q, $mdDialog) {
 
-    function shortName(room) {
-        return room[0] + room[1];
+    let currentRoom = null;
+
+    function shortName(name) {
+        return '' + name[0] + name[1];
     }
 
     function create(data) {
@@ -27443,8 +27826,10 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomService', function (room
                         return room;
                     });
                 } else {
+                    currentRoom = response.room;
                     response.room.shortName = shortName(response.room.name)
                 }
+
                 defer.resolve(response);
             } else {
                 defer.resolve(response);
@@ -27464,15 +27849,21 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomService', function (room
         });
     }
 
+    function getCurrentRoom() {
+        return currentRoom;
+    }
+
     return {
+        getCurrentRoom: getCurrentRoom,
         get: get,
         addRoom: addRoom,
-        create: create
+        create: create,
+        shortName: shortName
     }
 });
 
 /***/ }),
-/* 36 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27489,7 +27880,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomUserAgreedResource', fun
 });
 
 /***/ }),
-/* 37 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27509,12 +27900,12 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomUserAgreedService', func
 });
 
 /***/ }),
-/* 38 */
+/* 49 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userEditController', function (FileUploader, userService, $timeout, $rootScope, $mdDialog) {
@@ -27613,18 +28004,15 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userEditController', func
 
 
 /***/ }),
-/* 39 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__room_view_room_not_found_html__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__room_view_room_not_found_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__room_view_room_not_found_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
 
 
-
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('userListController', function (userService, roomService, roomUserAgreedService, $state, $mdDialog, $timeout) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('userListController', function (userService, roomService, roomUserAgreedService, $state) {
     const _ctrlUserList = this;
 
     _ctrlUserList.data = {
@@ -27638,27 +28026,18 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userListController', func
 
     _ctrlUserList.getPathPhoto = userService.photo;
 
-    roomService.get({id: _ctrlUserList.data.room.id}).then(function (response) {
-        if (response.success) {
-            roomUserAgreedService.get({id:response.room.id}).then(function (response) {
-                _ctrlUserList.data.userAgreed = response.userAgreed;
-            });
-        } else {
-            $mdDialog.show({
-                controller: 'roomNotFoundController',
-                template: __WEBPACK_IMPORTED_MODULE_1__room_view_room_not_found_html___default.a,
-                parent: angular.element(document.body)
-            });}
+    roomUserAgreedService.get({id: $state.params.id}).then(function (response) {
+        _ctrlUserList.data.userAgreed = response.userAgreed;
     });
 });
 
 /***/ }),
-/* 40 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userShowController', function ($mdDialog, userService, userData, commonService) {
@@ -27679,13 +28058,13 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userShowController', func
 
 
 /***/ }),
-/* 41 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_filter_view_html__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_filter_view_html__ = __webpack_require__(73);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_filter_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_user_filter_view_html__);
 
 
@@ -27737,12 +28116,12 @@ function userFilterController($scope, $attrs, $q, userService) {
 }
 
 /***/ }),
-/* 42 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].service('userResource', function ($resource) {
@@ -27754,15 +28133,15 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('userResource', function ($re
 });
 
 /***/ }),
-/* 43 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_show_view_html__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_show_view_html__ = __webpack_require__(75);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_show_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_user_show_view_html__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__view_user_edit_view_html__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__view_user_edit_view_html__ = __webpack_require__(74);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__view_user_edit_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__view_user_edit_view_html__);
 
 
@@ -27848,7 +28227,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('userService', function (sock
 });
 
 /***/ }),
-/* 44 */
+/* 55 */
 /***/ (function(module, exports) {
 
 /**
@@ -32009,15 +32388,15 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
 
 
 /***/ }),
-/* 45 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(44);
+__webpack_require__(55);
 module.exports = 'ngAnimate';
 
 
 /***/ }),
-/* 46 */
+/* 57 */
 /***/ (function(module, exports) {
 
 /**
@@ -32426,15 +32805,15 @@ ngAriaModule.directive('ngShow', ['$aria', function($aria) {
 
 
 /***/ }),
-/* 47 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(46);
+__webpack_require__(57);
 module.exports = 'ngAria';
 
 
 /***/ }),
-/* 48 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33659,7 +34038,7 @@ angular.module('ngMdIcons', [])
 
 
 /***/ }),
-/* 49 */
+/* 60 */
 /***/ (function(module, exports) {
 
 /*!
@@ -69669,7 +70048,7 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })(window, window.angular);;window.ngMaterial={version:{full: "1.1.4"}};
 
 /***/ }),
-/* 50 */
+/* 61 */
 /***/ (function(module, exports) {
 
 /**
@@ -70415,7 +70794,7 @@ function ngMessageDirectiveFactory() {
 
 
 /***/ }),
-/* 51 */
+/* 62 */
 /***/ (function(module, exports) {
 
 /**
@@ -71279,7 +71658,7 @@ angular.module('ngResource', ['ng']).
 
 
 /***/ }),
-/* 52 */
+/* 63 */
 /***/ (function(module, exports) {
 
 /**
@@ -104656,55 +105035,79 @@ $provide.value("$locale", {
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
 /***/ }),
-/* 53 */
+/* 64 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=chat-form-container flex=60 flex-xs=60 flex-gt-xs=50 flex-sm=50 flex-gt-sm=50 flex-md=40 flex-gt-md=40 flex-lg=40 flex-gt-lg=30 flex-xl=30> <form name=auth class=chat-form novalidate md-content data-ng-controller=authController> <md-card> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Авторизация</h2> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required data-ng-minlength=2 data-ng-model=_ctrlAuth.login> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required data-ng-model=_ctrlAuth.password> </md-input-container> <div data-ng-messages=_ctrlAuth.error> <div class=\"alert alert-danger\" data-ng-message=logIn> {{_ctrlAuth.errorMessage}} </div> </div> </md-card-content> <md-card-footer layout layout-align=end> <md-button class=\"md-fab chat-icon-action chat-icon-action--auth\" aria-label=Войти data-ng-click=_ctrlAuth.logIn() data-ng-disabled=auth.$invalid> <ng-md-icon size=30 style=fill:#fff icon=login> </ng-md-icon> </md-button> </md-card-footer> </md-card> </form> </div>";
 
 /***/ }),
-/* 54 */
+/* 65 */
+/***/ (function(module, exports) {
+
+module.exports = "<md-dialog flex=40> <md-toolbar> <div class=md-toolbar-tools> <h2>{{_ctrlMainMessage.data.code}}</h2> </div> </md-toolbar> <md-dialog-content> <div class=md-dialog-content> <h3> {{_ctrlMainMessage.data.message}} </h3> </div> </md-dialog-content> </md-dialog>";
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=chat-room layout=row layout-align=\"left top\" data-ui-view> <div flex=80> <div class=chat-room__container> <h3 class=chat-room__inroduce> Выберите комнату и начните общение! </h3> </div> </div> </div>";
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports) {
+
+module.exports = "<md-dialog flex=40> <md-toolbar> <div class=md-toolbar-tools> <h2>Приглашения в комнаты.</h2> </div> </md-toolbar> <md-dialog-content> <md-list-item layout layout-align=\"center center\" class=\"chat-room-list__item chat-room-list__item--notification\" data-ng-repeat=\"room in _ctrlNSRoom.data.list\"> <div flex=60> <button class=\"md-fab md-button md-ink-ripple\"> {{room.shortName.toUpperCase()}} </button> {{room.name}} </div> <div flex=20 layout layout-align=\"end center\"> <md-button class=\"md-raised md-warn chat-icon-action chat-icon-action--square\" aria-label=Отказаться data-ng-click=_ctrlNSRoom.remove(room)> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </div> <div flex=20 layout layout-align=\"end center\"> <md-button class=\"md-raised md-primary chat-icon-action chat-icon-action--square\" aria-label=Принять data-ng-click=_ctrlNSRoom.save(room)> <ng-md-icon size=30 style=fill:#fff icon=done> </ng-md-icon> </md-button> </div> </md-list-item> </md-dialog-content> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Выйти data-ng-click=_ctrlNSRoom.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </md-dialog>";
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=notification data-ng-if=_ctrlNotificationRoom.data.notifications.length> <md-button class=\"md-fab md-mini chat-icon-action\" data-ng-click=_ctrlNotificationRoom.showNotification($event)> <ng-md-icon size=30 style=fill:#fff icon=notifications> </ng-md-icon> </md-button> <md-button class=\"notification__counter notification__counter--room\" md-colors=\"{background: 'red'}\"> {{_ctrlNotificationRoom.data.notifications.length}} </md-button> </div>";
+
+/***/ }),
+/* 69 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=chat-form-container flex=60 flex-xs=60 flex-gt-xs=50 flex-sm=50 flex-gt-sm=50 flex-md=40 flex-gt-md=40 flex-lg=40 flex-gt-lg=30 flex-xl=30> <form name=reg class=chat-form novalidate md-content> <md-card> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Регистрация</h2> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required name=login data-ng-minlength=2 data-ng-model=_ctrlReg.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text required name=email data-ng-pattern=/^([\\w-]+.)*[\\w-]+@[\\w-]+(\\.[\\w-]+)*\\.[a-z]{2,6}$/ data-ng-model=_ctrlReg.email> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required name=password data-ng-pattern=\"/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9!@#$%]+$/\" data-ng-model=_ctrlReg.password> </md-input-container> <md-input-container class=chat-form__row> <label>Повторите пароль</label> <input type=password required name=password_duble data-identity=_ctrlReg.password data-ng-model=_ctrlReg.password_duble> <div data-ng-messages=reg.password_duble.$error> <div data-ng-message=identity> Пароли должны совпадать </div> </div> </md-input-container> <div data-ng-messages=_ctrlReg.error> <div class=\"alert alert-danger\" data-ng-message=create> {{_ctrlReg.errorMessage}} </div> </div> </md-card-content> <md-card-footer layout layout-align=end> <md-button class=\"md-fab chat-icon-action chat-icon-action--create\" aria-label=Зарегестрироваться data-ng-click=_ctrlReg.create() data-ng-disabled=reg.$invalid> <ng-md-icon size=30 style=fill:#fff icon=done> </ng-md-icon> </md-button> </md-card-footer> </md-card> </form> </div>";
 
 /***/ }),
-/* 55 */
+/* 70 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=sidebar__row> <div layout=row layout-align=\"left center\"> <div flex=50 class=chat-room-list-nav> Комнаты </div> <div flex=50 layout> <div flex=50 layoutlayout-align=\"end center\"> <notification-room></notification-room> </div> <div flex=50 layout layout-align=\"end center\"> <md-button class=\"md-fab md-mini chat-icon-action\" data-ng-click=_ctrlRoomList.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> </div> </div> </div> <div layout=row layout-align=\"left center\"> <md-list class=chat-room-list> <md-list-item data-ng-if=!_ctrlRoomList.data.list.length> <a class=chat-room-list__link> Вы не учавствуете ни в одной комнате. Примите приглашение или создайте свою комнату. </a> </md-list-item> <md-list-item class=chat-room-list__item data-ng-repeat=\"room in _ctrlRoomList.data.list\"> <a class=chat-room-list__link data-ui-sref=\"resolve.main.room({id: room.id})\"> <md-button class=chat-room-list__button> <button class=\"md-fab md-button md-ink-ripple\"> {{!room.photo ? room.shortName.toUpperCase() : ''}} </button> {{room.name}} </md-button> </a> </md-list-item> </md-list> </div> </div>";
+
+/***/ }),
+/* 71 */
 /***/ (function(module, exports) {
 
 module.exports = "<md-dialog flex=40> <form data-ng-cloak name=addRoom> <md-toolbar> <div class=md-toolbar-tools> <h2>Создать комнату</h2> </div> </md-toolbar> <md-dialog-content> <div class=md-dialog-content> <md-input-container class=chat-form__row> <label>Название комнаты</label> <input type=text required name=name data-ng-minlength=2 data-ng-pattern=/^[a-zA-Z0-9_.-]*$/ data-ng-model=roomAddCtrl.name> <div data-ng-messages=addRoom.name.$error> <div data-ng-message=required> Поля обязательное для заполнения </div> <div data-ng-message=minlength> Название не может быть короче 2 символов. </div> <div data-ng-message=pattern> Название должно начиться с латинского символа и содержать только латинские символы и цифры </div> </div> </md-input-container> <user-filter data-room-id=1 data-collection=roomAddCtrl.userInvited data-placeholder=\"Пригласите участников\"></user-filter> </div> </md-dialog-content> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=\"Создать комнату\" data-ng-disabled=addRoom.$invalid data-ng-click=roomAddCtrl.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Отмена data-ng-click=roomAddCtrl.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </form> </md-dialog>";
 
 /***/ }),
-/* 56 */
+/* 72 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-dialog flex=40> <md-toolbar> <div class=md-toolbar-tools> <h2>404</h2> </div> </md-toolbar> <md-dialog-content> <div class=md-dialog-content> <h3> Комната не найдена. </h3> </div> </md-dialog-content> </md-dialog>";
+module.exports = "<md-sidenav class=\"sidebar md-sidenav-left\" md-is-locked-open=true md-whiteframe=4> <div class=\"sidebar__row sidebar__header sidebar__header--search\" layout layout-align=\"end center\"> <div flex=90> <md--button class=\"md-fab chat-icon-action chat-icon-action--sidebar-open\" data-ng-click=_ctrlRoom.toggleMenu()> <ng-md-icon size=30 style=fill:#fff icon=forward> </ng-md-icon> </md--button> </div> <div flex=10> <ng-md-icon class=\"chat-icon-action chat-icon-action--search\" size=30 style=fill:#fff icon=search> </ng-md-icon> </div> </div> <md-content class=\"sidebar__content chat-user-list\" data-ng-controller=\"userListController as _ctrlUserList\"> <div class=\"sidebar__row chat-user-list__nav\" layout layout-align=\"left center\"> <div flex=50> <md-button class=md-raised>Онлайн</md-button> </div> <div flex=50 style=text-align:right> <md-button class=md-warn>Все</md-button> </div> </div> <div layout=row layout-align=\"left center\"> <div flex=100> <md-list class=chat-user-list> <md-list-item class=chat-user-list__item data-ng-repeat=\"user in _ctrlUserList.data.userAgreed\" data-ng-click=\"_ctrlUserList.showUser($event, user)\"> <img class=chat-user-list__photo alt={{user.login}} data-ng-src={{_ctrlUserList.getPathPhoto(user)}}> <span class=chat-user-list__login>{{user.login}}</span> </md-list-item> </md-list> </div> </div> </md-content> </md-sidenav> <div flex=75> <div class=flexbox-parent> <md-toolbar> <div class=md-toolbar-tools> <h3> Комната {{_ctrlRoom.data.room.name}} </h3> </div> </md-toolbar> <div class=\"fill-area flexbox-item-grow\"> <md-list class=flexbox-item-grow> <md-list-item data-ng-if=!_ctrlRoom.data.messages.length> <div class=md-list-item-text> <h3>История комнаты пуста.</h3> </div> <md-divider inset></md-divider> </md-list-item> <md-list-item class=\"md-3-line chat-message-item\" data-ng-if=_ctrlRoom.data.messages.length data-ng-repeat=\"message in _ctrlRoom.data.messages\"> <img alt={{message.user.login}} class=md-avatar ng-src={{message.user.photo}}> <div class=md-list-item-text> <p>{{message.text}}</p> </div> <md-divider inset></md-divider> </md-list-item> </md-list> </div> <div class=chat-message-footer data-ng-form=messageForm layout layout-align=\"left top\"> <div flex=90> <md-input-container class=chat-message-area> <label>Отправить сообщение</label> <textarea name=message required data-ng-model=_ctrlRoom.data.message md-no-resize max-rows=2></textarea> </md-input-container> </div> <div flex=10 layout layout-align=\"center top\"> <md-button class=\"md-fab chat-icon-action chat-icon-action--send-message\" data-ng-disabled=messageForm.$invalid data-ng-click=_ctrlRoom.send() aria-label=Отправить> <ng-md-icon size=30 style=fill:#fff icon=send> </ng-md-icon> </md-button> </div> </div> </div> </div>";
 
 /***/ }),
-/* 57 */
-/***/ (function(module, exports) {
-
-module.exports = "<div flex=25 class=sidebar> <div class=\"sidebar__row sidebar__header sidebar__header--search\" layout layout-align=\"end center\"> <div flex=10> <ng-md-icon class=\"chat-icon-action chat-icon-action--search\" size=30 style=fill:#fff icon=search> </ng-md-icon> </div> </div> <md-content class=\"sidebar__content chat-user-list\" data-ng-controller=\"userListController as _ctrlUserList\"> <div class=\"sidebar__row chat-user-list__nav\" layout layout-align=\"left center\"> <div flex=50> <md-button class=md-raised>Онлайн</md-button> </div> <div flex=50 style=text-align:right> <md-button class=md-warn>Все</md-button> </div> </div> <div layout=row layout-align=\"left center\"> <div flex=100> <md-list class=chat-user-list> <md-list-item class=chat-user-list__item data-ng-repeat=\"user in _ctrlUserList.data.userAgreed\" data-id=0 data-ng-click=\"_ctrlUserList.showUser($event, user)\"> <img class=chat-user-list__photo alt={{user.login}} data-ng-src={{_ctrlUserList.getPathPhoto(user)}}> <span class=chat-user-list__login>{{user.login}}</span> </md-list-item> </md-list> </div> </div> </md-content> </div> <div flex=75> message </div>";
-
-/***/ }),
-/* 58 */
+/* 73 */
 /***/ (function(module, exports) {
 
 module.exports = "<md-contact-chips name=userInvited data-ng-model=userFilter.userInvited md-contacts=userFilter.searchUsers($query) md-contact-name=login md-contact-image=photo md-contact-email=email md-require-match=true md-highlight-flags=i filter-selected=true placeholder={{userFilter.placeholder}}> </md-contact-chips>";
 
 /***/ }),
-/* 59 */
+/* 74 */
 /***/ (function(module, exports) {
 
 module.exports = "<md-dialog flex=40> <form data-ng-cloak name=userEdit> <md-toolbar> <div class=md-toolbar-tools> <h2>Редактирование профиля</h2> </div> </md-toolbar> <md-dialog-content class=chat-user-edit> <div class=chat-user-edit__action-photo flex=40> <img class=\"md-user-avatar chat-user-edit__photo\" data-ng-src={{_ctrlUserEdit.getPathPhoto()}}> <ng-md-icon class=chat-user-edit__add-photo size=100 style=fill:#fff icon=add_a_photo data-ng-click=_ctrlUserEdit.close()> </ng-md-icon> <input type=file nv-file-select class=chat-user-edit__uploader uploader=_ctrlUserEdit.uploader /> </div> <div layout layout-align=\"center center\"> <div flex=60> <div flex=100> <div class=\"alert alert-danger\" data-ng-if=_ctrlUserEdit.data.form.error.length> <div data-ng-repeat=\"message in _ctrlUserEdit.data.form.error\"> {{message}} </div> </div> <div class=\"alert alert-success\" data-ng-if=_ctrlUserEdit.data.form.success.status> {{_ctrlUserEdit.data.form.success.message}} </div> </div> <div flex=100> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required data-ng-minlength=2 data-ng-model=_ctrlUserEdit.data.user.login> </md-input-container> </div> </div> </div> </md-dialog-content> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Изменить data-ng-disabled=userEdit.$invalid data-ng-click=_ctrlUserEdit.update()> <ng-md-icon size=30 style=fill:#fff icon=mode_edit> </ng-md-icon> </md-button> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Отмена data-ng-click=_ctrlUserEdit.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </form> </md-dialog>";
 
 /***/ }),
-/* 60 */
+/* 75 */
 /***/ (function(module, exports) {
 
 module.exports = "<md-dialog flex=40> <md-toolbar> <div class=md-toolbar-tools> <h2>Просмотр профиля</h2> </div> </md-toolbar> <md-dialog-content class=chat-user-show> <div class=chat-user-show__action-photo flex=40> <img class=\"md-user-avatar chat-user-show__photo\" data-ng-src={{_ctrlUserShow.getPathPhoto(_ctrlUserShow.data.user)}}> </div> <div layout layout-align=\"center center\"> <div flex=60> <div flex=100> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text disabled=disabled data-ng-value=_ctrlUserShow.data.user.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text disabled=disabled data-ng-value=_ctrlUserShow.data.user.email> </md-input-container> <md-input-container class=chat-form__row> <label>Дата регистрации</label> <input type=text disabled=disabled data-ng-value=\"_ctrlUserShow.data.user.date | date : 'yyyy-MM-dd'\"> </md-input-container> </div> </div> </div> </md-dialog-content> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Отмена data-ng-click=_ctrlUserShow.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </md-dialog>";
 
 /***/ }),
-/* 61 */
+/* 76 */
 /***/ (function(module, exports) {
 
 var g;
@@ -104731,7 +105134,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 62 */
+/* 77 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {

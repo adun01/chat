@@ -23,26 +23,28 @@ angular.module('chat', [
     'ngResource',
     'ui.router',
     'ngMdIcons',
+    'notifications',
     'user',
     'common',
     'main',
     'auth',
     'registration',
     'room'])
-    .config(function ($stateProvider, $locationProvider, $httpProvider) {
+    .config(function ($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider) {
 
         $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 
         $locationProvider.html5Mode(true);
 
+        $urlRouterProvider.otherwise('/room/');
+
     }).run(function ($rootScope, $state) {
+
     $rootScope.$on('$stateChangeStart',
-        function (event, toState, toParams, fromState, fromParams, options) {
+        function (event, toState) {
             if (toState.name === 'resolve') {
                 event.preventDefault();
-                $state.go('resolve.main.room', {
-                    id: 0
-                });
+                $state.go('resolve.main');
             }
         });
 });

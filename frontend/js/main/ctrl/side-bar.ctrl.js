@@ -1,7 +1,8 @@
 import module from '../';
+import showNotificationTpl from '../';
 
 module.controller('sideBarController',
-    function ($rootScope, $mdSidenav, userService, authService, $state) {
+    function ($rootScope, $mdSidenav, userService, authService, $state, $mdDialog, sideBarService) {
         const _ctrlSideBar = this;
 
         _ctrlSideBar.data = {
@@ -21,8 +22,7 @@ module.controller('sideBarController',
         };
 
         _ctrlSideBar.toggleMenu = function () {
-            _ctrlSideBar.data.opened = !_ctrlSideBar.data.opened;
-            $mdSidenav(_ctrlSideBar.data.id).toggle();
+            sideBarService.toggle();
         };
 
         _ctrlSideBar.logOut = function () {

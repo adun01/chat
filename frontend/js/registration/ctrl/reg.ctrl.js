@@ -24,9 +24,7 @@ module.controller('registrationController', function ($rootScope, userService, $
                     _ctrlReg.errorMessage = null;
                 }, 5000);
             } else {
-                $state.go('resolve.main.room', {
-                    id: 0
-                });
+                $state.go('resolve.main');
             }
         });
     };

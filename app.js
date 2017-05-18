@@ -68,6 +68,8 @@ app.use(cookieParser());
 let route = require('./routes/index'),
     auth = require('./routes/auth'),
     room = require('./routes/room'),
+    message = require('./routes/message'),
+    notification = require('./routes/notification'),
     user = require('./routes/user');
 
 app.use(function (req, res, next) {
@@ -81,6 +83,8 @@ app.use(function (req, res, next) {
 });
 
 app.use(user);
+app.use(notification);
+app.use(message);
 app.use(room);
 app.use(auth);
 app.use('/', route);

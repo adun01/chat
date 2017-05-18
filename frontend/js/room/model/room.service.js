@@ -3,8 +3,10 @@ import roomAddTpl from '../view/room.add.html';
 
 module.service('roomService', function (roomResource, $q, $mdDialog) {
 
-    function shortName(room) {
-        return room[0] + room[1];
+    let currentRoom = null;
+
+    function shortName(name) {
+        return '' + name[0] + name[1];
     }
 
     function create(data) {
@@ -21,8 +23,10 @@ module.service('roomService', function (roomResource, $q, $mdDialog) {
                         return room;
                     });
                 } else {
+                    currentRoom = response.room;
                     response.room.shortName = shortName(response.room.name)
                 }
+
                 defer.resolve(response);
             } else {
                 defer.resolve(response);
@@ -42,9 +46,15 @@ module.service('roomService', function (roomResource, $q, $mdDialog) {
         });
     }
 
+    function getCurrentRoom() {
+        return currentRoom;
+    }
+
     return {
+        getCurrentRoom: getCurrentRoom,
         get: get,
         addRoom: addRoom,
-        create: create
+        create: create,
+        shortName: shortName
     }
 });

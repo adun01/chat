@@ -12,16 +12,22 @@ function clearRoomField(rooms) {
     }
 }
 
+function allowRoom(userId, userAgreed) {
+    return userAgreed.some(function (id) {
+        return id === userId;
+    })
+}
+
 module.exports = {
     create: function (data, creatorId) {
-        'use strict';
         let userInvited = data.userInvited ? data.userInvited.split(',') : [];
 
         userInvited = userInvited.map(function (id) {
             return +id;
         });
 
-        let promise = new Promise(function (resolve) {
+        return new Promise(function (resolve) {
+
             new roomModel({
                 name: data.name,
                 creatorId: creatorId,
@@ -30,30 +36,46 @@ module.exports = {
                 resolve(clearRoomField(room));
             });
         });
-        return promise;
     },
     get: function (roomId, userId) {
         return new Promise(function (resolve) {
 
             if (!roomId) {
-                roomModel.findOne({creatorId: 0}).then(function (mainRoom) {
-                    roomModel.find({$or: [{userAgreed: userId}, {creatorId: userId}]}).then(function (rooms) {
-                        rooms.push(mainRoom);
-                        resolve({success: true, list: clearRoomField(rooms)});
-                    });
+                roomModel.find({$or: [{userAgreed: userId}, {creatorId: userId}]}).then(function (rooms) {
+                    if (!rooms.length) {
+                        resolve({
+                            success: false,
+                            message: 'Не создано ни одной комнаты'
+                        });
+                    }
+                    resolve({success: true, list: clearRoomField(rooms)});
                 });
             } else {
-                roomModel.findOne({id: roomId}, function (err, room) {
+                roomModel.findOne({id: +roomId}, function (err, room) {
                     if (err) {
                         resolve({
                             success: false,
                             message: 'Нет такой комнаты'
                         });
                     } else {
-                        resolve({
-                            success: true,
-                            room: clearRoomField(room)
-                        })
+                        if (room) {
+                            if (allowRoom(userId, room.userAgreed)) {
+                                resolve({
+                                    success: true,
+                                    room: clearRoomField(room)
+                                })
+                            } else {
+                                resolve({
+                                    success: false,
+                                    message: 'Нет доступа'
+                                });
+                            }
+                        } else {
+                            resolve({
+                                success: false,
+                                message: 'Нет такой комнаты'
+                            });
+                        }
                     }
                 });
             }
@@ -61,9 +83,7 @@ module.exports = {
     },
     updateRoom: function (data, userId) {
 
-        'use strict';
-
-        let promise = new Promise(function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
 
             roomModel.findOne({id: data.id}, function (err, room) {
 
@@ -94,7 +114,41 @@ module.exports = {
                 });
             });
         });
+    },
 
-        return promise;
+
+    addMessage: function (data) {
+        return new Promise(function (resolve) {
+            roomModel.findOne({id: data.room.id}).then(function (room) {
+
+                room.message.push({
+                    creatorId: data.creatorId,
+                    text: data.text
+                });
+
+                room.markModified('message');
+
+                room.save(function (err, room) {
+                    resolve({
+                        success: true
+                    });
+                });
+
+            })
+        });
+    },
+    getMessage: function (data) {
+        return new Promise(function (resolve) {
+            roomModel.findOne({id: +data.id}).then(function (room) {
+                resolve({
+                    success: true,
+                    message: room.message
+                });
+
+
+            })
+
+        });
+
     }
 };

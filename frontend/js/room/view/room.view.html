@@ -1,5 +1,17 @@
-<div flex="25" class="sidebar">
+<md-sidenav class="sidebar md-sidenav-left"
+            md-is-locked-open="true"
+            md-whiteframe="4">
+
     <div class="sidebar__row sidebar__header sidebar__header--search" layout layout-align="end center">
+        <div flex="90">
+            <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-open"
+                        data-ng-click="_ctrlRoom.toggleMenu()">
+                <ng-md-icon size="30"
+                            style="fill: white"
+                            icon="forward">
+                </ng-md-icon>
+            </md--button>
+        </div>
         <div flex="10">
             <ng-md-icon class="chat-icon-action chat-icon-action--search"
                         size="30"
@@ -27,7 +39,6 @@
                 <md-list class="chat-user-list">
                     <md-list-item class="chat-user-list__item"
                                   data-ng-repeat="user in _ctrlUserList.data.userAgreed"
-                                  data-id="0"
                                   data-ng-click="_ctrlUserList.showUser($event, user)">
 
                         <img class="chat-user-list__photo"
@@ -39,7 +50,70 @@
             </div>
         </div>
     </md-content>
-</div>
+</md-sidenav>
 <div flex="75">
-    message
+
+
+    <div class="flexbox-parent">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h3>
+                    Комната {{_ctrlRoom.data.room.name}}
+                </h3>
+            </div>
+        </md-toolbar>
+
+        <div class="fill-area flexbox-item-grow">
+            <md-list class="flexbox-item-grow">
+                <md-list-item data-ng-if="!_ctrlRoom.data.messages.length">
+                    <div class="md-list-item-text">
+                        <h3>История комнаты пуста.</h3>
+                    </div>
+
+                    <md-divider inset></md-divider>
+                </md-list-item>
+                <md-list-item class="md-3-line chat-message-item"
+                              data-ng-if="_ctrlRoom.data.messages.length"
+                              data-ng-repeat="message in _ctrlRoom.data.messages">
+
+                    <img alt="{{message.user.login}}"
+                         class="md-avatar"
+                         ng-src="{{message.user.photo}}">
+
+                    <div class="md-list-item-text">
+                        <p>{{message.text}}</p>
+                    </div>
+
+                    <md-divider inset></md-divider>
+                </md-list-item>
+            </md-list>
+        </div>
+
+        <div class="chat-message-footer"
+             data-ng-form="messageForm"
+             layout
+             layout-align="left top">
+            <div flex="90">
+                <md-input-container class="chat-message-area">
+                    <label>Отправить сообщение</label>
+                    <textarea name="message"
+                              required
+                              data-ng-model="_ctrlRoom.data.message"
+                              md-no-resize
+                              max-rows="2"></textarea>
+                </md-input-container>
+            </div>
+            <div flex="10" layout layout-align="center top">
+                <md-button class="md-fab chat-icon-action chat-icon-action--send-message"
+                           data-ng-disabled="messageForm.$invalid"
+                           data-ng-click="_ctrlRoom.send()"
+                           aria-label="Отправить">
+                    <ng-md-icon size="30"
+                                style="fill: white"
+                                icon="send">
+                    </ng-md-icon>
+                </md-button>
+            </div>
+        </div>
+    </div>
 </div>

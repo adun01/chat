@@ -1,12 +1,17 @@
 import module from '../';
+import mainRoomTpl from '../view/room.main.view.html';
 
 export default module.config(function ($stateProvider) {
     $stateProvider
         .state('resolve.main', {
-            abstract: true,
-            template: '<div style="width: 100%;min-height: 100vh" layout="row" layout-align="left top" data-ui-view></div>',
+            url: 'room/',
+            controller: 'mainController',
+            template: mainRoomTpl,
+            params: {
+                message: null
+            },
             resolve: {
-                userData: function (userService, authService, $q, $rootScope, $state) {
+                mainControllerData: function ($stateParams, userService, authService, $q, $rootScope, $state) {
                     let defer = $q.defer();
 
                     if (!userService.get()) {
@@ -17,11 +22,11 @@ export default module.config(function ($stateProvider) {
                             } else {
                                 userService.set(response.user);
                                 $rootScope.$emit('isAuth');
-                                defer.resolve('isAuth');
+                                defer.resolve($stateParams);
                             }
                         });
                     } else {
-                        defer.resolve('isAuth');
+                        defer.resolve($stateParams);
                     }
                     return defer.promise;
                 }

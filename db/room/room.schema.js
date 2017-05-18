@@ -1,28 +1,31 @@
 const Schema = require('mongoose').Schema,
-    roomSchema = new Schema({
-        name: {
-            type: String,
-            required: true
-        },
-        create: {
-            type: Date,
-            default: Date.now
-        },
-        modify: {
-            type: Date,
-            default: Date.now
-        },
-        userAgreed: [Number],
-        userInvited: [Number],
-        creatorId: {
-            type: Number,
-            default: 0
-        },
-        photo: {
-            type: String,
-            default: ''
-        }
-    });
+    messageSchema = require('../message/message.schema.js');
+
+const roomSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    create: {
+        type: Date,
+        default: Date.now
+    },
+    modify: {
+        type: Date,
+        default: Date.now
+    },
+    userAgreed: [Number],
+    userInvited: [Number],
+    creatorId: {
+        type: Number,
+        default: 0
+    },
+    photo: {
+        type: String,
+        default: ''
+    },
+    message: [messageSchema]
+});
 
 autoIncrement = require('mongoose-auto-increment');
 

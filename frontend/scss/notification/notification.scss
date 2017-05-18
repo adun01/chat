@@ -1,0 +1,19 @@
+.notification {
+  position: relative;
+
+  &__counter {
+    width: 20px;
+    height: 20px;
+    min-height: 0;
+    min-width: 0;
+    position: absolute;
+    right: 6px;
+    line-height: 20px;
+    top: -7px;
+    border-radius: 50%;
+    z-index: 2021;
+
+    &--room {
+    }
+  }
+}

@@ -34,5 +34,19 @@
         margin: 14px 0 0;
       }
     }
+
+    &--send-message {
+
+      & svg {
+        margin: 14px 0 0 4px;
+      }
+    }
+
+    &--square {
+
+      & svg {
+        margin: 10px auto 0;
+      }
+    }
   }
 }

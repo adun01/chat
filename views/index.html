@@ -14,8 +14,7 @@
 <body>
 <div>
     <div data-ng-controller="sideBarController as _ctrlSideBar">
-        <div class="sidebar-opener"
-             data-ng-class="{'sidebar-opener--hide': _ctrlSideBar.data.opened}">
+        <div class="sidebar-opener">
             <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-open"
                         data-ng-click="_ctrlSideBar.toggleMenu()">
                 <ng-md-icon size="30"
@@ -25,7 +24,7 @@
             </md--button>
         </div>
         <!--md-disable-backdrop-->
-        <md-sidenav class="md-sidenav-left sidebar"
+        <md-sidenav class="md-sidenav-left sidebar sidebar--main"
                     data-ng-cloak
                     md-disable-backdrop
                     md-component-id="{{_ctrlSideBar.data.id}}"
@@ -91,47 +90,8 @@
                 </div>
 
                 <div data-ng-cloak
-                     data-ng-if="_ctrlSideBar.data.isAuth"
-                     data-ng-controller="roomListController as roomListCtrl">
-                    <div class="sidebar__row">
-                        <div layout="row"
-                             layout-align="left center">
-                            <div flex="80" class="chat-room-list-nav">
-                                <div>
-                                    Комнаты
-                                </div>
-                            </div>
-                            <div flex="20">
-                                <div layout="row"
-                                     layout-align="end center">
-                                    <md-button class="md-fab md-mini chat-icon-action"
-                                               data-ng-click="roomListCtrl.addRoom($event)">
-                                        <ng-md-icon size="30"
-                                                    style="fill: white"
-                                                    icon="add">
-                                        </ng-md-icon>
-                                    </md-button>
-                                </div>
-                            </div>
-                        </div>
-                        <div layout="row"
-                             layout-align="left center">
-                            <md-list class="chat-room-list">
-                                <md-list-item class="chat-room-list__item"
-                                              data-ng-repeat="room in roomListCtrl.data.list">
-                                    <a class="chat-room-list__link"
-                                       data-ui-sref="resolve.main.room({id: room.id})">
-                                        <md-button class="chat-room-list__button">
-                                            <button class="md-fab md-button md-ink-ripple">
-                                                {{!room.photo ? room.shortName.toUpperCase() : ''}}
-                                            </button>
-                                            {{room.name}}
-                                        </md-button>
-                                    </a>
-                                </md-list-item>
-                            </md-list>
-                        </div>
-                    </div>
+                     data-ng-if="_ctrlSideBar.data.isAuth">
+                    <room-list></room-list>
                 </div>
 
                 <md-list class="sidebar__row sidebar__eventsList"

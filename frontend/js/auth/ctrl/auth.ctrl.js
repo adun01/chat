@@ -23,9 +23,7 @@ module.controller('authController', function ($rootScope, authService, $timeout,
                     _ctrlAuth.errorMessage = null;
                 }, 5000);
             } else {
-                $state.go('resolve.main.room', {
-                    id: 0
-                });
+                $state.go('resolve.main');
             }
         });
     };

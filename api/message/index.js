@@ -1,54 +1,63 @@
 'use strict';
-const messagesModel = require('../../dbsettings/message/message.model'),
-    messageModel = require('../../dbsettings/message/messages.model'),
-    userApi = require('../user/'),
+const roomModel = require('../../db/room/room.model'),
     roomUserAgreed = require('../room/room.userAgreed'),
-    response = require('../response')(),
     _ = require('lodash');
 
-function searchAccessRoom(roomId, id) {
-    let promise = new Promise(function (resolve) {
+function searchAccessRoom(roomId, userId) {
+    return new Promise(function (resolve) {
         roomUserAgreed.get({id: roomId}).then(function (userAgreed) {
-            let access = userAgreed.some(function (user) {
-                return user.id === id;
+            let access = userAgreed.some(function (iUserId) {
+                return iUserId === userId;
             });
             resolve(access);
         });
     });
-    return promise;
 }
 
 module.exports = {
-    add: function (data, user) {
+    add: function (data) {
         return new Promise(function (resolve, reject) {
-            searchAccessRoom(data.room.id, user.id).then(function (access) {
+            searchAccessRoom(data.roomId, data.creatorId).then(function (access) {
                 if (access) {
-                    new messageModel({
-                        message: data.message,
-                        user: {
-                            id: user.id,
-                            name: user.name
-                        },
-                        roomId: data.room.id
-                    }).save(function (err) {
-                        resolve();
+                    roomModel.findOne({id: data.roomId}, function (err, room) {
+                        room.message.push({
+                            creatorId: data.creatorId,
+                            text: data.message
+                        });
+
+                        room.markModified('message');
+
+                        room.save(function (err, room) {
+                            resolve({
+                                success: true,
+                                message: room.message
+                            });
+                        });
                     });
                 } else {
-                    reject('No access to this room');
+                    reject({
+                        success: false,
+                        message: 'Нет доступа'
+                    });
                 }
             });
         });
     },
-    get: function (roomId, userId) {
-        'use strict';
+    get: function (data) {
         return new Promise(function (resolve, reject) {
-            searchAccessRoom(roomId, userId).then(function (access) {
+            searchAccessRoom(data.roomId, data.creatorId).then(function (access) {
                 if (access) {
-                    messagesModel.find({roomId: roomId}, function (err, messages) {
-                        resolve(messages);
+                    roomModel.findOne({id: data.roomId}, function (err, room) {
+                        resolve({
+                            success: true,
+                            message: room.message
+                        });
                     });
                 } else {
-                    reject('No access to this room');
+                    reject({
+                        success: false,
+                        message: 'Нет доступа'
+                    });
                 }
             });
         });

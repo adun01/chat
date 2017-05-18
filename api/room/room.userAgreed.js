@@ -9,82 +9,22 @@ function clearUserData(obj) {
 
 module.exports = {
     get: function (data) {
-        return new Promise(function (resp, reject) {
-            roomsModel.findOne({id: data.id}).then(function (room) {
-                if (!room) {
-                    resp({
-                        success: false,
-                        message: 'Комната не найдена'
-                    });
-                } else {
-
-                    let promiseAll = [], users = [];
-
-                    room.userAgreed.forEach(function (id) {
-                        let defer = userApi.search({id: id});
-                        promiseAll.push(defer);
-                        defer.then(function (result) {
-                            users.push(clearUserData(result.user));
-                        });
-                    });
-
-                    Promise.all(promiseAll).then(function () {
-                        resp({
-                            success: true,
-                            userAgreed: users
-                        });
-                    });
-
-                }
+        return new Promise(function (resolve) {
+            roomsModel.findOne({id: data.id}, function (err, room) {
+                resolve(room.userAgreed);
             });
         });
     },
-    add: function (data) {
-        'use strict';
-        let promise = new Promise(function (resp, reject) {
-            roomsModel.findOne({id: data.room.id}).then(function (room) {
-                if (room.userInvited.indexOf(data.user.id) === -1) {
-                    reject('You were not invited');
-                }
-                if (!room.userAgreed.indexOf(data.user.id) === -1) {
-                    room.userAgreed.push(data.user.id);
-                }
-
-                room.markModified('userAgreed');
-                room.save().then(function (room) {
-                    resp(room);
-                });
-            });
-        });
-
-        return promise;
+    add: function (room, userId) {
+        room.userAgreed.push(userId);
+        room.markModified('userAgreed');
+        return room.save();
     },
-    remove: function (data) {
-        'use strict';
-        const roomQuery = JSON.parse(data.room),
-            userQuery = JSON.parse(data.user);
-
-        let promise = new Promise(function (resp, reject) {
-            roomsModel.findOne({id: roomQuery.id}).then(function (room) {
-                if (!room) {
-                    reject('There is no room with id ' + roomQuery.id);
-                }
-                if (room.creatorId === userQuery.id || room.userAgreed.indexOf(userQuery.id) !== -1) {
-                    room.userAgreed = _.filter(room.userAgreed, function (userId) {
-                        if (userId !== data.room.id) {
-                            return userId;
-                        }
-                    });
-                } else {
-                    reject('You must be either the creator of the room or its participant');
-                }
-                room.markModified('userAgreed');
-                room.save().then(function (room) {
-                    resp(room);
-                });
-            });
+    remove: function (room, userId) {
+        room.userAgreed = room.userAgreed.filter(function (id) {
+            return id !== userId;
         });
-
-        return promise;
+        room.markModified('userAgreed');
+        return room.save();
     }
 };

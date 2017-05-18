@@ -1,10 +1,30 @@
 .chat-room {
+
+  width: 100%;
+  min-height: 100vh;
+  max-height: 100vh;
+
+  &__container {
+    display: flex;
+    height: 100%;
+  }
+
+  &__inroduce {
+    margin: auto;
+  }
+
   &-list {
     background: none;
     width: 100%;
+
     &__item {
       color: #fff;
       padding: 0 16px 0 0 !important;
+
+      &--notification {
+        padding: 0 16px !important;
+        color: #000;
+      }
     }
 
     &__link {
