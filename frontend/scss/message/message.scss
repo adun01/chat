@@ -1,9 +1,27 @@
 .chat-message {
+
+  background-color: #fefefe;
+  background-image: url('images/background.jpg');
   &-container {
 
   }
   &-item {
-
+    &__avatar {
+      width: 50px;
+      border-radius: 50%;
+      margin: 15px 15px 0 0;
+    }
+    &__content {
+    }
+    &__container {
+      margin: auto 0;
+    }
+    &__date {
+      color: #a8a8a8;
+    }
+    &__login {
+      color: #a8a8a8;
+    }
   }
   &-area {
     resize: none;

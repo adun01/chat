@@ -63,7 +63,7 @@
             </div>
         </md-toolbar>
 
-        <div class="fill-area flexbox-item-grow">
+        <div class="fill-area flexbox-item-grow chat-message">
             <md-list class="flexbox-item-grow">
                 <md-list-item data-ng-if="!_ctrlRoom.data.messages.length">
                     <div class="md-list-item-text">
@@ -77,11 +77,19 @@
                               data-ng-repeat="message in _ctrlRoom.data.messages">
 
                     <img alt="{{message.user.login}}"
-                         class="md-avatar"
-                         data-ng-src="{{message.user.photo}}">
+                         class="chat-message-item__avatar"
+                         data-ng-src="{{_ctrlRoom.getPathPhoto(message.user)}}">
 
-                    <div class="md-list-item-text">
-                        <p>{{message.text}}</p>
+                    <div class="chat-message-item__container">
+                        <div class="chat-message-item__login">
+                            {{message.user.login}}
+                        </div>
+                        <div class="chat-message-item__content">
+                            {{message.text}}
+                        </div>
+                        <div class="chat-message-item__date">
+                            {{message.date}}
+                        </div>
                     </div>
 
                     <md-divider inset></md-divider>

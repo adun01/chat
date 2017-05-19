@@ -22,6 +22,8 @@ module.controller('roomController', function (userService, roomService, roomMess
 
     _ctrlRoom.toggleMenu = sideBarService.toggle;
 
+    _ctrlRoom.getPathPhoto = userService.photo;
+
     _ctrlRoom.send = function () {
         roomMessageService.save({
             id: _ctrlRoom.data.room.id,
