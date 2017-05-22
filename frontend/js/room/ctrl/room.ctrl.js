@@ -7,22 +7,13 @@ module.controller('roomController', function (userService, roomService, roomMess
     sideBarService.unLocked();
     sideBarService.close();
 
+    _ctrlRoom.toggleMenu = sideBarService.toggle;
+
     _ctrlRoom.data = {
         room: roomData,
-        messages: [],
         message: null,
         user: userService.get()
     };
-
-    _ctrlRoom.getMessage = function () {
-        roomMessageService.get({id: _ctrlRoom.data.room.id}).then(function (resp) {
-            _ctrlRoom.data.messages = resp.message;
-        });
-    };
-
-    _ctrlRoom.toggleMenu = sideBarService.toggle;
-
-    _ctrlRoom.getPathPhoto = userService.photo;
 
     _ctrlRoom.send = function () {
         roomMessageService.save({
@@ -34,6 +25,4 @@ module.controller('roomController', function (userService, roomService, roomMess
             }
         });
     };
-
-    _ctrlRoom.getMessage();
 });

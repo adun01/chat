@@ -10,8 +10,20 @@ function clearUserData(obj) {
 module.exports = {
     get: function (data) {
         return new Promise(function (resolve) {
-            roomsModel.findOne({id: data.id}, function (err, room) {
-                resolve(room.userAgreed);
+            roomsModel.findOne({id: data.id}, async function (err, room) {
+                if (!room) {
+                    resolve({
+                        success: false,
+                        message: 'Комната не найдена'
+                    });
+                } else {
+                    let findCollection = await userApi.searchCollection(room.userAgreed);
+
+                    resolve({
+                        success: true,
+                        list: findCollection.users
+                    });
+                }
             });
         });
     },

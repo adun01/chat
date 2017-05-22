@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import 'angular';
-import 'angular-ui-router'
+import 'angular-ui-router';
 import 'angular-material';
 import 'angular-resource';
 import '../../bower_components/angular-post-fix/postfix';

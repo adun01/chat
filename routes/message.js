@@ -1,4 +1,7 @@
 const router = require('express').Router(),
+    socketEvents = require('../socketEvents'),
+    eventsMediator = require('../events.mediator'),
+    userApi = require('../api/user/'),
     messageApi = require('../api/message/');
 
 router.get('/api/room/:id/message', function (req, res) {
@@ -17,6 +20,12 @@ router.post('/api/room/:id/message', function (req, res) {
         message: req.body.message,
         roomId: req.body.id
     }).then(function (result) {
+        eventsMediator.emit('newMessage', {
+            message: result.message,
+            roomId: req.body.id,
+            userId: req.session.user.id
+        });
+
         res.send(JSON.stringify(result));
     });
 

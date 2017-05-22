@@ -8,8 +8,8 @@ const roomModel = require('../../db/room/room.model'),
 function searchAccessRoom(roomId, userId) {
     return new Promise(function (resolve) {
         roomUserAgreed.get({id: roomId}).then(function (userAgreed) {
-            let access = userAgreed.some(function (iUserId) {
-                return iUserId === userId;
+            let access = userAgreed.list.some(function (user) {
+                return user.id === userId;
             });
             resolve(access);
         });
@@ -36,7 +36,7 @@ module.exports = {
                         room.save(function (err, room) {
                             resolve({
                                 success: true,
-                                message: room.message
+                                message: clearMesagerData(room.message[room.message.length-1])
                             });
                         });
                     });

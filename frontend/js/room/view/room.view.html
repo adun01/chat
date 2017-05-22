@@ -2,7 +2,10 @@
             md-is-locked-open="true"
             md-whiteframe="4">
 
-    <div class="sidebar__row sidebar__header sidebar__header--search" layout layout-align="end center">
+    <div class="sidebar__row sidebar__header sidebar__header--search"
+         layout
+         layout-align="end center">
+
         <div flex="90">
             <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-open"
                         data-ng-click="_ctrlRoom.toggleMenu()">
@@ -20,40 +23,11 @@
             </ng-md-icon>
         </div>
     </div>
-    <md-content class="sidebar__content chat-user-list"
-                data-ng-controller="userListController as _ctrlUserList">
 
-        <div class="sidebar__row chat-user-list__nav"
-             layout
-             layout-align="left center">
-            <div flex="50">
-                <md-button class="md-raised">Онлайн</md-button>
-            </div>
-            <div flex="50" style="text-align: right;">
-                <md-button class="md-warn">Все</md-button>
-            </div>
-        </div>
-        <div layout="row"
-             layout-align="left center">
-            <div flex="100">
-                <md-list class="chat-user-list">
-                    <md-list-item class="chat-user-list__item"
-                                  data-ng-repeat="user in _ctrlUserList.data.userAgreed"
-                                  data-ng-click="_ctrlUserList.showUser($event, user)">
+    <user-list></user-list>
 
-                        <img class="chat-user-list__photo"
-                             alt="{{user.login}}"
-                             data-ng-src="{{_ctrlUserList.getPathPhoto(user)}}">
-                        <span class="chat-user-list__login">{{user.login}}</span>
-                    </md-list-item>
-                </md-list>
-            </div>
-        </div>
-    </md-content>
 </md-sidenav>
 <div flex="75">
-
-
     <div class="flexbox-parent">
         <md-toolbar>
             <div class="md-toolbar-tools">
@@ -62,39 +36,10 @@
                 </h3>
             </div>
         </md-toolbar>
-
         <div class="fill-area flexbox-item-grow chat-message">
-            <md-list class="flexbox-item-grow">
-                <md-list-item data-ng-if="!_ctrlRoom.data.messages.length">
-                    <div class="md-list-item-text">
-                        <h3>История комнаты пуста.</h3>
-                    </div>
-
-                    <md-divider inset></md-divider>
-                </md-list-item>
-                <md-list-item class="md-3-line chat-message-item"
-                              data-ng-if="_ctrlRoom.data.messages.length"
-                              data-ng-repeat="message in _ctrlRoom.data.messages">
-
-                    <img alt="{{message.user.login}}"
-                         class="chat-message-item__avatar"
-                         data-ng-src="{{_ctrlRoom.getPathPhoto(message.user)}}">
-
-                    <div class="chat-message-item__container">
-                        <div class="chat-message-item__login">
-                            {{message.user.login}}
-                        </div>
-                        <div class="chat-message-item__content">
-                            {{message.text}}
-                        </div>
-                        <div class="chat-message-item__date">
-                            {{message.date}}
-                        </div>
-                    </div>
-
-                    <md-divider inset></md-divider>
-                </md-list-item>
-            </md-list>
+            <md-content class="chat-message-content">
+                <message-list></message-list>
+            </md-content>
         </div>
 
         <div class="chat-message-footer"

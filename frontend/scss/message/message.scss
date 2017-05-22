@@ -1,18 +1,19 @@
 .chat-message {
 
-  background-color: #fefefe;
-  background-image: url('images/background.jpg');
-  &-container {
-
+  &-content {
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/background.jpg');
   }
+
   &-item {
+
     &__avatar {
       width: 50px;
       border-radius: 50%;
       margin: 15px 15px 0 0;
     }
-    &__content {
-    }
+
     &__container {
       margin: auto 0;
     }
@@ -20,7 +21,7 @@
       color: #a8a8a8;
     }
     &__login {
-      color: #a8a8a8;
+      color: rgb(63, 81, 181);
     }
   }
   &-area {
@@ -28,6 +29,8 @@
     width: 100%;
     padding: 15px;
     box-sizing: border-box;
+    margin-bottom: 0;
+    padding-bottom: 0;
   }
   &-footer {
     padding: 15px 0 15px 15px;
@@ -60,4 +63,12 @@
   align-items: stretch; /* align items in Cross Axis */
   align-content: stretch; /* Extra space in Cross Axis */
 
+}
+
+.flexbox-item-grow {
+  height: 100%;
+  box-sizing: border-box;
+  align-items: flex-start;
+  flex-direction: column;
+  display: flex;
 }

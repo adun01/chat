@@ -43,6 +43,28 @@ module.exports = {
             });
         });
     },
+    searchCollection: function (collection) {
+        let self = this, users = [], allPromise = [];
+
+        return new Promise(function (resolve) {
+            collection.forEach(function (id, i, arr) {
+                let Ipromise = self.search({id: id});
+
+                allPromise.push(Ipromise);
+
+                Ipromise.then(function (res) {
+                    users.push(clearUserData(res.user));
+                });
+            });
+            Promise.all(allPromise).then(function () {
+                resolve({
+                    success: true,
+                    users: users
+                });
+            });
+        });
+
+    },
     search: function (data) {
         let searchCollection = [],
             resolveKey = ['id', 'login', 'email'];
@@ -66,7 +88,7 @@ module.exports = {
             userModel.findOne({$or: searchCollection}, function (err, user) {
                 resolve({
                     success: true,
-                    user: clearUserData(user)
+                    user: user
                 });
             });
         });

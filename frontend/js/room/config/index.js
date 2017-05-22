@@ -9,14 +9,18 @@ export default module.config(function ($stateProvider) {
             controllerAs: '_ctrlRoom',
             template: roomTpl,
             resolve: {
-                roomData: function ($stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
+                roomData: function (userService, socketService, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
                     let defer = $q.defer();
 
                     roomService.get({id: $stateParams.id}).then(function (response) {
-
                         if (response.success) {
                             $mdDialog.cancel();
                             sideBarService.unLocked();
+
+                            socketService.roomOpen({
+                                id: $stateParams.id
+                            });
+
                             defer.resolve(response.room);
                         } else {
                             $state.go('resolve.main', {

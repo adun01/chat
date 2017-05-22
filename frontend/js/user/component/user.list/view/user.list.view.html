@@ -1,0 +1,29 @@
+<md-content class="sidebar__content chat-user-list">
+
+    <div class="sidebar__row chat-user-list__nav"
+         layout
+         layout-align="left center">
+        <div flex="50">
+            <md-button class="md-raised">Онлайн</md-button>
+        </div>
+        <div flex="50" style="text-align: right;">
+            <md-button class="md-warn">Все</md-button>
+        </div>
+    </div>
+    <div layout="row"
+         layout-align="left center">
+        <div flex="100">
+            <md-list class="chat-user-list">
+                <md-list-item class="chat-user-list__item"
+                              data-ng-repeat="user in _ctrlUserList.data.userList"
+                              data-ng-click="_ctrlUserList.showUser($event, user)">
+
+                    <img class="chat-user-list__photo"
+                         alt="{{user.login}}"
+                         data-ng-src="{{_ctrlUserList.getPathPhoto(user)}}">
+                    <span class="chat-user-list__login">{{user.login}}</span>
+                </md-list-item>
+            </md-list>
+        </div>
+    </div>
+</md-content>

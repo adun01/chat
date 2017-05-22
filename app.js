@@ -5,6 +5,7 @@ const http = require('http')
     , path = require('path')
     , favicon = require('serve-favicon')
     , cookieParser = require('cookie-parser')
+    , cookie = require('cookie')
     , bodyParser = require('body-parser')
     , socketIo = require('socket.io')
     , sharedsession = require("express-socket.io-session")
@@ -34,11 +35,6 @@ const app = express(),
         store: store
     });
 
-io.set('authorization', function (handshakeData, callback) {
-    //console.log(handshakeData.headers.cookie);
-    callback(null, true); // error first, 'authorized' boolean second
-});
-
 io.use(ioRouter);
 
 app.use(sessionInstance);
@@ -64,6 +60,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
+// authorization
+io.use(async function (socket, next) {
+    let handshakeData = socket.request,
+        cookieSigned = cookie.parse(handshakeData.headers.cookie),
+        cookieId = cookieParser.signedCookies(cookieSigned, 'geawgagadg')['connect.sid'];
+
+    await store.get(cookieId, function (err, session) {
+        socket.user = session ? session.user : null;
+    });
+
+    if (socket.user) {
+        next();
+    }
+});
+
 // singe route
 let route = require('./routes/index'),
     auth = require('./routes/auth'),
@@ -73,10 +84,15 @@ let route = require('./routes/index'),
     user = require('./routes/user');
 
 app.use(function (req, res, next) {
-    let originalQueery = url.parse(req.originalUrl),
-        pathName = originalQueery.pathname;
-    if (!originalQueery.query && pathName[pathName.length - 1] !== '/') {
-        res.redirect(307, pathName + '/');
+    let originalQuery = url.parse(req.originalUrl),
+        pathName = originalQuery.pathname;
+
+    if (!originalQuery.query && pathName[pathName.length - 1] !== '/') {
+        if (req.method === 'POST') {
+            res.redirect(307, pathName + '/');
+        } else {
+            res.redirect(301, pathName + '/');
+        }
     } else {
         next();
     }
@@ -115,4 +131,4 @@ function onListening() {
     console.log('http://localhost:' + server.address().port + '/');
 }
 
-require('./eventsMediator')(io);
+require('./socketEvents')(io);

@@ -116,7 +116,6 @@ module.exports = {
         });
     },
 
-
     addMessage: function (data) {
         return new Promise(function (resolve) {
             roomModel.findOne({id: data.room.id}).then(function (room) {
@@ -144,11 +143,8 @@ module.exports = {
                     success: true,
                     message: room.message
                 });
-
-
             })
 
         });
-
     }
 };
