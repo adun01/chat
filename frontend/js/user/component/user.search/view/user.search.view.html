@@ -1,0 +1,24 @@
+<form class="chat-form">
+    <md-input-container class="chat-form__row">
+            <input type="text"
+                   data-ng-attr-placeholder="{{_ctrlUserSearch.placeholder}}"
+                   data-ng-change="_ctrlUserSearch.searchUsers(_ctrlUserSearch.query)"
+                   data-ng-model="_ctrlUserSearch.query">
+    </md-input-container>
+    <div layout="row"
+         layout-align="left center">
+        <div flex="100">
+            <md-list class="chat-user-list">
+                <md-list-item class="chat-user-list__item chat-user-list__item--user-search"
+                              data-ng-repeat="user in _ctrlUserSearch.data.users"
+                              data-ng-click="_ctrlUserSearch.showUser($event, user)">
+
+                    <img class="chat-user-list__photo"
+                         alt="{{user.login}}"
+                         data-ng-src="{{user.photo}}">
+                    <span class="chat-user-list__login">{{user.login}}</span>
+                </md-list-item>
+            </md-list>
+        </div>
+    </div>
+</form>

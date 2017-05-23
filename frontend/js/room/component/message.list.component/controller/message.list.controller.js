@@ -24,7 +24,10 @@ module.controller('messageListController', function ($scope, roomService, roomMe
         fn: function (data) {
             if (_ctrlMessageList.data.room.id === +data.roomid) {
                 data.message.user = data.user;
-                _ctrlMessageList.data.messages.push(data.message);
+
+                $scope.$apply(function () {
+                    _ctrlMessageList.data.messages.push(data.message);
+                });
             }
         }
     });

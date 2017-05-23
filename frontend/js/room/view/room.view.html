@@ -8,6 +8,7 @@
 
         <div flex="90">
             <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-open"
+                        aria-label="Открыть сайдбар"
                         data-ng-click="_ctrlRoom.toggleMenu()">
                 <ng-md-icon size="30"
                             style="fill: white"
@@ -19,7 +20,9 @@
             <ng-md-icon class="chat-icon-action chat-icon-action--search"
                         size="30"
                         style="fill: white"
-                        icon="search">
+                        icon="search"
+                        aria-label="Поиск участника"
+                        data-ng-click="_ctrlRoom.searchUsers($event)">
             </ng-md-icon>
         </div>
     </div>

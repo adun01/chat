@@ -1,6 +1,7 @@
 import module from '../';
+import userSearchTpl from '../view/user.search.html';
 
-module.controller('roomController', function (userService, roomService, roomMessageService, roomData, sideBarService) {
+module.controller('roomController', function ($mdDialog, userService, roomService, roomMessageService, roomData, sideBarService) {
 
     const _ctrlRoom = this;
 
@@ -13,6 +14,15 @@ module.controller('roomController', function (userService, roomService, roomMess
         room: roomData,
         message: null,
         user: userService.get()
+    };
+
+    _ctrlRoom.searchUsers = function (ev) {
+        $mdDialog.show({
+            template: userSearchTpl,
+            targetEvent: ev,
+            clickOutsideToClose:true,
+            parent: angular.element(document.body)
+        });
     };
 
     _ctrlRoom.send = function () {
