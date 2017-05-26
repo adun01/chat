@@ -4,30 +4,28 @@ module.service('sideBarService', function ($mdSidenav) {
 
     const sidebar = this;
 
-    sidebar.data = {
-        id: 'side-bar',
-        locked: false
-    };
+    sidebar.id = 'side-bar';
+    sidebar.locked = false;
 
     return {
         open: function () {
-            $mdSidenav(sidebar.data.id).open();
+            $mdSidenav(sidebar.id).open();
         },
         toggle: function () {
-            if (!sidebar.data.locked) {
-                $mdSidenav(sidebar.data.id).toggle();
+            if (!sidebar.locked) {
+                $mdSidenav(sidebar.id).toggle();
             }
         },
         close: function () {
-            if (!sidebar.data.locked) {
-                $mdSidenav(sidebar.data.id).close();
+            if (!sidebar.locked) {
+                $mdSidenav(sidebar.id).close();
             }
         },
         locked: function () {
-            sidebar.data.locked = true;
+            sidebar.locked = true;
         },
         unLocked: function () {
-            sidebar.data.locked = false;
+            sidebar.locked = false;
         }
     };
 

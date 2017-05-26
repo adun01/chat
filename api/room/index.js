@@ -1,6 +1,8 @@
 const roomModel = require('../../db/room/room.model'),
     _ = require('lodash'),
-    fieldAllow = ['name', 'id', 'modify', 'photo'];
+    userAgreedApi = require('./room.userAgreed'),
+    userInvitedApi = require('./room.userInvited'),
+    fieldAllow = ['name', 'id', 'modify', 'photo', 'creatorId'];
 
 function clearRoomField(rooms) {
     if (_.isArray(rooms)) {
@@ -19,132 +21,97 @@ function allowRoom(userId, userAgreed) {
 }
 
 module.exports = {
-    create: function (data, creatorId) {
-        let userInvited = data.userInvited ? data.userInvited.split(',') : [];
+    create: function (data) {
+        let userInvited = data.userInvited ? data.userInvited.split(',') : [],
+            userAgreed = [];
 
         userInvited = userInvited.map(function (id) {
             return +id;
         });
 
-        return new Promise(function (resolve) {
+        if (userInvited.indexOf(+data.user.id) === -1) {
+            userInvited.push(+data.user.id);
+        }
 
-            new roomModel({
+        userAgreed.push(+data.user.id);
+
+        return new Promise(async function (resolve) {
+
+            let newRoom = await new roomModel({
                 name: data.name,
-                creatorId: creatorId,
-                userInvited: userInvited
-            }).save().then(function (room) {
-                resolve(clearRoomField(room));
-            });
-        });
-    },
-    get: function (roomId, userId) {
-        return new Promise(function (resolve) {
+                creatorId: +data.user.id,
+                userInvited: userInvited,
+                userAgreed: userAgreed
+            }).save();
 
-            if (!roomId) {
-                roomModel.find({$or: [{userAgreed: userId}, {creatorId: userId}]}).then(function (rooms) {
-                    if (!rooms.length) {
-                        resolve({
-                            success: false,
-                            message: 'Не создано ни одной комнаты'
-                        });
-                    }
-                    resolve({success: true, list: clearRoomField(rooms)});
-                });
-            } else {
-                roomModel.findOne({id: +roomId}, function (err, room) {
-                    if (err) {
-                        resolve({
-                            success: false,
-                            message: 'Нет такой комнаты'
-                        });
-                    } else {
-                        if (room) {
-                            if (allowRoom(userId, room.userAgreed)) {
-                                resolve({
-                                    success: true,
-                                    room: clearRoomField(room)
-                                })
-                            } else {
-                                resolve({
-                                    success: false,
-                                    message: 'Нет доступа'
-                                });
-                            }
-                        } else {
-                            resolve({
-                                success: false,
-                                message: 'Нет такой комнаты'
-                            });
-                        }
-                    }
-                });
-            }
-        });
-    },
-    updateRoom: function (data, userId) {
-
-        return new Promise(function (resolve, reject) {
-
-            roomModel.findOne({id: data.id}, function (err, room) {
-
-                if (room.creatorId !== userId) {
-                    reject(new Error('not quite right!'));
-                }
-
-                if (!room) {
-                    reject(new Error('not isset room ' + data.id));
-                }
-
-                if (!data.name) {
-                    reject(new Error('a name for the room is not allowed'));
-                }
-
-                room.name = data.name;
-                room.modify = Date.now();
-
-                room.markModified('name');
-                room.markModified('modify');
-
-                room.save(function (err, room) {
-                    if (err) {
-                        reject(err);
-                    }
-
-                    resolve(clearRoomField(room));
-                });
+            return resolve({
+                success: true,
+                room: clearRoomField(newRoom)
             });
         });
     },
 
-    addMessage: function (data) {
+    search: function (id) {
         return new Promise(function (resolve) {
-            roomModel.findOne({id: data.room.id}).then(function (room) {
-
-                room.message.push({
-                    creatorId: data.creatorId,
-                    text: data.text
-                });
-
-                room.markModified('message');
-
-                room.save(function (err, room) {
-                    resolve({
-                        success: true
+            roomModel.findOne({id: id}, function (err, room) {
+                if (err) {
+                    return resolve({
+                        success: false,
+                        message: err
                     });
-                });
-
-            })
-        });
-    },
-    getMessage: function (data) {
-        return new Promise(function (resolve) {
-            roomModel.findOne({id: +data.id}).then(function (room) {
+                }
+                if (!room) {
+                    return resolve({
+                        success: false,
+                        message: 'Комната не найдена'
+                    });
+                }
                 resolve({
                     success: true,
-                    message: room.message
+                    room: clearRoomField(room)
                 });
-            })
+            });
+        });
+    },
 
+    get: function (data) {
+        return new Promise(async function (resolve) {
+
+            if (!data.roomId) {
+
+                let rooms = await roomModel.find({userAgreed: {$in: [data.userId]}});
+
+                if (!rooms.length) {
+                    return resolve({
+                        success: false,
+                        message: 'Не создано ни одной комнаты'
+                    });
+                }
+
+                resolve({success: true, rooms: clearRoomField(rooms)});
+
+            } else {
+                let room = await roomModel.findOne({id: +data.roomId});
+
+                if (!room) {
+                    return resolve({
+                        success: false,
+                        message: 'Нет такой комнаты'
+                    });
+                }
+
+                if (!allowRoom(data.userId, room.userAgreed)) {
+                    return resolve({
+                        success: false,
+                        message: 'Нет доступа'
+                    });
+                }
+
+                resolve({
+                    success: true,
+                    room: clearRoomField(room)
+                })
+            }
         });
     }
 };

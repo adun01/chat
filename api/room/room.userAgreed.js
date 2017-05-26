@@ -1,42 +1,106 @@
-const roomsModel = require('../../db/room/room.model'),
-    userApi = require('../user/'),
-    config = require('../../config'),
-    _ = require('lodash');
-
-function clearUserData(obj) {
-    return _.pick(obj, config.user.field);
-}
+const roomModel = require('../../db/room/room.model'),
+    userApi = require('../user/');
 
 module.exports = {
     get: function (data) {
-        return new Promise(function (resolve) {
-            roomsModel.findOne({id: data.id}, async function (err, room) {
-                if (!room) {
-                    resolve({
-                        success: false,
-                        message: 'Комната не найдена'
-                    });
-                } else {
-                    let findCollection = await userApi.searchCollection(room.userAgreed);
+        return new Promise(async function (resolve) {
 
-                    resolve({
-                        success: true,
-                        list: findCollection.users
-                    });
-                }
+            let room = await roomModel.findOne({id: data.roomId});
+
+            let access = room.userAgreed.some(function (id) {
+                return id === data.userId;
             });
+
+            if (!access) {
+                return resolve({
+                    success: false,
+                    message: 'Нет доступа'
+                });
+            }
+
+            let userIds = room.userAgreed.map(function (id) {
+                return id;
+            });
+
+            let usersCollection = await userApi.searchCollection(userIds);
+
+            resolve({
+                success: true,
+                list: usersCollection.users
+            });
+
         });
     },
-    add: function (room, userId) {
-        room.userAgreed.push(userId);
-        room.markModified('userAgreed');
-        return room.save();
-    },
-    remove: function (room, userId) {
-        room.userAgreed = room.userAgreed.filter(function (id) {
-            return id !== userId;
+    add: function (data) {
+
+        return new Promise(async function (resolve) {
+            let room = await roomModel.findOne({id: data.roomId});
+
+            if (!room) {
+                return resolve({
+                    success: false,
+                    message: 'Комната не найдена'
+                });
+            }
+
+            let access = room.userInvited.some(function (id) {
+                return id === data.userId;
+            });
+
+            if (!access) {
+                return resolve({
+                    success: false,
+                    message: 'Нет доступа'
+                });
+            }
+
+            let searchId = room.userAgreed.some(function (id) {
+                return id === data.userId;
+            });
+
+            if (searchId) {
+                return resolve({
+                    success: true
+                });
+            }
+
+            room.userAgreed.push(data.userId);
+
+            room.markModified('userAgreed');
+
+            await room.save();
+
+            resolve({
+                success: true,
+                alert: true
+            });
+
         });
-        room.markModified('userAgreed');
-        return room.save();
+    },
+    remove: function (data) {
+        return new Promise(async function (resolve) {
+            let room = await roomModel.findOne({id: data.roomId});
+
+            if (!room) {
+                return resolve({
+                    success: false,
+                    message: 'Комната не найдена'
+                });
+            }
+
+
+            room.userAgreed = room.userAgreed.filter(function (id) {
+                return id !== data.userId;
+            });
+
+            room.markModified('userAgreed');
+
+            await room.save();
+
+            resolve({
+                success: true
+            });
+
+        });
     }
 };

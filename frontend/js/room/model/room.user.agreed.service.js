@@ -6,7 +6,17 @@ module.service('roomUserAgreedService', function (roomUserAgreedResource) {
         return roomUserAgreedResource.get(data).$promise;
     }
 
+    function remove(data) {
+        return roomUserAgreedResource.delete(data).$promise;
+    }
+
+    function save(data){
+        return roomUserAgreedResource.save(data).$promise;
+    }
+
     return {
-        get: get
+        get: get,
+        remove: remove,
+        save: save
     }
 });

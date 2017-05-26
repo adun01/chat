@@ -35,7 +35,7 @@
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h3>
-                    Комната {{_ctrlRoom.data.room.name}}
+                    Комната {{_ctrlRoom.room.name}}
                 </h3>
             </div>
         </md-toolbar>
@@ -54,7 +54,7 @@
                     <label>Отправить сообщение</label>
                     <textarea name="message"
                               required
-                              data-ng-model="_ctrlRoom.data.message"
+                              data-ng-model="_ctrlRoom.message"
                               md-no-resize
                               max-rows="2"></textarea>
                 </md-input-container>

@@ -17,6 +17,12 @@
                 <md-list-item class="chat-user-list__item"
                               data-ng-repeat="user in _ctrlUserList.data.userList"
                               data-ng-click="_ctrlUserList.showUser($event, user)">
+                    <user-actions data-user="user"
+                                  data-room="_ctrlUserList.room"
+                                  data-show-user="true"
+                                  data-remove-room="_ctrlUserList.canRemove"
+                                  data-exit-room="true"
+                                  class="chat-user-actions"></user-actions>
 
                     <img class="chat-user-list__photo"
                          alt="{{user.login}}"

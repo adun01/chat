@@ -11,36 +11,38 @@ function clearUserData(obj) {
 }
 
 module.exports = {
-    create: function (req) {
+    create: function (data) {
+
         let self = this;
-        return new Promise(function (resolve, reject) {
-            self.search(req.body).then(function (result) {
 
-                if (!result.user) {
-                    new userModel({
-                        login: req.body.login,
-                        password: req.body.password,
-                        email: req.body.email
-                    }).save(function (err, user) {
-                        sessionEvents.save({
-                            session: req.session,
-                            extend: {user: user}
-                        });
-                        resolve({
-                            success: true,
-                            user: user
-                        });
-                    });
-                } else {
-                    resolve({
-                        success: false,
-                        message: 'Пользователь с таким именем или email, уже зарегестрирован'
-                    });
-                }
+        return new Promise(async function (resolve) {
 
-            }, function (data) {
-                reject(data);
-            });
+            let searchUser = await self.search(data);
+
+            if (!searchUser.success) {
+                let newUser = await new userModel({
+                    login: data.login,
+                    password: data.password,
+                    email: data.email
+                }).save(), clearUser;
+
+                clearUser = clearUserData(newUser);
+
+                sessionEvents.save({
+                    session: data.session,
+                    extend: {user: clearUser}
+                });
+
+                resolve({
+                    success: true,
+                    user: clearUser
+                });
+            } else {
+                resolve({
+                    success: false,
+                    message: 'Пользователь с таким логином или email уже зарегестрирован.'
+                });
+            }
         });
     },
     searchCollection: function (collection) {
@@ -86,7 +88,14 @@ module.exports = {
             }
 
             userModel.findOne({$or: searchCollection}, function (err, user) {
-                resolve({
+
+                if (!user) {
+                    return resolve({
+                        success: false,
+                        message: 'Пользователь не найден'
+                    });
+                }
+                return resolve({
                     success: true,
                     user: user
                 });
@@ -113,60 +122,47 @@ module.exports = {
             });
         });
     },
-    changeLogin: function (req) {
-        let self = this;
-        return new Promise(function (resolve, reject) {
-            self.search({id: req.session.user.id}).then(function (response) {
-                if (!response.user) {
-                    return reject({
-                        success: false,
-                        message: 'Пользователь не найден.'
-                    });
-                }
+    _changeLogin: function (data) {
+        let search = this.search;
 
-                if (req.session.user && req.session.user.id === response.user.id) {
-                    response.user.login = req.body.login;
+        return new Promise(async function (resolve, reject) {
+            let searchResultId = await search({id: data.id});
+            let searchResultLogin = await search({login: data.login});
 
-                    self.search({login: req.body.login}).then(function (isset) {
+            if (!searchResultId.success) {
+                return resolve({
+                    success: false,
+                    message: 'Пользователь не найден.'
+                });
+            }
 
-                        if (!isset.user) {
-                            response.user.save(function (err, user) {
-                                if (err) {
-                                    return reject({
-                                        success: false,
-                                        message: err.message
-                                    });
-                                }
-                                return resolve({
-                                    success: true,
-                                    message: 'Данные сохранены.'
-                                });
-                            });
-                        } else {
-                            return reject({
-                                success: false,
-                                message: 'Пользователь с таким именем уже существует.'
-                            });
-                        }
-                    });
-                } else {
-                    reject({
-                        success: false,
-                        message: 'Не достаточно прав.'
-                    });
-                }
-            }, function (err) {
-                reject(err);
+            if (searchResultLogin.success) {
+                return resolve({
+                    success: false,
+                    message: 'Это имя уже занято.'
+                });
+            }
+
+            searchResultId.user.login = data.login;
+
+            let userChange = await searchResultId.user.save();
+
+            return resolve({
+                success: true,
+                user: clearUserData(userChange),
+                message: 'Данные сохранены.'
             });
+
         });
     },
-    upload: function (req) {
+    _upload: function (data) {
         let self = this,
             fileName;
-        return new Promise(function (resolve, reject) {
+
+        return new Promise(function (resolve) {
 
             form = new formidable.IncomingForm(),
-                imageDirectory = path.resolve('public/images/users/') + '/' + req.session.user.id + '/';
+                imageDirectory = path.resolve('public/images/users/') + '/' + data.user.id + '/';
 
             form.uploadDir = imageDirectory;
             form.encoding = 'utf-8';
@@ -181,66 +177,89 @@ module.exports = {
                 fileName = file.name;
                 file.path = imageDirectory + file.name;
             });
+
             form.on('aborted', function (err) {
-                reject(err);
-            });
-            form.on('error', function (err) {
-                reject(err);
-            });
-
-            form.on('end', function () {
-
-                self.search({id: req.session.user.id}).then(function (result) {
-
-                    result.user.photo = fileName;
-
-                    result.user.save().then(function () {
-                        return resolve({
-                            success: true,
-                            message: 'Данные сохранены.'
-                        });
-                    });
-                });
-            });
-            form.parse(req, function (err, fields, files) {
-            });
-        });
-    },
-    update: function (req) {
-        let promiseLogin,
-            promiseUpload,
-            promiseList = [],
-            self = this;
-
-        return new Promise(function (resolve) {
-            if (req.body.login) {
-                promiseLogin = self.changeLogin(req);
-                promiseList.push(promiseLogin);
-            }
-
-            if (req.headers['content-type'].indexOf('multipart/form-data;') !== -1) {
-                promiseUpload = self.upload(req);
-                promiseList.push(promiseUpload);
-            }
-            Promise.all(promiseList).then(function (response) {
-                self.search({id: req.session.user.id}).then(function (result) {
-
-                    sessionEvents.save({
-                        session: req.session,
-                        extend: {user: result.user}
-                    });
-
-                    resolve({
-                        user: clearUserData(result.user),
-                        success: true,
-                        message: 'Данные сохранены.'
-                    });
-                });
-            }, function (err) {
                 resolve({
                     success: false,
                     message: err.message
                 });
+            });
+
+            form.on('error', function (err) {
+                resolve({
+                    success: false,
+                    message: err.message
+                });
+            });
+
+            form.on('end', async function () {
+
+                let userSearchResult = await self.search({id: data.user.id});
+
+                if (userSearchResult.success) {
+
+                    userSearchResult.user.photo = fileName;
+
+                    let userChange = await userSearchResult.user.save();
+
+                    return resolve({
+                        success: true,
+                        user: clearUserData(userChange),
+                        message: 'Данные сохранены.'
+                    });
+                } else {
+                    resolve({
+                        success: false,
+                        message: 'Пользователь не найден.'
+                    });
+                }
+
+            });
+
+            form.parse(data.req);
+        });
+    },
+    update: function (data) {
+        let self = this;
+
+        return new Promise(async function (resolve) {
+
+            if (data.user.id !== data.id) {
+                resolve({
+                    success: false,
+                    message: 'Нет прав.'
+                });
+            }
+
+            if (data.login) {
+
+                let changeLoginResult = await self._changeLogin(data);
+
+                if (!changeLoginResult.success) {
+                    return resolve(changeLoginResult);
+                }
+            }
+
+            if (data.headers['content-type'].indexOf('multipart/form-data;') !== -1) {
+
+                let changeImageResult = await self._upload(data);
+
+                if (!changeImageResult.success) {
+                    return resolve(changeLoginResult);
+                }
+            }
+
+            let changeUserSearch = await self.search({id: data.user.id});
+
+            sessionEvents.save({
+                session: data.session,
+                extend: {user: clearUserData(changeUserSearch.user)}
+            });
+
+            resolve({
+                user: clearUserData(changeUserSearch.user),
+                success: true,
+                message: 'Данные сохранены.'
             });
         });
     }

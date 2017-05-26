@@ -22,6 +22,34 @@ module.service('socketService', function ($timeout, $q) {
         });
     });
 
+    socket.on('userListChange', function (data) {
+        subscribe.publish({
+            name: 'userListChange',
+            data: data
+        });
+    });
+
+    socket.on('addUserInvited', function (data) {
+        subscribe.publish({
+            name: 'addUserInvited',
+            data: data
+        });
+    });
+
+    socket.on('roomListChange', function (data) {
+        subscribe.publish({
+            name: 'roomListChange',
+            data: data
+        });
+    });
+
+    socket.on('outOfRoom', function (data) {
+        subscribe.publish({
+            name: 'outOfRoom',
+            data: data
+        });
+    });
+
     const subscribe = (function () {
         const publish = function (data) {
                 if (!subscribe.chanells[data.name]) {

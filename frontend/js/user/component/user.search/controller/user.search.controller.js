@@ -1,11 +1,25 @@
 import module from '../../../';
 
-module.controller('userSearchController', function ($attrs, $q, userService) {
+module.controller('userSearchController', function (roomService, $q, userService) {
     const _ctrlUserSearch = this;
 
     _ctrlUserSearch.data = {
         users: []
     };
+
+    _ctrlUserSearch.photo = userService.photo;
+
+    _ctrlUserSearch.showUser = function (user) {
+        if (_ctrlUserSearch.user.id === user.id) {
+            userService.editUser();
+        } else {
+            userService.showUser(null, user);
+        }
+    };
+
+    _ctrlUserSearch.room = roomService.getCurrentRoom();
+
+    _ctrlUserSearch.user = userService.get();
 
     _ctrlUserSearch.placeholder = 'Введите логин искомого друга';
 

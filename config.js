@@ -10,5 +10,8 @@ module.exports = {
     },
     message: {
         field: ['id', 'text', 'date', 'creatorId']
+    },
+    room: {
+        field: ['id', 'creatorId', 'date', 'name', 'message', 'photo', 'create', 'userInvited', 'userAgreed']
     }
 };

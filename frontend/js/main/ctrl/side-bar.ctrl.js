@@ -5,10 +5,14 @@ module.controller('sideBarController',
     function ($rootScope, $mdSidenav, userService, authService, $state, $mdDialog, sideBarService) {
         const _ctrlSideBar = this;
 
+        _ctrlSideBar.user = null;
+        _ctrlSideBar.isAuth = false;
+
+        _ctrlSideBar.editUser = userService.editUser;
+
+        _ctrlSideBar.getPathPhoto = userService.photo;
+
         _ctrlSideBar.data = {
-            id: 'side-bar',
-            opened: false,
-            isAuth: false,
             listAuth: [
                 {
                     name: 'Авторизация',
@@ -17,8 +21,7 @@ module.controller('sideBarController',
                     name: 'Регистрация',
                     state: 'resolve.create'
                 }
-            ],
-            user: null
+            ]
         };
 
         _ctrlSideBar.toggleMenu = function () {
@@ -33,16 +36,14 @@ module.controller('sideBarController',
             });
         };
 
-        _ctrlSideBar.editUser = userService.editUser;
-
-        _ctrlSideBar.getPathPhoto = userService.photo;
-
         $rootScope.$on('isAuth', function () {
-            _ctrlSideBar.data.user = userService.get();
-            if (_ctrlSideBar.data.user) {
-                _ctrlSideBar.data.isAuth = true;
+
+            _ctrlSideBar.user = userService.get();
+
+            if (_ctrlSideBar.user) {
+                _ctrlSideBar.isAuth = true;
             } else {
-                _ctrlSideBar.data.isAuth = false;
+                _ctrlSideBar.isAuth = false;
             }
         });
     });

@@ -27,7 +27,7 @@
         <md-sidenav class="md-sidenav-left sidebar sidebar--main"
                     data-ng-cloak
                     md-disable-backdrop
-                    md-component-id="{{_ctrlSideBar.data.id}}"
+                    md-component-id="side-bar"
                     md-whiteframe="4">
 
             <div class="sidebar__row sidebar__header"
@@ -44,7 +44,7 @@
                 </div>
                 <div flex="25">
                     <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-log-out"
-                                data-ng-if="_ctrlSideBar.data.isAuth"
+                                data-ng-if="_ctrlSideBar.isAuth"
                                 data-ng-click="_ctrlSideBar.logOut()">
                         <ng-md-icon size="30"
                                     style="fill: white"
@@ -60,17 +60,17 @@
                      data-ng-cloak
                      layout="row"
                      layout-align="left center"
-                     data-ng-if="_ctrlSideBar.data.isAuth">
+                     data-ng-if="_ctrlSideBar.isAuth">
                     <div flex="80">
                         <div layout="row" layout-align="left center">
                             <img class="chat-user-intro__avatar"
-                                 data-ng-src="{{_ctrlSideBar.getPathPhoto(_ctrlSideBar.data.user.photo)}}">
+                                 data-ng-src="{{_ctrlSideBar.getPathPhoto()}}">
                             <div class="chat-user-intro__descr">
                                 <div class="chat-user-intro__info chat-user-intro__info--login">
-                                    {{_ctrlSideBar.data.user.login}}
+                                    {{_ctrlSideBar.user.login}}
                                 </div>
                                 <div class="chat-user-intro__info">
-                                    {{_ctrlSideBar.data.user.email}}
+                                    {{_ctrlSideBar.user.email}}
                                 </div>
                             </div>
                         </div>
@@ -90,13 +90,13 @@
                 </div>
 
                 <div data-ng-cloak
-                     data-ng-if="_ctrlSideBar.data.isAuth">
+                     data-ng-if="_ctrlSideBar.isAuth">
                     <room-list></room-list>
                 </div>
 
                 <md-list class="sidebar__row sidebar__eventsList"
                          data-ng-cloak
-                         data-ng-if="!_ctrlSideBar.data.isAuth">
+                         data-ng-if="!_ctrlSideBar.isAuth">
                     <md-subheader class="md-no-sticky">Выберите действие</md-subheader>
                     <md-list-item data-ng-repeat="action in _ctrlSideBar.data.listAuth">
                         <md-button class="md-raised"

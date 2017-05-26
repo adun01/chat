@@ -19,7 +19,6 @@ module.controller('roomAddController', function (FileUploader, $mdDialog, roomSe
             }, '')
         }).then(function (response) {
             roomAddCtrl.close();
-            $rootScope.$emit('roomListReInit', null);
             $state.go('resolve.main.room', {
                 id: response.room.id
             });

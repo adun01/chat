@@ -1,6 +1,6 @@
 const session = require('../session/'),
-    userEvents = require('../user/'),
-    sessionEvents = require('../session/'),
+    userApi = require('../user/'),
+    sessionApi = require('../session/'),
     config = require('../../config'),
     _ = require('lodash'),
     cryptoApi = require('../../db/crypto');
@@ -10,44 +10,59 @@ function clearUserData(obj) {
 }
 
 module.exports = {
-    logIn: function (req) {
-        return new Promise(function (resolve, reject) {
+    logIn: async function (data) {
 
-            userEvents.search(req.body).then(function (result) {
+        return new Promise(async function (resolve) {
 
-                if (!result.user) {
-                    resolve({
-                        success: false,
-                        message: 'Пользователя с таким логином не существует'
-                    });
-                    return;
-                }
+            let searchUser = await userApi.search(data), user;
 
-                if (cryptoApi.generatePassword(req.body.password, result.user.salt) === result.user.password) {
-                    sessionEvents.save({
-                        session: req.session,
-                        extend: {user: result.user}
-                    });
-                    resolve({
-                        success: true,
-                        user: clearUserData(result.user)
-                    });
-                } else {
-                    resolve({
-                        success: false,
-                        message: 'Не правильный логин или пароль'
-                    });
-                }
+            if (!searchUser.user) {
+                return resolve({
+                    success: false,
+                    message: 'Пользователя с таким логином не существует'
+                });
+            }
 
-            }, function (err) {
-                reject(err);
+            if (cryptoApi.generatePassword(data.password, searchUser.user.salt) === searchUser.user.password) {
+
+                user = clearUserData(searchUser.user);
+
+                sessionApi.save({
+                    session: data.session,
+                    extend: {user: user}
+                });
+
+                return resolve({
+                    success: true,
+                    user: user
+                });
+            }
+
+            return resolve({
+                success: false,
+                message: 'Не правильный логин или пароль'
             });
         });
     },
-    isAuth: function (req) {
-        return session.get(req.sessionID);
+    isAuth: function (data) {
+        return new Promise(async function (resolve) {
+
+            let session = await sessionApi.get(data.sessionID);
+
+            if (!session.user || !session.user.id) {
+                resolve({
+                    success: false,
+                    message: 'Не авторизован.'
+                });
+            } else {
+                resolve({
+                    success: true,
+                    user: session.user
+                });
+            }
+        });
     },
-    logOut: function (req) {
-        return session.destroy(req.sessionID);
+    logOut: function (data) {
+        return session.destroy(data.sessionID);
     }
 };

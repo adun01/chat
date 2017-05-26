@@ -21,7 +21,10 @@ module.controller('userSearchCollectionController', function ($scope, $attrs, $q
             } else {
                 _ctrlSearchColl.oldQuery = query;
                 userService.search({query: query}).then(function (users) {
-                    _ctrlSearchColl.users = users;
+                    _ctrlSearchColl.users = users.map(function (user) {
+                        user.photo = userService.photo(user);
+                        return user;
+                    });
                     deferred.resolve(users);
                 });
             }

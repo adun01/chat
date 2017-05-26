@@ -1,98 +1,43 @@
-const roomApi = require('../room/'),
-    roomsModel = require('../../db/room/room.model'),
-    roomUserAgreedApi = require('../room/room.userAgreed'),
-    roomUserInvitedApi = require('../room/room.userInvited'),
-    _ = require('lodash');
+const roomModel = require('../../db/room/room.model'),
+    _ = require('lodash'),
+    config = require('../../config');
+
+function clearRoomField(rooms) {
+
+    let fieldAccess = _.remove(_.clone(config.room.field), function (name) {
+        return ['message', 'userAgreed', 'userInvited'].indexOf(name) === -1;
+    });
+
+    if (_.isArray(rooms)) {
+        return rooms.map(function (room) {
+            return _.pick(room, fieldAccess);
+        });
+    } else {
+
+        return _.pick(rooms, fieldAccess);
+    }
+}
 
 module.exports = {
     get: function (data) {
-        return new Promise(function (resolve) {
+        return new Promise(async function (resolve) {
+            let roomsInvited = await roomModel.find({userInvited: {$in: [data.userId]}});
 
-            roomUserInvitedApi.get({id: data.id}).then(function (rooms) {
+            let roomsNotification = roomsInvited.filter(function (room) {
 
-                let notifyRoom = rooms.filter(function (room) {
-
-                    if (!room.userAgreed.length) {
-                        return true;
-                    }
-
-                    return !room.userAgreed.some(function (id) {
-                        return id === +data.id;
-                    });
+                return !room.userAgreed.some(function (id) {
+                    return id === data.userId;
                 });
-
-                let result = notifyRoom.map(function (room) {
-                    return {
-                        id: room.id,
-                        name: room.name,
-                        photo: room.photo
-                    }
-                });
-
-                resolve(result);
             });
-        });
-    },
-    save: function (id, userId) {
 
-        return new Promise(function (resolve) {
-            roomsModel.findOne({
-                id: +id
-            }).then(function (room) {
+            let clearRooms = clearRoomField(roomsNotification);
 
-                if (!room) {
-                    resolve({
-                        success: false,
-                        message: 'Комната не найдена'
-                    });
-                }
-
-                let allow = room.userInvited.some(function (userInvitedId) {
-                    return userInvitedId === userId;
-                });
-
-                if (allow) {
-                    let issetAgreed = room.userAgreed.some(function (userAgreedId) {
-                        return userAgreedId === userId;
-                    });
-
-                    if (!issetAgreed) {
-                        roomUserAgreedApi.add(room, userId).then(function (result) {
-                            resolve({
-                                success: true
-                            });
-                        });
-                    } else {
-                        resolve({
-                            success: true
-                        });
-                    }
-                } else {
-                    resolve({
-                        success: false,
-                        message: 'Вас не пригласили в комнату'
-                    });
-                }
-
-            });
-        });
-    },
-    remove: function (id, userId) {
-
-        return new Promise(function (resolve) {
-            roomsModel.findOne({
-                id: +id
-            }).then(function (room) {
-
-                roomUserAgreedApi.remove(room, userId).then(function () {
-                    roomUserInvitedApi.remove(room, userId).then(function () {
-                        resolve({
-                            success: true
-                        });
-                    });
-                });
+            resolve({
+                success: true,
+                rooms: clearRooms
             });
 
         });
     }
+
 };

@@ -1,22 +1,27 @@
 import module from '../../../';
 
-module.controller('roomListController', function (roomService, $rootScope) {
+module.controller('roomListController', function (roomService, $timeout, socketService) {
     const _ctrlRoomList = this;
-    
+
     _ctrlRoomList.data = {
-        list: []
+        rooms: []
     };
 
     _ctrlRoomList.addRoom = roomService.addRoom;
 
     function getListRoom() {
         roomService.get().then(function (response) {
-            _ctrlRoomList.data.list = response.list;
+            _ctrlRoomList.data.rooms = response.rooms;
         });
     }
 
-    $rootScope.$on('roomListReInit', function () {
-        getListRoom();
+    socketService.subscribe.subscribes({
+        name: 'roomListChange',
+        fn: function () {
+            $timeout(function () {
+                getListRoom();
+            });
+        }
     });
 
     getListRoom();

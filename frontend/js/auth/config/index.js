@@ -18,6 +18,7 @@ export default module.config(function ($stateProvider) {
                             defer.resolve('auth is error');
                         } else {
                             userService.set(response.user);
+
                             $rootScope.$emit('isAuth');
                             defer.resolve('isAuth');
                         }

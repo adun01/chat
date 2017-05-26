@@ -2,18 +2,14 @@
 const roomModel = require('../../db/room/room.model'),
     userApi = require('../user/'),
     config = require('../../config'),
-    roomUserAgreed = require('../room/room.userAgreed'),
     _ = require('lodash');
 
-function searchAccessRoom(roomId, userId) {
-    return new Promise(function (resolve) {
-        roomUserAgreed.get({id: roomId}).then(function (userAgreed) {
-            let access = userAgreed.list.some(function (user) {
-                return user.id === userId;
-            });
-            resolve(access);
-        });
+function searchAccessRoom(room, userId) {
+    let access = room.userAgreed.some(function (id) {
+        return id === userId;
     });
+
+    return access;
 }
 
 function clearMesagerData(obj) {
@@ -22,68 +18,73 @@ function clearMesagerData(obj) {
 
 module.exports = {
     add: function (data) {
-        return new Promise(function (resolve, reject) {
-            searchAccessRoom(data.roomId, data.creatorId).then(function (access) {
-                if (access) {
-                    roomModel.findOne({id: data.roomId}, function (err, room) {
-                        room.message.push({
-                            creatorId: data.creatorId,
-                            text: data.message
-                        });
+        return new Promise(async function (resolve) {
 
-                        room.markModified('message');
+            let room = await roomModel.findOne({id: data.roomId});
 
-                        room.save(function (err, room) {
-                            resolve({
-                                success: true,
-                                message: clearMesagerData(room.message[room.message.length-1])
-                            });
-                        });
-                    });
-                } else {
-                    reject({
-                        success: false,
-                        message: 'Нет доступа'
-                    });
-                }
+            if (!searchAccessRoom(room, data.userId)) {
+                return resolve({
+                    success: false,
+                    message: 'Нет доступа.'
+                });
+            }
+
+            room.message.push({
+                creatorId: data.userId,
+                text: data.message
             });
+
+            room.markModified('message');
+
+            let roomChange = await room.save(),
+                lastMessage = clearMesagerData(roomChange.message[roomChange.message.length - 1]);
+
+            resolve({
+                success: true,
+                message: lastMessage
+            });
+
         });
     },
     get: function (data) {
-        return new Promise(function (resolve, reject) {
-            searchAccessRoom(data.roomId, data.creatorId).then(function (access) {
-                if (access) {
-                    roomModel.findOne({id: data.roomId}, function (err, room) {
-                        let promiseAll = [];
+        return new Promise(async function (resolve) {
 
-                        let messages = room.message.map(function (mess) {
-                            let currPromise = userApi.search({
-                                id: mess.creatorId
-                            });
-                            mess = clearMesagerData(mess);
-                            currPromise.then(function (result) {
+            let room = await roomModel.findOne({id: data.roomId});
 
-                                mess.user = result.user;
-                            });
+            if (!room) {
+                return resolve({
+                    success: false,
+                    message: 'Комната не найдена.'
+                });
+            }
 
-                            promiseAll.push(currPromise);
+            if (!searchAccessRoom(room, data.userId)) {
+                return resolve({
+                    success: false,
+                    message: 'Нет доступа.'
+                });
+            }
 
-                            return mess;
-                        });
-                        Promise.all(promiseAll).then(function () {
+            let userIdList = room.message.map(function (mess) {
+                return mess.creatorId;
+            });
 
-                            resolve({
-                                success: true,
-                                message: messages
-                            });
-                        });
-                    });
-                } else {
-                    reject({
-                        success: false,
-                        message: 'Нет доступа'
-                    });
-                }
+            let usersList = await userApi.searchCollection(userIdList);
+
+            let messages = room.message.map(function (mess) {
+
+                mess = clearMesagerData(mess);
+
+                mess.user = usersList.users.find(function (user) {
+                    return mess.creatorId === user.id;
+                });
+
+                return mess;
+            });
+
+            resolve({
+                success: true,
+                messages: messages
             });
         });
     }

@@ -1,22 +1,38 @@
 <form class="chat-form">
     <md-input-container class="chat-form__row">
-            <input type="text"
-                   data-ng-attr-placeholder="{{_ctrlUserSearch.placeholder}}"
-                   data-ng-change="_ctrlUserSearch.searchUsers(_ctrlUserSearch.query)"
-                   data-ng-model="_ctrlUserSearch.query">
+        <input type="text"
+               data-ng-attr-placeholder="{{_ctrlUserSearch.placeholder}}"
+               data-ng-change="_ctrlUserSearch.searchUsers(_ctrlUserSearch.query)"
+               data-ng-model="_ctrlUserSearch.query">
     </md-input-container>
     <div layout="row"
          layout-align="left center">
         <div flex="100">
-            <md-list class="chat-user-list">
-                <md-list-item class="chat-user-list__item chat-user-list__item--user-search"
-                              data-ng-repeat="user in _ctrlUserSearch.data.users"
-                              data-ng-click="_ctrlUserSearch.showUser($event, user)">
+            <md-toolbar layout="row">
+                <div class="md-toolbar-tools">
+                    <span>Найдено {{_ctrlUserSearch.data.users.length}}</span>
+                </div>
+            </md-toolbar>
+            <md-list flex>
+                <md-list-item class="md-3-line"
+                              data-ng-click="_ctrlUserSearch.showUser(user)"
+                              data-ng-repeat="user in _ctrlUserSearch.data.users">
 
-                    <img class="chat-user-list__photo"
+                    <img class="md-avatar"
                          alt="{{user.login}}"
-                         data-ng-src="{{user.photo}}">
-                    <span class="chat-user-list__login">{{user.login}}</span>
+                         data-ng-src="{{_ctrlUserSearch.photo(user)}}"/>
+
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ user.login }}</h3>
+                        <h4>{{ user.email }}</h4>
+                    </div>
+
+                    <user-actions data-user="user"
+                                  data-show-user="true"
+                                  data-add-room="true"
+                                  data-room="_ctrlUserSearch.room"
+                                  class="chat-user-actions"></user-actions>
+
                 </md-list-item>
             </md-list>
         </div>

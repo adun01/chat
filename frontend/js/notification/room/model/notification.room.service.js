@@ -16,22 +16,7 @@ module.service('notificationRoomService', function (notificationRoomResource, $q
         return defer.promise;
     }
 
-    function save(room) {
-
-        return notificationRoomResource.save({
-            id: room.id
-        }).$promise;
-    }
-
-    function remove(room) {
-        return notificationRoomResource.delete({
-            id: room.id
-        }).$promise;
-    }
-
     return {
-        get: get,
-        save: save,
-        remove: remove
+        get: get
     }
 });

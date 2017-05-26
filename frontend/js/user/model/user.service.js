@@ -19,14 +19,11 @@ module.service('userService', function (socketService, userResource, $q, $mdDial
     }
 
     function search(data) {
-        let deffer = $q.defer(),
-            users;
+
+        let deffer = $q.defer();
+
         userResource.get(data).$promise.then(function (response) {
-            users = response.users.map(function (user) {
-                user.photo = photoPath(user);
-                return user;
-            });
-            deffer.resolve(users);
+            deffer.resolve(response.users);
         });
         return deffer.promise;
     }
@@ -42,7 +39,7 @@ module.service('userService', function (socketService, userResource, $q, $mdDial
         return user.photo ? '/images/users/' + user.id + '/' + user.photo : '/images/user_null.png';
     }
 
-    function editUser(e, user) {
+    function editUser(e) {
         $mdDialog.show({
             controller: 'userEditController',
             controllerAs: '_ctrlUserEdit',

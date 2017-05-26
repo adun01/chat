@@ -15,7 +15,7 @@ module.controller('messageListController', function ($scope, roomService, roomMe
 
     _ctrlMessageList.getMessage = function () {
         roomMessageService.get({id: _ctrlMessageList.data.room.id}).then(function (resp) {
-            _ctrlMessageList.data.messages = resp.message;
+            _ctrlMessageList.data.messages = resp.messages;
         });
     };
 

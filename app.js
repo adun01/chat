@@ -76,12 +76,11 @@ io.use(async function (socket, next) {
 });
 
 // singe route
-let route = require('./routes/index'),
+let index = require('./routes/index'),
     auth = require('./routes/auth'),
-    room = require('./routes/room'),
-    message = require('./routes/message'),
-    notification = require('./routes/notification'),
     user = require('./routes/user');
+
+require('./routes/room/')(app);
 
 app.use(function (req, res, next) {
     let originalQuery = url.parse(req.originalUrl),
@@ -99,11 +98,8 @@ app.use(function (req, res, next) {
 });
 
 app.use(user);
-app.use(notification);
-app.use(message);
-app.use(room);
 app.use(auth);
-app.use('/', route);
+app.use('/', index);
 
 app.use(function (req, res, next) {
     let err = new Error('Not Found');

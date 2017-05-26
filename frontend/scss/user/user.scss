@@ -128,13 +128,9 @@ $photo_size: 74px;
       height: 68px;
       border-radius: 4px;
 
-      &--user-search {
-        margin: 0 0 5px 0;
-        border-radius: 4px;
-        border: 1px solid #000;
-
-        & .chat-user-list__login {
-          color: #000;
+      &:hover {
+        & .chat-user-actions {
+          width: 53px;
         }
       }
     }
@@ -152,6 +148,30 @@ $photo_size: 74px;
       text-overflow: ellipsis;
       margin: 2px 0 0 8px;
       display: inline-block;
+    }
+
+    & .chat-user-actions {
+      min-width: 0;
+      min-height: 0;
+      width: 0;
+      overflow: hidden;
+    }
+  }
+
+  &-actions {
+    position: relative;
+    transition: all 0.25s ease;
+    z-index: 2021;
+
+    &__icon {
+      margin-right: 6px;
+      vertical-align: text-bottom;
+    }
+
+    &__name {
+      display: inline-block;
+      vertical-align: text-bottom;
+      margin: 8px 0;
     }
   }
 }
