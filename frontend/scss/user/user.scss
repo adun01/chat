@@ -37,6 +37,7 @@ $photo_size: 56px;
     &__photo {
       background-color: #e8e8e8;
       max-width: 100%;
+      border-radius: 50%;
     }
 
     &__action-photo {
@@ -67,6 +68,7 @@ $photo_size: 56px;
       margin: 8px auto;
       position: relative;
       overflow: hidden;
+      border-radius: 50%;
 
       &:after {
         content: '';
@@ -78,7 +80,8 @@ $photo_size: 56px;
         top: 0;
         opacity: 0;
         transition: all 0.5s ease;
-        box-shadow: inset 0 0 43px 45px rgba(0, 0, 0, 0.4);
+        box-shadow: inset 0 0 50px 10px rgba(0,0,0,.2);
+        border-radius: 50%;
         z-index: 2;
         pointer-events: none;
       }
