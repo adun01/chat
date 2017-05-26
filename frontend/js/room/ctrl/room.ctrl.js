@@ -38,7 +38,7 @@ module.controller('roomController',
         };
 
         socketService.subscribe.subscribes({
-            name: 'outOfRoom',
+            name: 'roomListChangeRemove',
             fn: function (data) {
                 if (+data.roomId === +_ctrlRoom.room.id) {
                     $state.go('resolve.main', {

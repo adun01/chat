@@ -88,9 +88,15 @@ module.exports = {
                 });
             }
 
+            if (room.creatorId !== data.userId && data.userDeleted !== data.userId) {
+                return resolve({
+                    success: false,
+                    message: 'Удалить из комнаты может только создатель.'
+                });
+            }
 
             room.userAgreed = room.userAgreed.filter(function (id) {
-                return id !== data.userId;
+                return id !== data.userDeleted;
             });
 
             room.markModified('userAgreed');

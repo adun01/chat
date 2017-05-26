@@ -21,7 +21,8 @@ module.controller('userActionsController',
 
         _ctrlUserAction.removeInRoom = function () {
             roomUserAgreedService.remove({
-                id: _ctrlUserAction.room.id
+                roomId: _ctrlUserAction.room.id,
+                userId: _ctrlUserAction.user.id
             });
         };
 

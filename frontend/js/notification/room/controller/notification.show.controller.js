@@ -12,8 +12,9 @@ module.controller('notificationShowController',
 
         _ctrlNSRoom.remove = function (room) {
 
-            roomUserInvitedService.remove({
-                id: room.id
+            roomUserAgreedService.remove({
+                roomId: room.id,
+                userId: _ctrlNSRoom.user.id
             }).then(function (response) {
                 if (response.success) {
                     _ctrlNSRoom.clear(room);

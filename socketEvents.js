@@ -49,55 +49,34 @@ module.exports = function (io) {
 
         sockets.add(socket);
 
-        socket.on('disconnect', function () {
-        });
-
         socket.on('roomOpen', async function (data) {
             await socket.join(data.id);
             roomListUserOnline.add(data.id, clearUserData(sockets.get(socket.user.id).user));
         });
 
-        socket.on('roomListChange', function (data) {
-            let list = roomListUserOnline.get();
-            io.to(data.id).emit('roomListChange', list);
-        });
     });
 
-    eventsMediator.on('newMessage', function (data) {
-        io.to(data.roomId).emit('newMessage', {
-            message: data.message,
-            roomid: data.roomId,
-            user: clearUserData(clearUserData(sockets.get(data.userId).user))
-        });
+    eventsMediator.on('roomListChange', function (data) {
+        let socket = sockets.get(data.userId);
+
+        if (socket) {
+            socket.emit('roomListChange');
+        }
+    });
+
+    eventsMediator.on('roomListChangeRemove', async function (data) {
+        let socket = sockets.get(data.userId);
+
+        await socket.leave(data.userId);
+
+        if (socket) {
+            socket.emit('roomListChangeRemove', {
+                roomId: data.roomId
+            });
+        }
     });
 
     eventsMediator.on('userListChange', function (data) {
-        let socket = sockets.get(data.userId);
-
-        io.to(data.roomId).emit('userListChange', {
-            roomId: data.roomId,
-            userId: data.userId
-        });
-
-        socket.emit('roomListChange', {
-            roomId: data.roomId,
-            action: 'remove'
-        });
-
-        socket.emit('outOfRoom', {
-            roomId: data.roomId
-        });
-    });
-
-    eventsMediator.on('addUserInvited', async function (data) {
-
-        let searchRoom = await roomApi.search(data.roomId),
-            socket = sockets.get(data.userId);
-
-        if (socket) {
-            socket.emit('addUserInvited', {
-                room: searchRoom.room
-            });
-        }
+        io.to(data.roomId).emit('userListChange');
     });
 };

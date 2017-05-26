@@ -33,7 +33,7 @@ module.controller('userListController',
         });
 
         _ctrlUserList.getUsers = function () {
-            roomUserAgreedService.get({id: _ctrlUserList.room.id}).then(function (response) {
+            roomUserAgreedService.get({roomId: _ctrlUserList.room.id}).then(function (response) {
                 _ctrlUserList.data.userList = response.list;
             });
         };

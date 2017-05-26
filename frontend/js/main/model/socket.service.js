@@ -6,32 +6,13 @@ module.service('socketService', function ($timeout, $q) {
     function roomOpen(data) {
         let defer = $q.defer();
         socket.emit('roomOpen', data);
-        socket.emit('roomListChange', data);
-
-        socket.on('roomListChange', function (data) {
-            defer.resolve(data);
-        });
 
         return defer.promise;
     }
 
-    socket.on('newMessage', function (data) {
-        subscribe.publish({
-            name: 'newMessage',
-            data: data
-        });
-    });
-
     socket.on('userListChange', function (data) {
         subscribe.publish({
             name: 'userListChange',
-            data: data
-        });
-    });
-
-    socket.on('addUserInvited', function (data) {
-        subscribe.publish({
-            name: 'addUserInvited',
             data: data
         });
     });
@@ -43,9 +24,9 @@ module.service('socketService', function ($timeout, $q) {
         });
     });
 
-    socket.on('outOfRoom', function (data) {
+    socket.on('roomListChangeRemove', function (data) {
         subscribe.publish({
-            name: 'outOfRoom',
+            name: 'roomListChangeRemove',
             data: data
         });
     });
