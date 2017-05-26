@@ -48,5 +48,18 @@ module.service('socketServiceMediator', function ($timeout, $q, subscribePublish
         });
     });
 
+    socket.on('newMessageRoom', function (data) {
+
+        let currentRoom = roomService.getCurrentRoom();
+
+        if (currentRoom.id === +data.roomId) {
+
+            subscribePublish.publish({
+                name: 'newMessageRoom',
+                data: data
+            });
+        }
+    });
+
     return null;
 });

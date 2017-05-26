@@ -5,11 +5,9 @@ const roomModel = require('../../db/room/room.model'),
     _ = require('lodash');
 
 function searchAccessRoom(room, userId) {
-    let access = room.userAgreed.some(function (id) {
+    return room.userAgreed.some(function (id) {
         return id === userId;
     });
-
-    return access;
 }
 
 function clearMesagerData(obj) {
@@ -38,6 +36,12 @@ module.exports = {
 
             let roomChange = await room.save(),
                 lastMessage = clearMesagerData(roomChange.message[roomChange.message.length - 1]);
+
+            let searchUsser = await userApi.search({
+                id: lastMessage.creatorId
+            });
+
+            lastMessage.user = searchUsser.user;
 
             resolve({
                 success: true,

@@ -88,4 +88,8 @@ module.exports = function (io) {
     eventsMediator.on('userListChange', function (data) {
         io.to(data.roomId).emit('userListChange', data);
     });
+
+    eventsMediator.on('newMessageRoom', function (data) {
+        io.to(data.roomId).emit('newMessageRoom', data);
+    });
 };

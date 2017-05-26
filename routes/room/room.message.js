@@ -2,9 +2,9 @@ const router = require('express').Router(),
     eventsMediator = require('../../events.mediator'),
     messageApi = require('../../api/message/');
 
-router.get('/api/room/:id/message', async function (req, res) {
+router.get('/api/room/:roomId/message', async function (req, res) {
     let seacrMessagesResult = await messageApi.get({
-        roomId: +req.params.id,
+        roomId: +req.params.roomId,
         userId: +req.session.user.id
     });
 
@@ -12,18 +12,17 @@ router.get('/api/room/:id/message', async function (req, res) {
 
 });
 
-router.post('/api/room/:id/message', async function (req, res) {
+router.post('/api/room/:roomId/message', async function (req, res) {
 
     let newMessageResult = await messageApi.add({
         userId: req.session.user.id,
         message: req.body.message,
-        roomId: req.body.id
+        roomId: +req.params.roomId
     });
 
-    eventsMediator.emit('newMessage', {
+    eventsMediator.emit('newMessageRoom', {
         message: newMessageResult.message,
-        roomId: req.body.id,
-        userId: req.session.user.id
+        roomId: +req.params.roomId
     });
 
     res.send(JSON.stringify(newMessageResult));

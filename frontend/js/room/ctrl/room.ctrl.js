@@ -28,7 +28,7 @@ module.controller('roomController',
 
         _ctrlRoom.send = function () {
             roomMessageService.save({
-                id: _ctrlRoom.room.id,
+                roomId: _ctrlRoom.room.id,
                 message: _ctrlRoom.message
             }).then(function (response) {
                 if (response.success) {

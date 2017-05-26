@@ -1,6 +1,6 @@
 import module from '../../../';
 
-module.controller('messageListController', function ($scope, roomService, roomMessageService, userService, subscribePublish) {
+module.controller('messageListController', function ($timeout, roomService, roomMessageService, userService, subscribePublish) {
 
     const _ctrlMessageList = this;
 
@@ -14,23 +14,20 @@ module.controller('messageListController', function ($scope, roomService, roomMe
     _ctrlMessageList.getPathPhoto = userService.photo;
 
     _ctrlMessageList.getMessage = function () {
-        roomMessageService.get({id: _ctrlMessageList.data.room.id}).then(function (resp) {
+        roomMessageService.get({roomId: _ctrlMessageList.data.room.id}).then(function (resp) {
             _ctrlMessageList.data.messages = resp.messages;
         });
     };
 
-    subscribePublish.subscribe({
-        name: 'newMessage',
-        fn: function (data) {
-            if (_ctrlMessageList.data.room.id === +data.roomid) {
-                data.message.user = data.user;
+    _ctrlMessageList.getMessage();
 
-                $scope.$apply(function () {
-                    _ctrlMessageList.data.messages.push(data.message);
-                });
-            }
+    subscribePublish.subscribe({
+        name: 'newMessageRoom',
+        fn: function (data) {
+
+            $timeout(function () {
+                _ctrlMessageList.data.messages.push(data.message);
+            });
         }
     });
-
-    _ctrlMessageList.getMessage();
 });

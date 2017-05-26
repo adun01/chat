@@ -27449,6 +27449,19 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('socketServiceMediator', func
         });
     });
 
+    socket.on('newMessageRoom', function (data) {
+
+        let currentRoom = roomService.getCurrentRoom();
+
+        if (currentRoom.id === +data.roomId) {
+
+            subscribePublish.publish({
+                name: 'newMessageRoom',
+                data: data
+            });
+        }
+    });
+
     return null;
 });
 
@@ -27700,7 +27713,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('messageListController', function ($scope, roomService, roomMessageService, userService, subscribePublish) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('messageListController', function ($timeout, roomService, roomMessageService, userService, subscribePublish) {
 
     const _ctrlMessageList = this;
 
@@ -27714,25 +27727,22 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('messageListController', f
     _ctrlMessageList.getPathPhoto = userService.photo;
 
     _ctrlMessageList.getMessage = function () {
-        roomMessageService.get({id: _ctrlMessageList.data.room.id}).then(function (resp) {
+        roomMessageService.get({roomId: _ctrlMessageList.data.room.id}).then(function (resp) {
             _ctrlMessageList.data.messages = resp.messages;
         });
     };
 
-    subscribePublish.subscribe({
-        name: 'newMessage',
-        fn: function (data) {
-            if (_ctrlMessageList.data.room.id === +data.roomid) {
-                data.message.user = data.user;
+    _ctrlMessageList.getMessage();
 
-                $scope.$apply(function () {
-                    _ctrlMessageList.data.messages.push(data.message);
-                });
-            }
+    subscribePublish.subscribe({
+        name: 'newMessageRoom',
+        fn: function (data) {
+
+            $timeout(function () {
+                _ctrlMessageList.data.messages.push(data.message);
+            });
         }
     });
-
-    _ctrlMessageList.getMessage();
 });
 
 /***/ }),
@@ -27933,7 +27943,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomController',
 
         _ctrlRoom.send = function () {
             roomMessageService.save({
-                id: _ctrlRoom.room.id,
+                roomId: _ctrlRoom.room.id,
                 message: _ctrlRoom.message
             }).then(function (response) {
                 if (response.success) {
@@ -27965,8 +27975,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomMessageResource', function ($resource) {
-    return $resource('api/room/:id/message/', {
-        id: '@id'
+    return $resource('api/room/:roomId/message/', {
+        roomId: '@roomId'
     }, {
         update: {
             method: 'PUT'
