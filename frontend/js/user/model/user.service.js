@@ -2,7 +2,7 @@ import module from '../';
 import userShowTpl from '../view/user.show.view.html';
 import userEditTpl from '../view/user.edit.view.html';
 
-module.service('userService', function (socketService, userResource, $q, $mdDialog) {
+module.service('userService', function (userResource, $q, $mdDialog) {
 
     let user = null;
 

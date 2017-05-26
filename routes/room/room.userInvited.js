@@ -2,18 +2,18 @@ const router = require('express').Router(),
     eventsMediator = require('../../events.mediator'),
     userInvited = require('../../api/room/room.userInvited');
 
-router.post('/api/room/:roomId/userInvited/:id/', async function (req, res) {
+router.post('/api/room/:roomId/userInvited/:userId/', async function (req, res) {
 
     let addResult = await userInvited.add({
         roomId: +req.params.roomId,
         userId: req.session.user.id,
-        addedUserId: +req.params.id
+        addedUserId: +req.params.userId
     });
 
     if (addResult.alert) {
-        eventsMediator.emit('addUserInvited', {
+        eventsMediator.emit('newNotificationRoom', {
             roomId: +req.params.roomId,
-            userId: +req.params.id
+            userId: +req.params.userId
         });
     }
 

@@ -9,7 +9,7 @@ export default module.config(function ($stateProvider) {
             controllerAs: '_ctrlRoom',
             template: roomTpl,
             resolve: {
-                roomData: function (userService, socketService, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
+                roomData: function (userService, subscribePublish, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
                     let defer = $q.defer();
 
                     roomService.get({id: $stateParams.id}).then(function (response) {
@@ -17,8 +17,9 @@ export default module.config(function ($stateProvider) {
                             $mdDialog.cancel();
                             sideBarService.unLocked();
 
-                            socketService.roomOpen({
-                                id: $stateParams.id
+                            subscribePublish.publish({
+                                name: 'roomOpen',
+                                data: {id: $stateParams.id}
                             });
 
                             defer.resolve(response.room);

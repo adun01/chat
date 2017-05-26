@@ -1,61 +1,52 @@
 import module from '../';
 
-module.service('socketService', function ($timeout, $q) {
+module.service('socketServiceMediator', function ($timeout, $q, subscribePublish, roomService) {
     const socket = io();
 
-    function roomOpen(data) {
-        let defer = $q.defer();
-        socket.emit('roomOpen', data);
+    subscribePublish.subscribe({
+        name: 'roomOpen',
+        fn: function (data) {
 
-        return defer.promise;
-    }
+            socket.emit('roomOpen', data);
+        }
+    });
 
     socket.on('userListChange', function (data) {
-        subscribe.publish({
-            name: 'userListChange',
-            data: data
-        });
+        let currentRoom = roomService.getCurrentRoom();
+
+        if (currentRoom.id === +data.roomId) {
+            subscribePublish.publish({
+                name: 'userListChange',
+                data: data
+            });
+        }
     });
 
     socket.on('roomListChange', function (data) {
-        subscribe.publish({
+        subscribePublish.publish({
             name: 'roomListChange',
             data: data
         });
     });
 
     socket.on('roomListChangeRemove', function (data) {
-        subscribe.publish({
-            name: 'roomListChangeRemove',
+        let currentRoom = roomService.getCurrentRoom();
+
+        if (currentRoom.id === +data.roomId) {
+            subscribePublish.publish({
+                name: 'roomListChangeRemove',
+                data: data
+            });
+        }
+    });
+
+    socket.on('newNotificationRoom', function (data) {
+
+        subscribePublish.publish({
+            name: 'newNotificationRoom',
             data: data
         });
     });
 
-    const subscribe = (function () {
-        const publish = function (data) {
-                if (!subscribe.chanells[data.name]) {
-                    return false;
-                }
-                subscribe.chanells[data.name].forEach(function (fn) {
-                    fn(data.data);
-                });
-            },
-            subscribes = function (data) {
-                if (!subscribe.chanells[data.name]) {
-                    subscribe.chanells[data.name] = [];
-                }
-                subscribe.chanells[data.name].push(data.fn);
-            };
-
-        return {
-            chanells: {},
-            subscribes: subscribes,
-            publish: publish
-        }
-    }());
-
-    return {
-        roomOpen: roomOpen,
-        subscribe: subscribe
-    };
+    return null;
 });

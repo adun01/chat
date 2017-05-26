@@ -2,7 +2,7 @@ import module from '../';
 import userSearchTpl from '../view/user.search.html';
 
 module.controller('roomController',
-    function ($mdDialog, userService, roomService, roomMessageService, sideBarService, socketService, $state) {
+    function ($mdDialog, userService, roomService, roomMessageService, sideBarService, subscribePublish, $state) {
 
         const _ctrlRoom = this;
 
@@ -37,7 +37,7 @@ module.controller('roomController',
             });
         };
 
-        socketService.subscribe.subscribes({
+        subscribePublish.subscribe({
             name: 'roomListChangeRemove',
             fn: function (data) {
                 if (+data.roomId === +_ctrlRoom.room.id) {

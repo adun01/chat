@@ -1,6 +1,6 @@
 import module from '../';
 
-module.service('authService', function (socketService, authResource) {
+module.service('authService', function (authResource) {
 
     function logIn(data) {
         return authResource.save(data).$promise;

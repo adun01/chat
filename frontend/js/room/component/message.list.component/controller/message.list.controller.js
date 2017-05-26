@@ -1,6 +1,6 @@
 import module from '../../../';
 
-module.controller('messageListController', function ($scope, roomService, roomMessageService, userService, socketService) {
+module.controller('messageListController', function ($scope, roomService, roomMessageService, userService, subscribePublish) {
 
     const _ctrlMessageList = this;
 
@@ -19,7 +19,7 @@ module.controller('messageListController', function ($scope, roomService, roomMe
         });
     };
 
-    socketService.subscribe.subscribes({
+    subscribePublish.subscribe({
         name: 'newMessage',
         fn: function (data) {
             if (_ctrlMessageList.data.room.id === +data.roomid) {

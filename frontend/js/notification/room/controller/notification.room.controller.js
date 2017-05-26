@@ -1,7 +1,7 @@
 import module from '../../';
 import showNotificationTpl from '../view/notification.room.show.view.html';
 
-module.controller('notificationRoomController', function ($scope, $mdDialog, notificationRoomService, socketService) {
+module.controller('notificationRoomController', function ($timeout, $mdDialog, notificationRoomService, subscribePublish) {
     const _ctrlNotificationRoom = this;
 
     _ctrlNotificationRoom.data = {
@@ -21,8 +21,8 @@ module.controller('notificationRoomController', function ($scope, $mdDialog, not
                     return _ctrlNotificationRoom.data.notifications;
                 }
             }
-        }).then(function (notifications) {
-            _ctrlNotificationRoom.data.notifications = notifications;
+        }).then(function () {
+            _ctrlNotificationRoom.init();
         });
     };
 
@@ -32,18 +32,12 @@ module.controller('notificationRoomController', function ($scope, $mdDialog, not
         });
     };
 
-    socketService.subscribe.subscribes({
-        name: 'addUserInvited',
-        fn: function (data) {
-            let issetNotification = _ctrlNotificationRoom.data.notifications.some(function (room) {
-                return +room.id === +data.room.id;
+    subscribePublish.subscribe({
+        name: 'newNotificationRoom',
+        fn: function () {
+            $timeout(function () {
+                _ctrlNotificationRoom.init();
             });
-
-            if (!issetNotification) {
-                $scope.$apply(function () {
-                    _ctrlNotificationRoom.data.notifications.push(data.room);
-                });
-            }
         }
     });
 

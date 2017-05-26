@@ -16,6 +16,10 @@ router.post('/api/room/:id/userAgreed/', async function (req, res) {
             roomId: +req.params.id,
             userId: req.session.user.id
         });
+
+        eventsMediator.emit('roomListChange', {
+            userId: req.session.user.id
+        });
     }
 
     res.send(JSON.stringify(insertResult));

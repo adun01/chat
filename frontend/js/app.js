@@ -38,7 +38,7 @@ angular.module('chat', [
 
         $urlRouterProvider.otherwise('/room/');
 
-    }).run(function ($rootScope, $state) {
+    }).run(function ($rootScope, $state, socketServiceMediator) {
 
     $rootScope.$on('$stateChangeStart',
         function (event, toState) {

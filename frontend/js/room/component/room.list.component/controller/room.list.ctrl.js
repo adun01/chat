@@ -1,6 +1,6 @@
 import module from '../../../';
 
-module.controller('roomListController', function (roomService, $timeout, socketService) {
+module.controller('roomListController', function (roomService, $timeout, subscribePublish) {
     const _ctrlRoomList = this;
 
     _ctrlRoomList.data = {
@@ -15,7 +15,7 @@ module.controller('roomListController', function (roomService, $timeout, socketS
         });
     }
 
-    socketService.subscribe.subscribes({
+    subscribePublish.subscribe({
         name: 'roomListChange',
         fn: function () {
             $timeout(function () {

@@ -50,6 +50,7 @@ module.exports = function (io) {
         sockets.add(socket);
 
         socket.on('roomOpen', async function (data) {
+
             await socket.join(data.id);
             roomListUserOnline.add(data.id, clearUserData(sockets.get(socket.user.id).user));
         });
@@ -76,7 +77,15 @@ module.exports = function (io) {
         }
     });
 
+    eventsMediator.on('newNotificationRoom', function (data) {
+        let socket = sockets.get(data.userId);
+
+        if (socket) {
+            socket.emit('newNotificationRoom', data);
+        }
+    });
+
     eventsMediator.on('userListChange', function (data) {
-        io.to(data.roomId).emit('userListChange');
+        io.to(data.roomId).emit('userListChange', data);
     });
 };

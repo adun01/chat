@@ -1,7 +1,7 @@
 import module from '../../../';
 
 module.controller('userListController',
-    function (userService, roomUserAgreedService, roomService, socketService, $timeout) {
+    function (userService, roomUserAgreedService, roomService, subscribePublish, $timeout) {
         const _ctrlUserList = this;
 
         _ctrlUserList.user = userService.get();
@@ -23,7 +23,7 @@ module.controller('userListController',
 
         _ctrlUserList.getPathPhoto = userService.photo;
 
-        socketService.subscribe.subscribes({
+        subscribePublish.subscribe({
             name: 'userListChange',
             fn: function () {
                 $timeout(function () {

@@ -1,7 +1,7 @@
 import module from '../../';
 
 module.controller('notificationShowController',
-    function (notificationsData, $mdDialog, roomUserAgreedService, roomUserInvitedService, userService, socketService) {
+    function (notificationsData, $mdDialog, roomUserAgreedService, roomUserInvitedService, userService, subscribePublish) {
         const _ctrlNSRoom = this;
 
         _ctrlNSRoom.user = userService.get();
@@ -25,7 +25,7 @@ module.controller('notificationShowController',
 
         _ctrlNSRoom.save = function (room) {
             roomUserAgreedService.save({
-                id: room.id
+                roomId: room.id
             }).then(function (response) {
                 if (response.success) {
                     _ctrlNSRoom.clear(room);
@@ -38,16 +38,12 @@ module.controller('notificationShowController',
                 return iRoom.id !== room.id;
             });
 
-            socketService.subscribe.publish({
-                name: 'roomListChange'
-            });
-
             if (!_ctrlNSRoom.data.list.length) {
                 _ctrlNSRoom.close();
             }
         };
 
         _ctrlNSRoom.close = function () {
-            $mdDialog.hide(_ctrlNSRoom.data.list);
+            $mdDialog.hide();
         };
     });

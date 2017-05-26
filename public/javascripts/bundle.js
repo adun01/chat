@@ -196,7 +196,7 @@ angular.module('chat', [
 
         $urlRouterProvider.otherwise('/room/');
 
-    }).run(function ($rootScope, $state) {
+    }).run(function ($rootScope, $state, socketServiceMediator) {
 
     $rootScope.$on('$stateChangeStart',
         function (event, toState) {
@@ -295,6 +295,7 @@ var map = {
 	"./main/index.js": 2,
 	"./main/model/side-bar.service.js": 31,
 	"./main/model/socket.service.js": 32,
+	"./main/model/subscribe-publish.service.js": 93,
 	"./notification/index.js": 3,
 	"./notification/room/controller/notification.room.controller.js": 33,
 	"./notification/room/controller/notification.show.controller.js": 34,
@@ -27026,7 +27027,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(4);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].service('authService', function (socketService, authResource) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].service('authService', function (authResource) {
 
     function logIn(data) {
         return authResource.save(data).$promise;
@@ -27400,64 +27401,55 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].service('socketService', function ($timeout, $q) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].service('socketServiceMediator', function ($timeout, $q, subscribePublish, roomService) {
     const socket = io();
 
-    function roomOpen(data) {
-        let defer = $q.defer();
-        socket.emit('roomOpen', data);
+    subscribePublish.subscribe({
+        name: 'roomOpen',
+        fn: function (data) {
 
-        return defer.promise;
-    }
+            socket.emit('roomOpen', data);
+        }
+    });
 
     socket.on('userListChange', function (data) {
-        subscribe.publish({
-            name: 'userListChange',
-            data: data
-        });
+        let currentRoom = roomService.getCurrentRoom();
+
+        if (currentRoom.id === +data.roomId) {
+            subscribePublish.publish({
+                name: 'userListChange',
+                data: data
+            });
+        }
     });
 
     socket.on('roomListChange', function (data) {
-        subscribe.publish({
+        subscribePublish.publish({
             name: 'roomListChange',
             data: data
         });
     });
 
     socket.on('roomListChangeRemove', function (data) {
-        subscribe.publish({
-            name: 'roomListChangeRemove',
+        let currentRoom = roomService.getCurrentRoom();
+
+        if (currentRoom.id === +data.roomId) {
+            subscribePublish.publish({
+                name: 'roomListChangeRemove',
+                data: data
+            });
+        }
+    });
+
+    socket.on('newNotificationRoom', function (data) {
+
+        subscribePublish.publish({
+            name: 'newNotificationRoom',
             data: data
         });
     });
 
-    const subscribe = (function () {
-        const publish = function (data) {
-                if (!subscribe.chanells[data.name]) {
-                    return false;
-                }
-                subscribe.chanells[data.name].forEach(function (fn) {
-                    fn(data.data);
-                });
-            },
-            subscribes = function (data) {
-                if (!subscribe.chanells[data.name]) {
-                    subscribe.chanells[data.name] = [];
-                }
-                subscribe.chanells[data.name].push(data.fn);
-            };
-
-        return {
-            chanells: {},
-            subscribes: subscribes,
-            publish: publish
-        }
-    }());
-
-    return {
-        roomOpen: roomOpen,
-        subscribe: subscribe
-    };
+    return null;
 });
 
 /***/ }),
@@ -27472,7 +27464,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('notificationRoomController', function ($scope, $mdDialog, notificationRoomService, socketService) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('notificationRoomController', function ($timeout, $mdDialog, notificationRoomService, subscribePublish) {
     const _ctrlNotificationRoom = this;
 
     _ctrlNotificationRoom.data = {
@@ -27492,8 +27484,8 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('notificationRoomControlle
                     return _ctrlNotificationRoom.data.notifications;
                 }
             }
-        }).then(function (notifications) {
-            _ctrlNotificationRoom.data.notifications = notifications;
+        }).then(function () {
+            _ctrlNotificationRoom.init();
         });
     };
 
@@ -27503,18 +27495,12 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('notificationRoomControlle
         });
     };
 
-    socketService.subscribe.subscribes({
-        name: 'addUserInvited',
-        fn: function (data) {
-            let issetNotification = _ctrlNotificationRoom.data.notifications.some(function (room) {
-                return +room.id === +data.room.id;
+    subscribePublish.subscribe({
+        name: 'newNotificationRoom',
+        fn: function () {
+            $timeout(function () {
+                _ctrlNotificationRoom.init();
             });
-
-            if (!issetNotification) {
-                $scope.$apply(function () {
-                    _ctrlNotificationRoom.data.notifications.push(data.room);
-                });
-            }
         }
     });
 
@@ -27531,7 +27517,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('notificationShowController',
-    function (notificationsData, $mdDialog, roomUserAgreedService, roomUserInvitedService, userService, socketService) {
+    function (notificationsData, $mdDialog, roomUserAgreedService, roomUserInvitedService, userService, subscribePublish) {
         const _ctrlNSRoom = this;
 
         _ctrlNSRoom.user = userService.get();
@@ -27555,7 +27541,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('notificationShowControlle
 
         _ctrlNSRoom.save = function (room) {
             roomUserAgreedService.save({
-                id: room.id
+                roomId: room.id
             }).then(function (response) {
                 if (response.success) {
                     _ctrlNSRoom.clear(room);
@@ -27568,17 +27554,13 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('notificationShowControlle
                 return iRoom.id !== room.id;
             });
 
-            socketService.subscribe.publish({
-                name: 'roomListChange'
-            });
-
             if (!_ctrlNSRoom.data.list.length) {
                 _ctrlNSRoom.close();
             }
         };
 
         _ctrlNSRoom.close = function () {
-            $mdDialog.hide(_ctrlNSRoom.data.list);
+            $mdDialog.hide();
         };
     });
 
@@ -27718,7 +27700,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('messageListController', function ($scope, roomService, roomMessageService, userService, socketService) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('messageListController', function ($scope, roomService, roomMessageService, userService, subscribePublish) {
 
     const _ctrlMessageList = this;
 
@@ -27737,7 +27719,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('messageListController', f
         });
     };
 
-    socketService.subscribe.subscribes({
+    subscribePublish.subscribe({
         name: 'newMessage',
         fn: function (data) {
             if (_ctrlMessageList.data.room.id === +data.roomid) {
@@ -27780,7 +27762,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomListController', function (roomService, $timeout, socketService) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomListController', function (roomService, $timeout, subscribePublish) {
     const _ctrlRoomList = this;
 
     _ctrlRoomList.data = {
@@ -27795,7 +27777,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomListController', func
         });
     }
 
-    socketService.subscribe.subscribes({
+    subscribePublish.subscribe({
         name: 'roomListChange',
         fn: function () {
             $timeout(function () {
@@ -27845,7 +27827,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             controllerAs: '_ctrlRoom',
             template: __WEBPACK_IMPORTED_MODULE_1__view_room_view_html___default.a,
             resolve: {
-                roomData: function (userService, socketService, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
+                roomData: function (userService, subscribePublish, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
                     let defer = $q.defer();
 
                     roomService.get({id: $stateParams.id}).then(function (response) {
@@ -27853,8 +27835,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             $mdDialog.cancel();
                             sideBarService.unLocked();
 
-                            socketService.roomOpen({
-                                id: $stateParams.id
+                            subscribePublish.publish({
+                                name: 'roomOpen',
+                                data: {id: $stateParams.id}
                             });
 
                             defer.resolve(response.room);
@@ -27924,7 +27907,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomController',
-    function ($mdDialog, userService, roomService, roomMessageService, sideBarService, socketService, $state) {
+    function ($mdDialog, userService, roomService, roomMessageService, sideBarService, subscribePublish, $state) {
 
         const _ctrlRoom = this;
 
@@ -27959,7 +27942,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomController',
             });
         };
 
-        socketService.subscribe.subscribes({
+        subscribePublish.subscribe({
             name: 'roomListChangeRemove',
             fn: function (data) {
                 if (+data.roomId === +_ctrlRoom.room.id) {
@@ -28210,7 +28193,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userListController',
-    function (userService, roomUserAgreedService, roomService, socketService, $timeout) {
+    function (userService, roomUserAgreedService, roomService, subscribePublish, $timeout) {
         const _ctrlUserList = this;
 
         _ctrlUserList.user = userService.get();
@@ -28232,7 +28215,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userListController',
 
         _ctrlUserList.getPathPhoto = userService.photo;
 
-        socketService.subscribe.subscribes({
+        subscribePublish.subscribe({
             name: 'userListChange',
             fn: function () {
                 $timeout(function () {
@@ -28567,7 +28550,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].service('userService', function (socketService, userResource, $q, $mdDialog) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].service('userService', function (userResource, $q, $mdDialog) {
 
     let user = null;
 
@@ -105607,6 +105590,41 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+/* 93 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].service('subscribePublish', function () {
+
+    const chanells = {};
+
+    const publish = function (data) {
+
+            if (!chanells[data.name]) {
+                return false;
+            }
+            chanells[data.name].forEach(function (fn) {
+                fn(data.data);
+            });
+        },
+        subscribe = function (data) {
+            if (!chanells[data.name]) {
+                chanells[data.name] = [];
+            }
+            chanells[data.name].push(data.fn);
+        };
+
+    return {
+        subscribe: subscribe,
+        publish: publish
+    }
+});
 
 /***/ })
 /******/ ]);
