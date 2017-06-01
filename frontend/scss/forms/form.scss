@@ -1,7 +1,9 @@
 .chat-form {
 
+  min-width: 240px;
+
   &-container {
-    min-width: 240px;
+    width: 100%;
   }
 
   &__row {

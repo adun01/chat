@@ -1,6 +1,6 @@
 .sidebar {
   background-color: rgb(63, 81, 181);
-  padding: 15px 15px 0 15px;
+  padding: $layout-offset $layout-offset 0 $layout-offset;
   min-height: 100vh;
 
   &--main {
@@ -11,16 +11,11 @@
 
   &__row {
     border-bottom: 1px solid #fff;
-    padding: 15px 0;
+    padding: $layout-offset 0;
   }
 
   &__header {
-    min-height: 84px;
     padding-top: 0;
-
-    &--search {
-      padding: 0 8px 15px 0;
-    }
   }
 
   &__content {

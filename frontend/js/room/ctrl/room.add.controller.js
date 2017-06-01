@@ -19,7 +19,7 @@ module.controller('roomAddController', function (FileUploader, $mdDialog, roomSe
             }, '')
         }).then(function (response) {
             roomAddCtrl.close();
-            $state.go('resolve.main.room', {
+            $state.go('main.room', {
                 id: response.room.id
             });
         });

@@ -1,35 +1,6 @@
-const userEvents = require('./api/user/'),
-    authEvents = require('./api/auth/'),
-    roomApi = require('./api/room'),
-    sessionEvents = require('./api/session/'),
-    eventsMediator = require('./events.mediator'),
+const eventsMediator = require('./events.mediator'),
     config = require('./config'),
-    _ = require('lodash');
-
-function clearUserData(obj) {
-    return _.pick(obj, config.user.field);
-}
-
-const roomListUserOnline = (function () {
-    let roomList = [];
-
-    return {
-        getUserInRoom: function (idRoom, idUser) {
-            return roomList[idRoom][idUser];
-        },
-        get: function () {
-            return roomList;
-        },
-        add: function (roomId, user) {
-
-            if (!roomList[roomId]) {
-                roomList[roomId] = [];
-            }
-
-            roomList[roomId][user.id] = user;
-        }
-    }
-}());
+    listUserOnline = require('./listUserOnline');
 
 const sockets = (function () {
     let socketList = [];
@@ -49,12 +20,15 @@ module.exports = function (io) {
 
         sockets.add(socket);
 
-        socket.on('roomOpen', async function (data) {
+        listUserOnline.add(socket.user);
 
-            await socket.join(data.id);
-            roomListUserOnline.add(data.id, clearUserData(sockets.get(socket.user.id).user));
+        socket.on('roomOpen', function (data) {
+            socket.join(data.roomId);
         });
 
+        socket.on('disconnect', function () {
+            listUserOnline.remove(socket.user.id);
+        });
     });
 
     eventsMediator.on('roomListChange', function (data) {

@@ -2,21 +2,42 @@
             md-is-locked-open="true"
             md-whiteframe="4">
 
-    <div class="sidebar__row sidebar__header sidebar__header--search"
+    <div class="sidebar__row sidebar__header"
          layout
-         layout-align="end center">
+         layout-align="space-between center">
 
-        <div flex="90">
-            <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-open"
-                        aria-label="Открыть сайдбар"
-                        data-ng-click="_ctrlRoom.toggleMenu()">
-                <ng-md-icon size="30"
-                            style="fill: white"
-                            icon="forward">
-                </ng-md-icon>
-            </md--button>
-        </div>
-        <div flex="10">
+        <md--button class="md-fab chat-icon-action chat-icon-action--go-base"
+                    aria-label="Вернуться в главное меню"
+                    layout
+                    layout-align="center center"
+                    data-ui-sref="main.base">
+            <ng-md-icon size="30"
+                        style="fill: white"
+                        icon="home">
+            </ng-md-icon>
+        </md--button>
+
+        <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-open"
+                    aria-label="Открыть сайдбар"
+                    layout
+                    layout-align="center center"
+                    data-ng-click="_ctrlRoom.toggleMenu()">
+            <ng-md-icon size="30"
+                        style="fill: white"
+                        icon="forward">
+            </ng-md-icon>
+        </md--button>
+    </div>
+    <user-list></user-list>
+
+</md-sidenav>
+<div flex="75">
+
+    <md-toolbar>
+        <div class="md-toolbar-tools" layout layout-align="space-between center">
+            <h3>
+                Комната '{{_ctrlRoom.room.name}}'
+            </h3>
             <ng-md-icon class="chat-icon-action chat-icon-action--search"
                         size="30"
                         style="fill: white"
@@ -25,51 +46,37 @@
                         data-ng-click="_ctrlRoom.searchUsers($event)">
             </ng-md-icon>
         </div>
-    </div>
+    </md-toolbar>
 
-    <user-list></user-list>
+    <md-content class="chat-message-content">
+        <message-list></message-list>
+    </md-content>
 
-</md-sidenav>
-<div flex="75">
-    <div class="flexbox-parent">
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <h3>
-                    Комната {{_ctrlRoom.room.name}}
-                </h3>
-            </div>
-        </md-toolbar>
-        <div class="fill-area flexbox-item-grow chat-message">
-            <md-content class="chat-message-content">
-                <message-list></message-list>
-            </md-content>
+    <div data-ng-form="messageForm"
+         layout
+         layout-align="left top">
+        <div flex="90">
+            <md-input-container class="chat-message-area">
+                <label>Отправить сообщение</label>
+                <textarea name="message"
+                          required
+                          data-ng-model="_ctrlRoom.message"
+                          md-no-resize
+                          max-rows="2"></textarea>
+            </md-input-container>
         </div>
-
-        <div class="chat-message-footer"
-             data-ng-form="messageForm"
-             layout
-             layout-align="left top">
-            <div flex="90">
-                <md-input-container class="chat-message-area">
-                    <label>Отправить сообщение</label>
-                    <textarea name="message"
-                              required
-                              data-ng-model="_ctrlRoom.message"
-                              md-no-resize
-                              max-rows="2"></textarea>
-                </md-input-container>
-            </div>
-            <div flex="10" layout layout-align="center top">
-                <md-button class="md-fab chat-icon-action chat-icon-action--send-message"
-                           data-ng-disabled="messageForm.$invalid"
-                           data-ng-click="_ctrlRoom.send()"
-                           aria-label="Отправить">
-                    <ng-md-icon size="30"
-                                style="fill: white"
-                                icon="send">
-                    </ng-md-icon>
-                </md-button>
-            </div>
+        <div flex="10" layout layout-align="center top">
+            <md-button class="md-fab chat-icon-action chat-icon-action--send-message"
+                       aria-label="Отправить"
+                       layout
+                       layout-align="center center"
+                       data-ng-disabled="messageForm.$invalid"
+                       data-ng-click="_ctrlRoom.send()">
+                <ng-md-icon size="30"
+                            style="fill: white"
+                            icon="send">
+                </ng-md-icon>
+            </md-button>
         </div>
     </div>
 </div>

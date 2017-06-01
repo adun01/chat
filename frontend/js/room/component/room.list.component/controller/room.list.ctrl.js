@@ -1,6 +1,6 @@
 import module from '../../../';
 
-module.controller('roomListController', function (roomService, $timeout, subscribePublish) {
+module.controller('roomListController', function ($scope, roomService, $timeout, $rootScope) {
     const _ctrlRoomList = this;
 
     _ctrlRoomList.data = {
@@ -15,13 +15,14 @@ module.controller('roomListController', function (roomService, $timeout, subscri
         });
     }
 
-    subscribePublish.subscribe({
-        name: 'roomListChange',
-        fn: function () {
-            $timeout(function () {
-                getListRoom();
-            });
-        }
+    let roomListChange = $rootScope.$on('roomListChange', function () {
+        $timeout(function () {
+            getListRoom();
+        });
+    });
+
+    $scope.$on('$destroy', function () {
+        roomListChange();
     });
 
     getListRoom();

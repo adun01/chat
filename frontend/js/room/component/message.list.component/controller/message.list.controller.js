@@ -1,6 +1,6 @@
 import module from '../../../';
 
-module.controller('messageListController', function ($timeout, roomService, roomMessageService, userService, subscribePublish) {
+module.controller('messageListController', function ($scope, $timeout, roomService, roomMessageService, userService, $rootScope) {
 
     const _ctrlMessageList = this;
 
@@ -21,13 +21,14 @@ module.controller('messageListController', function ($timeout, roomService, room
 
     _ctrlMessageList.getMessage();
 
-    subscribePublish.subscribe({
-        name: 'newMessageRoom',
-        fn: function (data) {
-
-            $timeout(function () {
-                _ctrlMessageList.data.messages.push(data.message);
-            });
-        }
+    let newMessageRoom = $rootScope.$on('newMessageRoom', function ($event, data) {
+        $timeout(function () {
+            _ctrlMessageList.data.messages.push(data.message);
+        });
     });
+
+    $scope.$on('$destroy', function () {
+        newMessageRoom();
+    });
+
 });

@@ -17,12 +17,15 @@
     background: none;
     width: 100%;
 
+    &--notify {
+      padding: $layout-offset 0;
+    }
+
     &__item {
       color: #fff;
-      padding: 0 16px 0 0 !important;
 
-      &--notification {
-        padding: 0 16px !important;
+      &--notify {
+        padding: 0 $layout-offset;
         color: #000;
       }
     }

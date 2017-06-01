@@ -26,7 +26,7 @@ angular.module('chat', [
     'notifications',
     'user',
     'common',
-    'main',
+    'base',
     'auth',
     'registration',
     'room'])
@@ -34,17 +34,37 @@ angular.module('chat', [
 
         $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 
+        $stateProvider
+            .state('main', {
+                abstract: true,
+                url: '/',
+                template: '<div class="chat-layout"' +
+                'layout="row"' +
+                'layout-align="left top"' +
+                'data-ui-view>',
+                resolve: {
+                    userData: function ($q, authService, $rootScope, userService) {
+                        let defer = $q.defer();
+
+                        authService.isLogin().then(function (response) {
+                            if (!response.success) {
+                                defer.resolve('auth is error');
+                            } else {
+                                userService.set(response.user);
+
+                                $rootScope.$emit('isAuth');
+                                defer.resolve('isAuth');
+                            }
+                        });
+                        return defer.promise;
+                    }
+
+                }
+            });
+
         $locationProvider.html5Mode(true);
 
-        $urlRouterProvider.otherwise('/room/');
+        $urlRouterProvider.otherwise('/base/');
 
     }).run(function ($rootScope, $state, socketServiceMediator) {
-
-    $rootScope.$on('$stateChangeStart',
-        function (event, toState) {
-            if (toState.name === 'resolve') {
-                event.preventDefault();
-                $state.go('resolve.main');
-            }
-        });
 });

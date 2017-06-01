@@ -4,9 +4,6 @@ $line-height-base:        1.428571429 !default; // 20/14
 
 $border-radius-base:        4px !default;
 
-
-
-
 $state-success-text:             #3c763d !default;
 $state-success-bg:               #dff0d8 !default;
 $state-success-border:           darken(adjust-hue($state-success-bg, -10), 5%) !default;
@@ -48,3 +45,8 @@ $alert-warning-border: $state-warning-border !default;
 $alert-danger-bg: $state-danger-bg !default;
 $alert-danger-text: $state-danger-text !default;
 $alert-danger-border: $state-danger-border !default;
+
+
+// offsets
+
+$layout-offset: 16px;

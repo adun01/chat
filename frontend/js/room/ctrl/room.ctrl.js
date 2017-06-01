@@ -2,7 +2,7 @@ import module from '../';
 import userSearchTpl from '../view/user.search.html';
 
 module.controller('roomController',
-    function ($mdDialog, userService, roomService, roomMessageService, sideBarService, subscribePublish, $state) {
+    function ($scope, $mdDialog, userService, roomService, roomMessageService, sideBarService, $rootScope, $state, socketServiceMediator) {
 
         const _ctrlRoom = this;
 
@@ -16,6 +16,8 @@ module.controller('roomController',
         _ctrlRoom.user = userService.get();
 
         _ctrlRoom.message = null;
+
+        socketServiceMediator.emit('roomOpen', {roomId: _ctrlRoom.room.id});
 
         _ctrlRoom.searchUsers = function (ev) {
             $mdDialog.show({
@@ -37,15 +39,20 @@ module.controller('roomController',
             });
         };
 
-        subscribePublish.subscribe({
-            name: 'roomListChangeRemove',
-            fn: function (data) {
-                if (+data.roomId === +_ctrlRoom.room.id) {
-                    $state.go('resolve.main', {
-                        message: 'Вы были исключены из комнаты ' + _ctrlRoom.room.name
-                    });
-                }
+
+        var roomListChangeRemove = $rootScope.$on('roomListChangeRemove', function ($event, data) {
+
+            if (listener) {
+                listener();
+            }
+            if (+data.roomId === +_ctrlRoom.room.id) {
+                $state.go('main.base', {
+                    message: 'Вы были исключены из комнаты ' + _ctrlRoom.room.name
+                });
             }
         });
 
+        $scope.$on('$destroy', function () {
+            roomListChangeRemove();
+        });
     });

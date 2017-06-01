@@ -77,7 +77,7 @@ module.exports = {
     get: function (data) {
         return new Promise(async function (resolve) {
 
-            if (!data.roomId) {
+            if (typeof data.roomId === 'undefined') {
 
                 let rooms = await roomModel.find({userAgreed: {$in: [data.userId]}});
 
@@ -90,6 +90,11 @@ module.exports = {
 
                 resolve({success: true, rooms: clearRoomField(rooms)});
 
+            } else if (Number.isNaN(+data.roomId)) {
+                return resolve({
+                    success: false,
+                    message: 'Нет такой комнаты'
+                });
             } else {
                 let room = await roomModel.findOne({id: +data.roomId});
 

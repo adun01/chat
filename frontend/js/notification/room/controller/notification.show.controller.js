@@ -1,7 +1,7 @@
 import module from '../../';
 
 module.controller('notificationShowController',
-    function (notificationsData, $mdDialog, roomUserAgreedService, roomUserInvitedService, userService, subscribePublish) {
+    function (notificationsData, $mdDialog, roomUserAgreedService, roomUserInvitedService, userService) {
         const _ctrlNSRoom = this;
 
         _ctrlNSRoom.user = userService.get();

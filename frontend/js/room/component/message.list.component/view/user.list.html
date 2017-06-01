@@ -1,13 +1,8 @@
-<md-list class="flexbox-item-grow">
-    <md-list-item data-ng-if="!_ctrlMessageList.data.messages.length">
-        <div class="md-list-item-text">
-            <h3>История комнаты пуста.</h3>
-        </div>
+<h3 data-ng-if="!_ctrlMessageList.data.messages.length">История комнаты пуста.</h3>
 
-        <md-divider inset></md-divider>
-    </md-list-item>
+<md-list data-ng-if="_ctrlMessageList.data.messages.length">
+
     <md-list-item class="md-3-line chat-message-item"
-                  data-ng-if="_ctrlMessageList.data.messages.length"
                   data-ng-repeat="message in _ctrlMessageList.data.messages">
 
         <img alt="{{message.user.login}}"

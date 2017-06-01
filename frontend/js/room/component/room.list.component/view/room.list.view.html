@@ -1,22 +1,21 @@
 <div class="sidebar__row">
     <div layout="row"
-         layout-align="left center">
-        <div flex="50" class="chat-room-list-nav">
+         layout-align="space-between center">
+        <h3 class="chat-room-list-nav">
             Комнаты
-        </div>
-        <div flex="50" layout>
-            <div flex="50" layoutlayout-align="end center">
-                <notification-room></notification-room>
-            </div>
-            <div flex="50" layout layout-align="end center">
-                <md-button class="md-fab md-mini chat-icon-action"
-                           data-ng-click="_ctrlRoomList.addRoom($event)">
-                    <ng-md-icon size="30"
-                                style="fill: white"
-                                icon="add">
-                    </ng-md-icon>
-                </md-button>
-            </div>
+        </h3>
+        <div layout
+             layout-align="center center">
+            <notification-room class="notification-room"></notification-room>
+            <md-button class="md-fab md-mini chat-icon-action"
+                       layout
+                       layout-align="center center"
+                       data-ng-click="_ctrlRoomList.addRoom($event)">
+                <ng-md-icon size="30"
+                            style="fill: white"
+                            icon="add">
+                </ng-md-icon>
+            </md-button>
         </div>
     </div>
     <div layout="row"
@@ -31,7 +30,7 @@
             <md-list-item class="chat-room-list__item"
                           data-ng-repeat="room in _ctrlRoomList.data.rooms">
                 <a class="chat-room-list__link"
-                   data-ui-sref="resolve.main.room({id: room.id})">
+                   data-ui-sref="main.room({id: room.id})">
                     <md-button class="chat-room-list__button">
                         <button class="md-fab md-button md-ink-ripple">
                             {{!room.photo ? room.shortName.toUpperCase() : ''}}

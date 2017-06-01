@@ -15,13 +15,16 @@
 <div>
     <div data-ng-controller="sideBarController as _ctrlSideBar">
         <div class="sidebar-opener">
-            <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-open"
-                        data-ng-click="_ctrlSideBar.toggleMenu()">
+            <md-button class="md-fab chat-icon-action"
+                       layout
+                       layout-align="center center"
+                       data-ng-click="_ctrlSideBar.toggleMenu()">
+
                 <ng-md-icon size="30"
                             style="fill: white"
                             icon="forward">
                 </ng-md-icon>
-            </md--button>
+            </md-button>
         </div>
         <!--md-disable-backdrop-->
         <md-sidenav class="md-sidenav-left sidebar sidebar--main"
@@ -32,26 +35,31 @@
 
             <div class="sidebar__row sidebar__header"
                  layout="row"
-                 layout-align="left center">
-                <div flex="75">
-                    <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-close"
-                                data-ng-click="_ctrlSideBar.toggleMenu()">
-                        <ng-md-icon size="30"
-                                    style="fill: white"
-                                    icon="forward">
-                        </ng-md-icon>
-                    </md--button>
-                </div>
-                <div flex="25">
-                    <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-log-out"
-                                data-ng-if="_ctrlSideBar.isAuth"
-                                data-ng-click="_ctrlSideBar.logOut()">
-                        <ng-md-icon size="30"
-                                    style="fill: white"
-                                    icon="logout">
-                        </ng-md-icon>
-                    </md--button>
-                </div>
+                 layout-align="space-between center">
+
+                <md-button class="md-fab chat-icon-action chat-icon-action--log-out"
+                           layout
+                           layout-align="center center"
+                           data-ng-if="_ctrlSideBar.isAuth"
+                           data-ng-click="_ctrlSideBar.logOut()">
+
+                    <ng-md-icon size="30"
+                                style="fill: white"
+                                icon="logout">
+                    </ng-md-icon>
+                </md-button>
+
+                <md-button id="side-bar-close"
+                           class="md-fab chat-icon-action chat-icon-action--sidebar-close"
+                           layout
+                           layout-align="center center"
+                           data-ng-click="_ctrlSideBar.toggleMenu()">
+
+                    <ng-md-icon size="30"
+                                style="fill: white"
+                                icon="forward">
+                    </ng-md-icon>
+                </md-button>
             </div>
 
             <md-content class="sidebar__content">
@@ -59,33 +67,32 @@
                 <div class="sidebar__row chat-user-intro"
                      data-ng-cloak
                      layout="row"
-                     layout-align="left center"
+                     layout-align="space-between center"
                      data-ng-if="_ctrlSideBar.isAuth">
-                    <div flex="80">
-                        <div layout="row" layout-align="left center">
-                            <img class="chat-user-intro__avatar"
-                                 data-ng-src="{{_ctrlSideBar.getPathPhoto()}}">
-                            <div class="chat-user-intro__descr">
-                                <div class="chat-user-intro__info chat-user-intro__info--login">
-                                    {{_ctrlSideBar.user.login}}
-                                </div>
-                                <div class="chat-user-intro__info">
-                                    {{_ctrlSideBar.user.email}}
-                                </div>
+
+                    <div>
+                        <img class="chat-user-intro__avatar"
+                             data-ng-src="{{_ctrlSideBar.getPathPhoto()}}">
+                        <div class="chat-user-intro__descr">
+                            <div class="chat-user-intro__info chat-user-intro__info--login">
+                                {{_ctrlSideBar.user.login}}
+                            </div>
+                            <div class="chat-user-intro__info">
+                                {{_ctrlSideBar.user.email}}
                             </div>
                         </div>
                     </div>
-                    <div flex="20">
-                        <div layout="row"
-                             layout-align="end center">
-                            <md--button class="md-fab md-mini chat-icon-action"
-                                        data-ng-click="_ctrlSideBar.editUser($event)">
-                                <ng-md-icon size="25"
-                                            style="fill: white"
-                                            icon="mode_edit">
-                                </ng-md-icon>
-                            </md--button>
-                        </div>
+                    <div>
+                        <md--button class="md-fab chat-icon-action"
+                                    layout
+                                    layout-align="center center"
+                                    data-ng-click="_ctrlSideBar.editUser($event)">
+
+                            <ng-md-icon size="30"
+                                        style="fill: white"
+                                        icon="mode_edit">
+                            </ng-md-icon>
+                        </md--button>
                     </div>
                 </div>
 

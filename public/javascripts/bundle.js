@@ -88,7 +88,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony default export */ __webpack_exports__["default"] = (angular.module('main', []));
+/* harmony default export */ __webpack_exports__["default"] = (angular.module('base', []));
 
 /***/ }),
 /* 3 */
@@ -184,7 +184,7 @@ angular.module('chat', [
     'notifications',
     'user',
     'common',
-    'main',
+    'base',
     'auth',
     'registration',
     'room'])
@@ -192,19 +192,39 @@ angular.module('chat', [
 
         $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 
+        $stateProvider
+            .state('main', {
+                abstract: true,
+                url: '/',
+                template: '<div class="chat-layout"' +
+                'layout="row"' +
+                'layout-align="left top"' +
+                'data-ui-view>',
+                resolve: {
+                    userData: function ($q, authService, $rootScope, userService) {
+                        let defer = $q.defer();
+
+                        authService.isLogin().then(function (response) {
+                            if (!response.success) {
+                                defer.resolve('auth is error');
+                            } else {
+                                userService.set(response.user);
+
+                                $rootScope.$emit('isAuth');
+                                defer.resolve('isAuth');
+                            }
+                        });
+                        return defer.promise;
+                    }
+
+                }
+            });
+
         $locationProvider.html5Mode(true);
 
-        $urlRouterProvider.otherwise('/room/');
+        $urlRouterProvider.otherwise('/base/');
 
     }).run(function ($rootScope, $state, socketServiceMediator) {
-
-    $rootScope.$on('$stateChangeStart',
-        function (event, toState) {
-            if (toState.name === 'resolve') {
-                event.preventDefault();
-                $state.go('resolve.main');
-            }
-        });
 });
 
 /***/ }),
@@ -283,50 +303,49 @@ var map = {
 	"./auth/index.js": 4,
 	"./auth/model/auth.resourse.js": 21,
 	"./auth/model/auth.service.js": 22,
-	"./common/direcrive/identity.directive.js": 23,
+	"./base/config/index.js": 23,
+	"./base/ctrl/base.controller.js": 24,
+	"./base/ctrl/base.message.controller.js": 25,
+	"./base/ctrl/side-bar.ctrl.js": 26,
+	"./base/index.js": 2,
+	"./base/model/side-bar.service.js": 27,
+	"./base/model/socket.service.js": 28,
+	"./common/direcrive/identity.directive.js": 29,
 	"./common/index.js": 5,
-	"./common/model/common.service.js": 24,
-	"./main/config/index.js": 25,
-	"./main/ctrl/main.controller.js": 26,
-	"./main/ctrl/main.message.controller.js": 27,
-	"./main/ctrl/side-bar.ctrl.js": 28,
-	"./main/directive/user.actions/controller/user.actions.controller.js": 29,
-	"./main/directive/user.actions/index.js": 30,
-	"./main/index.js": 2,
-	"./main/model/side-bar.service.js": 31,
-	"./main/model/socket.service.js": 32,
-	"./main/model/subscribe-publish.service.js": 93,
+	"./common/model/common.service.js": 30,
 	"./notification/index.js": 3,
-	"./notification/room/controller/notification.room.controller.js": 33,
-	"./notification/room/controller/notification.show.controller.js": 34,
-	"./notification/room/index.js": 35,
-	"./notification/room/model/notification.room.resource.js": 36,
-	"./notification/room/model/notification.room.service.js": 37,
-	"./registration/config/index.js": 38,
-	"./registration/ctrl/reg.ctrl.js": 39,
+	"./notification/room/controller/notification.room.controller.js": 31,
+	"./notification/room/controller/notification.show.controller.js": 32,
+	"./notification/room/index.js": 33,
+	"./notification/room/model/notification.room.resource.js": 34,
+	"./notification/room/model/notification.room.service.js": 35,
+	"./registration/config/index.js": 36,
+	"./registration/ctrl/reg.ctrl.js": 37,
 	"./registration/index.js": 6,
-	"./room/component/message.list.component/controller/message.list.controller.js": 40,
-	"./room/component/message.list.component/index.js": 41,
-	"./room/component/room.list.component/controller/room.list.ctrl.js": 42,
-	"./room/component/room.list.component/index.js": 43,
-	"./room/config/index.js": 44,
-	"./room/ctrl/room.add.controller.js": 45,
-	"./room/ctrl/room.ctrl.js": 46,
+	"./room/component/message.list.component/controller/message.list.controller.js": 38,
+	"./room/component/message.list.component/index.js": 39,
+	"./room/component/room.list.component/controller/room.list.ctrl.js": 40,
+	"./room/component/room.list.component/index.js": 41,
+	"./room/config/index.js": 42,
+	"./room/ctrl/room.add.controller.js": 43,
+	"./room/ctrl/room.ctrl.js": 44,
 	"./room/index.js": 0,
-	"./room/model/room.message.resource.js": 47,
-	"./room/model/room.message.service.js": 48,
-	"./room/model/room.resource.js": 49,
-	"./room/model/room.service.js": 50,
-	"./room/model/room.user.agreed.resource.js": 51,
-	"./room/model/room.user.agreed.service.js": 52,
-	"./room/model/room.user.invited.resource.js": 53,
-	"./room/model/room.user.invited.service.js": 54,
-	"./user/component/user.list/controller/user.list.controller.js": 55,
-	"./user/component/user.list/index.js": 56,
-	"./user/component/user.search/controller/user.search.controller.js": 57,
-	"./user/component/user.search/index.js": 58,
-	"./user/controller/user.edit.controller.js": 59,
-	"./user/controller/user.show.controller.js": 60,
+	"./room/model/room.message.resource.js": 45,
+	"./room/model/room.message.service.js": 46,
+	"./room/model/room.resource.js": 47,
+	"./room/model/room.service.js": 48,
+	"./room/model/room.user.agreed.resource.js": 49,
+	"./room/model/room.user.agreed.service.js": 50,
+	"./room/model/room.user.invited.resource.js": 51,
+	"./room/model/room.user.invited.service.js": 52,
+	"./user/component/user.list/controller/user.list.controller.js": 53,
+	"./user/component/user.list/index.js": 54,
+	"./user/component/user.search/controller/user.search.controller.js": 55,
+	"./user/component/user.search/index.js": 56,
+	"./user/controller/user.edit.controller.js": 57,
+	"./user/controller/user.show.controller.js": 58,
+	"./user/directive/user.actions/controller/user.actions.controller.js": 59,
+	"./user/directive/user.actions/index.js": 60,
 	"./user/directive/user.search.collection.directive/controller/user.search.collection.controller.js": 61,
 	"./user/directive/user.search.collection.directive/index.js": 62,
 	"./user/index.js": 1,
@@ -26930,32 +26949,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0____["default"].config(function ($stateProvider) {
     $stateProvider
-        .state('resolve', {
-            url: '/',
-            template: '<div class="chat-layout"' +
-            'layout="row"' +
-            'layout-align="center center"' +
-            'data-ui-view>',
-            resolve: {
-                userData: function ($q, authService, $rootScope, userService) {
-                    let defer = $q.defer();
-
-                    authService.isLogin().then(function (response) {
-                        if (!response.success) {
-                            defer.resolve('auth is error');
-                        } else {
-                            userService.set(response.user);
-
-                            $rootScope.$emit('isAuth');
-                            defer.resolve('isAuth');
-                        }
-                    });
-                    return defer.promise;
-                }
-
-            }
-        })
-        .state('resolve.auth', {
+        .state('main.auth', {
             url: 'auth/',
             controller: 'authController',
             controllerAs: '_ctrlAuth',
@@ -26995,7 +26989,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('authController', function
                     _ctrlAuth.errorMessage = null;
                 }, 5000);
             } else {
-                $state.go('resolve.main');
+                $state.go('main.base');
             }
         });
     };
@@ -27054,6 +27048,279 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('authService', function (auth
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_base_view_html__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_base_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_base_view_html__);
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0____["default"].config(function ($stateProvider) {
+    $stateProvider
+        .state('main.base', {
+            url: 'base/',
+            controller: 'baseController',
+            template: __WEBPACK_IMPORTED_MODULE_1__view_base_view_html___default.a,
+            params: {
+                message: null
+            },
+            resolve: {
+                baseControllerData: function ($stateParams, userService, authService, $q, $rootScope, $state, roomService) {
+                    let defer = $q.defer();
+
+                    authService.isLogin().then(function (response) {
+
+                        roomService.set(null);
+
+                        if (!response.success) {
+                            $state.go('main.auth');
+                            defer.resolve('auth is error');
+                        } else {
+                            userService.set(response.user);
+                            $rootScope.$emit('isAuth');
+                            defer.resolve($stateParams);
+                        }
+                    });
+
+                    return defer.promise;
+                }
+            }
+        });
+}));
+
+/***/ }),
+/* 24 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_base_message_html__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_base_message_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_base_message_html__);
+
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('baseController', function (baseControllerData, $mdDialog, sideBarService, $stateParams) {
+
+    sideBarService.open();
+    sideBarService.locked();
+
+    if ($stateParams.message) {
+        $mdDialog.show({
+            controller: 'baseMessageController',
+            controllerAs: '_ctrlBaseMessage',
+            template: __WEBPACK_IMPORTED_MODULE_1__view_base_message_html___default.a,
+            parent: angular.element(document.body),
+            resolve: {
+                baseMessageData: function () {
+                    return $stateParams;
+                }
+            }
+        });
+    }
+});
+
+/***/ }),
+/* 25 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('baseMessageController', function (baseMessageData, sideBarService, $timeout, $mdDialog) {
+    const _ctrlMainMessage = this;
+
+    _ctrlMainMessage.data = {
+        message: roomNotFoundData.message || 'Не известная ошибка',
+        code: 'Ошибка'
+    };
+
+    $timeout(function () {
+        $mdDialog.cancel();
+    }, 3000);
+
+    sideBarService.open();
+});
+
+/***/ }),
+/* 26 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('sideBarController',
+    function ($scope, $rootScope, $mdSidenav, userService, authService, $state, $mdDialog, sideBarService) {
+        const _ctrlSideBar = this;
+
+        _ctrlSideBar.user = null;
+        _ctrlSideBar.isAuth = false;
+
+        _ctrlSideBar.editUser = userService.editUser;
+
+        _ctrlSideBar.getPathPhoto = userService.photo;
+
+        _ctrlSideBar.data = {
+            listAuth: [
+                {
+                    name: 'Авторизация',
+                    state: 'main.auth'
+                }, {
+                    name: 'Регистрация',
+                    state: 'main.create'
+                }
+            ]
+        };
+
+        _ctrlSideBar.toggleMenu = function () {
+            sideBarService.toggle();
+        };
+
+        _ctrlSideBar.logOut = function () {
+            authService.logOut().then(function () {
+                $state.go('main.auth');
+                userService.set(null);
+                $rootScope.$emit('isAuth');
+            });
+        };
+
+        let isAuth = $rootScope.$on('isAuth', function () {
+
+            _ctrlSideBar.user = userService.get();
+
+            if (_ctrlSideBar.user) {
+                _ctrlSideBar.isAuth = true;
+            } else {
+                _ctrlSideBar.isAuth = false;
+            }
+        });
+
+        $scope.$on('$destroy', function () {
+            isAuth();
+        });
+    });
+
+/***/ }),
+/* 27 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].service('sideBarService', function ($mdSidenav) {
+
+    const sidebar = this;
+
+    sidebar.id = 'side-bar';
+    sidebar.btnId = 'side-bar-close';
+    sidebar.locked = false;
+
+    return {
+        open: function () {
+            $mdSidenav(sidebar.id).open();
+        },
+        toggle: function () {
+            if (!sidebar.locked) {
+                $mdSidenav(sidebar.id).toggle();
+            }
+        },
+        close: function () {
+            if (!sidebar.locked) {
+                $mdSidenav(sidebar.id).close();
+            }
+        },
+        locked: function () {
+            document.getElementById(sidebar.btnId).disabled = true;
+            sidebar.locked = true;
+        },
+        unLocked: function () {
+            document.getElementById(sidebar.btnId).disabled = false;
+            sidebar.locked = false;
+        }
+    };
+
+});
+
+/***/ }),
+/* 28 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].service('socketServiceMediator', function ($rootScope, $timeout, $q, roomService) {
+
+    var socket = io.connect({
+        reconnection: false
+    });
+
+    socket.on('connect', function () {
+
+        let currentRoom = roomService.getCurrentRoom();
+
+        if (currentRoom) {
+            socket.emit('roomOpen', {roomId: currentRoom.id});
+        }
+
+    });
+    function recconect() {
+        socket.connect();
+    }
+
+    socket.on('disconnect', function () {
+        recconect();
+    });
+
+    socket.on('connect_error', function () {
+        setTimeout(function () {
+            recconect();
+        }, 15000);
+    });
+
+    socket.on('roomListChange', function (data) {
+
+        $rootScope.$emit('roomListChange', data);
+    });
+
+    socket.on('roomListChangeRemove', function (data) {
+        let currentRoom = roomService.getCurrentRoom();
+
+        if (currentRoom.id === +data.roomId) {
+            $rootScope.$broadcast('roomListChangeRemove', data);
+        }
+    });
+
+    socket.on('newNotificationRoom', function (data) {
+
+        $rootScope.$emit('newNotificationRoom', data);
+    });
+
+    socket.on('newMessageRoom', function (data) {
+
+        let currentRoom = roomService.getCurrentRoom();
+
+        if (currentRoom.id === +data.roomId) {
+
+            $rootScope.$emit('newMessageRoom', data);
+        }
+    });
+
+    return socket;
+});
+
+/***/ }),
+/* 29 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_____default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0____);
 
@@ -27088,7 +27355,7 @@ __WEBPACK_IMPORTED_MODULE_0_____default.a.directive('identity', function () {
 });
 
 /***/ }),
-/* 24 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27120,408 +27387,67 @@ __WEBPACK_IMPORTED_MODULE_0_____default.a.service('commonService', function () {
 });
 
 /***/ }),
-/* 25 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_main_view_html__ = __webpack_require__(77);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_main_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_room_main_view_html__);
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0____["default"].config(function ($stateProvider) {
-    $stateProvider
-        .state('resolve.main', {
-            url: 'room/',
-            controller: 'mainController',
-            template: __WEBPACK_IMPORTED_MODULE_1__view_room_main_view_html___default.a,
-            params: {
-                message: null
-            },
-            resolve: {
-                mainControllerData: function ($stateParams, userService, authService, $q, $rootScope, $state) {
-                    let defer = $q.defer();
-
-                    if (!userService.get()) {
-                        authService.isLogin().then(function (response) {
-                            if (!response.success) {
-                                $state.go('resolve.auth');
-                                defer.resolve('auth is error');
-                            } else {
-                                userService.set(response.user);
-                                $rootScope.$emit('isAuth');
-                                defer.resolve($stateParams);
-                            }
-                        });
-                    } else {
-                        defer.resolve($stateParams);
-                    }
-                    return defer.promise;
-                }
-            }
-        });
-}));
-
-/***/ }),
-/* 26 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_main_message_html__ = __webpack_require__(76);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_main_message_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_main_message_html__);
-
-
-
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('mainController', function (mainControllerData, $mdDialog, sideBarService, $stateParams) {
-
-    sideBarService.open();
-    sideBarService.locked();
-    if ($stateParams.message) {
-        $mdDialog.show({
-            controller: 'mainMessageController',
-            controllerAs: '_ctrlMainMessage',
-            template: __WEBPACK_IMPORTED_MODULE_1__view_main_message_html___default.a,
-            parent: angular.element(document.body),
-            resolve: {
-                roomNotFoundData: function () {
-                    return $stateParams;
-                }
-            }
-        });
-    }
-});
-
-/***/ }),
-/* 27 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
-
-
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('mainMessageController', function (roomNotFoundData, sideBarService, $timeout, $mdDialog) {
-    const _ctrlMainMessage = this;
-
-    _ctrlMainMessage.data = {
-        message: roomNotFoundData.message || 'Не известная ошибка',
-        code: 'Ошибка'
-    };
-
-    $timeout(function () {
-        $mdDialog.cancel();
-    }, 3000);
-
-    sideBarService.open();
-});
-
-/***/ }),
-/* 28 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
-
-
-
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('sideBarController',
-    function ($rootScope, $mdSidenav, userService, authService, $state, $mdDialog, sideBarService) {
-        const _ctrlSideBar = this;
-
-        _ctrlSideBar.user = null;
-        _ctrlSideBar.isAuth = false;
-
-        _ctrlSideBar.editUser = userService.editUser;
-
-        _ctrlSideBar.getPathPhoto = userService.photo;
-
-        _ctrlSideBar.data = {
-            listAuth: [
-                {
-                    name: 'Авторизация',
-                    state: 'resolve.auth'
-                }, {
-                    name: 'Регистрация',
-                    state: 'resolve.create'
-                }
-            ]
-        };
-
-        _ctrlSideBar.toggleMenu = function () {
-            sideBarService.toggle();
-        };
-
-        _ctrlSideBar.logOut = function () {
-            authService.logOut().then(function () {
-                $state.go('resolve.auth');
-                userService.set(null);
-                $rootScope.$emit('isAuth');
-            });
-        };
-
-        $rootScope.$on('isAuth', function () {
-
-            _ctrlSideBar.user = userService.get();
-
-            if (_ctrlSideBar.user) {
-                _ctrlSideBar.isAuth = true;
-            } else {
-                _ctrlSideBar.isAuth = false;
-            }
-        });
-    });
-
-/***/ }),
-/* 29 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
-
-
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('userActionsController',
-    function ($scope, $mdMenu, userService, roomUserAgreedService, roomUserInvitedService) {
-        const _ctrlUserAction = this;
-
-        _ctrlUserAction.room = $scope.room;
-        _ctrlUserAction.user = $scope.user;
-
-        _ctrlUserAction.selfUser = _ctrlUserAction.user.id === userService.get().id;
-
-        _ctrlUserAction.canShowUser = $scope.showUser;
-        _ctrlUserAction.canAddRoom = $scope.addRoom;
-        _ctrlUserAction.canRemoveRoom = $scope.removeRoom;
-        _ctrlUserAction.canExitRoom = $scope.exitRoom;
-
-        _ctrlUserAction.currentUser = userService.get();
-
-        _ctrlUserAction.showUser = userService.showUser;
-        _ctrlUserAction.editUser = userService.editUser;
-
-        _ctrlUserAction.removeInRoom = function () {
-            roomUserAgreedService.remove({
-                roomId: _ctrlUserAction.room.id,
-                userId: _ctrlUserAction.user.id
-            });
-        };
-
-        _ctrlUserAction.addInvited = function () {
-            roomUserInvitedService.save({
-                userId: _ctrlUserAction.user.id,
-                id: _ctrlUserAction.room.id
-            });
-        };
-
-        _ctrlUserAction.openMenu = function ($mdMenu, ev) {
-            $mdMenu.open(ev);
-        };
-    });
-
-/***/ }),
-/* 30 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_actions_html__ = __webpack_require__(75);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_actions_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_user_actions_html__);
-
-
-
-__WEBPACK_IMPORTED_MODULE_0____["default"].directive('userActions', function () {
-    return {
-        controller: 'userActionsController',
-        controllerAs: '_ctrlUserAction',
-        template: __WEBPACK_IMPORTED_MODULE_1__view_user_actions_html___default.a,
-        scope: {
-            color: '=',
-            user: '=',
-            showUser: '=',
-            addRoom: '=',
-            removeRoom: '=',
-            exitRoom: '=',
-            room: '='
-        }
-    }
-});
-
-/***/ }),
 /* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
-
-
-__WEBPACK_IMPORTED_MODULE_0____["default"].service('sideBarService', function ($mdSidenav) {
-
-    const sidebar = this;
-
-    sidebar.id = 'side-bar';
-    sidebar.locked = false;
-
-    return {
-        open: function () {
-            $mdSidenav(sidebar.id).open();
-        },
-        toggle: function () {
-            if (!sidebar.locked) {
-                $mdSidenav(sidebar.id).toggle();
-            }
-        },
-        close: function () {
-            if (!sidebar.locked) {
-                $mdSidenav(sidebar.id).close();
-            }
-        },
-        locked: function () {
-            sidebar.locked = true;
-        },
-        unLocked: function () {
-            sidebar.locked = false;
-        }
-    };
-
-});
-
-/***/ }),
-/* 32 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
-
-
-__WEBPACK_IMPORTED_MODULE_0____["default"].service('socketServiceMediator', function ($timeout, $q, subscribePublish, roomService) {
-    const socket = io();
-
-    subscribePublish.subscribe({
-        name: 'roomOpen',
-        fn: function (data) {
-
-            socket.emit('roomOpen', data);
-        }
-    });
-
-    socket.on('userListChange', function (data) {
-        let currentRoom = roomService.getCurrentRoom();
-
-        if (currentRoom.id === +data.roomId) {
-            subscribePublish.publish({
-                name: 'userListChange',
-                data: data
-            });
-        }
-    });
-
-    socket.on('roomListChange', function (data) {
-        subscribePublish.publish({
-            name: 'roomListChange',
-            data: data
-        });
-    });
-
-    socket.on('roomListChangeRemove', function (data) {
-        let currentRoom = roomService.getCurrentRoom();
-
-        if (currentRoom.id === +data.roomId) {
-            subscribePublish.publish({
-                name: 'roomListChangeRemove',
-                data: data
-            });
-        }
-    });
-
-    socket.on('newNotificationRoom', function (data) {
-
-        subscribePublish.publish({
-            name: 'newNotificationRoom',
-            data: data
-        });
-    });
-
-    socket.on('newMessageRoom', function (data) {
-
-        let currentRoom = roomService.getCurrentRoom();
-
-        if (currentRoom.id === +data.roomId) {
-
-            subscribePublish.publish({
-                name: 'newMessageRoom',
-                data: data
-            });
-        }
-    });
-
-    return null;
-});
-
-/***/ }),
-/* 33 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_notification_room_show_view_html__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_notification_room_show_view_html__ = __webpack_require__(77);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_notification_room_show_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_notification_room_show_view_html__);
 
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('notificationRoomController', function ($timeout, $mdDialog, notificationRoomService, subscribePublish) {
-    const _ctrlNotificationRoom = this;
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('notificationRoomController',
+    function ($scope, $timeout, $mdDialog, notificationRoomService, $rootScope) {
+        const _ctrlNotificationRoom = this;
 
-    _ctrlNotificationRoom.data = {
-        notifications: []
-    };
+        _ctrlNotificationRoom.data = {
+            notifications: []
+        };
 
-    _ctrlNotificationRoom.showNotification = function (e) {
-        $mdDialog.show({
-            template: __WEBPACK_IMPORTED_MODULE_1__view_notification_room_show_view_html___default.a,
-            controller: 'notificationShowController',
-            controllerAs: '_ctrlNSRoom',
-            parent: angular.element(document.body),
-            targetEvent: e,
-            clickOutsideToClose: true,
-            resolve: {
-                notificationsData: function () {
-                    return _ctrlNotificationRoom.data.notifications;
+        _ctrlNotificationRoom.showNotification = function (e) {
+            $mdDialog.show({
+                template: __WEBPACK_IMPORTED_MODULE_1__view_notification_room_show_view_html___default.a,
+                controller: 'notificationShowController',
+                controllerAs: '_ctrlNSRoom',
+                parent: angular.element(document.body),
+                targetEvent: e,
+                clickOutsideToClose: true,
+                resolve: {
+                    notificationsData: function () {
+                        return _ctrlNotificationRoom.data.notifications;
+                    }
                 }
-            }
-        }).then(function () {
-            _ctrlNotificationRoom.init();
-        });
-    };
+            }).then(function () {
+                _ctrlNotificationRoom.init();
+            }, function () {
+                _ctrlNotificationRoom.init();
+            });
+        };
 
-    _ctrlNotificationRoom.init = function () {
-        notificationRoomService.get().then(function (rooms) {
-            _ctrlNotificationRoom.data.notifications = rooms;
-        });
-    };
+        _ctrlNotificationRoom.init = function () {
+            notificationRoomService.get().then(function (rooms) {
+                _ctrlNotificationRoom.data.notifications = rooms;
+            });
+        };
 
-    subscribePublish.subscribe({
-        name: 'newNotificationRoom',
-        fn: function () {
+        _ctrlNotificationRoom.init();
+
+        let newNotifyRoom = $rootScope.$on('newNotificationRoom', function () {
             $timeout(function () {
                 _ctrlNotificationRoom.init();
             });
-        }
+        });
+
+        $scope.$on('$destroy', function () {
+            newNotifyRoom();
+        });
+
     });
 
-    _ctrlNotificationRoom.init();
-});
-
 /***/ }),
-/* 34 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27530,7 +27456,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('notificationShowController',
-    function (notificationsData, $mdDialog, roomUserAgreedService, roomUserInvitedService, userService, subscribePublish) {
+    function (notificationsData, $mdDialog, roomUserAgreedService, roomUserInvitedService, userService) {
         const _ctrlNSRoom = this;
 
         _ctrlNSRoom.user = userService.get();
@@ -27578,13 +27504,13 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('notificationShowControlle
     });
 
 /***/ }),
-/* 35 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_notification_room_view_html__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_notification_room_view_html__ = __webpack_require__(78);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_notification_room_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_notification_room_view_html__);
 
 
@@ -27596,7 +27522,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].component('notificationRoom', {
 });
 
 /***/ }),
-/* 36 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27613,7 +27539,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('notificationRoomResource', f
 });
 
 /***/ }),
-/* 37 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27643,20 +27569,20 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('notificationRoomService', fu
 });
 
 /***/ }),
-/* 38 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_reg_view_html__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_reg_view_html__ = __webpack_require__(79);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_reg_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_reg_view_html__);
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0____["default"].config(function ($stateProvider) {
     $stateProvider
-        .state('resolve.create', {
+        .state('main.create', {
             url: 'create/',
             controller: 'registrationController',
             controllerAs: '_ctrlReg',
@@ -27665,7 +27591,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 }));
 
 /***/ }),
-/* 39 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27697,7 +27623,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('registrationController', 
                     _ctrlReg.errorMessage = null;
                 }, 5000);
             } else {
-                $state.go('resolve.main');
+                $state.go('main.base');
             }
         });
     };
@@ -27705,7 +27631,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('registrationController', 
 });
 
 /***/ }),
-/* 40 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27713,7 +27639,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('messageListController', function ($timeout, roomService, roomMessageService, userService, subscribePublish) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('messageListController', function ($scope, $timeout, roomService, roomMessageService, userService, $rootScope) {
 
     const _ctrlMessageList = this;
 
@@ -27734,25 +27660,26 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('messageListController', f
 
     _ctrlMessageList.getMessage();
 
-    subscribePublish.subscribe({
-        name: 'newMessageRoom',
-        fn: function (data) {
-
-            $timeout(function () {
-                _ctrlMessageList.data.messages.push(data.message);
-            });
-        }
+    let newMessageRoom = $rootScope.$on('newMessageRoom', function ($event, data) {
+        $timeout(function () {
+            _ctrlMessageList.data.messages.push(data.message);
+        });
     });
+
+    $scope.$on('$destroy', function () {
+        newMessageRoom();
+    });
+
 });
 
 /***/ }),
-/* 41 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_list_html__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_list_html__ = __webpack_require__(80);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_list_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_user_list_html__);
 
 
@@ -27764,7 +27691,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].component('messageList', {
 });
 
 /***/ }),
-/* 42 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27772,7 +27699,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomListController', function (roomService, $timeout, subscribePublish) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomListController', function ($scope, roomService, $timeout, $rootScope) {
     const _ctrlRoomList = this;
 
     _ctrlRoomList.data = {
@@ -27787,26 +27714,27 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomListController', func
         });
     }
 
-    subscribePublish.subscribe({
-        name: 'roomListChange',
-        fn: function () {
-            $timeout(function () {
-                getListRoom();
-            });
-        }
+    let roomListChange = $rootScope.$on('roomListChange', function () {
+        $timeout(function () {
+            getListRoom();
+        });
+    });
+
+    $scope.$on('$destroy', function () {
+        roomListChange();
     });
 
     getListRoom();
 });
 
 /***/ }),
-/* 43 */
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_list_view_html__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_list_view_html__ = __webpack_require__(81);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_list_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_room_list_view_html__);
 
 
@@ -27818,42 +27746,47 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].component('roomList', {
 });
 
 /***/ }),
-/* 44 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_view_html__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_view_html__ = __webpack_require__(83);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_room_view_html__);
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0____["default"].config(function ($stateProvider) {
     $stateProvider
-        .state('resolve.main.room', {
+        .state('main.room', {
             url: ':id/',
             controller: 'roomController',
             controllerAs: '_ctrlRoom',
             template: __WEBPACK_IMPORTED_MODULE_1__view_room_view_html___default.a,
             resolve: {
-                roomData: function (userService, subscribePublish, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
+                roomData: function (authService, userService, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
                     let defer = $q.defer();
 
-                    roomService.get({id: $stateParams.id}).then(function (response) {
-                        if (response.success) {
-                            $mdDialog.cancel();
-                            sideBarService.unLocked();
-
-                            subscribePublish.publish({
-                                name: 'roomOpen',
-                                data: {id: $stateParams.id}
-                            });
-
-                            defer.resolve(response.room);
+                    authService.isLogin().then(function (response) {
+                        if (!response.success) {
+                            $state.go('main.auth');
+                            defer.resolve('auth is error');
                         } else {
-                            $state.go('resolve.main', {
-                                message: response.message
+                            roomService.get({id: $stateParams.id}).then(function (response) {
+
+                                if (response.success) {
+                                    $mdDialog.cancel();
+                                    sideBarService.unLocked();
+
+                                    roomService.set(response.room);
+
+                                    defer.resolve(response.room);
+                                } else {
+                                    $state.go('main.base', {
+                                        message: response.message
+                                    });
+                                }
                             });
                         }
                     });
@@ -27865,7 +27798,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 }));
 
 /***/ }),
-/* 45 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27892,7 +27825,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomAddController', funct
             }, '')
         }).then(function (response) {
             roomAddCtrl.close();
-            $state.go('resolve.main.room', {
+            $state.go('main.room', {
                 id: response.room.id
             });
         });
@@ -27905,19 +27838,19 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomAddController', funct
 });
 
 /***/ }),
-/* 46 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_search_html__ = __webpack_require__(85);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_search_html__ = __webpack_require__(84);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_search_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_user_search_html__);
 
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomController',
-    function ($mdDialog, userService, roomService, roomMessageService, sideBarService, subscribePublish, $state) {
+    function ($scope, $mdDialog, userService, roomService, roomMessageService, sideBarService, $rootScope, $state, socketServiceMediator) {
 
         const _ctrlRoom = this;
 
@@ -27931,6 +27864,8 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomController',
         _ctrlRoom.user = userService.get();
 
         _ctrlRoom.message = null;
+
+        socketServiceMediator.emit('roomOpen', {roomId: _ctrlRoom.room.id});
 
         _ctrlRoom.searchUsers = function (ev) {
             $mdDialog.show({
@@ -27952,21 +27887,26 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomController',
             });
         };
 
-        subscribePublish.subscribe({
-            name: 'roomListChangeRemove',
-            fn: function (data) {
-                if (+data.roomId === +_ctrlRoom.room.id) {
-                    $state.go('resolve.main', {
-                        message: 'Вы были исключены из комнаты ' + _ctrlRoom.room.name
-                    });
-                }
+
+        var roomListChangeRemove = $rootScope.$on('roomListChangeRemove', function ($event, data) {
+
+            if (listener) {
+                listener();
+            }
+            if (+data.roomId === +_ctrlRoom.room.id) {
+                $state.go('main.base', {
+                    message: 'Вы были исключены из комнаты ' + _ctrlRoom.room.name
+                });
             }
         });
 
+        $scope.$on('$destroy', function () {
+            roomListChangeRemove();
+        });
     });
 
 /***/ }),
-/* 47 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27985,7 +27925,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomMessageResource', functi
 });
 
 /***/ }),
-/* 48 */
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28010,7 +27950,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomMessageService', functio
 });
 
 /***/ }),
-/* 49 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28029,13 +27969,13 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomResource', function ($re
 });
 
 /***/ }),
-/* 50 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_add_html__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_add_html__ = __webpack_require__(82);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_room_add_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_room_add_html__);
 
 
@@ -28055,6 +27995,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomService', function (room
     function get(data) {
         let defer = $q.defer();
         roomResource.get(data).$promise.then(function (response) {
+
             if (response.success) {
                 if (response.rooms) {
                     response.rooms = response.rooms.map(function (room) {
@@ -28062,7 +28003,6 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomService', function (room
                         return room;
                     });
                 } else {
-                    currentRoom = response.room;
                     response.room.shortName = shortName(response.room.name)
                 }
 
@@ -28089,7 +28029,12 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomService', function (room
         return currentRoom;
     }
 
+    function set(room) {
+        currentRoom = room;
+    }
+
     return {
+        set: set,
         getCurrentRoom: getCurrentRoom,
         get: get,
         addRoom: addRoom,
@@ -28099,7 +28044,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomService', function (room
 });
 
 /***/ }),
-/* 51 */
+/* 49 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28119,7 +28064,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomUserAgreedResource', fun
 });
 
 /***/ }),
-/* 52 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28149,7 +28094,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomUserAgreedService', func
 });
 
 /***/ }),
-/* 53 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28169,7 +28114,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomUserInvitedResource', fu
 });
 
 /***/ }),
-/* 54 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28194,7 +28139,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('roomUserInvitedService', fun
 });
 
 /***/ }),
-/* 55 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28203,7 +28148,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userListController',
-    function (userService, roomUserAgreedService, roomService, subscribePublish, $timeout) {
+    function (userService, roomUserAgreedService, roomService) {
         const _ctrlUserList = this;
 
         _ctrlUserList.user = userService.get();
@@ -28225,15 +28170,6 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userListController',
 
         _ctrlUserList.getPathPhoto = userService.photo;
 
-        subscribePublish.subscribe({
-            name: 'userListChange',
-            fn: function () {
-                $timeout(function () {
-                    _ctrlUserList.getUsers();
-                });
-            }
-        });
-
         _ctrlUserList.getUsers = function () {
             roomUserAgreedService.get({roomId: _ctrlUserList.room.id}).then(function (response) {
                 _ctrlUserList.data.userList = response.list;
@@ -28241,16 +28177,17 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userListController',
         };
 
         _ctrlUserList.getUsers();
+
     });
 
 /***/ }),
-/* 56 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_list_view_html__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_list_view_html__ = __webpack_require__(85);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_list_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_user_list_view_html__);
 
 
@@ -28262,7 +28199,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].component('userList', {
 });
 
 /***/ }),
-/* 57 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28309,13 +28246,13 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userSearchController', fu
 });
 
 /***/ }),
-/* 58 */
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_search_view_html__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_search_view_html__ = __webpack_require__(86);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_search_view_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_user_search_view_html__);
 
 
@@ -28327,7 +28264,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].component('userSearch', {
 });
 
 /***/ }),
-/* 59 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28434,7 +28371,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userEditController',
 
 
 /***/ }),
-/* 60 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28458,6 +28395,88 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userShowController', func
     };
 });
 
+
+/***/ }),
+/* 59 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('userActionsController',
+    function ($scope, $mdMenu, userService, roomUserAgreedService, roomUserInvitedService) {
+        const _ctrlUserAction = this;
+
+        _ctrlUserAction.room = $scope.room;
+        _ctrlUserAction.user = $scope.user;
+
+        _ctrlUserAction.selfUser = _ctrlUserAction.user.id === userService.get().id;
+
+        _ctrlUserAction.canShowUser = $scope.showUser;
+        _ctrlUserAction.canAddRoom = $scope.addRoom;
+        _ctrlUserAction.canRemoveRoom = $scope.removeRoom;
+        _ctrlUserAction.canExitRoom = $scope.exitRoom;
+
+        _ctrlUserAction.currentUser = userService.get();
+
+        _ctrlUserAction.showUser = function ($event, user) {
+
+            if (_ctrlUserAction.selfUser) {
+                userService.editUser();
+            } else {
+                userService.showUser($event, user);
+            }
+        };
+
+        _ctrlUserAction.removeInRoom = function () {
+            roomUserAgreedService.remove({
+                roomId: _ctrlUserAction.room.id,
+                userId: _ctrlUserAction.user.id
+            });
+        };
+
+        _ctrlUserAction.addInvited = function () {
+            roomUserInvitedService.save({
+                userId: _ctrlUserAction.user.id,
+                id: _ctrlUserAction.room.id
+            });
+        };
+
+        _ctrlUserAction.openMenu = function ($mdMenu, ev) {
+            $mdMenu.open(ev);
+        };
+    });
+
+/***/ }),
+/* 60 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_actions_html__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_actions_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_user_actions_html__);
+
+
+
+__WEBPACK_IMPORTED_MODULE_0____["default"].directive('userActions', function () {
+    return {
+        controller: 'userActionsController',
+        controllerAs: '_ctrlUserAction',
+        template: __WEBPACK_IMPORTED_MODULE_1__view_user_actions_html___default.a,
+        scope: {
+            color: '=',
+            user: '=',
+            showUser: '=',
+            addRoom: '=',
+            removeRoom: '=',
+            exitRoom: '=',
+            room: '='
+        }
+    }
+});
 
 /***/ }),
 /* 61 */
@@ -105448,85 +105467,85 @@ $provide.value("$locale", {
 /* 74 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=chat-form-container flex=60 flex-xs=60 flex-gt-xs=50 flex-sm=50 flex-gt-sm=50 flex-md=40 flex-gt-md=40 flex-lg=40 flex-gt-lg=30 flex-xl=30> <form name=auth class=chat-form novalidate md-content data-ng-controller=authController> <md-card> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Авторизация</h2> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required data-ng-minlength=2 data-ng-model=_ctrlAuth.login> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required data-ng-model=_ctrlAuth.password> </md-input-container> <div data-ng-messages=_ctrlAuth.error> <div class=\"alert alert-danger\" data-ng-message=logIn> {{_ctrlAuth.errorMessage}} </div> </div> </md-card-content> <md-card-footer layout layout-align=end> <md-button class=\"md-fab chat-icon-action chat-icon-action--auth\" aria-label=Войти data-ng-click=_ctrlAuth.logIn() data-ng-disabled=auth.$invalid> <ng-md-icon size=30 style=fill:#fff icon=login> </ng-md-icon> </md-button> </md-card-footer> </md-card> </form> </div>";
+module.exports = "<div class=chat-form-container layout layout-align=\"center center\"> <div class=chat-form flex=60 flex-xs=60 flex-gt-xs=50 flex-sm=50 flex-gt-sm=50 flex-md=40 flex-gt-md=40 flex-lg=40 flex-gt-lg=30 flex-xl=30> <form name=auth class=chat-form novalidate md-content data-ng-controller=authController> <md-card> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Авторизация</h2> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required data-ng-minlength=2 data-ng-model=_ctrlAuth.login> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required data-ng-model=_ctrlAuth.password> </md-input-container> <div data-ng-messages=_ctrlAuth.error> <div class=\"alert alert-danger\" data-ng-message=logIn> {{_ctrlAuth.errorMessage}} </div> </div> </md-card-content> <md-card-footer layout layout-align=end> <md-button class=\"md-fab chat-icon-action chat-icon-action--auth\" aria-label=Войти layout layout-align=\"center center\" data-ng-click=_ctrlAuth.logIn() data-ng-disabled=auth.$invalid> <ng-md-icon size=30 style=fill:#fff icon=login> </ng-md-icon> </md-button> </md-card-footer> </md-card> </form> </div> </div>";
 
 /***/ }),
 /* 75 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-menu> <ng-md-icon size=30 icon=menu class=\"chat-icon-action chat-icon-action--actions-user\" data-ng-click=\"_ctrlUserAction.openMenu($mdMenu, $event)\"> </ng-md-icon> <md-menu-content> <md-menu-item data-ng-if=\"_ctrlUserAction.canShowUser && !_ctrlUserAction.selfUser\" data-ng-click=\"_ctrlUserAction.showUser($event, user)\"> <md-button class=\"chat-icon-action md-mini\"> <ng-md-icon size=30 style=fill:#000 icon=face class=chat-user-actions__icon> </ng-md-icon> <div class=chat-user-actions__name> Посмотреть профиль </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=\"_ctrlUserAction.canShowUser && _ctrlUserAction.selfUser\"></md-menu-divider> <md-menu-item data-ng-if=_ctrlUserAction.selfUser data-ng-click=_ctrlUserAction.editUser($event)> <md-button class=\"chat-icon-action md-mini\"> <ng-md-icon size=30 style=fill:#000 icon=edit class=chat-user-actions__icon> </ng-md-icon> <div class=chat-user-actions__name> Редактировать профиль </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlUserAction.canShowUser></md-menu-divider> <md-menu-item data-ng-if=_ctrlUserAction.canAddRoom data-ng-click=_ctrlUserAction.addInvited()> <md-button class=\"chat-icon-action md-mini\"> <ng-md-icon size=30 style=fill:#000 icon=add class=chat-user-actions__icon> </ng-md-icon> <div class=chat-user-actions__name> Пригласить в комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlUserAction.canAddRoom></md-menu-divider> <md-menu-item data-ng-if=_ctrlUserAction.canRemoveRoom data-ng-click=_ctrlUserAction.removeInRoom()> <md-button class=\"chat-icon-action md-mini\"> <ng-md-icon size=30 style=fill:#000 icon=delete class=chat-user-actions__icon> </ng-md-icon> <div class=chat-user-actions__name> {{_ctrlUserAction.user.id === _ctrlUserAction.currentUser.id ? 'Покинуть комнату' : 'Удалить из комнаты'}} </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=\"_ctrlUserAction.canExitRoom && !_ctrlUserAction.canRemoveRoom && _ctrlUserAction.selfUser\"></md-menu-divider> <md-menu-item data-ng-if=\"_ctrlUserAction.canExitRoom && !_ctrlUserAction.canRemoveRoom && _ctrlUserAction.selfUser\" data-ng-click=_ctrlUserAction.removeInRoom()> <md-button class=\"chat-icon-action md-mini\"> <ng-md-icon size=30 style=fill:#000 icon=delete class=chat-user-actions__icon> </ng-md-icon> <div class=chat-user-actions__name> Покинуть комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlUserAction.canRemoveRoom></md-menu-divider> </md-menu-content> </md-menu>";
+module.exports = "<md-dialog flex=40> <md-toolbar> <div class=md-toolbar-tools> <h2>{{_ctrlMainMessage.data.code}}</h2> </div> </md-toolbar> <md-dialog-content> <div class=md-dialog-content> <h3> {{_ctrlMainMessage.data.message}} </h3> </div> </md-dialog-content> </md-dialog>";
 
 /***/ }),
 /* 76 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-dialog flex=40> <md-toolbar> <div class=md-toolbar-tools> <h2>{{_ctrlMainMessage.data.code}}</h2> </div> </md-toolbar> <md-dialog-content> <div class=md-dialog-content> <h3> {{_ctrlMainMessage.data.message}} </h3> </div> </md-dialog-content> </md-dialog>";
+module.exports = "<div class=chat-base layout=row layout-align=\"left top\" data-ui-view> <div flex=100> <div class=chat-room__container> <h3 class=chat-room__inroduce> Выберите комнату и начните общение! </h3> </div> </div> </div>";
 
 /***/ }),
 /* 77 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=chat-room layout=row layout-align=\"left top\" data-ui-view> <div flex=80> <div class=chat-room__container> <h3 class=chat-room__inroduce> Выберите комнату и начните общение! </h3> </div> </div> </div>";
+module.exports = "<md-dialog flex=40> <md-toolbar> <div class=md-toolbar-tools> <h2>Приглашения в комнаты.</h2> </div> </md-toolbar> <md-dialog-content class=\"chat-room-list chat-room-list--notify\"> <div class=\"chat-room-list__item chat-room-list__item--notify\" layout layout-align=\"space-between center\" data-ng-repeat=\"room in _ctrlNSRoom.data.list\"> <div> <md-button class=\"md-fab chat-icon-action\"> {{room.shortName.toUpperCase()}} </md-button> <span>{{room.name}}</span> </div> <div> <md-button class=\"md-raised md-warn chat-icon-action chat-icon-action--square\" aria-label=Отказаться data-ng-click=_ctrlNSRoom.remove(room)> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> <md-button class=\"md-raised md-primary chat-icon-action chat-icon-action--square\" aria-label=Принять data-ng-click=_ctrlNSRoom.save(room)> <ng-md-icon size=30 style=fill:#fff icon=done> </ng-md-icon> </md-button> </div> </div> </md-dialog-content> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Выйти layout layout-align=\"center center\" data-ng-click=_ctrlNSRoom.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </md-dialog>";
 
 /***/ }),
 /* 78 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-dialog flex=40> <md-toolbar> <div class=md-toolbar-tools> <h2>Приглашения в комнаты.</h2> </div> </md-toolbar> <md-dialog-content> <md-list-item layout layout-align=\"center center\" class=\"chat-room-list__item chat-room-list__item--notification\" data-ng-repeat=\"room in _ctrlNSRoom.data.list\"> <div flex=60> <button class=\"md-fab md-button md-ink-ripple\"> {{room.shortName.toUpperCase()}} </button> {{room.name}} </div> <div flex=20 layout layout-align=\"end center\"> <md-button class=\"md-raised md-warn chat-icon-action chat-icon-action--square\" aria-label=Отказаться data-ng-click=_ctrlNSRoom.remove(room)> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </div> <div flex=20 layout layout-align=\"end center\"> <md-button class=\"md-raised md-primary chat-icon-action chat-icon-action--square\" aria-label=Принять data-ng-click=_ctrlNSRoom.save(room)> <ng-md-icon size=30 style=fill:#fff icon=done> </ng-md-icon> </md-button> </div> </md-list-item> </md-dialog-content> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Выйти data-ng-click=_ctrlNSRoom.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </md-dialog>";
+module.exports = "<div data-ng-if=_ctrlNotificationRoom.data.notifications.length> <md-button class=\"md-fab md-mini chat-icon-action\" layout layout-align=\"center center\" data-ng-click=_ctrlNotificationRoom.showNotification($event)> <ng-md-icon size=30 style=fill:#fff icon=notifications> </ng-md-icon> </md-button> <md-button class=notification-room__counter md-colors=\"{background: 'red'}\"> {{_ctrlNotificationRoom.data.notifications.length}} </md-button> </div>";
 
 /***/ }),
 /* 79 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=notification data-ng-if=_ctrlNotificationRoom.data.notifications.length> <md-button class=\"md-fab md-mini chat-icon-action\" data-ng-click=_ctrlNotificationRoom.showNotification($event)> <ng-md-icon size=30 style=fill:#fff icon=notifications> </ng-md-icon> </md-button> <md-button class=\"notification__counter notification__counter--room\" md-colors=\"{background: 'red'}\"> {{_ctrlNotificationRoom.data.notifications.length}} </md-button> </div>";
+module.exports = "<div class=chat-form-container layout layout-align=\"center center\"> <div class=chat-form flex=60 flex-xs=60 flex-gt-xs=50 flex-sm=50 flex-gt-sm=50 flex-md=40 flex-gt-md=40 flex-lg=40 flex-gt-lg=30 flex-xl=30> <form name=reg class=chat-form novalidate md-content> <md-card> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Регистрация</h2> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required name=login data-ng-minlength=2 data-ng-model=_ctrlReg.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text required name=email data-ng-pattern=/^([\\w-]+.)*[\\w-]+@[\\w-]+(\\.[\\w-]+)*\\.[a-z]{2,6}$/ data-ng-model=_ctrlReg.email> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required name=password data-ng-pattern=\"/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9!@#$%]+$/\" data-ng-model=_ctrlReg.password> </md-input-container> <md-input-container class=chat-form__row> <label>Повторите пароль</label> <input type=password required name=password_duble data-identity=_ctrlReg.password data-ng-model=_ctrlReg.password_duble> <div data-ng-messages=reg.password_duble.$error> <div data-ng-message=identity> Пароли должны совпадать </div> </div> </md-input-container> <div data-ng-messages=_ctrlReg.error> <div class=\"alert alert-danger\" data-ng-message=create> {{_ctrlReg.errorMessage}} </div> </div> </md-card-content> <md-card-footer layout layout-align=end> <md-button class=\"md-fab chat-icon-action chat-icon-action--create\" aria-label=Зарегестрироваться layout layout-align=\"center center\" data-ng-click=_ctrlReg.create() data-ng-disabled=reg.$invalid> <ng-md-icon size=30 style=fill:#fff icon=done> </ng-md-icon> </md-button> </md-card-footer> </md-card> </form> </div> </div>";
 
 /***/ }),
 /* 80 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=chat-form-container flex=60 flex-xs=60 flex-gt-xs=50 flex-sm=50 flex-gt-sm=50 flex-md=40 flex-gt-md=40 flex-lg=40 flex-gt-lg=30 flex-xl=30> <form name=reg class=chat-form novalidate md-content> <md-card> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Регистрация</h2> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required name=login data-ng-minlength=2 data-ng-model=_ctrlReg.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text required name=email data-ng-pattern=/^([\\w-]+.)*[\\w-]+@[\\w-]+(\\.[\\w-]+)*\\.[a-z]{2,6}$/ data-ng-model=_ctrlReg.email> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required name=password data-ng-pattern=\"/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9!@#$%]+$/\" data-ng-model=_ctrlReg.password> </md-input-container> <md-input-container class=chat-form__row> <label>Повторите пароль</label> <input type=password required name=password_duble data-identity=_ctrlReg.password data-ng-model=_ctrlReg.password_duble> <div data-ng-messages=reg.password_duble.$error> <div data-ng-message=identity> Пароли должны совпадать </div> </div> </md-input-container> <div data-ng-messages=_ctrlReg.error> <div class=\"alert alert-danger\" data-ng-message=create> {{_ctrlReg.errorMessage}} </div> </div> </md-card-content> <md-card-footer layout layout-align=end> <md-button class=\"md-fab chat-icon-action chat-icon-action--create\" aria-label=Зарегестрироваться data-ng-click=_ctrlReg.create() data-ng-disabled=reg.$invalid> <ng-md-icon size=30 style=fill:#fff icon=done> </ng-md-icon> </md-button> </md-card-footer> </md-card> </form> </div>";
+module.exports = "<h3 data-ng-if=!_ctrlMessageList.data.messages.length>История комнаты пуста.</h3> <md-list data-ng-if=_ctrlMessageList.data.messages.length> <md-list-item class=\"md-3-line chat-message-item\" data-ng-repeat=\"message in _ctrlMessageList.data.messages\"> <img alt={{message.user.login}} class=chat-message-item__avatar data-ng-click=\"_ctrlMessageList.showUser($event, message.user)\" data-ng-src={{_ctrlMessageList.getPathPhoto(message.user)}}> <div class=chat-message-item__container> <div class=chat-message-item__login> {{message.user.login}} </div> <div class=chat-message-item__content> {{message.text}} </div> <div class=chat-message-item__date> {{message.date}} </div> </div> <md-divider inset></md-divider> </md-list-item> </md-list>";
 
 /***/ }),
 /* 81 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-list class=flexbox-item-grow> <md-list-item data-ng-if=!_ctrlMessageList.data.messages.length> <div class=md-list-item-text> <h3>История комнаты пуста.</h3> </div> <md-divider inset></md-divider> </md-list-item> <md-list-item class=\"md-3-line chat-message-item\" data-ng-if=_ctrlMessageList.data.messages.length data-ng-repeat=\"message in _ctrlMessageList.data.messages\"> <img alt={{message.user.login}} class=chat-message-item__avatar data-ng-click=\"_ctrlMessageList.showUser($event, message.user)\" data-ng-src={{_ctrlMessageList.getPathPhoto(message.user)}}> <div class=chat-message-item__container> <div class=chat-message-item__login> {{message.user.login}} </div> <div class=chat-message-item__content> {{message.text}} </div> <div class=chat-message-item__date> {{message.date}} </div> </div> <md-divider inset></md-divider> </md-list-item> </md-list>";
+module.exports = "<div class=sidebar__row> <div layout=row layout-align=\"space-between center\"> <h3 class=chat-room-list-nav> Комнаты </h3> <div layout layout-align=\"center center\"> <notification-room class=notification-room></notification-room> <md-button class=\"md-fab md-mini chat-icon-action\" layout layout-align=\"center center\" data-ng-click=_ctrlRoomList.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> </div> </div> <div layout=row layout-align=\"left center\"> <md-list class=chat-room-list> <md-list-item data-ng-if=!_ctrlRoomList.data.rooms.length> <a class=chat-room-list__link> Вы не учавствуете ни в одной комнате. Примите приглашение или создайте свою комнату. </a> </md-list-item> <md-list-item class=chat-room-list__item data-ng-repeat=\"room in _ctrlRoomList.data.rooms\"> <a class=chat-room-list__link data-ui-sref=\"main.room({id: room.id})\"> <md-button class=chat-room-list__button> <button class=\"md-fab md-button md-ink-ripple\"> {{!room.photo ? room.shortName.toUpperCase() : ''}} </button> {{room.name}} </md-button> </a> </md-list-item> </md-list> </div> </div>";
 
 /***/ }),
 /* 82 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=sidebar__row> <div layout=row layout-align=\"left center\"> <div flex=50 class=chat-room-list-nav> Комнаты </div> <div flex=50 layout> <div flex=50 layoutlayout-align=\"end center\"> <notification-room></notification-room> </div> <div flex=50 layout layout-align=\"end center\"> <md-button class=\"md-fab md-mini chat-icon-action\" data-ng-click=_ctrlRoomList.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> </div> </div> </div> <div layout=row layout-align=\"left center\"> <md-list class=chat-room-list> <md-list-item data-ng-if=!_ctrlRoomList.data.rooms.length> <a class=chat-room-list__link> Вы не учавствуете ни в одной комнате. Примите приглашение или создайте свою комнату. </a> </md-list-item> <md-list-item class=chat-room-list__item data-ng-repeat=\"room in _ctrlRoomList.data.rooms\"> <a class=chat-room-list__link data-ui-sref=\"resolve.main.room({id: room.id})\"> <md-button class=chat-room-list__button> <button class=\"md-fab md-button md-ink-ripple\"> {{!room.photo ? room.shortName.toUpperCase() : ''}} </button> {{room.name}} </md-button> </a> </md-list-item> </md-list> </div> </div>";
+module.exports = "<md-dialog flex=40> <form data-ng-cloak name=addRoom> <md-toolbar> <div class=md-toolbar-tools> <h2>Создать комнату</h2> </div> </md-toolbar> <md-dialog-content> <div class=md-dialog-content> <md-input-container class=chat-form__row> <label>Название комнаты</label> <input type=text required name=name data-ng-minlength=2 data-ng-pattern=/^[a-zA-Z0-9_.-]*$/ data-ng-model=roomAddCtrl.name> <div data-ng-messages=addRoom.name.$error> <div data-ng-message=required> Поля обязательное для заполнения </div> <div data-ng-message=minlength> Название не может быть короче 2 символов. </div> <div data-ng-message=pattern> Название должно начиться с латинского символа и содержать только латинские символы и цифры </div> </div> </md-input-container> <user-search-collection data-add-room=true data-collection=roomAddCtrl.userInvited data-placeholder=\"Пригласите участников\"></user-search-collection> </div> </md-dialog-content> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" layout layout-align=\"center center\" aria-label=\"Создать комнату\" data-ng-disabled=addRoom.$invalid data-ng-click=roomAddCtrl.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> <md-button class=\"md-fab md-mini chat-icon-action\" layout layout-align=\"center center\" aria-label=Отмена data-ng-click=roomAddCtrl.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </form> </md-dialog>";
 
 /***/ }),
 /* 83 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-dialog flex=40> <form data-ng-cloak name=addRoom> <md-toolbar> <div class=md-toolbar-tools> <h2>Создать комнату</h2> </div> </md-toolbar> <md-dialog-content> <div class=md-dialog-content> <md-input-container class=chat-form__row> <label>Название комнаты</label> <input type=text required name=name data-ng-minlength=2 data-ng-pattern=/^[a-zA-Z0-9_.-]*$/ data-ng-model=roomAddCtrl.name> <div data-ng-messages=addRoom.name.$error> <div data-ng-message=required> Поля обязательное для заполнения </div> <div data-ng-message=minlength> Название не может быть короче 2 символов. </div> <div data-ng-message=pattern> Название должно начиться с латинского символа и содержать только латинские символы и цифры </div> </div> </md-input-container> <user-search-collection data-add-room=true data-collection=roomAddCtrl.userInvited data-placeholder=\"Пригласите участников\"></user-search-collection> </div> </md-dialog-content> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=\"Создать комнату\" data-ng-disabled=addRoom.$invalid data-ng-click=roomAddCtrl.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Отмена data-ng-click=roomAddCtrl.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </form> </md-dialog>";
+module.exports = "<md-sidenav class=\"sidebar md-sidenav-left\" md-is-locked-open=true md-whiteframe=4> <div class=\"sidebar__row sidebar__header\" layout layout-align=\"space-between center\"> <md--button class=\"md-fab chat-icon-action chat-icon-action--go-base\" aria-label=\"Вернуться в главное меню\" layout layout-align=\"center center\" data-ui-sref=main.base> <ng-md-icon size=30 style=fill:#fff icon=home> </ng-md-icon> </md--button> <md--button class=\"md-fab chat-icon-action chat-icon-action--sidebar-open\" aria-label=\"Открыть сайдбар\" layout layout-align=\"center center\" data-ng-click=_ctrlRoom.toggleMenu()> <ng-md-icon size=30 style=fill:#fff icon=forward> </ng-md-icon> </md--button> </div> <user-list></user-list> </md-sidenav> <div flex=75> <md-toolbar> <div class=md-toolbar-tools layout layout-align=\"space-between center\"> <h3> Комната '{{_ctrlRoom.room.name}}' </h3> <ng-md-icon class=\"chat-icon-action chat-icon-action--search\" size=30 style=fill:#fff icon=search aria-label=\"Поиск участника\" data-ng-click=_ctrlRoom.searchUsers($event)> </ng-md-icon> </div> </md-toolbar> <md-content class=chat-message-content> <message-list></message-list> </md-content> <div data-ng-form=messageForm layout layout-align=\"left top\"> <div flex=90> <md-input-container class=chat-message-area> <label>Отправить сообщение</label> <textarea name=message required data-ng-model=_ctrlRoom.message md-no-resize max-rows=2></textarea> </md-input-container> </div> <div flex=10 layout layout-align=\"center top\"> <md-button class=\"md-fab chat-icon-action chat-icon-action--send-message\" aria-label=Отправить layout layout-align=\"center center\" data-ng-disabled=messageForm.$invalid data-ng-click=_ctrlRoom.send()> <ng-md-icon size=30 style=fill:#fff icon=send> </ng-md-icon> </md-button> </div> </div> </div>";
 
 /***/ }),
 /* 84 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-sidenav class=\"sidebar md-sidenav-left\" md-is-locked-open=true md-whiteframe=4> <div class=\"sidebar__row sidebar__header sidebar__header--search\" layout layout-align=\"end center\"> <div flex=90> <md--button class=\"md-fab chat-icon-action chat-icon-action--sidebar-open\" aria-label=\"Открыть сайдбар\" data-ng-click=_ctrlRoom.toggleMenu()> <ng-md-icon size=30 style=fill:#fff icon=forward> </ng-md-icon> </md--button> </div> <div flex=10> <ng-md-icon class=\"chat-icon-action chat-icon-action--search\" size=30 style=fill:#fff icon=search aria-label=\"Поиск участника\" data-ng-click=_ctrlRoom.searchUsers($event)> </ng-md-icon> </div> </div> <user-list></user-list> </md-sidenav> <div flex=75> <div class=flexbox-parent> <md-toolbar> <div class=md-toolbar-tools> <h3> Комната {{_ctrlRoom.room.name}} </h3> </div> </md-toolbar> <div class=\"fill-area flexbox-item-grow chat-message\"> <md-content class=chat-message-content> <message-list></message-list> </md-content> </div> <div class=chat-message-footer data-ng-form=messageForm layout layout-align=\"left top\"> <div flex=90> <md-input-container class=chat-message-area> <label>Отправить сообщение</label> <textarea name=message required data-ng-model=_ctrlRoom.message md-no-resize max-rows=2></textarea> </md-input-container> </div> <div flex=10 layout layout-align=\"center top\"> <md-button class=\"md-fab chat-icon-action chat-icon-action--send-message\" data-ng-disabled=messageForm.$invalid data-ng-click=_ctrlRoom.send() aria-label=Отправить> <ng-md-icon size=30 style=fill:#fff icon=send> </ng-md-icon> </md-button> </div> </div> </div> </div>";
+module.exports = "<md-dialog flex=40 style=height:500px> <md-toolbar> <div class=md-toolbar-tools> <h2>Поиск пользователей</h2> </div> </md-toolbar> <md-dialog-content> <div class=md-dialog-content> <user-search></user-search> </div> </md-dialog-content> </md-dialog>";
 
 /***/ }),
 /* 85 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-dialog flex=40> <md-toolbar> <div class=md-toolbar-tools> <h2>Поиск пользователей</h2> </div> </md-toolbar> <md-dialog-content> <div class=md-dialog-content> <user-search></user-search> </div> </md-dialog-content> </md-dialog>";
+module.exports = "<div class=\"sidebar__row chat-user-list__nav\" layout layout-align=\"space-between center\"> <md-button class=md-raised>Онлайн</md-button> <md-button class=md-warn>Все</md-button> </div> <md-content class=sidebar__content> <md-list class=chat-user-list> <md-list-item class=chat-user-list__item data-ng-repeat=\"user in _ctrlUserList.data.userList\" data-ng-click=\"_ctrlUserList.showUser($event, user)\"> <user-actions data-user=user data-room=_ctrlUserList.room data-show-user=true data-remove-room=_ctrlUserList.canRemove data-exit-room=true class=chat-user-actions></user-actions> <div class=chat-user-list__photo> <img alt={{user.login}} data-ng-src={{_ctrlUserList.getPathPhoto(user)}}> <span class=chat-user-list__status data-ng-class=\"{'chat-user-list__status--online': user.online}\"></span> </div> <span class=chat-user-list__login>{{user.login}}</span> </md-list-item> </md-list> </md-content>";
 
 /***/ }),
 /* 86 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-content class=\"sidebar__content chat-user-list\"> <div class=\"sidebar__row chat-user-list__nav\" layout layout-align=\"left center\"> <div flex=50> <md-button class=md-raised>Онлайн</md-button> </div> <div flex=50 style=text-align:right> <md-button class=md-warn>Все</md-button> </div> </div> <div layout=row layout-align=\"left center\"> <div flex=100> <md-list class=chat-user-list> <md-list-item class=chat-user-list__item data-ng-repeat=\"user in _ctrlUserList.data.userList\" data-ng-click=\"_ctrlUserList.showUser($event, user)\"> <user-actions data-user=user data-room=_ctrlUserList.room data-show-user=true data-remove-room=_ctrlUserList.canRemove data-exit-room=true class=chat-user-actions></user-actions> <img class=chat-user-list__photo alt={{user.login}} data-ng-src={{_ctrlUserList.getPathPhoto(user)}}> <span class=chat-user-list__login>{{user.login}}</span> </md-list-item> </md-list> </div> </div> </md-content>";
+module.exports = "<form class=chat-form> <md-input-container class=chat-form__row> <input type=text data-ng-attr-placeholder={{_ctrlUserSearch.placeholder}} data-ng-change=_ctrlUserSearch.searchUsers(_ctrlUserSearch.query) data-ng-model=_ctrlUserSearch.query> </md-input-container> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Найдено {{_ctrlUserSearch.data.users.length}}</span> </div> </md-toolbar> <md-list flex> <md-list-item class=md-3-line data-ng-click=_ctrlUserSearch.showUser(user) data-ng-repeat=\"user in _ctrlUserSearch.data.users\"> <img class=md-avatar alt={{user.login}} data-ng-src={{_ctrlUserSearch.photo(user)}} /> <div class=md-list-item-text layout=column> <h3>{{ user.login }}</h3> <h4>{{ user.email }}</h4> </div> <user-actions data-user=user data-show-user=true data-add-room=true data-room=_ctrlUserSearch.room class=chat-user-actions></user-actions> </md-list-item> </md-list> </div> </div> </form>";
 
 /***/ }),
 /* 87 */
 /***/ (function(module, exports) {
 
-module.exports = "<form class=chat-form> <md-input-container class=chat-form__row> <input type=text data-ng-attr-placeholder={{_ctrlUserSearch.placeholder}} data-ng-change=_ctrlUserSearch.searchUsers(_ctrlUserSearch.query) data-ng-model=_ctrlUserSearch.query> </md-input-container> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Найдено {{_ctrlUserSearch.data.users.length}}</span> </div> </md-toolbar> <md-list flex> <md-list-item class=md-3-line data-ng-click=_ctrlUserSearch.showUser(user) data-ng-repeat=\"user in _ctrlUserSearch.data.users\"> <img class=md-avatar alt={{user.login}} data-ng-src={{_ctrlUserSearch.photo(user)}} /> <div class=md-list-item-text layout=column> <h3>{{ user.login }}</h3> <h4>{{ user.email }}</h4> </div> <user-actions data-user=user data-show-user=true data-add-room=true data-room=_ctrlUserSearch.room class=chat-user-actions></user-actions> </md-list-item> </md-list> </div> </div> </form>";
+module.exports = "<md-menu> <ng-md-icon size=30 icon=menu class=\"chat-icon-action chat-icon-action--actions-user\" data-ng-click=\"_ctrlUserAction.openMenu($mdMenu, $event)\"> </ng-md-icon> <md-menu-content> <md-menu-item data-ng-if=_ctrlUserAction.canShowUser data-ng-click=\"_ctrlUserAction.showUser($event, user)\"> <md-button class=chat-icon-action> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions--icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=face data-ng-if=!_ctrlUserAction.selfUser> </ng-md-icon> <ng-md-icon class=chat-user-actions--icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=edit data-ng-if=_ctrlUserAction.selfUser> </ng-md-icon> {{!_ctrlUserAction.selfUser ? 'Посмотреть профиль' : 'Редактировать профиль'}} </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlUserAction.canShowUser></md-menu-divider> <md-menu-divider data-ng-if=_ctrlUserAction.canShowUser></md-menu-divider> <md-menu-item data-ng-if=_ctrlUserAction.canAddRoom data-ng-click=_ctrlUserAction.addInvited()> <div layout layout-align=\"left center\"> <ng-md-icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=add> </ng-md-icon> Пригласить в комнату </div> </md-menu-item> <md-menu-divider data-ng-if=_ctrlUserAction.canAddRoom></md-menu-divider> <md-menu-item data-ng-if=_ctrlUserAction.canRemoveRoom data-ng-click=_ctrlUserAction.removeInRoom()> <md-button class=chat-icon-action> <div layout layout-align=\"left center\"> <ng-md-icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=delete> </ng-md-icon> {{_ctrlUserAction.user.id === _ctrlUserAction.currentUser.id ? 'Покинуть комнату' : 'Удалить из комнаты'}} </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=\"_ctrlUserAction.canExitRoom && !_ctrlUserAction.canRemoveRoom && _ctrlUserAction.selfUser\"></md-menu-divider> <md-menu-item data-ng-if=\"_ctrlUserAction.canExitRoom && !_ctrlUserAction.canRemoveRoom && _ctrlUserAction.selfUser\" data-ng-click=_ctrlUserAction.removeInRoom()> <md-button class=chat-icon-action> <div layout layout-align=\"left center\"> <ng-md-icon size=30 layout layout-align=\"center center\" style=fill:#000 icon=delete> </ng-md-icon> Покинуть комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlUserAction.canRemoveRoom></md-menu-divider> </md-menu-content> </md-menu>";
 
 /***/ }),
 /* 88 */
@@ -105538,7 +105557,7 @@ module.exports = "<md-contact-chips name=userInvited data-ng-model=_ctrlSearchCo
 /* 89 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-dialog flex=40> <form data-ng-cloak name=userEdit> <md-toolbar> <div class=md-toolbar-tools> <h2>Редактирование профиля</h2> </div> </md-toolbar> <md-dialog-content class=chat-user-edit> <div class=chat-user-edit__action-photo flex=40> <img class=\"md-user-avatar chat-user-edit__photo\" data-ng-src={{_ctrlUserEdit.getPathPhoto()}}> <ng-md-icon class=chat-user-edit__add-photo size=100 style=fill:#fff icon=add_a_photo data-ng-click=_ctrlUserEdit.close()> </ng-md-icon> <input type=file nv-file-select class=chat-user-edit__uploader uploader=_ctrlUserEdit.uploader /> </div> <div layout layout-align=\"center center\"> <div flex=60> <div flex=100> <div class=\"alert alert-danger\" data-ng-if=_ctrlUserEdit.data.form.error.length> <div data-ng-repeat=\"message in _ctrlUserEdit.data.form.error\"> {{message}} </div> </div> <div class=\"alert alert-success\" data-ng-if=_ctrlUserEdit.data.form.success.status> {{_ctrlUserEdit.data.form.success.message}} </div> </div> <div flex=100> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required data-ng-minlength=2 data-ng-model=_ctrlUserEdit.changeLogin> </md-input-container> </div> </div> </div> </md-dialog-content> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Изменить data-ng-disabled=userEdit.$invalid data-ng-click=_ctrlUserEdit.update()> <ng-md-icon size=30 style=fill:#fff icon=mode_edit> </ng-md-icon> </md-button> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Отмена data-ng-click=_ctrlUserEdit.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </form> </md-dialog>";
+module.exports = "<md-dialog flex=40> <form data-ng-cloak name=userEdit> <md-toolbar> <div class=md-toolbar-tools> <h2>Редактирование профиля</h2> </div> </md-toolbar> <md-dialog-content class=chat-user-edit> <div class=chat-user-edit__action-photo flex=40> <img class=\"md-user-avatar chat-user-edit__photo\" data-ng-src={{_ctrlUserEdit.getPathPhoto()}}> <ng-md-icon class=chat-user-edit__add-photo size=100 style=fill:#fff icon=add_a_photo data-ng-click=_ctrlUserEdit.close()> </ng-md-icon> <input type=file nv-file-select class=chat-user-edit__uploader uploader=_ctrlUserEdit.uploader /> </div> <div layout layout-align=\"center center\"> <div flex=60> <div flex=100> <div class=\"alert alert-danger\" data-ng-if=_ctrlUserEdit.data.form.error.length> <div data-ng-repeat=\"message in _ctrlUserEdit.data.form.error\"> {{message}} </div> </div> <div class=\"alert alert-success\" data-ng-if=_ctrlUserEdit.data.form.success.status> {{_ctrlUserEdit.data.form.success.message}} </div> </div> <div flex=100> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required data-ng-minlength=2 data-ng-model=_ctrlUserEdit.changeLogin> </md-input-container> </div> </div> </div> </md-dialog-content> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Изменить layout layout-align=\"center center\" data-ng-disabled=userEdit.$invalid data-ng-click=_ctrlUserEdit.update()> <ng-md-icon size=30 style=fill:#fff icon=mode_edit> </ng-md-icon> </md-button> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Отмена layout layout-align=\"center center\" data-ng-click=_ctrlUserEdit.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </form> </md-dialog>";
 
 /***/ }),
 /* 90 */
@@ -105600,41 +105619,6 @@ module.exports = function(module) {
 	return module;
 };
 
-
-/***/ }),
-/* 93 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(2);
-
-
-__WEBPACK_IMPORTED_MODULE_0____["default"].service('subscribePublish', function () {
-
-    const chanells = {};
-
-    const publish = function (data) {
-
-            if (!chanells[data.name]) {
-                return false;
-            }
-            chanells[data.name].forEach(function (fn) {
-                fn(data.data);
-            });
-        },
-        subscribe = function (data) {
-            if (!chanells[data.name]) {
-                chanells[data.name] = [];
-            }
-            chanells[data.name].push(data.fn);
-        };
-
-    return {
-        subscribe: subscribe,
-        publish: publish
-    }
-});
 
 /***/ })
 /******/ ]);

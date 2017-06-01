@@ -1,59 +1,33 @@
 .chat-icon {
   &-action {
-    &.md-mini {
-      & svg {
-        margin: 5px 0 0 -1px;
+    margin: 0;
+
+    & > ng-md-icon {
+      line-height: 0;
+    }
+
+    &--log-out {
+      & > ng-md-icon {
+        margin-left: 5px;
       }
     }
 
-    &--search {
-      cursor: pointer;
-    }
-
-    &--auth, &--create {
-      & svg {
-        margin: 12px 0 0 0;
-      }
-    }
-
-    &--sidebar-log-out {
-      & svg {
-        margin: 12px 0 0 5px;
-      }
-    }
     &--sidebar-close {
-
-      transform: rotate(180deg);
-      & svg {
-        margin: 14px 0 0;
+      & > ng-md-icon {
+        transform: rotate(180deg);
       }
     }
-    &--sidebar-open {
-
-      & svg {
-        margin: 14px 0 0;
-      }
-    }
-
-    &--send-message {
-
-      & svg {
-        margin: 14px 0 0 4px;
-      }
-    }
-
-    &--square {
-
-      & svg {
-        margin: 10px auto 0;
-      }
-    }
-
     &--actions-user {
-
-      & svg {
-        margin: 10px auto 0;
-      }
+      display: block;
+      line-height: 0;
     }
+    &--square {
+      display: inline-block;
+      line-height: 0;
+    }
+  }
+
+  &--search {
+    cursor: pointer;
   }
 }

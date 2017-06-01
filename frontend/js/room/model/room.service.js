@@ -16,6 +16,7 @@ module.service('roomService', function (roomResource, $q, $mdDialog) {
     function get(data) {
         let defer = $q.defer();
         roomResource.get(data).$promise.then(function (response) {
+
             if (response.success) {
                 if (response.rooms) {
                     response.rooms = response.rooms.map(function (room) {
@@ -23,7 +24,6 @@ module.service('roomService', function (roomResource, $q, $mdDialog) {
                         return room;
                     });
                 } else {
-                    currentRoom = response.room;
                     response.room.shortName = shortName(response.room.name)
                 }
 
@@ -50,7 +50,12 @@ module.service('roomService', function (roomResource, $q, $mdDialog) {
         return currentRoom;
     }
 
+    function set(room) {
+        currentRoom = room;
+    }
+
     return {
+        set: set,
         getCurrentRoom: getCurrentRoom,
         get: get,
         addRoom: addRoom,

@@ -3,29 +3,34 @@ import roomTpl from '../view/room.view.html'
 
 export default module.config(function ($stateProvider) {
     $stateProvider
-        .state('resolve.main.room', {
+        .state('main.room', {
             url: ':id/',
             controller: 'roomController',
             controllerAs: '_ctrlRoom',
             template: roomTpl,
             resolve: {
-                roomData: function (userService, subscribePublish, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
+                roomData: function (authService, userService, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
                     let defer = $q.defer();
 
-                    roomService.get({id: $stateParams.id}).then(function (response) {
-                        if (response.success) {
-                            $mdDialog.cancel();
-                            sideBarService.unLocked();
-
-                            subscribePublish.publish({
-                                name: 'roomOpen',
-                                data: {id: $stateParams.id}
-                            });
-
-                            defer.resolve(response.room);
+                    authService.isLogin().then(function (response) {
+                        if (!response.success) {
+                            $state.go('main.auth');
+                            defer.resolve('auth is error');
                         } else {
-                            $state.go('resolve.main', {
-                                message: response.message
+                            roomService.get({id: $stateParams.id}).then(function (response) {
+
+                                if (response.success) {
+                                    $mdDialog.cancel();
+                                    sideBarService.unLocked();
+
+                                    roomService.set(response.room);
+
+                                    defer.resolve(response.room);
+                                } else {
+                                    $state.go('main.base', {
+                                        message: response.message
+                                    });
+                                }
                             });
                         }
                     });

@@ -3,18 +3,22 @@ $photo_size: 56px;
 .chat-user {
 
   &-intro {
+
     &__descr {
-      margin: 0 20px;
       overflow: hidden;
       text-overflow: ellipsis;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: $layout-offset;
     }
+
     &__avatar {
       width: $photo_size;
       height: $photo_size;
       border: 1px solid #fff;
       border-radius: 50%;
       background-color: #e8e8e8;
-      margin-left: 8px;
+      vertical-align: middle;
     }
 
     &__info {
@@ -80,7 +84,7 @@ $photo_size: 56px;
         top: 0;
         opacity: 0;
         transition: all 0.5s ease;
-        box-shadow: inset 0 0 50px 10px rgba(0,0,0,.2);
+        box-shadow: inset 0 0 50px 10px rgba(0, 0, 0, .2);
         border-radius: 50%;
         z-index: 2;
         pointer-events: none;
@@ -119,17 +123,9 @@ $photo_size: 56px;
   }
 
   &-list {
-    background: none;
-    width: 100%;
 
     &__item {
       color: #fff;
-      width: 100%;
-      text-align: left;
-      margin: 0;
-      padding: 0;
-      height: 68px;
-      border-radius: 4px;
 
       &:hover {
         & .chat-user-actions {
@@ -138,19 +134,39 @@ $photo_size: 56px;
       }
     }
 
+    $photo_size: 45px;
     &__photo {
-      width: 45px;
+      width: $photo_size;
+      height: $photo_size;
+      position: relative;
+
+      & img {
+        border-radius: 50%;
+        max-width: 100%;
+        max-height: 100%;
+        width: $photo_size;
+        height: $photo_size;
+      }
+    }
+
+    &__status {
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      display: inline-block;
+      vertical-align: top;
+      position: absolute;
+      right: 0;
+      bottom: 0;
       border-radius: 50%;
-      margin-top: 3px;
+
+      &--online {
+        background-color: green;
+      }
     }
 
     &__login {
-      vertical-align: top;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       margin: 2px 0 0 8px;
-      display: inline-block;
     }
 
     & .chat-user-actions {
@@ -165,17 +181,6 @@ $photo_size: 56px;
     position: relative;
     transition: all 0.25s ease;
     z-index: 2021;
-
-    &__icon {
-      margin-right: 6px;
-      vertical-align: text-bottom;
-    }
-
-    &__name {
-      display: inline-block;
-      vertical-align: text-bottom;
-      margin: 8px 0;
-    }
   }
 }
 

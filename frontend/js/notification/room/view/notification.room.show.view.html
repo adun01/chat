@@ -4,17 +4,21 @@
             <h2>Приглашения в комнаты.</h2>
         </div>
     </md-toolbar>
-    <md-dialog-content>
-        <md-list-item layout layout-align="center center"
-                      class="chat-room-list__item chat-room-list__item--notification"
-                      data-ng-repeat="room in _ctrlNSRoom.data.list">
-            <div flex="60">
-                <button class="md-fab md-button md-ink-ripple">
+    <md-dialog-content class="chat-room-list chat-room-list--notify">
+        <div class="chat-room-list__item chat-room-list__item--notify"
+             layout
+             layout-align="space-between center"
+             data-ng-repeat="room in _ctrlNSRoom.data.list">
+
+
+            <div>
+                <md-button class="md-fab chat-icon-action">
                     {{room.shortName.toUpperCase()}}
-                </button>
-                {{room.name}}
+                </md-button>
+                <span>{{room.name}}</span>
             </div>
-            <div flex="20" layout layout-align="end center">
+
+            <div>
                 <md-button class="md-raised md-warn chat-icon-action chat-icon-action--square"
                            aria-label="Отказаться"
                            data-ng-click="_ctrlNSRoom.remove(room)">
@@ -23,8 +27,6 @@
                                 icon="close">
                     </ng-md-icon>
                 </md-button>
-            </div>
-            <div flex="20" layout layout-align="end center">
                 <md-button class="md-raised md-primary chat-icon-action chat-icon-action--square"
                            aria-label="Принять"
                            data-ng-click="_ctrlNSRoom.save(room)">
@@ -34,13 +36,14 @@
                     </ng-md-icon>
                 </md-button>
             </div>
-
-        </md-list-item>
+        </div>
     </md-dialog-content>
 
     <md-dialog-actions layout="row" class="chat-dialog__actions">
         <md-button class="md-fab md-mini chat-icon-action"
                    aria-label="Выйти"
+                   layout
+                   layout-align="center center"
                    data-ng-click="_ctrlNSRoom.close()">
             <ng-md-icon size="30"
                         style="fill: white"

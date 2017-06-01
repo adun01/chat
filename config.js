@@ -6,7 +6,7 @@ module.exports = {
         live: 3000
     },
     user: {
-        field: ['login', 'id', 'photo', 'email', 'date']
+        field: ['login', 'id', 'photo', 'email', 'date', 'online']
     },
     message: {
         field: ['id', 'text', 'date', 'creatorId']

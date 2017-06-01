@@ -1,6 +1,7 @@
-const userModel = require('../../db/user/user.model'),
+const usersOnline = require('../../listUserOnline'),
+    userModel = require('../../db/user/user.model'),
     config = require('../../config'),
-    sessionEvents = require('../session/'),
+    sessionApi = require('../session/'),
     formidable = require('formidable'),
     path = require('path'),
     fs = require('fs'),
@@ -28,7 +29,7 @@ module.exports = {
 
                 clearUser = clearUserData(newUser);
 
-                sessionEvents.save({
+                sessionApi.save({
                     session: data.session,
                     extend: {user: clearUser}
                 });
@@ -95,6 +96,9 @@ module.exports = {
                         message: 'Пользователь не найден'
                     });
                 }
+
+                user.online = !!usersOnline.get(user.id);
+
                 return resolve({
                     success: true,
                     user: user
@@ -107,6 +111,7 @@ module.exports = {
             let reg = new RegExp(data.query.query, 'img');
             userModel.find({login: {$regex: reg, $options: "sig"}}).then(function (result) {
                 let users = result.map(function (user) {
+                    user.online = !!usersOnline.get(user.id);
                     return clearUserData(user);
                 });
                 if (!users.length) {
@@ -251,7 +256,7 @@ module.exports = {
 
             let changeUserSearch = await self.search({id: data.user.id});
 
-            sessionEvents.save({
+            sessionApi.save({
                 session: data.session,
                 extend: {user: clearUserData(changeUserSearch.user)}
             });

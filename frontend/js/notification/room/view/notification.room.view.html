@@ -1,5 +1,8 @@
-<div class="notification" data-ng-if="_ctrlNotificationRoom.data.notifications.length">
+<div data-ng-if="_ctrlNotificationRoom.data.notifications.length">
+
     <md-button class="md-fab md-mini chat-icon-action"
+               layout
+               layout-align="center center"
                data-ng-click="_ctrlNotificationRoom.showNotification($event)">
 
         <ng-md-icon size="30"
@@ -8,8 +11,9 @@
         </ng-md-icon>
     </md-button>
 
-    <md-button class="notification__counter notification__counter--room"
-            md-colors="{background: 'red'}">
+    <md-button class="notification-room__counter"
+               md-colors="{background: 'red'}">
+
         {{_ctrlNotificationRoom.data.notifications.length}}
     </md-button>
 </div>

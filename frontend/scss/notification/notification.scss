@@ -1,19 +1,22 @@
 .notification {
-  position: relative;
 
-  &__counter {
-    width: 20px;
-    height: 20px;
-    min-height: 0;
-    min-width: 0;
-    position: absolute;
-    right: 6px;
-    line-height: 20px;
-    top: -7px;
-    border-radius: 50%;
-    z-index: 2021;
+  &-room {
+    position: relative;
+    display: inline-block;
+    margin: 0 $layout-offset;
 
-    &--room {
+    &__counter {
+      width: 20px;
+      height: 20px;
+      min-height: 0;
+      min-width: 0;
+      position: absolute;
+      right: -5px;
+      line-height: 20px;
+      top: -7px;
+      border-radius: 50%;
+      z-index: 2021;
+      margin: 0;
     }
   }
 }

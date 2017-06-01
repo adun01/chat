@@ -50,6 +50,8 @@
         <md-dialog-actions layout="row" class="chat-dialog__actions">
             <md-button class="md-fab md-mini chat-icon-action"
                        aria-label="Изменить"
+                       layout
+                       layout-align="center center"
                        data-ng-disabled="userEdit.$invalid"
                        data-ng-click="_ctrlUserEdit.update()">
                 <ng-md-icon size="30"
@@ -59,6 +61,8 @@
             </md-button>
             <md-button class="md-fab md-mini chat-icon-action"
                        aria-label="Отмена"
+                       layout
+                       layout-align="center center"
                        data-ng-click="_ctrlUserEdit.close()">
                 <ng-md-icon size="30"
                             style="fill: white"
