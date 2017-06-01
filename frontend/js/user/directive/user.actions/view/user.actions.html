@@ -1,0 +1,100 @@
+<md-menu>
+
+    <ng-md-icon size="30"
+                icon="menu"
+                class="chat-icon-action chat-icon-action--actions-user"
+                data-ng-click="_ctrlUserAction.openMenu($mdMenu, $event)">
+    </ng-md-icon>
+
+    <md-menu-content>
+        <md-menu-item data-ng-if="_ctrlUserAction.canShowUser"
+                      data-ng-click="_ctrlUserAction.showUser($event, user)">
+
+            <md-button class="chat-icon-action">
+                <div layout
+                     layout-align="left center">
+
+                    <ng-md-icon class="chat-user-actions--icon"
+                                layout
+                                layout-align="center center"
+                                size="30"
+                                style="fill: black"
+                                icon="face"
+                                data-ng-if="!_ctrlUserAction.selfUser">
+                    </ng-md-icon>
+
+                    <ng-md-icon class="chat-user-actions--icon"
+                                layout
+                                layout-align="center center"
+                                size="30"
+                                style="fill: black"
+                                icon="edit"
+                                data-ng-if="_ctrlUserAction.selfUser">
+                    </ng-md-icon>
+
+                    {{!_ctrlUserAction.selfUser ? 'Посмотреть профиль' : 'Редактировать профиль'}}
+                </div>
+            </md-button>
+        </md-menu-item>
+        <md-menu-divider data-ng-if="_ctrlUserAction.canShowUser"></md-menu-divider>
+
+        <md-menu-divider data-ng-if="_ctrlUserAction.canShowUser"></md-menu-divider>
+        <md-menu-item data-ng-if="_ctrlUserAction.canAddRoom"
+                      data-ng-click="_ctrlUserAction.addInvited()">
+            <div layout
+                 layout-align="left center">
+
+                <ng-md-icon layout
+                            layout-align="center center"
+                            size="30"
+                            style="fill: black"
+                            icon="add">
+                </ng-md-icon>
+
+                Пригласить в комнату
+            </div>
+        </md-menu-item>
+        <md-menu-divider data-ng-if="_ctrlUserAction.canAddRoom"></md-menu-divider>
+
+        <md-menu-item data-ng-if="_ctrlUserAction.canRemoveRoom"
+                      data-ng-click="_ctrlUserAction.removeInRoom()">
+
+            <md-button class="chat-icon-action">
+                <div layout layout-align="left center">
+
+                    <ng-md-icon layout
+                                layout-align="center center"
+                                size="30"
+                                style="fill: black"
+                                icon="delete">
+                    </ng-md-icon>
+                    {{_ctrlUserAction.user.id === _ctrlUserAction.currentUser.id ? 'Покинуть комнату' : 'Удалить из
+                    комнаты'}}
+                </div>
+            </md-button>
+        </md-menu-item>
+        <md-menu-divider
+                data-ng-if="_ctrlUserAction.canExitRoom && !_ctrlUserAction.canRemoveRoom && _ctrlUserAction.selfUser"></md-menu-divider>
+
+        <md-menu-item
+                data-ng-if="_ctrlUserAction.canExitRoom && !_ctrlUserAction.canRemoveRoom && _ctrlUserAction.selfUser"
+                data-ng-click="_ctrlUserAction.removeInRoom()">
+
+            <md-button class="chat-icon-action">
+
+                <div layout
+                     layout-align="left center">
+
+                    <ng-md-icon size="30"
+                                layout
+                                layout-align="center center"
+                                style="fill: black"
+                                icon="delete">
+                    </ng-md-icon>
+                    Покинуть комнату
+                </div>
+            </md-button>
+        </md-menu-item>
+        <md-menu-divider data-ng-if="_ctrlUserAction.canRemoveRoom"></md-menu-divider>
+    </md-menu-content>
+</md-menu>
