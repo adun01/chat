@@ -24,6 +24,8 @@ export default module.config(function ($stateProvider) {
                                     $mdDialog.cancel();
                                     sideBarService.unLocked();
 
+                                    response.conversation.conversation = true;
+
                                     roomService.set(response.conversation);
 
                                     defer.resolve(response.conversation);

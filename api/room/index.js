@@ -1,7 +1,5 @@
 const roomModel = require('../../db/room/room.model'),
     _ = require('lodash'),
-    userAgreedApi = require('./room.userAgreed'),
-    userInvitedApi = require('./room.userInvited'),
     fieldAllow = ['name', 'id', 'modify', 'photo', 'creatorId'];
 
 function clearRoomField(rooms) {

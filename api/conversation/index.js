@@ -8,7 +8,7 @@ function clearUserData(obj) {
 }
 
 function clearRoomData(obj) {
-    return _.pick(obj, ['id', 'creatorId', 'date', 'name', 'message', 'photo', 'create']);
+    return _.pick(obj, ['id', 'accessUserId', 'create']);
 }
 
 module.exports = {

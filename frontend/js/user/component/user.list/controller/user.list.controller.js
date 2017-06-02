@@ -29,6 +29,10 @@ module.controller('userListController',
             });
         };
 
-        _ctrlUserList.getUsers();
+        if (!_ctrlUserList.room.conversation) {
+            _ctrlUserList.getUsers();
+        } else {
+            _ctrlUserList.data.userList.push(_ctrlUserList.room.user);
+        }
 
     });

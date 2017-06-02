@@ -27445,6 +27445,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                     $mdDialog.cancel();
                                     sideBarService.unLocked();
 
+                                    response.conversation.conversation = true;
+
                                     roomService.set(response.conversation);
 
                                     defer.resolve(response.conversation);
@@ -28406,7 +28408,11 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userListController',
             });
         };
 
-        _ctrlUserList.getUsers();
+        if (!_ctrlUserList.room.conversation) {
+            _ctrlUserList.getUsers();
+        } else {
+            _ctrlUserList.data.userList.push(_ctrlUserList.room.user);
+        }
 
     });
 
