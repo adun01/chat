@@ -1,4 +1,4 @@
-<md-sidenav class="sidebar md-sidenav-left"
+<md-sidenav class="sidebar sidebar--room md-sidenav-left"
             md-is-locked-open="true"
             md-whiteframe="4">
 
@@ -6,7 +6,7 @@
          layout
          layout-align="space-between center">
 
-        <md--button class="md-fab chat-icon-action chat-icon-action--go-base"
+        <md-button class="md-fab chat-icon-action chat-icon-action--go-base"
                     aria-label="Вернуться в главное меню"
                     layout
                     layout-align="center center"
@@ -15,19 +15,20 @@
                         style="fill: white"
                         icon="home">
             </ng-md-icon>
-        </md--button>
+        </md-button>
 
-        <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-open"
+        <md-button class="md-fab chat-icon-action chat-icon-action--sidebar-open"
                     aria-label="Открыть сайдбар"
                     layout
                     layout-align="center center"
-                    data-ng-click="_ctrlRoom.toggleMenu()">
+                    data-ng-click="_ctrlSidebar.toggleMenu()">
             <ng-md-icon size="30"
                         style="fill: white"
                         icon="forward">
             </ng-md-icon>
-        </md--button>
+        </md-button>
     </div>
+
     <user-list></user-list>
 
 </md-sidenav>

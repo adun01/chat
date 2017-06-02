@@ -9,6 +9,10 @@
     // кастыль что б не прыгала прокрутка
   }
 
+  &--room {
+    height: 100%;
+  }
+
   &__row {
     border-bottom: 1px solid #fff;
     padding: $layout-offset 0;

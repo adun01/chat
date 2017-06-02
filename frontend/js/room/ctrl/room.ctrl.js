@@ -9,8 +9,6 @@ module.controller('roomController',
         sideBarService.unLocked();
         sideBarService.close();
 
-        _ctrlRoom.toggleMenu = sideBarService.toggle;
-
         _ctrlRoom.room = roomService.getCurrentRoom();
 
         _ctrlRoom.user = userService.get();
