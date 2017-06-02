@@ -51,7 +51,7 @@ module.service('socketServiceMediator', function ($rootScope, $timeout, $q, room
 
         let currentRoom = roomService.getCurrentRoom();
 
-        if (currentRoom.id === +data.roomId) {
+        if (+currentRoom.id === +data.roomId) {
 
             $rootScope.$emit('newMessageRoom', data);
         }

@@ -12,19 +12,54 @@ function clearRoomData(obj) {
 }
 
 module.exports = {
-    get: function (data) {
-
+    search: function (data) {
         return new Promise(async function (resolve) {
+
             let sId = data.userId + '' + data.userInterlocutor,
                 sId2 = data.userInterlocutor + '' + data.userId;
 
-            let issetConversation = await conversationModel.findOne({$or: [{id: sId}, {id: sId2}]});
+            let conversation = await conversationModel.findOne({$or: [{id: sId}, {id: sId2}]});
 
-            let userSearch = await userApi.search({id: data.userInterlocutor});
+            if (conversation) {
 
-            if (issetConversation) {
+                return resolve({
+                    success: true,
+                    conversation: conversation
+                });
+            }
 
-                let conversation = clearRoomData(issetConversation);
+            return resolve({
+                success: false,
+                message: 'Беседа не найдена.'
+            });
+        })
+    },
+    get: function (data) {
+
+        let self = this;
+
+        return new Promise(async function (resolve) {
+
+            let searchConversation = await self.search(data);
+
+            if (searchConversation.success) {
+                searchConversation.conversation = clearRoomData(searchConversation.conversation);
+                let userSearch = await userApi.search({id: data.userInterlocutor});
+
+                searchConversation.conversation.user = clearUserData(userSearch.user);
+
+                return resolve(searchConversation);
+            } else {
+                let sId = data.userId + '' + data.userInterlocutor;
+
+                let conversation = await new conversationModel({
+                    id: sId,
+                    accessUserId: [data.userId, data.userInterlocutor]
+                }).save();
+
+                let userSearch = await userApi.search({id: data.userInterlocutor});
+
+                conversation = clearRoomData(conversation);
 
                 conversation.user = clearUserData(userSearch.user);
 
@@ -33,20 +68,6 @@ module.exports = {
                     conversation: conversation
                 });
             }
-
-            let conversation = await new conversationModel({
-                id: sId,
-                accessUserId: [data.userId, data.userInterlocutor]
-            }).save();
-
-            conversation = clearRoomData(conversation);
-
-            conversation.user = clearUserData(userSearch.user);
-
-            return resolve({
-                success: true,
-                conversation: conversation
-            });
         });
     }
 };

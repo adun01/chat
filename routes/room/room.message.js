@@ -1,6 +1,6 @@
 const router = require('express').Router(),
     eventsMediator = require('../../events.mediator'),
-    messageApi = require('../../api/message/');
+    messageApi = require('../../api/message/room.message');
 
 router.get('/api/room/:roomId/message', async function (req, res) {
     let seacrMessagesResult = await messageApi.get({
