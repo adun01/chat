@@ -1,24 +1,13 @@
 <sidebar></sidebar>
+
 <div flex="75">
 
-    <md-toolbar>
-        <div class="md-toolbar-tools" layout layout-align="space-between center">
-            <h3>
-                Комната '{{_ctrlRoom.room.name}}'
-            </h3>
-            <ng-md-icon class="chat-icon-action chat-icon-action--search"
-                        size="30"
-                        style="fill: white"
-                        icon="search"
-                        aria-label="Поиск участника"
-                        data-ng-click="_ctrlRoom.searchUsers($event)">
-            </ng-md-icon>
-        </div>
-    </md-toolbar>
+    <room-header></room-header>
 
     <md-content class="chat-message-content">
         <message-list></message-list>
     </md-content>
 
     <message-add></message-add>
+
 </div>

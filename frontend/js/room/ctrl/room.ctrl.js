@@ -1,8 +1,7 @@
 import module from '../';
-import userSearchTpl from '../view/user.search.html';
 
 module.controller('roomController',
-    function ($scope, $mdDialog, userService, roomService, roomMessageService, sideBarService, $rootScope, $state, socketServiceMediator) {
+    function ($scope, roomService, sideBarService, $rootScope, $state, socketServiceMediator) {
 
         const _ctrlRoom = this;
 
@@ -11,18 +10,7 @@ module.controller('roomController',
 
         _ctrlRoom.room = roomService.getCurrentRoom();
 
-        _ctrlRoom.user = userService.get();
-
         socketServiceMediator.emit('roomOpen', {roomId: _ctrlRoom.room.id});
-
-        _ctrlRoom.searchUsers = function (ev) {
-            $mdDialog.show({
-                template: userSearchTpl,
-                targetEvent: ev,
-                clickOutsideToClose: true,
-                parent: angular.element(document.body)
-            });
-        };
 
         let roomListChangeRemove = $rootScope.$on('roomListChangeRemove', function ($event, data) {
 
