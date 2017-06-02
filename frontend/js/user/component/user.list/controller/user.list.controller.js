@@ -1,7 +1,7 @@
 import module from '../../../';
 
 module.controller('userListController',
-    function (userService, roomUserAgreedService, roomService) {
+    function ($scope, $rootScope, userService, roomUserAgreedService, roomService, $timeout) {
         const _ctrlUserList = this;
 
         _ctrlUserList.user = userService.get();
@@ -30,7 +30,20 @@ module.controller('userListController',
         };
 
         if (!_ctrlUserList.room.conversation) {
+
+            let userListChange = $rootScope.$on('userListChange', function () {
+
+                $timeout(function () {
+                    _ctrlUserList.getUsers();
+                });
+            });
+
+            $scope.$on('$destroy', function () {
+                userListChange();
+            });
+
             _ctrlUserList.getUsers();
+
         } else {
             _ctrlUserList.data.userList.push(_ctrlUserList.room.user);
         }

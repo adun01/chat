@@ -27328,10 +27328,14 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('socketServiceMediator', func
 
         let currentRoom = roomService.getCurrentRoom();
 
-        if (+currentRoom.id === +data.roomId) {
+        if (currentRoom.id === +data.roomId) {
 
             $rootScope.$emit('newMessageRoom', data);
         }
+    });
+
+    socket.on('userListChange', function (data) {
+        $rootScope.$emit('userListChange', data);
     });
 
     return socket;
@@ -28459,7 +28463,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userListController',
-    function (userService, roomUserAgreedService, roomService) {
+    function ($scope, $rootScope, userService, roomUserAgreedService, roomService, $timeout) {
         const _ctrlUserList = this;
 
         _ctrlUserList.user = userService.get();
@@ -28488,7 +28492,20 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userListController',
         };
 
         if (!_ctrlUserList.room.conversation) {
+
+            let userListChange = $rootScope.$on('userListChange', function () {
+
+                $timeout(function () {
+                    _ctrlUserList.getUsers();
+                });
+            });
+
+            $scope.$on('$destroy', function () {
+                userListChange();
+            });
+
             _ctrlUserList.getUsers();
+
         } else {
             _ctrlUserList.data.userList.push(_ctrlUserList.room.user);
         }
