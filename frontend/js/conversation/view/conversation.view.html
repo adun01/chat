@@ -1,42 +1,10 @@
-<md-sidenav class="sidebar md-sidenav-left"
-            md-is-locked-open="true"
-            md-whiteframe="4">
-
-    <div class="sidebar__row sidebar__header"
-         layout
-         layout-align="space-between center">
-
-        <md--button class="md-fab chat-icon-action chat-icon-action--go-base"
-                    aria-label="Вернуться в главное меню"
-                    layout
-                    layout-align="center center"
-                    data-ui-sref="main.base">
-            <ng-md-icon size="30"
-                        style="fill: white"
-                        icon="home">
-            </ng-md-icon>
-        </md--button>
-
-        <md--button class="md-fab chat-icon-action chat-icon-action--sidebar-open"
-                    aria-label="Открыть сайдбар"
-                    layout
-                    layout-align="center center"
-                    data-ng-click="_ctrlConversation.toggleMenu()">
-            <ng-md-icon size="30"
-                        style="fill: white"
-                        icon="forward">
-            </ng-md-icon>
-        </md--button>
-    </div>
-    <user-list></user-list>
-
-</md-sidenav>
+<sidebar></sidebar>
 <div flex="75">
 
     <md-toolbar>
         <div class="md-toolbar-tools" layout layout-align="space-between center">
             <h3>
-                Комната '{{_ctrlConversation.room.name}}'
+                Беседа '{{_ctrlConversation.room.name}}'
             </h3>
             <ng-md-icon class="chat-icon-action chat-icon-action--search"
                         size="30"
