@@ -78,6 +78,7 @@ io.use(async function (socket, next) {
 // singe route
 let index = require('./routes/index'),
     auth = require('./routes/auth'),
+    conversation = require('./routes/conversation'),
     user = require('./routes/user');
 
 require('./routes/room/')(app);
@@ -99,6 +100,7 @@ app.use(function (req, res, next) {
 
 app.use(user);
 app.use(auth);
+app.use(conversation);
 app.use('/', index);
 
 app.use(function (req, res, next) {

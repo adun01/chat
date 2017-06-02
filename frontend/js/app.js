@@ -25,6 +25,7 @@ angular.module('chat', [
     'ngMdIcons',
     'notifications',
     'user',
+    'conversation',
     'common',
     'base',
     'auth',

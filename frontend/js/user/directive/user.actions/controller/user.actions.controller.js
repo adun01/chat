@@ -1,13 +1,15 @@
 import module from '../../../';
 
 module.controller('userActionsController',
-    function ($scope, $mdMenu, userService, roomUserAgreedService, roomUserInvitedService) {
+    function ($scope, $mdMenu, userService, roomUserAgreedService, roomUserInvitedService, $state) {
         const _ctrlUserAction = this;
 
         _ctrlUserAction.room = $scope.room;
         _ctrlUserAction.user = $scope.user;
 
         _ctrlUserAction.selfUser = _ctrlUserAction.user.id === userService.get().id;
+
+        _ctrlUserAction.canOpenRoom = $scope.openRoom;
 
         _ctrlUserAction.canShowUser = $scope.showUser;
         _ctrlUserAction.canAddRoom = $scope.addRoom;
@@ -41,5 +43,13 @@ module.controller('userActionsController',
 
         _ctrlUserAction.openMenu = function ($mdMenu, ev) {
             $mdMenu.open(ev);
+        };
+
+        _ctrlUserAction.openRoom = function ($event, user) {
+            $event.preventDefault();
+
+            $state.go('main.conversation', {
+                id: user.id
+            });
         };
     });

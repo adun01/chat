@@ -7,6 +7,28 @@
     </ng-md-icon>
 
     <md-menu-content>
+
+        <md-menu-item data-ng-if="_ctrlUserAction.canOpenRoom"
+                      data-ng-click="_ctrlUserAction.openRoom($event, user)">
+
+            <md-button class="chat-icon-action">
+                <div layout
+                     layout-align="left center">
+
+                    <ng-md-icon class="chat-user-actions--icon"
+                                layout
+                                layout-align="center center"
+                                size="30"
+                                style="fill: black"
+                                icon="message">
+                    </ng-md-icon>
+
+                    Открыть диалог
+                </div>
+            </md-button>
+        </md-menu-item>
+        <md-menu-divider data-ng-if="_ctrlUserAction.canOpenRoom"></md-menu-divider>
+
         <md-menu-item data-ng-if="_ctrlUserAction.canShowUser"
                       data-ng-click="_ctrlUserAction.showUser($event, user)">
 

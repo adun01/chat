@@ -52,31 +52,5 @@
         <message-list></message-list>
     </md-content>
 
-    <div data-ng-form="messageForm"
-         layout
-         layout-align="left top">
-        <div flex="90">
-            <md-input-container class="chat-message-area">
-                <label>Отправить сообщение</label>
-                <textarea name="message"
-                          required
-                          data-ng-model="_ctrlRoom.message"
-                          md-no-resize
-                          max-rows="2"></textarea>
-            </md-input-container>
-        </div>
-        <div flex="10" layout layout-align="center top">
-            <md-button class="md-fab chat-icon-action chat-icon-action--send-message"
-                       aria-label="Отправить"
-                       layout
-                       layout-align="center center"
-                       data-ng-disabled="messageForm.$invalid"
-                       data-ng-click="_ctrlRoom.send()">
-                <ng-md-icon size="30"
-                            style="fill: white"
-                            icon="send">
-                </ng-md-icon>
-            </md-button>
-        </div>
-    </div>
+    <message-add></message-add>
 </div>

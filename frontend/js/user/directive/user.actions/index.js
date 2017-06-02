@@ -13,7 +13,8 @@ module.directive('userActions', function () {
             addRoom: '=',
             removeRoom: '=',
             exitRoom: '=',
-            room: '='
+            room: '=',
+            openRoom: '='
         }
     }
 });

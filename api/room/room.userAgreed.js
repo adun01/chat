@@ -7,6 +7,13 @@ module.exports = {
 
             let room = await roomModel.findOne({id: data.roomId});
 
+            if (!room) {
+                return resolve({
+                    success: false,
+                    message: 'Нет такой комнаты'
+                });
+            }
+
             let access = room.userAgreed.some(function (id) {
                 return id === data.userId;
             });

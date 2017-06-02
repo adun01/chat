@@ -15,8 +15,6 @@ module.controller('roomController',
 
         _ctrlRoom.user = userService.get();
 
-        _ctrlRoom.message = null;
-
         socketServiceMediator.emit('roomOpen', {roomId: _ctrlRoom.room.id});
 
         _ctrlRoom.searchUsers = function (ev) {
@@ -28,23 +26,8 @@ module.controller('roomController',
             });
         };
 
-        _ctrlRoom.send = function () {
-            roomMessageService.save({
-                roomId: _ctrlRoom.room.id,
-                message: _ctrlRoom.message
-            }).then(function (response) {
-                if (response.success) {
-                    _ctrlRoom.message = null;
-                }
-            });
-        };
+        let roomListChangeRemove = $rootScope.$on('roomListChangeRemove', function ($event, data) {
 
-
-        var roomListChangeRemove = $rootScope.$on('roomListChangeRemove', function ($event, data) {
-
-            if (listener) {
-                listener();
-            }
             if (+data.roomId === +_ctrlRoom.room.id) {
                 $state.go('main.base', {
                     message: 'Вы были исключены из комнаты ' + _ctrlRoom.room.name
