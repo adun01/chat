@@ -1,4 +1,5 @@
 const router = require('express').Router(),
+    eventsMediator = require('../../events.mediator'),
     roomApi = require('../../api/room/');
 
 router.get('/api/room/:id?/', async function (req, res) {
@@ -20,6 +21,10 @@ router.post('/api/room/', async function (req, res) {
         public: req.body.public,
         user: req.session.user,
         userInvited: req.body.userInvited
+    });
+
+    eventsMediator.emit('roomListChange', {
+        userId: req.session.user.id
     });
 
     res.send(JSON.stringify(roomCreateResult));

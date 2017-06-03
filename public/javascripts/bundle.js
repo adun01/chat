@@ -28217,6 +28217,9 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomAddController', funct
     roomAddCtrl.userInvited = [];
     roomAddCtrl.public = true;
 
+    roomAddCtrl.error = false;
+    roomAddCtrl.message = '';
+
     roomAddCtrl.addRoom = function () {
         roomService.create({
             name: roomAddCtrl.name,
@@ -28230,10 +28233,15 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomAddController', funct
                 return prev;
             }, '')
         }).then(function (response) {
-            roomAddCtrl.close();
-            $state.go('main.room', {
-                id: response.room.id
-            });
+            if (response.success) {
+                roomAddCtrl.close();
+                $state.go('main.room', {
+                    id: response.room.id
+                });
+            } else {
+                roomAddCtrl.error = true;
+                roomAddCtrl.message = response.message || 'Не известная ошибка. Попробуйте позже.';
+            }
         });
     };
 
@@ -106008,7 +106016,7 @@ module.exports = "<md-dialog flex=40 style=height:500px> <md-toolbar> <div class
 /* 102 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=sidebar__row> <div layout=row layout-align=\"space-between center\"> <h3 class=chat-room-list-nav> Комнаты </h3> <div layout layout-align=\"center center\"> <notification-room class=notification-room></notification-room> <md-button class=\"md-fab md-mini chat-icon-action\" layout layout-align=\"center center\" data-ng-click=_ctrlRoomList.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> </div> </div> <div layout=row layout-align=\"left center\"> <md-list class=chat-room-list> <md-list-item data-ng-if=!_ctrlRoomList.data.rooms.length> <a class=chat-room-list__link> Вы не учавствуете ни в одной комнате. Примите приглашение или создайте свою комнату. </a> </md-list-item> <md-list-item class=chat-room-list__item data-ng-repeat=\"room in _ctrlRoomList.data.rooms\"> <a class=chat-room-list__link data-ui-sref=\"main.room({id: room.id})\"> <md-button class=chat-room-list__button> <button class=\"md-fab md-button md-ink-ripple\"> {{!room.photo ? room.shortName.toUpperCase() : ''}} </button> {{room.name}} </md-button> </a> </md-list-item> </md-list> </div> </div>";
+module.exports = "<div class=sidebar__row> <div layout=row layout-align=\"space-between center\"> <h3 class=chat-room-list-nav> Комнаты </h3> <div layout layout-align=\"center center\"> <notification-room class=notification-room></notification-room> <md-button class=\"md-fab md-mini chat-icon-action\" layout layout-align=\"center center\" data-ng-click=_ctrlRoomList.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> </div> </div> <div layout=row layout-align=\"left center\"> <md-list class=chat-room-list> <md-list-item data-ng-if=!_ctrlRoomList.data.rooms.length> <a class=chat-room-list__link> Вы не учавствуете ни в одной комнате. Примите приглашение, создайте свою комнату или найдите комнату на интересующую вас тему. </a> </md-list-item> <md-list-item class=chat-room-list__item data-ng-repeat=\"room in _ctrlRoomList.data.rooms\"> <a class=chat-room-list__link data-ui-sref=\"main.room({id: room.id})\"> <md-button class=chat-room-list__button> <button class=\"md-fab md-button md-ink-ripple\"> {{!room.photo ? room.shortName.toUpperCase() : ''}} </button> {{room.name}} </md-button> </a> </md-list-item> </md-list> </div> </div>";
 
 /***/ }),
 /* 103 */
@@ -106032,7 +106040,7 @@ module.exports = "<md-menu> <ng-md-icon size=30 icon=menu class=\"chat-icon-acti
 /* 106 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-dialog flex=40> <form data-ng-cloak name=addRoom> <md-toolbar> <div class=md-toolbar-tools> <h2>Создать комнату</h2> </div> </md-toolbar> <md-dialog-content> <div class=md-dialog-content> <md-input-container class=chat-form__row> <label>Название комнаты</label> <input type=text required name=name data-ng-minlength=2 data-ng-pattern=/^[а-яА-ЯёЁa-zA-Z0-9]+$/i data-ng-model=roomAddCtrl.name> <div data-ng-messages=addRoom.name.$error> <div data-ng-message=required> Поля обязательное для заполнения </div> <div data-ng-message=minlength> Название не может быть короче 2 символов. </div> <div data-ng-message=pattern> Название должно содержать только буквы и цифры. </div> </div> </md-input-container> <user-search-collection class=\"chat-form__row chat-form__row--offset\" data-add-room=true data-collection=roomAddCtrl.userInvited data-placeholder=\"Пригласите участников\"></user-search-collection> <div class=\"chat-form__row chat-form__row--offset\"> <md-checkbox data-ng-model=roomAddCtrl.public aria-label=\"Публичная комната\"> Публичная комната </md-checkbox> </div> </div> </md-dialog-content> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" layout layout-align=\"center center\" aria-label=\"Создать комнату\" data-ng-disabled=addRoom.$invalid data-ng-click=roomAddCtrl.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> <md-button class=\"md-fab md-mini chat-icon-action\" layout layout-align=\"center center\" aria-label=Отмена data-ng-click=roomAddCtrl.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </form> </md-dialog>";
+module.exports = "<md-dialog flex=40> <form data-ng-cloak name=addRoom> <md-toolbar> <div class=md-toolbar-tools> <h2>Создать комнату</h2> </div> </md-toolbar> <md-dialog-content> <div class=md-dialog-content> <md-input-container class=chat-form__row> <label>Название комнаты</label> <input type=text required name=name data-ng-minlength=2 data-ng-pattern=/^[а-яА-ЯёЁa-zA-Z0-9]+$/i data-ng-model=roomAddCtrl.name> <div data-ng-messages=addRoom.name.$error> <div data-ng-message=required> Поля обязательное для заполнения </div> <div data-ng-message=minlength> Название не может быть короче 2 символов. </div> <div data-ng-message=pattern> Название должно содержать только буквы и цифры. </div> </div> </md-input-container> <user-search-collection class=\"chat-form__row chat-form__row--offset\" data-add-room=true data-collection=roomAddCtrl.userInvited data-placeholder=\"Пригласите участников\"></user-search-collection> <div class=\"chat-form__row chat-form__row--offset\"> <md-checkbox data-ng-model=roomAddCtrl.public aria-label=\"Публичная комната\"> Публичная комната </md-checkbox> </div> <div data-ng-if=roomAddCtrl.error class=\"alert alert-danger\"> {{roomAddCtrl.message}} </div> </div> </md-dialog-content> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" layout layout-align=\"center center\" aria-label=\"Создать комнату\" data-ng-disabled=addRoom.$invalid data-ng-click=roomAddCtrl.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> <md-button class=\"md-fab md-mini chat-icon-action\" layout layout-align=\"center center\" aria-label=Отмена data-ng-click=roomAddCtrl.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </form> </md-dialog>";
 
 /***/ }),
 /* 107 */

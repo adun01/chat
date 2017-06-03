@@ -35,6 +35,15 @@ module.exports = {
 
         return new Promise(async function (resolve) {
 
+            let checkName = await roomModel.findOne({name: data.name});
+
+            if (checkName) {
+                return resolve({
+                    success: false,
+                    message: 'Комната с таким именем уже существует.'
+                });
+            }
+
             let newRoom = await new roomModel({
                 name: data.name,
                 creatorId: +data.user.id,

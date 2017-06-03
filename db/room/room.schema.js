@@ -4,7 +4,8 @@ const Schema = require('mongoose').Schema,
 const roomSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     create: {
         type: Date,

@@ -40,7 +40,9 @@
                         Публичная комната
                     </md-checkbox>
                 </div>
-
+                <div data-ng-if="roomAddCtrl.error" class="alert alert-danger">
+                    {{roomAddCtrl.message}}
+                </div>
             </div>
         </md-dialog-content>
 
@@ -66,7 +68,6 @@
                             icon="close">
                 </ng-md-icon>
             </md-button>
-
         </md-dialog-actions>
     </form>
 </md-dialog>

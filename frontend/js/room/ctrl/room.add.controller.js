@@ -7,6 +7,9 @@ module.controller('roomAddController', function (FileUploader, $mdDialog, roomSe
     roomAddCtrl.userInvited = [];
     roomAddCtrl.public = true;
 
+    roomAddCtrl.error = false;
+    roomAddCtrl.message = '';
+
     roomAddCtrl.addRoom = function () {
         roomService.create({
             name: roomAddCtrl.name,
@@ -20,10 +23,15 @@ module.controller('roomAddController', function (FileUploader, $mdDialog, roomSe
                 return prev;
             }, '')
         }).then(function (response) {
-            roomAddCtrl.close();
-            $state.go('main.room', {
-                id: response.room.id
-            });
+            if (response.success) {
+                roomAddCtrl.close();
+                $state.go('main.room', {
+                    id: response.room.id
+                });
+            } else {
+                roomAddCtrl.error = true;
+                roomAddCtrl.message = response.message || 'Не известная ошибка. Попробуйте позже.';
+            }
         });
     };
 
