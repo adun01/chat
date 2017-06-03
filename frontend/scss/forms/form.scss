@@ -8,5 +8,12 @@
 
   &__row {
     width: 100%;
+    min-height: 48px;
+    display: block;
+
+    &--offset {
+      margin: 18px 0;
+      padding: 2px 2px 42px 2px;
+    }
   }
 }

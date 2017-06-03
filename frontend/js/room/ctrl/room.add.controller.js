@@ -5,10 +5,12 @@ module.controller('roomAddController', function (FileUploader, $mdDialog, roomSe
     const roomAddCtrl = this;
 
     roomAddCtrl.userInvited = [];
+    roomAddCtrl.public = true;
 
     roomAddCtrl.addRoom = function () {
         roomService.create({
             name: roomAddCtrl.name,
+            public: roomAddCtrl.public,
             userInvited: roomAddCtrl.userInvited.reduce(function (prev, current) {
                 if (prev === '') {
                     prev += current.id;

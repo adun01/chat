@@ -17,6 +17,7 @@ router.post('/api/room/', async function (req, res) {
 
     let roomCreateResult = await roomApi.create({
         name: req.body.name,
+        public: req.body.public,
         user: req.session.user,
         userInvited: req.body.userInvited
     });

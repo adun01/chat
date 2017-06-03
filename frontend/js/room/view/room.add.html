@@ -13,7 +13,7 @@
                            required
                            name="name"
                            data-ng-minlength="2"
-                           data-ng-pattern="/^[a-zA-Z0-9_.-]*$/"
+                           data-ng-pattern="/^[а-яА-ЯёЁa-zA-Z0-9]+$/i"
                            data-ng-model="roomAddCtrl.name">
 
                     <div data-ng-messages="addRoom.name.$error">
@@ -24,14 +24,23 @@
                             Название не может быть короче 2 символов.
                         </div>
                         <div data-ng-message="pattern">
-                            Название должно начиться с латинского символа и содержать только латинские символы и цифры
+                            Название должно содержать только буквы и цифры.
                         </div>
                     </div>
                 </md-input-container>
 
-                <user-search-collection data-add-room="true"
+                <user-search-collection class="chat-form__row chat-form__row--offset"
+                                        data-add-room="true"
                                         data-collection="roomAddCtrl.userInvited"
                                         data-placeholder="Пригласите участников"></user-search-collection>
+
+
+                <div class="chat-form__row chat-form__row--offset">
+                    <md-checkbox data-ng-model="roomAddCtrl.public" aria-label="Публичная комната">
+                        Публичная комната
+                    </md-checkbox>
+                </div>
+
             </div>
         </md-dialog-content>
 
