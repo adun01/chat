@@ -26992,7 +26992,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(5);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('authController', function ($rootScope, authService, $timeout, $state, userService) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('authController', function ($rootScope, authService, $timeout) {
     const _ctrlAuth = this;
 
     _ctrlAuth.error = {};
@@ -27015,7 +27015,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('authController', function
                     _ctrlAuth.errorMessage = null;
                 }, 5000);
             } else {
-                $state.go('main.base');
+                window.location.href = 'base/';
             }
         });
     };
@@ -27179,7 +27179,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('sideBarController',
-    function ($scope, $rootScope, $mdSidenav, userService, authService, $state, $mdDialog, sideBarService) {
+    function ($scope, $rootScope, $mdSidenav, userService, authService, $state, $mdDialog, sideBarService, $window) {
         const _ctrlSideBar = this;
 
         _ctrlSideBar.user = null;
@@ -27207,9 +27207,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('sideBarController',
 
         _ctrlSideBar.logOut = function () {
             authService.logOut().then(function () {
-                $state.go('main.auth');
-                userService.set(null);
-                $rootScope.$emit('isAuth');
+                $window.location.reload();
             });
         };
 
@@ -27829,7 +27827,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('registrationController', 
                     _ctrlReg.errorMessage = null;
                 }, 5000);
             } else {
-                $state.go('main.base');
+                window.location.href = 'base/';
             }
         });
     };

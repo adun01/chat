@@ -27,7 +27,7 @@ module.exports = {
 
                 user = clearUserData(searchUser.user);
 
-                sessionApi.save({
+                await sessionApi.save({
                     session: data.session,
                     extend: {user: user}
                 });
@@ -62,7 +62,7 @@ module.exports = {
             }
         });
     },
-    logOut: function (data) {
-        return session.destroy(data.sessionID);
+    logOut: async function (data) {
+        return await session.destroy(data.sessionID);
     }
 };

@@ -1,7 +1,7 @@
 import module from '../';
 
 module.controller('sideBarController',
-    function ($scope, $rootScope, $mdSidenav, userService, authService, $state, $mdDialog, sideBarService) {
+    function ($scope, $rootScope, $mdSidenav, userService, authService, $state, $mdDialog, sideBarService, $window) {
         const _ctrlSideBar = this;
 
         _ctrlSideBar.user = null;
@@ -29,9 +29,7 @@ module.controller('sideBarController',
 
         _ctrlSideBar.logOut = function () {
             authService.logOut().then(function () {
-                $state.go('main.auth');
-                userService.set(null);
-                $rootScope.$emit('isAuth');
+                $window.location.reload();
             });
         };
 

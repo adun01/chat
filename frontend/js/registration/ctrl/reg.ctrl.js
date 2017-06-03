@@ -24,7 +24,7 @@ module.controller('registrationController', function ($rootScope, userService, $
                     _ctrlReg.errorMessage = null;
                 }, 5000);
             } else {
-                $state.go('main.base');
+                window.location.href = 'base/';
             }
         });
     };

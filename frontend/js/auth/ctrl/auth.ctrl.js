@@ -1,6 +1,6 @@
 import module from '../';
 
-module.controller('authController', function ($rootScope, authService, $timeout, $state, userService) {
+module.controller('authController', function ($rootScope, authService, $timeout) {
     const _ctrlAuth = this;
 
     _ctrlAuth.error = {};
@@ -23,7 +23,7 @@ module.controller('authController', function ($rootScope, authService, $timeout,
                     _ctrlAuth.errorMessage = null;
                 }, 5000);
             } else {
-                $state.go('main.base');
+                window.location.href = 'base/';
             }
         });
     };

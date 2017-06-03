@@ -15,12 +15,13 @@ const sockets = (function () {
     }
 }());
 
+
 module.exports = function (io) {
     io.on('connection', function (socket) {
 
         sockets.add(socket);
-
         listUserOnline.add(socket.user);
+
 
         socket.on('roomOpen', function (data) {
             socket.join(data.roomId);
@@ -33,7 +34,6 @@ module.exports = function (io) {
 
     eventsMediator.on('roomListChange', function (data) {
         let socket = sockets.get(data.userId);
-
         if (socket) {
             socket.emit('roomListChange');
         }
