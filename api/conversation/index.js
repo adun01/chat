@@ -46,18 +46,40 @@ module.exports = {
                 searchConversation.conversation = clearRoomData(searchConversation.conversation);
                 let userSearch = await userApi.search({id: data.userInterlocutor});
 
+                if (!userSearch.success) {
+                    return resolve(userSearch);
+                }
+
+                if (userSearch.success && userSearch.user.id === data.userId) {
+                    return resolve({
+                        success: false,
+                        message: 'Нельзя начать беседу с самим собой.'
+                    })
+                }
+
                 searchConversation.conversation.user = clearUserData(userSearch.user);
 
                 return resolve(searchConversation);
             } else {
                 let sId = data.userId + '' + data.userInterlocutor;
 
+                let userSearch = await userApi.search({id: data.userInterlocutor});
+
+                if (!userSearch.success) {
+                    return resolve(userSearch);
+                }
+
+                if (userSearch.success && userSearch.user.id === data.userId) {
+                    return resolve({
+                        success: false,
+                        message: 'Нельзя начать беседу с самим собой.'
+                    })
+                }
+
                 let conversation = await new conversationModel({
                     id: sId,
                     accessUserId: [data.userId, data.userInterlocutor]
                 }).save();
-
-                let userSearch = await userApi.search({id: data.userInterlocutor});
 
                 conversation = clearRoomData(conversation);
 

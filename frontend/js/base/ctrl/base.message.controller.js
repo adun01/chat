@@ -1,10 +1,10 @@
 import module from '../';
 
 module.controller('baseMessageController', function (baseMessageData, sideBarService, $timeout, $mdDialog) {
-    const _ctrlMainMessage = this;
+    const _ctrlBaseMessage = this;
 
-    _ctrlMainMessage.data = {
-        message: roomNotFoundData.message || 'Не известная ошибка',
+    _ctrlBaseMessage.data = {
+        message: baseMessageData.message || 'Не известная ошибка',
         code: 'Ошибка'
     };
 

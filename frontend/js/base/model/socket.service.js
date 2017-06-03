@@ -37,7 +37,7 @@ module.service('socketServiceMediator', function ($rootScope, $timeout, $q, room
     socket.on('roomListChangeRemove', function (data) {
         let currentRoom = roomService.getCurrentRoom();
 
-        if (currentRoom.id === +data.roomId) {
+        if (currentRoom && currentRoom.id === +data.roomId) {
             $rootScope.$broadcast('roomListChangeRemove', data);
         }
     });
@@ -51,7 +51,7 @@ module.service('socketServiceMediator', function ($rootScope, $timeout, $q, room
 
         let currentRoom = roomService.getCurrentRoom();
 
-        if (currentRoom.id === +data.roomId) {
+        if (currentRoom && currentRoom.id === +data.roomId) {
 
             $rootScope.$emit('newMessageRoom', data);
         }

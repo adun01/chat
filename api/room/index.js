@@ -1,6 +1,6 @@
 const roomModel = require('../../db/room/room.model'),
     _ = require('lodash'),
-    fieldAllow = ['name', 'id', 'modify', 'photo', 'creatorId'];
+    fieldAllow = ['name', 'id', 'modify', 'photo', 'creatorId', 'userAgreed'];
 
 function clearRoomField(rooms) {
     if (_.isArray(rooms)) {
@@ -71,9 +71,34 @@ module.exports = {
             });
         });
     },
+    searchQuery: function (data) {
+        return new Promise(function (resolve) {
+            let reg = new RegExp(data.query, 'img');
 
+            roomModel.find({name: {$regex: reg, $options: "sig"}}).then(function (rooms) {
+
+                resolve({
+                    rooms: rooms,
+                    success: true
+                });
+            });
+        });
+    },
     get: function (data) {
+        let self = this;
         return new Promise(async function (resolve) {
+
+            if (data.search) {
+
+                let searchRooms = await self.searchQuery({
+                    query: data.query
+                });
+
+                return resolve({
+                    success: true,
+                    rooms: clearRoomField(searchRooms.rooms)
+                });
+            }
 
             if (typeof data.roomId === 'undefined') {
 

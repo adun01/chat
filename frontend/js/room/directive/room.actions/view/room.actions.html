@@ -1,0 +1,75 @@
+<md-menu>
+    <ng-md-icon size="30"
+                icon="menu"
+                class="chat-icon-action chat-icon-action--actions-user"
+                data-ng-click="_ctrlRoomAction.openMenu($mdMenu, $event)">
+    </ng-md-icon>
+    <md-menu-content>
+
+        <md-menu-item data-ng-if="_ctrlRoomAction.canOpenConversation && !_ctrlRoomAction.creator"
+                      data-ui-sref="main.conversation({id: _ctrlRoomAction.room.creatorId})">
+
+            <md-button class="chat-icon-action">
+
+                <div layout
+                     layout-align="left center">
+
+                    <ng-md-icon class="chat-user-actions--icon"
+                                layout
+                                layout-align="center center"
+                                size="30"
+                                style="fill: black"
+                                icon="message">
+                    </ng-md-icon>
+
+                    Открыть диалог c создателем комнаты
+                </div>
+            </md-button>
+        </md-menu-item>
+        <md-menu-divider data-ng-if="_ctrlRoomAction.canOpenConversation && !_ctrlRoomAction.creator"></md-menu-divider>
+
+        <md-menu-item data-ng-if="_ctrlRoomAction.canLeaveRoom()">
+
+            <md-button class="chat-icon-action" data-ng-click="_ctrlRoomAction.leaveRoom()">
+
+                <div layout
+                     layout-align="left center">
+
+                    <ng-md-icon class="chat-user-actions--icon"
+                                layout
+                                layout-align="center center"
+                                size="30"
+                                style="fill: black"
+                                icon="delete">
+                    </ng-md-icon>
+
+                    Покинуть комнату
+                </div>
+            </md-button>
+        </md-menu-item>
+        <md-menu-divider data-ng-if="_ctrlRoomAction.canLeaveRoom()"></md-menu-divider>
+
+        <md-menu-item data-ng-if="_ctrlRoomAction.canKnockRoom()"
+                      data-ng-click="_ctrlRoomAction.knockRoom()">
+
+            <md-button class="chat-icon-action">
+
+                <div layout
+                     layout-align="left center">
+
+                    <ng-md-icon class="chat-user-actions--icon"
+                                layout
+                                layout-align="center center"
+                                size="30"
+                                style="fill: black"
+                                icon="message">
+                    </ng-md-icon>
+
+                    Попроситься в комнату
+                </div>
+            </md-button>
+        </md-menu-item>
+        <md-menu-divider data-ng-if="_ctrlRoomAction.canKnockRoom()"></md-menu-divider>
+
+    </md-menu-content>
+</md-menu>

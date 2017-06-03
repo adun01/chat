@@ -9,10 +9,6 @@
     height: 100%;
   }
 
-  &__inroduce {
-    margin: auto;
-  }
-
   &-list {
     background: none;
     width: 100%;
@@ -47,5 +43,12 @@
       margin: 0;
       padding: 0;
     }
+  }
+
+  &-search {
+    padding: $layout-offset;
+    margin: $layout-offset;
+    display: block;
+    height: 70vh;
   }
 }
