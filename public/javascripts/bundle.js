@@ -105962,7 +105962,7 @@ module.exports = "<md-dialog flex=40> <md-toolbar> <div class=md-toolbar-tools> 
 /* 93 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=chat-base layout=row layout-align=\"center center\" data-ui-view> <div flex=100> <div class=chat-room__container> <div flex=50> <room-search></room-search> </div> </div> </div> </div>";
+module.exports = "<div class=chat-base layout=row layout-align=\"center center\" data-ui-view> <div flex=100> <div class=chat-room__container> <div flex=50> <md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск комнат.</span> </div> </md-toolbar> <room-search></room-search> </div> </div> </md-card> </div> </div> </div> </div>";
 
 /***/ }),
 /* 94 */
@@ -106022,7 +106022,7 @@ module.exports = "<div class=sidebar__row> <div layout=row layout-align=\"space-
 /* 103 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск комнат.</span> </div> </md-toolbar> <md-input-container class=chat-form__row> <input type=text data-ng-attr-placeholder={{_ctrlRoomSearch.placeholder}} data-ng-change=_ctrlRoomSearch.searchRooms(_ctrlRoomSearch.query) data-ng-model=_ctrlRoomSearch.query> </md-input-container> <div class=chat-room-search__list> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-repeat=\"room in _ctrlRoomSearch.data.rooms\"> <div> <button class=\"md-fab md-button md-ink-ripple\"> {{!room.photo ? room.shortName.toUpperCase() : ''}} </button> {{room.name}} </div> <room-actions class=chat-room-actions data-room=room></room-actions> </div> </div> </div> </div> </md-card>";
+module.exports = "<div flex=100> <md-input-container class=chat-form__row> <input type=text data-ng-attr-placeholder={{_ctrlRoomSearch.placeholder}} data-ng-change=_ctrlRoomSearch.searchRooms(_ctrlRoomSearch.query) data-ng-model=_ctrlRoomSearch.query> </md-input-container> <div class=chat-room-search__list> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-repeat=\"room in _ctrlRoomSearch.data.rooms\"> <div> <button class=\"md-fab md-button md-ink-ripple\"> {{!room.photo ? room.shortName.toUpperCase() : ''}} </button> {{room.name}} </div> <room-actions class=chat-room-actions data-room=room></room-actions> </div> </div></div>";
 
 /***/ }),
 /* 104 */

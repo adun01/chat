@@ -1,40 +1,28 @@
-<md-card class="chat-room-search">
-    <div layout="row"
-         layout-align="left center">
+<div flex="100">
 
-        <div flex="100">
-            <md-toolbar layout="row">
-                <div class="md-toolbar-tools">
-                    <span>Поиск комнат.</span>
-                </div>
-            </md-toolbar>
+    <md-input-container class="chat-form__row">
+        <input type="text"
+               data-ng-attr-placeholder="{{_ctrlRoomSearch.placeholder}}"
+               data-ng-change="_ctrlRoomSearch.searchRooms(_ctrlRoomSearch.query)"
+               data-ng-model="_ctrlRoomSearch.query">
+    </md-input-container>
 
-            <md-input-container class="chat-form__row">
-                <input type="text"
-                       data-ng-attr-placeholder="{{_ctrlRoomSearch.placeholder}}"
-                       data-ng-change="_ctrlRoomSearch.searchRooms(_ctrlRoomSearch.query)"
-                       data-ng-model="_ctrlRoomSearch.query">
-            </md-input-container>
+    <div class="chat-room-search__list">
+        <div class="md-3-line"
+             layout
+             layout-align="space-between center"
+             data-ng-repeat="room in _ctrlRoomSearch.data.rooms">
 
-            <div class="chat-room-search__list">
-                <div class="md-3-line"
-                     layout
-                     layout-align="space-between center"
-                     data-ng-repeat="room in _ctrlRoomSearch.data.rooms">
+            <div>
+                <button class="md-fab md-button md-ink-ripple">
+                    {{!room.photo ? room.shortName.toUpperCase() : ''}}
+                </button>
 
-                    <div>
-                        <button class="md-fab md-button md-ink-ripple">
-                            {{!room.photo ? room.shortName.toUpperCase() : ''}}
-                        </button>
-
-                        {{room.name}}
-                    </div>
-
-                    <room-actions class="chat-room-actions"
-                                  data-room="room"></room-actions>
-
-                </div>
+                {{room.name}}
             </div>
+
+            <room-actions class="chat-room-actions"
+                          data-room="room"></room-actions>
+
         </div>
     </div>
-</md-card>
