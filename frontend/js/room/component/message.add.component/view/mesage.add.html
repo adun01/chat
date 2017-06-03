@@ -1,6 +1,19 @@
-<div data-ng-form="messageForm"
+<div data-ng-if="!_ctrlMessageAdd.access"
+     layout
+     layout-align="center center">
+
+    <md-button class="md-raised md-primary"
+               flex="33"
+               data-ng-click="_ctrlMessageAdd.userAgreed()">
+        Принять участие в комнате.
+    </md-button>
+</div>
+
+<div data-ng-if="_ctrlMessageAdd.access"
+     data-ng-form="messageForm"
      layout
      layout-align="left top">
+
     <div flex="90">
         <md-input-container class="chat-message-area">
             <label>Отправить сообщение</label>
@@ -11,6 +24,7 @@
                       max-rows="2"></textarea>
         </md-input-container>
     </div>
+
     <div flex="10" layout layout-align="center top">
         <md-button class="md-fab chat-icon-action chat-icon-action--send-message"
                    aria-label="Отправить"

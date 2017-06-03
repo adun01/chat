@@ -27846,18 +27846,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('messageAddController',
-    function (roomService, roomMessageService, conversationMessageService) {
+    function (roomService, roomMessageService, userService, conversationMessageService, roomUserAgreedService) {
 
         const _ctrlMessageAdd = this;
 
         _ctrlMessageAdd.room = roomService.getCurrentRoom();
+        _ctrlMessageAdd.user = userService.get();
+
+        _ctrlMessageAdd.access = _ctrlMessageAdd.room.userAgreed.some(function (userId) {
+            return userId === _ctrlMessageAdd.user.id;
+        });
 
         _ctrlMessageAdd.message = null;
         _ctrlMessageAdd.save = _ctrlMessageAdd.room.conversation ? conversationMessageService.save : roomMessageService.save;
 
+        _ctrlMessageAdd.userAgreed = function () {
+
+            roomUserAgreedService.save({
+                roomId: _ctrlMessageAdd.room.id
+            }).then(function (response) {
+                if (response.success) {
+                    _ctrlMessageAdd.access = true;
+                }
+            });
+        };
+
         _ctrlMessageAdd.send = function () {
             _ctrlMessageAdd.save({
-                conversationId: _ctrlMessageAdd.room.user.id,
+                conversationId: _ctrlMessageAdd.room.user ? _ctrlMessageAdd.room.user.id : null,
                 roomId: _ctrlMessageAdd.room.id,
                 message: _ctrlMessageAdd.message
             }).then(function (response) {
@@ -105992,7 +106008,7 @@ module.exports = "<div class=chat-form-container layout layout-align=\"center ce
 /* 98 */
 /***/ (function(module, exports) {
 
-module.exports = "<div data-ng-form=messageForm layout layout-align=\"left top\"> <div flex=90> <md-input-container class=chat-message-area> <label>Отправить сообщение</label> <textarea name=message required data-ng-model=_ctrlMessageAdd.message md-no-resize max-rows=2></textarea> </md-input-container> </div> <div flex=10 layout layout-align=\"center top\"> <md-button class=\"md-fab chat-icon-action chat-icon-action--send-message\" aria-label=Отправить layout layout-align=\"center center\" data-ng-disabled=messageForm.$invalid data-ng-click=_ctrlMessageAdd.send()> <ng-md-icon size=30 style=fill:#fff icon=send> </ng-md-icon> </md-button> </div> </div>";
+module.exports = "<div data-ng-if=!_ctrlMessageAdd.access layout layout-align=\"center center\"> <md-button class=\"md-raised md-primary\" flex=33 data-ng-click=_ctrlMessageAdd.userAgreed()> Принять участие в комнате. </md-button> </div> <div data-ng-if=_ctrlMessageAdd.access data-ng-form=messageForm layout layout-align=\"left top\"> <div flex=90> <md-input-container class=chat-message-area> <label>Отправить сообщение</label> <textarea name=message required data-ng-model=_ctrlMessageAdd.message md-no-resize max-rows=2></textarea> </md-input-container> </div> <div flex=10 layout layout-align=\"center top\"> <md-button class=\"md-fab chat-icon-action chat-icon-action--send-message\" aria-label=Отправить layout layout-align=\"center center\" data-ng-disabled=messageForm.$invalid data-ng-click=_ctrlMessageAdd.send()> <ng-md-icon size=30 style=fill:#fff icon=send> </ng-md-icon> </md-button> </div> </div>";
 
 /***/ }),
 /* 99 */

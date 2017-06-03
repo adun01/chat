@@ -20,13 +20,11 @@ module.exports = {
 
             let room = await roomModel.findOne({id: data.roomId});
 
-            if (!room.public) {
-                if (!searchAccessRoom(room, data.userId)) {
-                    return resolve({
-                        success: false,
-                        message: 'Нет доступа.'
-                    });
-                }
+            if (!searchAccessRoom(room, data.userId)) {
+                return resolve({
+                    success: false,
+                    message: 'Нет доступа.'
+                });
             }
 
             room.message.push({
