@@ -6,7 +6,7 @@
     </ng-md-icon>
     <md-menu-content>
 
-        <md-menu-item data-ng-if="_ctrlRoomAction.canOpenConversation && !_ctrlRoomAction.creator"
+        <md-menu-item data-ng-if="!_ctrlRoomAction.creator"
                       data-ui-sref="main.conversation({id: _ctrlRoomAction.room.creatorId})">
 
             <md-button class="chat-icon-action">
@@ -26,11 +26,13 @@
                 </div>
             </md-button>
         </md-menu-item>
-        <md-menu-divider data-ng-if="_ctrlRoomAction.canOpenConversation && !_ctrlRoomAction.creator"></md-menu-divider>
+
+        <md-menu-divider data-ng-if="!_ctrlRoomAction.creator"></md-menu-divider>
 
         <md-menu-item data-ng-if="_ctrlRoomAction.canLeaveRoom()">
 
-            <md-button class="chat-icon-action" data-ng-click="_ctrlRoomAction.leaveRoom()">
+            <md-button class="chat-icon-action"
+                       data-ng-click="_ctrlRoomAction.leaveRoom()">
 
                 <div layout
                      layout-align="left center">
@@ -47,10 +49,11 @@
                 </div>
             </md-button>
         </md-menu-item>
+
         <md-menu-divider data-ng-if="_ctrlRoomAction.canLeaveRoom()"></md-menu-divider>
 
-        <md-menu-item data-ng-if="_ctrlRoomAction.canKnockRoom()"
-                      data-ng-click="_ctrlRoomAction.knockRoom()">
+        <md-menu-item data-ng-if="_ctrlRoomAction.canOpenRoom"
+                      data-ng-click="_ctrlRoomAction.openRoom()">
 
             <md-button class="chat-icon-action">
 
@@ -65,7 +68,7 @@
                                 icon="message">
                     </ng-md-icon>
 
-                    Попроситься в комнату
+                    Зайти в комнату
                 </div>
             </md-button>
         </md-menu-item>

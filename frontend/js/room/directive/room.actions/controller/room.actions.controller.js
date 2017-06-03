@@ -1,7 +1,7 @@
 import module from '../../../';
 
 module.controller('roomActionsController',
-    function ($mdMenu, $scope, userService, roomUserAgreedService) {
+    function ($mdMenu, $scope, userService, roomUserAgreedService, $state) {
         const _ctrlRoomAction = this;
 
         _ctrlRoomAction.room = $scope.room;
@@ -9,26 +9,12 @@ module.controller('roomActionsController',
 
         _ctrlRoomAction.creator = _ctrlRoomAction.room.creatorId === _ctrlRoomAction.user.id;
 
-        _ctrlRoomAction.canOpenConversation = $scope.openConversation;
+        _ctrlRoomAction.canOpenRoom = _ctrlRoomAction.room.public;
 
         _ctrlRoomAction.canLeaveRoom = function () {
-            if (!$scope.leaveRoom) {
-                return false;
-            } else {
-                return _ctrlRoomAction.room.userAgreed.some(function (userId) {
-                    return userId === _ctrlRoomAction.user.id;
-                });
-            }
-        };
-
-        _ctrlRoomAction.canKnockRoom = function () {
-            if (!$scope.knockRoom) {
-                return false;
-            } else {
-                return !_ctrlRoomAction.room.userAgreed.some(function (userId) {
-                    return userId === _ctrlRoomAction.user.id;
-                });
-            }
+            return _ctrlRoomAction.room.userAgreed.some(function (userId) {
+                return userId === _ctrlRoomAction.user.id;
+            });
         };
 
         _ctrlRoomAction.leaveRoom = function () {
@@ -37,17 +23,18 @@ module.controller('roomActionsController',
                 userId: _ctrlRoomAction.user.id
             }).then(function (response) {
                 if (response.success) {
-                    debugger;
                     _ctrlRoomAction.room.userAgreed = _ctrlRoomAction.room.userAgreed.filter(function (userId) {
                         return userId !== _ctrlRoomAction.user.id;
                     });
-                    debugger;
                 }
             });
         };
 
-        _ctrlRoomAction.knockRoom = function () {
+        _ctrlRoomAction.openRoom = function () {
 
+            $state.go('main.room', {
+                id: _ctrlRoomAction.room.id
+            });
         };
 
         _ctrlRoomAction.openMenu = function ($mdMenu, ev) {

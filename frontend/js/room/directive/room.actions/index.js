@@ -7,10 +7,7 @@ module.directive('roomActions', function () {
         controllerAs: '_ctrlRoomAction',
         template: roomActionsTpl,
         scope: {
-            openConversation: '=',
-            room: '=',
-            leaveRoom: '=',
-            knockRoom: '='
+            room: '='
         }
     }
 });

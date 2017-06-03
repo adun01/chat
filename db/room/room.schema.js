@@ -24,7 +24,11 @@ const roomSchema = new Schema({
         type: String,
         default: ''
     },
-    message: [messageSchema]
+    message: [messageSchema],
+    public: {
+        type: Boolean,
+        default: true
+    }
 });
 
 autoIncrement = require('mongoose-auto-increment');

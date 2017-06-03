@@ -28286,7 +28286,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomActionsController',
-    function ($mdMenu, $scope, userService, roomUserAgreedService) {
+    function ($mdMenu, $scope, userService, roomUserAgreedService, $state) {
         const _ctrlRoomAction = this;
 
         _ctrlRoomAction.room = $scope.room;
@@ -28294,26 +28294,12 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomActionsController',
 
         _ctrlRoomAction.creator = _ctrlRoomAction.room.creatorId === _ctrlRoomAction.user.id;
 
-        _ctrlRoomAction.canOpenConversation = $scope.openConversation;
+        _ctrlRoomAction.canOpenRoom = _ctrlRoomAction.room.public;
 
         _ctrlRoomAction.canLeaveRoom = function () {
-            if (!$scope.leaveRoom) {
-                return false;
-            } else {
-                return _ctrlRoomAction.room.userAgreed.some(function (userId) {
-                    return userId === _ctrlRoomAction.user.id;
-                });
-            }
-        };
-
-        _ctrlRoomAction.canKnockRoom = function () {
-            if (!$scope.knockRoom) {
-                return false;
-            } else {
-                return !_ctrlRoomAction.room.userAgreed.some(function (userId) {
-                    return userId === _ctrlRoomAction.user.id;
-                });
-            }
+            return _ctrlRoomAction.room.userAgreed.some(function (userId) {
+                return userId === _ctrlRoomAction.user.id;
+            });
         };
 
         _ctrlRoomAction.leaveRoom = function () {
@@ -28322,17 +28308,18 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomActionsController',
                 userId: _ctrlRoomAction.user.id
             }).then(function (response) {
                 if (response.success) {
-                    debugger;
                     _ctrlRoomAction.room.userAgreed = _ctrlRoomAction.room.userAgreed.filter(function (userId) {
                         return userId !== _ctrlRoomAction.user.id;
                     });
-                    debugger;
                 }
             });
         };
 
-        _ctrlRoomAction.knockRoom = function () {
+        _ctrlRoomAction.openRoom = function () {
 
+            $state.go('main.room', {
+                id: _ctrlRoomAction.room.id
+            });
         };
 
         _ctrlRoomAction.openMenu = function ($mdMenu, ev) {
@@ -28358,10 +28345,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].directive('roomActions', function () 
         controllerAs: '_ctrlRoomAction',
         template: __WEBPACK_IMPORTED_MODULE_1__view_room_actions_html___default.a,
         scope: {
-            openConversation: '=',
-            room: '=',
-            leaveRoom: '=',
-            knockRoom: '='
+            room: '='
         }
     }
 });
@@ -106028,7 +106012,7 @@ module.exports = "<div class=sidebar__row> <div layout=row layout-align=\"space-
 /* 103 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск комнат.</span> </div> </md-toolbar> <md-input-container class=chat-form__row> <input type=text data-ng-attr-placeholder={{_ctrlRoomSearch.placeholder}} data-ng-change=_ctrlRoomSearch.searchRooms(_ctrlRoomSearch.query) data-ng-model=_ctrlRoomSearch.query> </md-input-container> <div class=chat-room-search__list> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-repeat=\"room in _ctrlRoomSearch.data.rooms\"> <div> <button class=\"md-fab md-button md-ink-ripple\"> {{!room.photo ? room.shortName.toUpperCase() : ''}} </button> {{room.name}} </div> <room-actions class=chat-room-actions data-room=room data-leave-room=true data-knock-room=true data-open-conversation=true></room-actions> </div> </div> </div> </div> </md-card>";
+module.exports = "<md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск комнат.</span> </div> </md-toolbar> <md-input-container class=chat-form__row> <input type=text data-ng-attr-placeholder={{_ctrlRoomSearch.placeholder}} data-ng-change=_ctrlRoomSearch.searchRooms(_ctrlRoomSearch.query) data-ng-model=_ctrlRoomSearch.query> </md-input-container> <div class=chat-room-search__list> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-repeat=\"room in _ctrlRoomSearch.data.rooms\"> <div> <button class=\"md-fab md-button md-ink-ripple\"> {{!room.photo ? room.shortName.toUpperCase() : ''}} </button> {{room.name}} </div> <room-actions class=chat-room-actions data-room=room></room-actions> </div> </div> </div> </div> </md-card>";
 
 /***/ }),
 /* 104 */
@@ -106040,7 +106024,7 @@ module.exports = "<md-sidenav class=\"sidebar sidebar--room md-sidenav-left\" md
 /* 105 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-menu> <ng-md-icon size=30 icon=menu class=\"chat-icon-action chat-icon-action--actions-user\" data-ng-click=\"_ctrlRoomAction.openMenu($mdMenu, $event)\"> </ng-md-icon> <md-menu-content> <md-menu-item data-ng-if=\"_ctrlRoomAction.canOpenConversation && !_ctrlRoomAction.creator\" data-ui-sref=\"main.conversation({id: _ctrlRoomAction.room.creatorId})\"> <md-button class=chat-icon-action> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions--icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=message> </ng-md-icon> Открыть диалог c создателем комнаты </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=\"_ctrlRoomAction.canOpenConversation && !_ctrlRoomAction.creator\"></md-menu-divider> <md-menu-item data-ng-if=_ctrlRoomAction.canLeaveRoom()> <md-button class=chat-icon-action data-ng-click=_ctrlRoomAction.leaveRoom()> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions--icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=delete> </ng-md-icon> Покинуть комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlRoomAction.canLeaveRoom()></md-menu-divider> <md-menu-item data-ng-if=_ctrlRoomAction.canKnockRoom() data-ng-click=_ctrlRoomAction.knockRoom()> <md-button class=chat-icon-action> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions--icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=message> </ng-md-icon> Попроситься в комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlRoomAction.canKnockRoom()></md-menu-divider> </md-menu-content> </md-menu>";
+module.exports = "<md-menu> <ng-md-icon size=30 icon=menu class=\"chat-icon-action chat-icon-action--actions-user\" data-ng-click=\"_ctrlRoomAction.openMenu($mdMenu, $event)\"> </ng-md-icon> <md-menu-content> <md-menu-item data-ng-if=!_ctrlRoomAction.creator data-ui-sref=\"main.conversation({id: _ctrlRoomAction.room.creatorId})\"> <md-button class=chat-icon-action> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions--icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=message> </ng-md-icon> Открыть диалог c создателем комнаты </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=!_ctrlRoomAction.creator></md-menu-divider> <md-menu-item data-ng-if=_ctrlRoomAction.canLeaveRoom()> <md-button class=chat-icon-action data-ng-click=_ctrlRoomAction.leaveRoom()> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions--icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=delete> </ng-md-icon> Покинуть комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlRoomAction.canLeaveRoom()></md-menu-divider> <md-menu-item data-ng-if=_ctrlRoomAction.canOpenRoom data-ng-click=_ctrlRoomAction.openRoom()> <md-button class=chat-icon-action> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions--icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=message> </ng-md-icon> Зайти в комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlRoomAction.canKnockRoom()></md-menu-divider> </md-menu-content> </md-menu>";
 
 /***/ }),
 /* 106 */

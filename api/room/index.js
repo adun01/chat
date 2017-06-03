@@ -1,6 +1,6 @@
 const roomModel = require('../../db/room/room.model'),
     _ = require('lodash'),
-    fieldAllow = ['name', 'id', 'modify', 'photo', 'creatorId', 'userAgreed'];
+    fieldAllow = ['name', 'id', 'modify', 'photo', 'creatorId', 'userAgreed', 'public'];
 
 function clearRoomField(rooms) {
     if (_.isArray(rooms)) {
@@ -39,7 +39,8 @@ module.exports = {
                 name: data.name,
                 creatorId: +data.user.id,
                 userInvited: userInvited,
-                userAgreed: userAgreed
+                userAgreed: userAgreed,
+                public: data.public ? data.public : true
             }).save();
 
             return resolve({
@@ -128,11 +129,13 @@ module.exports = {
                     });
                 }
 
-                if (!allowRoom(data.userId, room.userAgreed)) {
-                    return resolve({
-                        success: false,
-                        message: 'Нет доступа'
-                    });
+                if (!room.public) {
+                    if (!allowRoom(data.userId, room.userAgreed)) {
+                        return resolve({
+                            success: false,
+                            message: 'Нет доступа'
+                        });
+                    }
                 }
 
                 resolve({
