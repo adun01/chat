@@ -14,15 +14,17 @@ module.exports = {
                 });
             }
 
-            let access = room.userAgreed.some(function (id) {
-                return id === data.userId;
-            });
-
-            if (!access) {
-                return resolve({
-                    success: false,
-                    message: 'Нет доступа'
+            if (!room.public) {
+                let access = room.userAgreed.some(function (id) {
+                    return id === data.userId;
                 });
+
+                if (!access) {
+                    return resolve({
+                        success: false,
+                        message: 'Нет доступа'
+                    });
+                }
             }
 
             let userIds = room.userAgreed.map(function (id) {
@@ -49,18 +51,18 @@ module.exports = {
                     message: 'Комната не найдена'
                 });
             }
-
-            let access = room.userInvited.some(function (id) {
-                return id === data.userId;
-            });
-
-            if (!access) {
-                return resolve({
-                    success: false,
-                    message: 'Нет доступа'
+            if (!room.public) {
+                let access = room.userInvited.some(function (id) {
+                    return id === data.userId;
                 });
-            }
 
+                if (!access) {
+                    return resolve({
+                        success: false,
+                        message: 'Нет доступа'
+                    });
+                }
+            }
             let searchId = room.userAgreed.some(function (id) {
                 return id === data.userId;
             });

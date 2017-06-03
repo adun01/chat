@@ -20,11 +20,13 @@ module.exports = {
 
             let room = await roomModel.findOne({id: data.roomId});
 
-            if (!searchAccessRoom(room, data.userId)) {
-                return resolve({
-                    success: false,
-                    message: 'Нет доступа.'
-                });
+            if (!room.public) {
+                if (!searchAccessRoom(room, data.userId)) {
+                    return resolve({
+                        success: false,
+                        message: 'Нет доступа.'
+                    });
+                }
             }
 
             room.message.push({
@@ -62,13 +64,14 @@ module.exports = {
                 });
             }
 
-            if (!searchAccessRoom(room, data.userId)) {
-                return resolve({
-                    success: false,
-                    message: 'Нет доступа.'
-                });
+            if (!room.public) {
+                if (!searchAccessRoom(room, data.userId)) {
+                    return resolve({
+                        success: false,
+                        message: 'Нет доступа.'
+                    });
+                }
             }
-
             let userIdList = room.message.map(function (mess) {
                 return mess.creatorId;
             });
