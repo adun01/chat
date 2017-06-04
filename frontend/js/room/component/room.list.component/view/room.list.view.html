@@ -18,27 +18,29 @@
             </md-button>
         </div>
     </div>
-    <div layout="row"
-         layout-align="left center">
-        <md-list class="chat-room-list">
-            <md-list-item data-ng-if="!_ctrlRoomList.data.rooms.length">
+    <div>
+        <div class="chat-room-list">
+            <div data-ng-if="!_ctrlRoomList.data.rooms.length">
                 <a class="chat-room-list__link">
                     Вы не учавствуете ни в одной комнате.
                     Примите приглашение, создайте свою комнату или найдите комнату на интересующую вас тему.
                 </a>
-            </md-list-item>
-            <md-list-item class="chat-room-list__item"
-                          data-ng-repeat="room in _ctrlRoomList.data.rooms">
-                <a class="chat-room-list__link"
-                   data-ui-sref="main.room({id: room.id})">
-                    <md-button class="chat-room-list__button">
-                        <button class="md-fab md-button md-ink-ripple">
-                            {{!room.photo ? room.shortName.toUpperCase() : ''}}
-                        </button>
-                        {{room.name}}
-                    </md-button>
-                </a>
-            </md-list-item>
-        </md-list>
+            </div>
+            <div class="chat-room-list__item"
+                 layout
+                 layout-align="space-between center"
+                 data-ng-repeat="room in _ctrlRoomList.data.rooms">
+
+                <div>
+                    <button class="md-fab md-button md-ink-ripple">
+                        {{!room.photo ? room.shortName.toUpperCase() : ''}}
+                    </button>
+
+                    {{room.name}}
+
+                </div>
+                <room-actions data-room="room"></room-actions>
+            </div>
+        </div>
     </div>
 </div>
