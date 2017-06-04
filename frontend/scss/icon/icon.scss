@@ -1,6 +1,7 @@
 .chat-icon {
   &-action {
     margin: 0;
+    cursor: pointer;
 
     & > ng-md-icon {
       line-height: 0;

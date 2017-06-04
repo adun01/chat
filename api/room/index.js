@@ -1,6 +1,6 @@
 const roomModel = require('../../db/room/room.model'),
     _ = require('lodash'),
-    fieldAllow = ['name', 'id', 'modify', 'photo', 'creatorId', 'userAgreed', 'public'];
+    fieldAllow = ['name', 'id', 'modify', 'photo', 'creatorId', 'userInvited', 'userAgreed', 'public'];
 
 function clearRoomField(rooms) {
     if (_.isArray(rooms)) {

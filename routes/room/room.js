@@ -23,9 +23,19 @@ router.post('/api/room/', async function (req, res) {
         userInvited: req.body.userInvited
     });
 
-    eventsMediator.emit('roomListChange', {
-        userId: req.session.user.id
-    });
+    if (roomCreateResult.success) {
+        eventsMediator.emit('roomListChange', {
+            userId: req.session.user.id
+        });
+
+        roomCreateResult.room.userInvited.forEach(function (userId) {
+            eventsMediator.emit('newNotificationRoom', {
+                roomId: +roomCreateResult.room.id,
+                userId: +userId
+            });
+        });
+
+    }
 
     res.send(JSON.stringify(roomCreateResult));
 });
