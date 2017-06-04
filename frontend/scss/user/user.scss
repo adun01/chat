@@ -181,6 +181,10 @@ $photo_size: 56px;
     position: relative;
     transition: all 0.25s ease;
     z-index: 2021;
+
+    &__icon {
+      margin-right: $layout-offset;
+    }
   }
 
   &-search {

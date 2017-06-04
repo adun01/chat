@@ -7,14 +7,9 @@ module.directive('userActions', function () {
         controllerAs: '_ctrlUserAction',
         template: userActionsTpl,
         scope: {
-            color: '=',
             user: '=',
-            showUser: '=',
-            addRoom: '=',
-            removeRoom: '=',
-            exitRoom: '=',
-            room: '=',
-            openRoom: '='
+            actionsRoom: '=',
+            invitedRoom: '='
         }
     }
 });

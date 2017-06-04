@@ -1,22 +1,33 @@
 import module from '../../../';
 
 module.controller('userActionsController',
-    function ($scope, $mdMenu, userService, roomUserAgreedService, roomUserInvitedService, $state) {
+    function ($scope, $mdMenu, userService, roomService, roomUserAgreedService, roomUserInvitedService, $state) {
         const _ctrlUserAction = this;
 
-        _ctrlUserAction.room = $scope.room;
-        _ctrlUserAction.user = $scope.user;
+        _ctrlUserAction.inRoom = false;
+        _ctrlUserAction.creator = false;
 
-        _ctrlUserAction.selfUser = _ctrlUserAction.user.id === userService.get().id;
+        _ctrlUserAction.room = roomService.getCurrentRoom();
+        _ctrlUserAction.currentUser = $scope.user;
 
-        _ctrlUserAction.canOpenRoom = $scope.openRoom;
+        _ctrlUserAction.actionsRoom = $scope.actionsRoom;
+        _ctrlUserAction.invitedRoom = $scope.invitedRoom;
 
-        _ctrlUserAction.canShowUser = $scope.showUser;
-        _ctrlUserAction.canAddRoom = $scope.addRoom;
-        _ctrlUserAction.canRemoveRoom = $scope.removeRoom;
-        _ctrlUserAction.canExitRoom = $scope.exitRoom;
+        _ctrlUserAction.user = userService.get();
 
-        _ctrlUserAction.currentUser = userService.get();
+        _ctrlUserAction.selfUser = _ctrlUserAction.user.id === _ctrlUserAction.currentUser.id;
+
+        if (_ctrlUserAction.room && _ctrlUserAction.actionsRoom) {
+            _ctrlUserAction.inRoom = true;
+
+            if (_ctrlUserAction.room.creatorId === _ctrlUserAction.user.id) {
+                _ctrlUserAction.creator = true;
+            }
+        }
+
+        _ctrlUserAction.canInvitedRoom = _ctrlUserAction.inRoom && _ctrlUserAction.actionsRoom && _ctrlUserAction.invitedRoom;
+        _ctrlUserAction.canLeaveRoom = _ctrlUserAction.selfUser && _ctrlUserAction.inRoom;
+        _ctrlUserAction.canRemoveRoom = _ctrlUserAction.creator && !_ctrlUserAction.selfUser;
 
         _ctrlUserAction.showUser = function ($event, user) {
 
@@ -30,13 +41,13 @@ module.controller('userActionsController',
         _ctrlUserAction.removeInRoom = function () {
             roomUserAgreedService.remove({
                 roomId: _ctrlUserAction.room.id,
-                userId: _ctrlUserAction.user.id
+                userId: _ctrlUserAction.currentUser.id
             });
         };
 
         _ctrlUserAction.addInvited = function () {
             roomUserInvitedService.save({
-                userId: _ctrlUserAction.user.id,
+                userId: _ctrlUserAction.currentUser.id,
                 id: _ctrlUserAction.room.id
             });
         };

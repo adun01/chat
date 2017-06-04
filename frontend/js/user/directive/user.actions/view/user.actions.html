@@ -8,14 +8,14 @@
 
     <md-menu-content>
 
-        <md-menu-item data-ng-if="_ctrlUserAction.canOpenRoom"
+        <md-menu-item data-ng-if="!_ctrlUserAction.selfUser"
                       data-ng-click="_ctrlUserAction.openRoom($event, user)">
 
-            <md-button class="chat-icon-action">
+            <md-button>
                 <div layout
                      layout-align="left center">
 
-                    <ng-md-icon class="chat-user-actions--icon"
+                    <ng-md-icon class="chat-user-actions__icon"
                                 layout
                                 layout-align="center center"
                                 size="30"
@@ -27,16 +27,15 @@
                 </div>
             </md-button>
         </md-menu-item>
-        <md-menu-divider data-ng-if="_ctrlUserAction.canOpenRoom"></md-menu-divider>
+        <md-menu-divider></md-menu-divider>
 
-        <md-menu-item data-ng-if="_ctrlUserAction.canShowUser"
-                      data-ng-click="_ctrlUserAction.showUser($event, user)">
+        <md-menu-item data-ng-click="_ctrlUserAction.showUser($event, user)">
 
-            <md-button class="chat-icon-action">
+            <md-button>
                 <div layout
                      layout-align="left center">
 
-                    <ng-md-icon class="chat-user-actions--icon"
+                    <ng-md-icon class="chat-user-actions__icon"
                                 layout
                                 layout-align="center center"
                                 size="30"
@@ -45,7 +44,7 @@
                                 data-ng-if="!_ctrlUserAction.selfUser">
                     </ng-md-icon>
 
-                    <ng-md-icon class="chat-user-actions--icon"
+                    <ng-md-icon class="chat-user-actions__icon"
                                 layout
                                 layout-align="center center"
                                 size="30"
@@ -58,65 +57,72 @@
                 </div>
             </md-button>
         </md-menu-item>
-        <md-menu-divider data-ng-if="_ctrlUserAction.canShowUser"></md-menu-divider>
+        <md-menu-divider></md-menu-divider>
 
-        <md-menu-divider data-ng-if="_ctrlUserAction.canShowUser"></md-menu-divider>
-        <md-menu-item data-ng-if="_ctrlUserAction.canAddRoom"
+        <md-menu-item data-ng-if="_ctrlUserAction.canInvitedRoom"
                       data-ng-click="_ctrlUserAction.addInvited()">
-            <div layout
-                 layout-align="left center">
+            <md-button>
+                <div layout
+                     layout-align="left center">
 
-                <ng-md-icon layout
-                            layout-align="center center"
-                            size="30"
-                            style="fill: black"
-                            icon="add">
-                </ng-md-icon>
+                    <ng-md-icon class="chat-user-actions__icon"
+                                layout
+                                layout-align="center center"
+                                size="30"
+                                style="fill: black"
+                                icon="add">
+                    </ng-md-icon>
 
-                Пригласить в комнату
-            </div>
+                    Пригласить в комнату
+                </div>
+            </md-button>
         </md-menu-item>
-        <md-menu-divider data-ng-if="_ctrlUserAction.canAddRoom"></md-menu-divider>
+        <md-menu-divider data-ng-if="_ctrlUserAction.canInvitedRoom"></md-menu-divider>
 
-        <md-menu-item data-ng-if="_ctrlUserAction.canRemoveRoom"
+        <md-menu-item data-ng-if="_ctrlUserAction.canLeaveRoom"
                       data-ng-click="_ctrlUserAction.removeInRoom()">
 
-            <md-button class="chat-icon-action">
-                <div layout layout-align="left center">
+            <md-button>
 
-                    <ng-md-icon layout
+                <div layout
+                     layout-align="left center">
+
+                    <ng-md-icon class="chat-user-actions__icon"
+                                layout
                                 layout-align="center center"
                                 size="30"
                                 style="fill: black"
                                 icon="delete">
                     </ng-md-icon>
-                    {{_ctrlUserAction.user.id === _ctrlUserAction.currentUser.id ? 'Покинуть комнату' : 'Удалить из
-                    комнаты'}}
-                </div>
-            </md-button>
-        </md-menu-item>
-        <md-menu-divider
-                data-ng-if="_ctrlUserAction.canExitRoom && !_ctrlUserAction.canRemoveRoom && _ctrlUserAction.selfUser"></md-menu-divider>
 
-        <md-menu-item
-                data-ng-if="_ctrlUserAction.canExitRoom && !_ctrlUserAction.canRemoveRoom && _ctrlUserAction.selfUser"
-                data-ng-click="_ctrlUserAction.removeInRoom()">
-
-            <md-button class="chat-icon-action">
-
-                <div layout
-                     layout-align="left center">
-
-                    <ng-md-icon size="30"
-                                layout
-                                layout-align="center center"
-                                style="fill: black"
-                                icon="delete">
-                    </ng-md-icon>
                     Покинуть комнату
                 </div>
             </md-button>
         </md-menu-item>
+        <md-menu-divider data-ng-if="_ctrlUserAction.canLeaveRoom"></md-menu-divider>
+
+        <md-menu-item data-ng-if="_ctrlUserAction.canRemoveRoom"
+                      data-ng-click="_ctrlUserAction.removeInRoom()">
+
+            <md-button>
+
+                <div layout
+                     layout-align="left center">
+
+                    <ng-md-icon class="chat-user-actions__icon"
+                                layout
+                                layout-align="center center"
+                                size="30"
+                                style="fill: black"
+                                icon="delete">
+                    </ng-md-icon>
+
+                    Удалить из комнаты
+                </div>
+            </md-button>
+        </md-menu-item>
+
         <md-menu-divider data-ng-if="_ctrlUserAction.canRemoveRoom"></md-menu-divider>
+
     </md-menu-content>
 </md-menu>

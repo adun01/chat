@@ -46,4 +46,11 @@
     display: block;
     height: 70vh;
   }
+
+  &-actions {
+
+    &__icon {
+      margin-right: $layout-offset;
+    }
+  }
 }
