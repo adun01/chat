@@ -5,11 +5,13 @@
 
   &--main {
     display: block !important;
+    width: 25%;
     // кастыль что б не прыгала прокрутка
   }
 
   &--room {
     height: 100%;
+    width: 100%;
   }
 
   &__row {
@@ -45,5 +47,8 @@
       color: #fff;
     }
   }
+}
 
+sidebar {
+  width: 25%;
 }

@@ -6,8 +6,8 @@
     </ng-md-icon>
     <md-menu-content>
 
-        <md-menu-item data-ng-if="!_ctrlRoomAction.creator"
-                      data-ui-sref="main.conversation({id: _ctrlRoomAction.room.creatorId})">
+        <md-menu-item data-ng-if="_ctrlRoomAction.canOpenRoom"
+                      data-ng-click="_ctrlRoomAction.openRoom()">
 
             <md-button>
 
@@ -22,12 +22,11 @@
                                 icon="message">
                     </ng-md-icon>
 
-                    Открыть диалог c создателем комнаты
+                    Зайти в комнату
                 </div>
             </md-button>
         </md-menu-item>
-
-        <md-menu-divider data-ng-if="!_ctrlRoomAction.creator"></md-menu-divider>
+        <md-menu-divider data-ng-if="_ctrlRoomAction.canOpenRoom"></md-menu-divider>
 
         <md-menu-item data-ng-if="_ctrlRoomAction.canLeaveRoom()">
 
@@ -52,8 +51,8 @@
 
         <md-menu-divider data-ng-if="_ctrlRoomAction.canLeaveRoom()"></md-menu-divider>
 
-        <md-menu-item data-ng-if="_ctrlRoomAction.canOpenRoom"
-                      data-ng-click="_ctrlRoomAction.openRoom()">
+        <md-menu-item data-ng-if="!_ctrlRoomAction.creator"
+                      data-ui-sref="main.conversation({id: _ctrlRoomAction.room.creatorId})">
 
             <md-button>
 
@@ -68,11 +67,12 @@
                                 icon="message">
                     </ng-md-icon>
 
-                    Зайти в комнату
+                    Открыть диалог c создателем комнаты
                 </div>
             </md-button>
         </md-menu-item>
-        <md-menu-divider data-ng-if="_ctrlRoomAction.canOpenRoom"></md-menu-divider>
+
+        <md-menu-divider data-ng-if="!_ctrlRoomAction.creator"></md-menu-divider>
 
     </md-menu-content>
 </md-menu>

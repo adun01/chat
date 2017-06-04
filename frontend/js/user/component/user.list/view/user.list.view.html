@@ -20,6 +20,7 @@
 
                 <div class="chat-user-list__photo">
                     <img alt="{{user.login}}"
+                         data-ng-click="_ctrlUserList.openRoom(user)"
                          data-ng-src="{{_ctrlUserList.getPathPhoto(user)}}">
 
                     <span class="chat-user-list__status"

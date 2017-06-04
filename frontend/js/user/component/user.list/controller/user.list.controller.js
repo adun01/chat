@@ -1,7 +1,7 @@
 import module from '../../../';
 
 module.controller('userListController',
-    function ($scope, $rootScope, userService, roomUserAgreedService, roomService, $timeout) {
+    function ($scope, $rootScope, userService, roomUserAgreedService, roomService, $timeout, $state) {
         const _ctrlUserList = this;
 
         _ctrlUserList.user = userService.get();
@@ -13,6 +13,8 @@ module.controller('userListController',
 
         _ctrlUserList.canRemove = +_ctrlUserList.user.id === +_ctrlUserList.room.creatorId;
 
+        _ctrlUserList.getPathPhoto = userService.photo;
+
         _ctrlUserList.showUser = function (ev, user) {
             if (_ctrlUserList.user.id === user.id) {
                 userService.editUser();
@@ -21,7 +23,11 @@ module.controller('userListController',
             }
         };
 
-        _ctrlUserList.getPathPhoto = userService.photo;
+        _ctrlUserList.openRoom = function (user) {
+            $state.go('main.conversation', {
+                id: user.id
+            });
+        };
 
         _ctrlUserList.getUsers = function () {
             roomUserAgreedService.get({roomId: _ctrlUserList.room.id}).then(function (response) {

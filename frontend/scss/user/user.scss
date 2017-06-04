@@ -138,6 +138,7 @@ $photo_size: 56px;
       position: relative;
       display: inline-block;
       margin: 6px 8px;
+      cursor: pointer;
 
       & img {
         border-radius: 50%;
@@ -190,6 +191,7 @@ $photo_size: 56px;
       width: 56px;
       border-radius: 50%;
       margin: 6px 8px;
+      cursor: pointer;
     }
 
     &__descr {

@@ -1,6 +1,6 @@
 import module from '../../../';
 
-module.controller('roomListController', function ($scope, roomService, $timeout, $rootScope) {
+module.controller('roomListController', function ($scope, roomService, $timeout, $rootScope, $state) {
     const _ctrlRoomList = this;
 
     _ctrlRoomList.data = {
@@ -8,6 +8,12 @@ module.controller('roomListController', function ($scope, roomService, $timeout,
     };
 
     _ctrlRoomList.addRoom = roomService.addRoom;
+
+    _ctrlRoomList.openRoom = function (room) {
+        $state.go('main.room', {
+            id: room.id
+        });
+    };
 
     function getListRoom() {
         roomService.get().then(function (response) {

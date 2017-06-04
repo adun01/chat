@@ -1,6 +1,6 @@
 import module from '../../../';
 
-module.controller('userSearchController', function (roomService, $q, userService) {
+module.controller('userSearchController', function (roomService, $q, userService, $state) {
     const _ctrlUserSearch = this;
 
     _ctrlUserSearch.data = {
@@ -24,6 +24,13 @@ module.controller('userSearchController', function (roomService, $q, userService
     _ctrlUserSearch.placeholder = 'Введите логин искомого друга';
 
     _ctrlUserSearch.oldQuery = null;
+
+    _ctrlUserSearch.openRoom = function (user) {
+
+        $state.go('main.conversation', {
+            id: user.id
+        });
+    };
 
     _ctrlUserSearch.searchUsers = function (query) {
 

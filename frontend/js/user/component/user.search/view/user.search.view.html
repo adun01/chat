@@ -17,8 +17,10 @@
 
                 <div layout
                      layout-align="center center">
+
                     <img class="chat-user-search__photo"
                          alt="{{user.login}}"
+                         data-ng-click="_ctrlUserSearch.openRoom(user)"
                          data-ng-src="{{_ctrlUserSearch.photo(user)}}"/>
 
                     <div class="chat-user-search__descr"

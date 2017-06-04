@@ -28043,7 +28043,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomListController', function ($scope, roomService, $timeout, $rootScope) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomListController', function ($scope, roomService, $timeout, $rootScope, $state) {
     const _ctrlRoomList = this;
 
     _ctrlRoomList.data = {
@@ -28051,6 +28051,12 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomListController', func
     };
 
     _ctrlRoomList.addRoom = roomService.addRoom;
+
+    _ctrlRoomList.openRoom = function (room) {
+        $state.go('main.room', {
+            id: room.id
+        });
+    };
 
     function getListRoom() {
         roomService.get().then(function (response) {
@@ -28098,7 +28104,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomSearchController', function (roomService, $q) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomSearchController', function (roomService, $state) {
     const _ctrlRoomSearch = this;
 
     _ctrlRoomSearch.data = {
@@ -28106,18 +28112,22 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomSearchController', fu
     };
 
     _ctrlRoomSearch.placeholder = 'Введите имя искомой комнаты';
-
-    _ctrlRoomSearch.oldQuery = null;
+    _ctrlRoomSearch.openRoom = function (room) {
+        $state.go('main.room', {
+            id: room.id
+        });
+    };
 
     _ctrlRoomSearch.searchRooms = function (query) {
 
         if (query) {
-            _ctrlRoomSearch.oldQuery = query;
 
             roomService.get({query: query, search: true}).then(function (response) {
                 _ctrlRoomSearch.data.rooms = response.rooms;
             });
+
         } else {
+
             _ctrlRoomSearch.data.rooms = [];
         }
     }
@@ -28630,7 +28640,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userListController',
-    function ($scope, $rootScope, userService, roomUserAgreedService, roomService, $timeout) {
+    function ($scope, $rootScope, userService, roomUserAgreedService, roomService, $timeout, $state) {
         const _ctrlUserList = this;
 
         _ctrlUserList.user = userService.get();
@@ -28642,6 +28652,8 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userListController',
 
         _ctrlUserList.canRemove = +_ctrlUserList.user.id === +_ctrlUserList.room.creatorId;
 
+        _ctrlUserList.getPathPhoto = userService.photo;
+
         _ctrlUserList.showUser = function (ev, user) {
             if (_ctrlUserList.user.id === user.id) {
                 userService.editUser();
@@ -28650,7 +28662,11 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userListController',
             }
         };
 
-        _ctrlUserList.getPathPhoto = userService.photo;
+        _ctrlUserList.openRoom = function (user) {
+            $state.go('main.conversation', {
+                id: user.id
+            });
+        };
 
         _ctrlUserList.getUsers = function () {
             roomUserAgreedService.get({roomId: _ctrlUserList.room.id}).then(function (response) {
@@ -28706,7 +28722,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(1);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('userSearchController', function (roomService, $q, userService) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('userSearchController', function (roomService, $q, userService, $state) {
     const _ctrlUserSearch = this;
 
     _ctrlUserSearch.data = {
@@ -28730,6 +28746,13 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('userSearchController', fu
     _ctrlUserSearch.placeholder = 'Введите логин искомого друга';
 
     _ctrlUserSearch.oldQuery = null;
+
+    _ctrlUserSearch.openRoom = function (user) {
+
+        $state.go('main.conversation', {
+            id: user.id
+        });
+    };
 
     _ctrlUserSearch.searchUsers = function (query) {
 
@@ -106049,13 +106072,13 @@ module.exports = "<md-dialog flex=40 style=height:500px> <md-toolbar> <div class
 /* 102 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=sidebar__row> <div layout=row layout-align=\"space-between center\"> <h3 class=chat-room-list-nav> Комнаты </h3> <div layout layout-align=\"center center\"> <notification-room class=notification-room></notification-room> <md-button class=\"md-fab md-mini chat-icon-action\" layout layout-align=\"center center\" data-ng-click=_ctrlRoomList.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> </div> </div> <div> <div class=chat-room-list> <div data-ng-if=!_ctrlRoomList.data.rooms.length> <a class=chat-room-list__link> Вы не учавствуете ни в одной комнате. Примите приглашение, создайте свою комнату или найдите комнату на интересующую вас тему. </a> </div> <div class=chat-room-list__item layout layout-align=\"space-between center\" data-ng-repeat=\"room in _ctrlRoomList.data.rooms\"> <div> <button class=\"md-fab md-button md-ink-ripple\"> {{!room.photo ? room.shortName.toUpperCase() : ''}} </button> {{room.name}} </div> <room-actions data-room=room></room-actions> </div> </div> </div> </div>";
+module.exports = "<div class=sidebar__row> <div layout=row layout-align=\"space-between center\"> <h3 class=chat-room-list-nav> Комнаты </h3> <div layout layout-align=\"center center\"> <notification-room class=notification-room></notification-room> <md-button class=\"md-fab md-mini chat-icon-action\" layout layout-align=\"center center\" data-ng-click=_ctrlRoomList.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> </div> </div> <div> <div class=chat-room-list> <div data-ng-if=!_ctrlRoomList.data.rooms.length> <a class=chat-room-list__link> Вы не учавствуете ни в одной комнате. Примите приглашение, создайте свою комнату или найдите комнату на интересующую вас тему. </a> </div> <div class=chat-room-list__item layout layout-align=\"space-between center\" data-ng-repeat=\"room in _ctrlRoomList.data.rooms\"> <div> <button class=\"md-fab md-button md-ink-ripple\" data-ng-click=_ctrlRoomList.openRoom(room)> {{!room.photo ? room.shortName.toUpperCase() : ''}} </button> {{room.name}} </div> <room-actions data-room=room></room-actions> </div> </div> </div> </div>";
 
 /***/ }),
 /* 103 */
 /***/ (function(module, exports) {
 
-module.exports = "<div flex=100> <md-input-container class=chat-form__row> <input type=text data-ng-attr-placeholder={{_ctrlRoomSearch.placeholder}} data-ng-change=_ctrlRoomSearch.searchRooms(_ctrlRoomSearch.query) data-ng-model=_ctrlRoomSearch.query> </md-input-container> <div class=chat-room-search__list> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-repeat=\"room in _ctrlRoomSearch.data.rooms\"> <div> <button class=\"md-fab md-button md-ink-ripple\"> {{!room.photo ? room.shortName.toUpperCase() : ''}} </button> {{room.name}} </div> <room-actions class=chat-room-actions data-room=room></room-actions> </div> </div></div>";
+module.exports = "<div flex=100> <md-input-container class=chat-form__row> <input type=text data-ng-attr-placeholder={{_ctrlRoomSearch.placeholder}} data-ng-change=_ctrlRoomSearch.searchRooms(_ctrlRoomSearch.query) data-ng-model=_ctrlRoomSearch.query> </md-input-container> <div class=chat-room-search__list> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-repeat=\"room in _ctrlRoomSearch.data.rooms\"> <div> <button class=\"md-fab md-button md-ink-ripple\" data-ng-click=_ctrlRoomSearch.openRoom(room)> {{!room.photo ? room.shortName.toUpperCase() : ''}} </button> {{room.name}} </div> <room-actions class=chat-room-actions data-room=room></room-actions> </div> </div></div>";
 
 /***/ }),
 /* 104 */
@@ -106067,7 +106090,7 @@ module.exports = "<md-sidenav class=\"sidebar sidebar--room md-sidenav-left\" md
 /* 105 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-menu> <ng-md-icon size=30 icon=menu class=\"chat-icon-action chat-icon-action--actions-user\" data-ng-click=\"_ctrlRoomAction.openMenu($mdMenu, $event)\"> </ng-md-icon> <md-menu-content> <md-menu-item data-ng-if=!_ctrlRoomAction.creator data-ui-sref=\"main.conversation({id: _ctrlRoomAction.room.creatorId})\"> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-room-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=message> </ng-md-icon> Открыть диалог c создателем комнаты </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=!_ctrlRoomAction.creator></md-menu-divider> <md-menu-item data-ng-if=_ctrlRoomAction.canLeaveRoom()> <md-button data-ng-click=_ctrlRoomAction.leaveRoom()> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-room-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=delete> </ng-md-icon> Покинуть комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlRoomAction.canLeaveRoom()></md-menu-divider> <md-menu-item data-ng-if=_ctrlRoomAction.canOpenRoom data-ng-click=_ctrlRoomAction.openRoom()> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-room-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=message> </ng-md-icon> Зайти в комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlRoomAction.canOpenRoom></md-menu-divider> </md-menu-content> </md-menu>";
+module.exports = "<md-menu> <ng-md-icon size=30 icon=menu class=\"chat-icon-action chat-icon-action--actions-user\" data-ng-click=\"_ctrlRoomAction.openMenu($mdMenu, $event)\"> </ng-md-icon> <md-menu-content> <md-menu-item data-ng-if=_ctrlRoomAction.canOpenRoom data-ng-click=_ctrlRoomAction.openRoom()> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-room-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=message> </ng-md-icon> Зайти в комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlRoomAction.canOpenRoom></md-menu-divider> <md-menu-item data-ng-if=_ctrlRoomAction.canLeaveRoom()> <md-button data-ng-click=_ctrlRoomAction.leaveRoom()> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-room-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=delete> </ng-md-icon> Покинуть комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlRoomAction.canLeaveRoom()></md-menu-divider> <md-menu-item data-ng-if=!_ctrlRoomAction.creator data-ui-sref=\"main.conversation({id: _ctrlRoomAction.room.creatorId})\"> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-room-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=message> </ng-md-icon> Открыть диалог c создателем комнаты </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=!_ctrlRoomAction.creator></md-menu-divider> </md-menu-content> </md-menu>";
 
 /***/ }),
 /* 106 */
@@ -106091,19 +106114,19 @@ module.exports = "<md-dialog flex=40 style=height:500px> <md-toolbar> <div class
 /* 109 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"sidebar__row chat-user-list__nav\" layout layout-align=\"space-between center\"> <md-button class=md-raised>Онлайн</md-button> <md-button class=md-warn>Все</md-button> </div> <md-content class=sidebar__content> <div class=chat-user-list> <div class=chat-user-list__item layout layout-align=\"space-between center\" data-ng-repeat=\"user in _ctrlUserList.data.userList\"> <div layout layout-align=\"center center\"> <div class=chat-user-list__photo> <img alt={{user.login}} data-ng-src={{_ctrlUserList.getPathPhoto(user)}}> <span class=chat-user-list__status data-ng-class=\"{'chat-user-list__status--online': user.online}\"></span> </div> <span class=chat-user-list__login layout layout-align=\"center center\">{{user.login}}</span> </div> <user-actions data-user=user data-actions-room=true class=chat-user-actions></user-actions> </div> </div> </md-content>";
+module.exports = "<div class=\"sidebar__row chat-user-list__nav\" layout layout-align=\"space-between center\"> <md-button class=md-raised>Онлайн</md-button> <md-button class=md-warn>Все</md-button> </div> <md-content class=sidebar__content> <div class=chat-user-list> <div class=chat-user-list__item layout layout-align=\"space-between center\" data-ng-repeat=\"user in _ctrlUserList.data.userList\"> <div layout layout-align=\"center center\"> <div class=chat-user-list__photo> <img alt={{user.login}} data-ng-click=_ctrlUserList.openRoom(user) data-ng-src={{_ctrlUserList.getPathPhoto(user)}}> <span class=chat-user-list__status data-ng-class=\"{'chat-user-list__status--online': user.online}\"></span> </div> <span class=chat-user-list__login layout layout-align=\"center center\">{{user.login}}</span> </div> <user-actions data-user=user data-actions-room=true class=chat-user-actions></user-actions> </div> </div> </md-content>";
 
 /***/ }),
 /* 110 */
 /***/ (function(module, exports) {
 
-module.exports = "<form class=chat-form> <md-input-container class=chat-form__row> <input type=text data-ng-attr-placeholder={{_ctrlUserSearch.placeholder}} data-ng-change=_ctrlUserSearch.searchUsers(_ctrlUserSearch.query) data-ng-model=_ctrlUserSearch.query> </md-input-container> <div layout=row layout-align=\"left center\"> <div class=chat-user-search__list> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-repeat=\"user in _ctrlUserSearch.data.users\"> <div layout layout-align=\"center center\"> <img class=chat-user-search__photo alt={{user.login}} data-ng-src={{_ctrlUserSearch.photo(user)}} /> <div class=chat-user-search__descr layout=column layout-align=\"center center\"> <div>{{ user.login }}</div> <div>{{ user.email }}</div> </div> </div> <user-actions data-user=user data-show-user=true data-add-room=true data-room=_ctrlUserSearch.room class=chat-user-actions></user-actions> </div> </div> </div> </form>";
+module.exports = "<form class=chat-form> <md-input-container class=chat-form__row> <input type=text data-ng-attr-placeholder={{_ctrlUserSearch.placeholder}} data-ng-change=_ctrlUserSearch.searchUsers(_ctrlUserSearch.query) data-ng-model=_ctrlUserSearch.query> </md-input-container> <div layout=row layout-align=\"left center\"> <div class=chat-user-search__list> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-repeat=\"user in _ctrlUserSearch.data.users\"> <div layout layout-align=\"center center\"> <img class=chat-user-search__photo alt={{user.login}} data-ng-click=_ctrlUserSearch.openRoom(user) data-ng-src={{_ctrlUserSearch.photo(user)}} /> <div class=chat-user-search__descr layout=column layout-align=\"center center\"> <div>{{ user.login }}</div> <div>{{ user.email }}</div> </div> </div> <user-actions data-user=user data-show-user=true data-add-room=true data-room=_ctrlUserSearch.room class=chat-user-actions></user-actions> </div> </div> </div> </form>";
 
 /***/ }),
 /* 111 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-menu> <ng-md-icon size=30 icon=menu class=\"chat-icon-action chat-icon-action--actions-user\" data-ng-click=\"_ctrlUserAction.openMenu($mdMenu, $event)\"> </ng-md-icon> <md-menu-content> <md-menu-item data-ng-if=!_ctrlUserAction.selfUser data-ng-click=\"_ctrlUserAction.openRoom($event, user)\"> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=message> </ng-md-icon> Открыть диалог </div> </md-button> </md-menu-item> <md-menu-divider></md-menu-divider> <md-menu-item data-ng-click=\"_ctrlUserAction.showUser($event, user)\"> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=face data-ng-if=!_ctrlUserAction.selfUser> </ng-md-icon> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=edit data-ng-if=_ctrlUserAction.selfUser> </ng-md-icon> {{!_ctrlUserAction.selfUser ? 'Посмотреть профиль' : 'Редактировать профиль'}} </div> </md-button> </md-menu-item> <md-menu-divider></md-menu-divider> <md-menu-item data-ng-if=_ctrlUserAction.canInvitedRoom data-ng-click=_ctrlUserAction.addInvited()> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=add> </ng-md-icon> Пригласить в комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlUserAction.canInvitedRoom></md-menu-divider> <md-menu-item data-ng-if=_ctrlUserAction.canLeaveRoom data-ng-click=_ctrlUserAction.removeInRoom()> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=delete> </ng-md-icon> Покинуть комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlUserAction.canLeaveRoom></md-menu-divider> <md-menu-item data-ng-if=_ctrlUserAction.canRemoveRoom data-ng-click=_ctrlUserAction.removeInRoom()> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=delete> </ng-md-icon> Удалить из комнаты </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlUserAction.canRemoveRoom></md-menu-divider> </md-menu-content> </md-menu>";
+module.exports = "<md-menu> <ng-md-icon size=30 icon=menu class=\"chat-icon-action chat-icon-action--actions-user\" data-ng-click=\"_ctrlUserAction.openMenu($mdMenu, $event)\"> </ng-md-icon> <md-menu-content> <md-menu-item data-ng-if=!_ctrlUserAction.selfUser data-ng-click=\"_ctrlUserAction.openRoom($event, user)\"> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=message> </ng-md-icon> Открыть диалог </div> </md-button> </md-menu-item> <md-menu-divider></md-menu-divider> <md-menu-item data-ng-click=\"_ctrlUserAction.showUser($event, user)\"> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=face data-ng-if=!_ctrlUserAction.selfUser> </ng-md-icon> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=edit data-ng-if=_ctrlUserAction.selfUser> </ng-md-icon> {{!_ctrlUserAction.selfUser ? 'Посмотреть профиль' : 'Редактировать профиль'}} </div> </md-button> </md-menu-item> <md-menu-divider></md-menu-divider> <md-menu-item data-ng-if=_ctrlUserAction.canInvitedRoom data-ng-click=_ctrlUserAction.addInvited()> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=add> </ng-md-icon> Пригласить в комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlUserAction.canInvitedRoom></md-menu-divider> <md-menu-item data-ng-if=_ctrlUserAction.canLeaveRoom data-ng-click=_ctrlUserAction.removeInRoom()> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=delete> </ng-md-icon> Покинуть комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlUserAction.canLeaveRoom></md-menu-divider> <md-menu-item data-ng-if=_ctrlUserAction.canRemoveRoom data-ng-click=_ctrlUserAction.removeInRoom()> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=delete> </ng-md-icon> Удалить из комнаты </div> </md-button> </md-menu-item> </md-menu-content> </md-menu>";
 
 /***/ }),
 /* 112 */
@@ -106121,7 +106144,7 @@ module.exports = "<md-dialog flex=40> <form data-ng-cloak name=userEdit> <md-too
 /* 114 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-dialog flex=40> <md-toolbar> <div class=md-toolbar-tools> <h2>Просмотр профиля</h2> </div> </md-toolbar> <md-dialog-content class=chat-user-show> <div class=chat-user-show__action-photo flex=40> <img class=\"md-user-avatar chat-user-show__photo\" data-ng-src={{_ctrlUserShow.getPathPhoto(_ctrlUserShow.data.user)}}> </div> <div layout layout-align=\"center center\"> <div flex=60> <div flex=100> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text disabled=disabled data-ng-value=_ctrlUserShow.data.user.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text disabled=disabled data-ng-value=_ctrlUserShow.data.user.email> </md-input-container> <md-input-container class=chat-form__row> <label>Дата регистрации</label> <input type=text disabled=disabled data-ng-value=\"_ctrlUserShow.data.user.date | date : 'yyyy-MM-dd'\"> </md-input-container> </div> </div> </div> </md-dialog-content> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Отмена data-ng-click=_ctrlUserShow.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </md-dialog>";
+module.exports = "<md-dialog flex=40> <md-toolbar> <div class=md-toolbar-tools> <h2>Просмотр профиля</h2> </div> </md-toolbar> <md-dialog-content class=chat-user-show> <div class=chat-user-show__action-photo flex=40> <img class=\"md-user-avatar chat-user-show__photo\" data-ng-src={{_ctrlUserShow.getPathPhoto(_ctrlUserShow.data.user)}}> </div> <div layout layout-align=\"center center\"> <div flex=60> <div flex=100> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text disabled=disabled data-ng-value=_ctrlUserShow.data.user.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text disabled=disabled data-ng-value=_ctrlUserShow.data.user.email> </md-input-container> <md-input-container class=chat-form__row> <label>Дата регистрации</label> <input type=text disabled=disabled data-ng-value=\"_ctrlUserShow.data.user.date | date : 'yyyy-MM-dd'\"> </md-input-container> </div> </div> </div> </md-dialog-content> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Отмена layout layout-align=\"center center\" data-ng-click=_ctrlUserShow.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </md-dialog>";
 
 /***/ }),
 /* 115 */

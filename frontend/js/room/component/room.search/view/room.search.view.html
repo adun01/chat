@@ -14,7 +14,9 @@
              data-ng-repeat="room in _ctrlRoomSearch.data.rooms">
 
             <div>
-                <button class="md-fab md-button md-ink-ripple">
+                <button class="md-fab md-button md-ink-ripple"
+                        data-ng-click="_ctrlRoomSearch.openRoom(room)">
+
                     {{!room.photo ? room.shortName.toUpperCase() : ''}}
                 </button>
 
