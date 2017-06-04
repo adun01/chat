@@ -9,24 +9,31 @@
 
 <md-content class="sidebar__content">
 
-    <md-list class="chat-user-list">
-        <md-list-item class="chat-user-list__item"
-                      data-ng-repeat="user in _ctrlUserList.data.userList"
-                      data-ng-click="_ctrlUserList.showUser($event, user)">
+    <div class="chat-user-list">
+        <div class="chat-user-list__item"
+             layout
+             layout-align="space-between center"
+             data-ng-repeat="user in _ctrlUserList.data.userList">
+
+            <div layout
+                 layout-align="center center">
+
+                <div class="chat-user-list__photo">
+                    <img alt="{{user.login}}"
+                         data-ng-src="{{_ctrlUserList.getPathPhoto(user)}}">
+
+                    <span class="chat-user-list__status"
+                          data-ng-class="{'chat-user-list__status--online': user.online}"></span>
+                </div>
+
+                <span class="chat-user-list__login"
+                      layout
+                      layout-align="center center">{{user.login}}</span>
+            </div>
 
             <user-actions data-user="user"
                           data-actions-room="true"
                           class="chat-user-actions"></user-actions>
-
-            <div class="chat-user-list__photo">
-                <img alt="{{user.login}}"
-                     data-ng-src="{{_ctrlUserList.getPathPhoto(user)}}">
-
-                <span class="chat-user-list__status"
-                      data-ng-class="{'chat-user-list__status--online': user.online}"></span>
-            </div>
-
-            <span class="chat-user-list__login">{{user.login}}</span>
-        </md-list-item>
-    </md-list>
+        </div>
+    </div>
 </md-content>

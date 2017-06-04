@@ -124,21 +124,20 @@ $photo_size: 56px;
 
   &-list {
 
+    margin: $layout-offset 0;
+
     &__item {
       color: #fff;
-
-      &:hover {
-        & .chat-user-actions {
-          width: 53px;
-        }
-      }
     }
 
-    $photo_size: 45px;
+    $photo_size: 56px;
+
     &__photo {
       width: $photo_size;
       height: $photo_size;
       position: relative;
+      display: inline-block;
+      margin: 6px 8px;
 
       & img {
         border-radius: 50%;
@@ -166,14 +165,7 @@ $photo_size: 56px;
     }
 
     &__login {
-      margin: 2px 0 0 8px;
-    }
-
-    & .chat-user-actions {
-      min-width: 0;
-      min-height: 0;
-      width: 0;
-      overflow: hidden;
+      margin-left: 4px;
     }
   }
 
@@ -190,7 +182,7 @@ $photo_size: 56px;
   &-search {
 
     &__list {
-      width: 100%;;
+      width: 100%;
     }
 
     &__photo {
