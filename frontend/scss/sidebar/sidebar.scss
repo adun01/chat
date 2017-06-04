@@ -4,7 +4,6 @@
   min-height: 100vh;
 
   &--main {
-    z-index: 2019;
     display: block !important;
     // кастыль что б не прыгала прокрутка
   }
@@ -30,6 +29,7 @@
     position: absolute;
     left: 16px;
     top: 14px;
+    z-index: 21;
   }
 
   &-closener {

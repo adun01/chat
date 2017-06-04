@@ -9,8 +9,10 @@ export default module.config(function ($stateProvider) {
             controllerAs: '_ctrlConversation',
             template: conversationTpl,
             resolve: {
-                conversationData: function (conversationService, authService, userService, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
+                conversationData: function (conversationService, authService, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
                     let defer = $q.defer();
+
+                    sideBarService.hideNavOut();
 
                     authService.isLogin().then(function (response) {
                         if (!response.success) {
@@ -21,6 +23,7 @@ export default module.config(function ($stateProvider) {
                             conversationService.get({id: $stateParams.id}).then(function (response) {
 
                                 if (response.success) {
+                                    sideBarService.hideNavOut();
                                     $mdDialog.cancel();
                                     sideBarService.unLocked();
 

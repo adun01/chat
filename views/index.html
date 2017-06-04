@@ -14,7 +14,9 @@
 <body>
 <div>
     <div data-ng-controller="sideBarController as _ctrlSideBar">
-        <div class="sidebar-opener">
+
+        <div class="sidebar-opener" id="sidebar-opener">
+
             <md-button class="md-fab chat-icon-action"
                        layout
                        layout-align="center center"
@@ -26,7 +28,7 @@
                 </ng-md-icon>
             </md-button>
         </div>
-        <!--md-disable-backdrop-->
+
         <md-sidenav class="md-sidenav-left sidebar sidebar--main"
                     data-ng-cloak
                     md-disable-backdrop

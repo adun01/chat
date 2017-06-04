@@ -7,6 +7,7 @@ module.service('sideBarService', function ($mdSidenav) {
     sidebar.id = 'side-bar';
     sidebar.btnId = 'side-bar-close';
     sidebar.locked = false;
+    sidebar.navOutId = 'sidebar-opener';
 
     return {
         open: function () {
@@ -23,12 +24,15 @@ module.service('sideBarService', function ($mdSidenav) {
             }
         },
         locked: function () {
-            document.getElementById(sidebar.btnId).disabled = true;
+            document.getElementById(sidebar.btnId).classList.add('chat-hide');
             sidebar.locked = true;
         },
         unLocked: function () {
-            document.getElementById(sidebar.btnId).disabled = false;
+            document.getElementById(sidebar.btnId).classList.remove('chat-hide');
             sidebar.locked = false;
+        },
+        hideNavOut: function () {
+            document.getElementById(sidebar.navOutId).classList.add('chat-hide');
         }
     };
 

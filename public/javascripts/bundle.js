@@ -27090,7 +27090,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 message: null
             },
             resolve: {
-                baseControllerData: function ($stateParams, userService, authService, $q, $rootScope, $state, roomService) {
+                baseControllerData: function ($stateParams, userService, authService, $q, $rootScope, $state, roomService, sideBarService) {
                     let defer = $q.defer();
 
                     authService.isLogin().then(function (response) {
@@ -27101,6 +27101,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             $state.go('main.auth');
                             defer.resolve('auth is error');
                         } else {
+                            sideBarService.hideNavOut();
                             userService.set(response.user);
                             $rootScope.$emit('isAuth');
                             defer.resolve($stateParams);
@@ -27243,6 +27244,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('sideBarService', function ($
     sidebar.id = 'side-bar';
     sidebar.btnId = 'side-bar-close';
     sidebar.locked = false;
+    sidebar.navOutId = 'sidebar-opener';
 
     return {
         open: function () {
@@ -27259,12 +27261,15 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('sideBarService', function ($
             }
         },
         locked: function () {
-            document.getElementById(sidebar.btnId).disabled = true;
+            document.getElementById(sidebar.btnId).classList.add('chat-hide');
             sidebar.locked = true;
         },
         unLocked: function () {
-            document.getElementById(sidebar.btnId).disabled = false;
+            document.getElementById(sidebar.btnId).classList.remove('chat-hide');
             sidebar.locked = false;
+        },
+        hideNavOut: function () {
+            document.getElementById(sidebar.navOutId).classList.add('chat-hide');
         }
     };
 
@@ -27434,8 +27439,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             controllerAs: '_ctrlConversation',
             template: __WEBPACK_IMPORTED_MODULE_1__view_conversation_view_html___default.a,
             resolve: {
-                conversationData: function (conversationService, authService, userService, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
+                conversationData: function (conversationService, authService, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
                     let defer = $q.defer();
+
+                    sideBarService.hideNavOut();
 
                     authService.isLogin().then(function (response) {
                         if (!response.success) {
@@ -27446,6 +27453,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             conversationService.get({id: $stateParams.id}).then(function (response) {
 
                                 if (response.success) {
+                                    sideBarService.hideNavOut();
                                     $mdDialog.cancel();
                                     sideBarService.unLocked();
 
@@ -28187,7 +28195,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             controllerAs: '_ctrlRoom',
             template: __WEBPACK_IMPORTED_MODULE_1__view_room_view_html___default.a,
             resolve: {
-                roomData: function (authService, userService, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
+                roomData: function (authService, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
                     let defer = $q.defer();
 
                     authService.isLogin().then(function (response) {
@@ -28198,6 +28206,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             roomService.get({id: $stateParams.id}).then(function (response) {
 
                                 if (response.success) {
+                                    sideBarService.hideNavOut();
                                     $mdDialog.cancel();
                                     sideBarService.unLocked();
 

@@ -11,7 +11,7 @@ export default module.config(function ($stateProvider) {
                 message: null
             },
             resolve: {
-                baseControllerData: function ($stateParams, userService, authService, $q, $rootScope, $state, roomService) {
+                baseControllerData: function ($stateParams, userService, authService, $q, $rootScope, $state, roomService, sideBarService) {
                     let defer = $q.defer();
 
                     authService.isLogin().then(function (response) {
@@ -22,6 +22,7 @@ export default module.config(function ($stateProvider) {
                             $state.go('main.auth');
                             defer.resolve('auth is error');
                         } else {
+                            sideBarService.hideNavOut();
                             userService.set(response.user);
                             $rootScope.$emit('isAuth');
                             defer.resolve($stateParams);

@@ -9,7 +9,7 @@ export default module.config(function ($stateProvider) {
             controllerAs: '_ctrlRoom',
             template: roomTpl,
             resolve: {
-                roomData: function (authService, userService, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
+                roomData: function (authService, $stateParams, roomService, $q, $state, sideBarService, $mdDialog) {
                     let defer = $q.defer();
 
                     authService.isLogin().then(function (response) {
@@ -20,6 +20,7 @@ export default module.config(function ($stateProvider) {
                             roomService.get({id: $stateParams.id}).then(function (response) {
 
                                 if (response.success) {
+                                    sideBarService.hideNavOut();
                                     $mdDialog.cancel();
                                     sideBarService.unLocked();
 
