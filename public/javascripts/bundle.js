@@ -27851,9 +27851,13 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('messageAddController',
         _ctrlMessageAdd.room = roomService.getCurrentRoom();
         _ctrlMessageAdd.user = userService.get();
 
-        _ctrlMessageAdd.access = _ctrlMessageAdd.room.userAgreed.some(function (userId) {
-            return userId === _ctrlMessageAdd.user.id;
-        });
+        if (!_ctrlMessageAdd.room.conversation) {
+            _ctrlMessageAdd.access = _ctrlMessageAdd.room.userAgreed.some(function (userId) {
+                return userId === _ctrlMessageAdd.user.id;
+            });
+        } else {
+            _ctrlMessageAdd.access = true;
+        }
 
         _ctrlMessageAdd.message = null;
         _ctrlMessageAdd.save = _ctrlMessageAdd.room.conversation ? conversationMessageService.save : roomMessageService.save;
@@ -105976,7 +105980,7 @@ module.exports = "<md-dialog flex=40> <md-toolbar> <div class=md-toolbar-tools> 
 /* 93 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=chat-base layout=row layout-align=\"center center\" data-ui-view> <div flex=100> <div class=chat-room__container> <div flex=50> <md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск комнат.</span> </div> </md-toolbar> <room-search></room-search> </div> </div> </md-card> </div> </div> </div> </div>";
+module.exports = "<div class=chat-base layout=row layout-align=\"center center\" data-ui-view> <div flex=100> <div class=chat-room__container> <div flex=50> <md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск комнат</span> </div> </md-toolbar> <room-search></room-search> </div> </div> </md-card> </div> <div flex=50> <md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск участников</span> </div> </md-toolbar> <user-search></user-search> </div> </div> </md-card> </div> </div> </div> </div>";
 
 /***/ }),
 /* 94 */
@@ -106078,7 +106082,7 @@ module.exports = "<div class=\"sidebar__row chat-user-list__nav\" layout layout-
 /* 110 */
 /***/ (function(module, exports) {
 
-module.exports = "<form class=chat-form> <md-input-container class=chat-form__row> <input type=text data-ng-attr-placeholder={{_ctrlUserSearch.placeholder}} data-ng-change=_ctrlUserSearch.searchUsers(_ctrlUserSearch.query) data-ng-model=_ctrlUserSearch.query> </md-input-container> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Найдено {{_ctrlUserSearch.data.users.length}}</span> </div> </md-toolbar> <md-list flex> <md-list-item class=md-3-line data-ng-click=_ctrlUserSearch.showUser(user) data-ng-repeat=\"user in _ctrlUserSearch.data.users\"> <img class=md-avatar alt={{user.login}} data-ng-src={{_ctrlUserSearch.photo(user)}} /> <div class=md-list-item-text layout=column> <h3>{{ user.login }}</h3> <h4>{{ user.email }}</h4> </div> <user-actions data-user=user data-show-user=true data-add-room=true data-room=_ctrlUserSearch.room class=chat-user-actions></user-actions> </md-list-item> </md-list> </div> </div> </form>";
+module.exports = "<form class=chat-form> <md-input-container class=chat-form__row> <input type=text data-ng-attr-placeholder={{_ctrlUserSearch.placeholder}} data-ng-change=_ctrlUserSearch.searchUsers(_ctrlUserSearch.query) data-ng-model=_ctrlUserSearch.query> </md-input-container> <div layout=row layout-align=\"left center\"> <div class=chat-user-search__list> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-repeat=\"user in _ctrlUserSearch.data.users\"> <div layout layout-align=\"center center\"> <img class=chat-user-search__photo alt={{user.login}} data-ng-src={{_ctrlUserSearch.photo(user)}} /> <div class=chat-user-search__descr layout=column layout-align=\"center center\"> <div>{{ user.login }}</div> <div>{{ user.email }}</div> </div> </div> <user-actions data-user=user data-show-user=true data-add-room=true data-room=_ctrlUserSearch.room class=chat-user-actions></user-actions> </div> </div> </div> </form>";
 
 /***/ }),
 /* 111 */

@@ -8,9 +8,13 @@ module.controller('messageAddController',
         _ctrlMessageAdd.room = roomService.getCurrentRoom();
         _ctrlMessageAdd.user = userService.get();
 
-        _ctrlMessageAdd.access = _ctrlMessageAdd.room.userAgreed.some(function (userId) {
-            return userId === _ctrlMessageAdd.user.id;
-        });
+        if (!_ctrlMessageAdd.room.conversation) {
+            _ctrlMessageAdd.access = _ctrlMessageAdd.room.userAgreed.some(function (userId) {
+                return userId === _ctrlMessageAdd.user.id;
+            });
+        } else {
+            _ctrlMessageAdd.access = true;
+        }
 
         _ctrlMessageAdd.message = null;
         _ctrlMessageAdd.save = _ctrlMessageAdd.room.conversation ? conversationMessageService.save : roomMessageService.save;

@@ -5,36 +5,38 @@
                data-ng-change="_ctrlUserSearch.searchUsers(_ctrlUserSearch.query)"
                data-ng-model="_ctrlUserSearch.query">
     </md-input-container>
+
     <div layout="row"
          layout-align="left center">
-        <div flex="100">
-            <md-toolbar layout="row">
-                <div class="md-toolbar-tools">
-                    <span>Найдено {{_ctrlUserSearch.data.users.length}}</span>
-                </div>
-            </md-toolbar>
-            <md-list flex>
-                <md-list-item class="md-3-line"
-                              data-ng-click="_ctrlUserSearch.showUser(user)"
-                              data-ng-repeat="user in _ctrlUserSearch.data.users">
 
-                    <img class="md-avatar"
+        <div class="chat-user-search__list">
+            <div class="md-3-line"
+                 layout
+                 layout-align="space-between center"
+                 data-ng-repeat="user in _ctrlUserSearch.data.users">
+
+                <div layout
+                     layout-align="center center">
+                    <img class="chat-user-search__photo"
                          alt="{{user.login}}"
                          data-ng-src="{{_ctrlUserSearch.photo(user)}}"/>
 
-                    <div class="md-list-item-text" layout="column">
-                        <h3>{{ user.login }}</h3>
-                        <h4>{{ user.email }}</h4>
+                    <div class="chat-user-search__descr"
+                         layout="column"
+                         layout-align="center center">
+
+                        <div>{{ user.login }}</div>
+                        <div>{{ user.email }}</div>
                     </div>
 
-                    <user-actions data-user="user"
-                                  data-show-user="true"
-                                  data-add-room="true"
-                                  data-room="_ctrlUserSearch.room"
-                                  class="chat-user-actions"></user-actions>
+                </div>
 
-                </md-list-item>
-            </md-list>
+                <user-actions data-user="user"
+                              data-show-user="true"
+                              data-add-room="true"
+                              data-room="_ctrlUserSearch.room"
+                              class="chat-user-actions"></user-actions>
+            </div>
         </div>
     </div>
 </form>
