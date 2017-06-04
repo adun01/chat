@@ -1,8 +1,8 @@
 import module from '../../';
-import userListTpl from './view/user.list.html';
+import messageListTpl from './view/message.list.html';
 
 module.component('messageList', {
     controller: 'messageListController',
     controllerAs: '_ctrlMessageList',
-    template: userListTpl
+    template: messageListTpl
 });

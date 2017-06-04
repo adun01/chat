@@ -1,12 +1,12 @@
 <sidebar></sidebar>
 
-<div flex="75">
+<div flex="75"
+     layout="column"
+     layout-align="space-between">
 
     <room-header></room-header>
 
-    <md-content class="chat-message-content">
-        <message-list></message-list>
-    </md-content>
+    <message-list class="chat-message-content" layout="column" layout-align="left bottom"></message-list>
 
     <message-add></message-add>
 

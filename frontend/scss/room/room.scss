@@ -14,11 +14,18 @@
 
     &__item {
       color: #fff;
+      white-space: nowrap;
 
       &--notify {
         padding: 0 $layout-offset;
         color: #000;
       }
+    }
+
+    &__descr {
+      max-width: 85%;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
     &__link {

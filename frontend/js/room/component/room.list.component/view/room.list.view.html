@@ -31,7 +31,7 @@
                  layout-align="space-between center"
                  data-ng-repeat="room in _ctrlRoomList.data.rooms">
 
-                <div>
+                <div class="chat-room-list__descr">
                     <button class="md-fab md-button md-ink-ripple"
                             data-ng-click="_ctrlRoomList.openRoom(room)">
                         {{!room.photo ? room.shortName.toUpperCase() : ''}}

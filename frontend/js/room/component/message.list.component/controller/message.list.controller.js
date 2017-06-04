@@ -6,12 +6,19 @@ module.controller('messageListController',
         const _ctrlMessageList = this;
 
         _ctrlMessageList.room = roomService.getCurrentRoom();
+        _ctrlMessageList.user = userService.get();
 
         _ctrlMessageList.data = {
             messages: []
         };
 
-        _ctrlMessageList.showUser = userService.showUser;
+        _ctrlMessageList.showUser = function ($event, user) {
+            if (user.id === _ctrlMessageList.user.id) {
+                userService.editUser($event);
+            } else {
+                userService.showUser($event, user);
+            }
+        };
 
         _ctrlMessageList.getPathPhoto = userService.photo;
 

@@ -27335,7 +27335,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('socketServiceMediator', func
 
         let currentRoom = roomService.getCurrentRoom();
 
-        if (currentRoom && currentRoom.id === +data.roomId) {
+        if (currentRoom && +currentRoom.id === +data.roomId) {
 
             $rootScope.$emit('newMessageRoom', data);
         }
@@ -27927,12 +27927,19 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('messageListController',
         const _ctrlMessageList = this;
 
         _ctrlMessageList.room = roomService.getCurrentRoom();
+        _ctrlMessageList.user = userService.get();
 
         _ctrlMessageList.data = {
             messages: []
         };
 
-        _ctrlMessageList.showUser = userService.showUser;
+        _ctrlMessageList.showUser = function ($event, user) {
+            if (user.id === _ctrlMessageList.user.id) {
+                userService.editUser($event);
+            } else {
+                userService.showUser($event, user);
+            }
+        };
 
         _ctrlMessageList.getPathPhoto = userService.photo;
 
@@ -27970,15 +27977,15 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('messageListController',
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_list_html__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_user_list_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_user_list_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_message_list_html__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__view_message_list_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__view_message_list_html__);
 
 
 
 __WEBPACK_IMPORTED_MODULE_0____["default"].component('messageList', {
     controller: 'messageListController',
     controllerAs: '_ctrlMessageList',
-    template: __WEBPACK_IMPORTED_MODULE_1__view_user_list_html___default.a
+    template: __WEBPACK_IMPORTED_MODULE_1__view_message_list_html___default.a
 });
 
 /***/ }),
@@ -106054,7 +106061,7 @@ module.exports = "<div data-ng-if=!_ctrlMessageAdd.access layout layout-align=\"
 /* 99 */
 /***/ (function(module, exports) {
 
-module.exports = "<h3 data-ng-if=!_ctrlMessageList.data.messages.length>История комнаты пуста.</h3> <md-list data-ng-if=_ctrlMessageList.data.messages.length> <md-list-item class=\"md-3-line chat-message-item\" data-ng-repeat=\"message in _ctrlMessageList.data.messages\"> <img alt={{message.user.login}} class=chat-message-item__avatar data-ng-click=\"_ctrlMessageList.showUser($event, message.user)\" data-ng-src={{_ctrlMessageList.getPathPhoto(message.user)}}> <div class=chat-message-item__container> <div class=chat-message-item__login> {{message.user.login}} </div> <div class=chat-message-item__content> {{message.text}} </div> <div class=chat-message-item__date> {{message.date}} </div> </div> <md-divider inset></md-divider> </md-list-item> </md-list>";
+module.exports = "<h3 data-ng-if=!_ctrlMessageList.data.messages.length>История комнаты пуста.</h3> <div class=chat-message-item data-ng-class=\"{'chat-message-item--self' : _ctrlMessageList.user.id === message.creatorId}\" data-ng-if=_ctrlMessageList.data.messages.length data-ng-repeat=\"message in _ctrlMessageList.data.messages\"> <div class=\"chat-message-item__container chat-message-item__container--self\" data-ng-if=\"_ctrlMessageList.user.id === message.creatorId\"> <div class=chat-message-item__login> {{message.user.login}} </div> <div class=chat-message-item__content> {{message.text}} </div> <div class=chat-message-item__date> {{message.date}} </div> </div> <img alt={{message.user.login}} class=\"chat-message-item__avatar chat-message-item__avatar--self\" data-ng-if=\"_ctrlMessageList.user.id === message.creatorId\" data-ng-click=\"_ctrlMessageList.showUser($event, message.user)\" data-ng-src={{_ctrlMessageList.getPathPhoto(message.user)}}> <img alt={{message.user.login}} class=chat-message-item__avatar data-ng-if=\"_ctrlMessageList.user.id !== message.creatorId\" data-ng-click=\"_ctrlMessageList.showUser($event, message.user)\" data-ng-src={{_ctrlMessageList.getPathPhoto(message.user)}}> <div class=chat-message-item__container data-ng-if=\"_ctrlMessageList.user.id !== message.creatorId\"> <div class=chat-message-item__login> {{message.user.login}} </div> <div class=chat-message-item__content> {{message.text}} </div> <div class=chat-message-item__date> {{message.date}} </div> </div> </div>";
 
 /***/ }),
 /* 100 */
@@ -106072,7 +106079,7 @@ module.exports = "<md-dialog flex=40 style=height:500px> <md-toolbar> <div class
 /* 102 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=sidebar__row> <div layout=row layout-align=\"space-between center\"> <h3 class=chat-room-list-nav> Комнаты </h3> <div layout layout-align=\"center center\"> <notification-room class=notification-room></notification-room> <md-button class=\"md-fab md-mini chat-icon-action\" layout layout-align=\"center center\" data-ng-click=_ctrlRoomList.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> </div> </div> <div> <div class=chat-room-list> <div data-ng-if=!_ctrlRoomList.data.rooms.length> <a class=chat-room-list__link> Вы не учавствуете ни в одной комнате. Примите приглашение, создайте свою комнату или найдите комнату на интересующую вас тему. </a> </div> <div class=chat-room-list__item layout layout-align=\"space-between center\" data-ng-repeat=\"room in _ctrlRoomList.data.rooms\"> <div> <button class=\"md-fab md-button md-ink-ripple\" data-ng-click=_ctrlRoomList.openRoom(room)> {{!room.photo ? room.shortName.toUpperCase() : ''}} </button> {{room.name}} </div> <room-actions data-room=room></room-actions> </div> </div> </div> </div>";
+module.exports = "<div class=sidebar__row> <div layout=row layout-align=\"space-between center\"> <h3 class=chat-room-list-nav> Комнаты </h3> <div layout layout-align=\"center center\"> <notification-room class=notification-room></notification-room> <md-button class=\"md-fab md-mini chat-icon-action\" layout layout-align=\"center center\" data-ng-click=_ctrlRoomList.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> </div> </div> <div> <div class=chat-room-list> <div data-ng-if=!_ctrlRoomList.data.rooms.length> <a class=chat-room-list__link> Вы не учавствуете ни в одной комнате. Примите приглашение, создайте свою комнату или найдите комнату на интересующую вас тему. </a> </div> <div class=chat-room-list__item layout layout-align=\"space-between center\" data-ng-repeat=\"room in _ctrlRoomList.data.rooms\"> <div class=chat-room-list__descr> <button class=\"md-fab md-button md-ink-ripple\" data-ng-click=_ctrlRoomList.openRoom(room)> {{!room.photo ? room.shortName.toUpperCase() : ''}} </button> {{room.name}} </div> <room-actions data-room=room></room-actions> </div> </div> </div> </div>";
 
 /***/ }),
 /* 103 */
@@ -106102,7 +106109,7 @@ module.exports = "<md-dialog flex=40> <form data-ng-cloak name=addRoom> <md-tool
 /* 107 */
 /***/ (function(module, exports) {
 
-module.exports = "<sidebar></sidebar> <div flex=75> <room-header></room-header> <md-content class=chat-message-content> <message-list></message-list> </md-content> <message-add></message-add> </div>";
+module.exports = "<sidebar></sidebar> <div flex=75 layout=column layout-align=space-between> <room-header></room-header> <message-list class=chat-message-content layout=column layout-align=\"left bottom\"></message-list> <message-add></message-add> </div>";
 
 /***/ }),
 /* 108 */
