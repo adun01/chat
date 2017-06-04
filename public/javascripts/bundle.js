@@ -105980,7 +105980,7 @@ module.exports = "<md-dialog flex=40> <md-toolbar> <div class=md-toolbar-tools> 
 /* 93 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=chat-base layout=row layout-align=\"center center\" data-ui-view> <div flex=100> <div class=chat-room__container> <div flex=50> <md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск комнат</span> </div> </md-toolbar> <room-search></room-search> </div> </div> </md-card> </div> <div flex=50> <md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск участников</span> </div> </md-toolbar> <user-search></user-search> </div> </div> </md-card> </div> </div> </div> </div>";
+module.exports = "<div class=chat-base layout=row layout-align=\"center center\" data-ui-view> <div flex=100> <div class=chat-base__container> <div flex=50> <md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск комнат</span> </div> </md-toolbar> <room-search></room-search> </div> </div> </md-card> </div> <div flex=50> <md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск участников</span> </div> </md-toolbar> <user-search></user-search> </div> </div> </md-card> </div> <div flex=100> <h4 class=chat-base__intro> Зайдти в интересующую вас комнату, или выберете участника с кем хотите побеседовать. </h4> </div> </div> </div> </div>";
 
 /***/ }),
 /* 94 */

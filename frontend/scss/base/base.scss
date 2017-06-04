@@ -2,4 +2,15 @@
   padding-left: 320px;
   width: 100%;
   background-image: url('../images/background.jpg');
+
+  &__container {
+    display: flex;
+    height: 100%;
+    flex-wrap: wrap;
+  }
+
+  &__intro {
+    font-size: 17px;
+    text-align: center;
+  }
 }
