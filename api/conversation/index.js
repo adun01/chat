@@ -34,6 +34,37 @@ module.exports = {
             });
         })
     },
+    getAll: function (data) {
+        return new Promise(async function (resolve) {
+
+            let conversations = await conversationModel.find({accessUserId: {$in: [data.userId]}});
+
+            let userIds = conversations.map(function (conservation) {
+                return +conservation.id.replace(data.userId, '');
+            });
+
+            let usersList = await userApi.searchCollection(userIds);
+
+            conversations = conversations.map(function (conversation) {
+                let userId = +conversation.id.replace(data.userId, '');
+
+                let user = usersList.users.find(function (user) {
+                    return user.id === userId;
+                });
+
+                conversation = clearRoomData(conversation);
+
+                conversation.user = user;
+                return conversation;
+            });
+
+            resolve({
+                success: true,
+                conversations: conversations
+            });
+
+        });
+    },
     get: function (data) {
 
         let self = this;

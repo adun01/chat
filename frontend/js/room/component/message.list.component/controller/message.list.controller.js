@@ -1,7 +1,7 @@
 import module from '../../../';
 
 module.controller('messageListController',
-    function ($scope, $timeout, roomService, roomMessageService, conversationMessageService, userService, $rootScope) {
+    function ($scope, $timeout, roomService, roomMessageService, conversationMessageService, userService, notificationRoomMessageService, $rootScope) {
 
         const _ctrlMessageList = this;
 
@@ -23,6 +23,7 @@ module.controller('messageListController',
         _ctrlMessageList.getPathPhoto = userService.photo;
 
         _ctrlMessageList.getMessage = _ctrlMessageList.room.conversation ? conversationMessageService.get : roomMessageService.get;
+        _ctrlMessageList.notificationServise = _ctrlMessageList.room.conversation ? null : notificationRoomMessageService;
 
         _ctrlMessageList.init = function () {
 
@@ -31,7 +32,20 @@ module.controller('messageListController',
                 conversationId: _ctrlMessageList.room.user ? _ctrlMessageList.room.user.id : null
             }).then(function (resp) {
                 _ctrlMessageList.data.messages = resp.messages;
+                _ctrlMessageList.sendNotificationMesage();
             });
+        };
+
+
+        _ctrlMessageList.sendNotificationMesage = function () {
+            if (_ctrlMessageList.data.messages.length) {
+
+                _ctrlMessageList.notificationServise.save({
+                    roomId: _ctrlMessageList.room.id,
+                    conversationId: _ctrlMessageList.room.conversation ? _ctrlMessageList.room.conversation.userId : null,
+                    messageId: _ctrlMessageList.data.messages[_ctrlMessageList.data.messages.length - 1]['id']
+                });
+            }
         };
 
         _ctrlMessageList.init();
@@ -40,11 +54,16 @@ module.controller('messageListController',
 
             $timeout(function () {
                 _ctrlMessageList.data.messages.push(data.message);
+                _ctrlMessageList.sendNotificationMesage();
             });
         });
 
         $scope.$on('$destroy', function () {
             newMessageRoom();
+        });
+
+        $rootScope.$emit('clearNotificationCount', {
+            roomId: _ctrlMessageList.room.id
         });
 
     });

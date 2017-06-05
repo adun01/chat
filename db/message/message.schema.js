@@ -14,4 +14,8 @@ const Schema = require('mongoose').Schema,
         }
     });
 
+autoIncrement = require('mongoose-auto-increment');
+
+messageSchema.plugin(autoIncrement.plugin, {model: 'message', field: 'id'});
+
 module.exports = messageSchema;

@@ -22,6 +22,14 @@ router.post('/api/room/:roomId/message', async function (req, res) {
 
     eventsMediator.emit('newMessageRoom', {
         message: newMessageResult.message,
+        roomId: +req.params.roomId,
+        userIds: newMessageResult.userIds,
+        userId: req.session.user.id
+    });
+
+    eventsMediator.emit('newNotificationRoomMessage', {
+        userIds: newMessageResult.userIds,
+        userId: req.session.user.id,
         roomId: +req.params.roomId
     });
 

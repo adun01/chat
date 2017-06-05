@@ -23,6 +23,30 @@ var userSchema = new Schema({
         type: String,
         default: ''
     },
+    rooms: [
+        {
+            id: {
+                type: Number,
+                require: true
+            },
+            messageId: {
+                type: Number,
+                require: true
+            }
+        }
+    ],
+    conversations: [
+        {
+            id: {
+                type: Number,
+                require: true
+            },
+            messageId: {
+                type: Number,
+                require: true
+            }
+        }
+    ],
     date: {type: Date, default: Date.now}
 });
 

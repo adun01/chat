@@ -32,9 +32,17 @@
                  data-ng-repeat="room in _ctrlRoomList.data.rooms">
 
                 <div class="chat-room-list__descr">
+                    <a href="#" class="badge badge-danger notification-room__counter notification-room__counter--room-list"
+                       data-ng-click="_ctrlRoomList.openRoom(room)"
+                       data-ng-if="room.notificationCount">
+
+                        {{room.notificationCount}}
+                    </a>
+
                     <button class="md-fab md-button md-ink-ripple"
                             data-ng-click="_ctrlRoomList.openRoom(room)">
                         {{!room.photo ? room.shortName.toUpperCase() : ''}}
+
                     </button>
 
                     {{room.name}}

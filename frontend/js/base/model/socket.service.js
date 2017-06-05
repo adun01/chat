@@ -55,6 +55,17 @@ module.service('socketServiceMediator', function ($rootScope, $timeout, $q, room
 
             $rootScope.$emit('newMessageRoom', data);
         }
+
+    });
+
+    socket.on('newNotificationRoomMessage', function (data) {
+
+        let currentRoom = roomService.getCurrentRoom();
+
+        if (!currentRoom || +currentRoom.id !== +data.roomId) {
+
+            $rootScope.$emit('newNotificationRoomMessage', data);
+        }
     });
 
     socket.on('userListChange', function (data) {

@@ -59,6 +59,31 @@ module.exports = {
         });
     },
 
+    searchCollection: function (collection) {
+        let rooms = [], allPromise = [];
+
+        return new Promise(function (resolve) {
+
+            collection.forEach(function (id) {
+                let Ipromise = roomModel.findOne({id:id});
+
+                allPromise.push(Ipromise);
+
+                Ipromise.then(function (room) {
+                    rooms.push(room);
+                });
+            });
+
+            Promise.all(allPromise).then(function () {
+                resolve({
+                    success: true,
+                    rooms: rooms
+                });
+            });
+
+        });
+    },
+
     search: function (id) {
         return new Promise(function (resolve) {
             roomModel.findOne({id: id}, function (err, room) {

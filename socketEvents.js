@@ -66,4 +66,21 @@ module.exports = function (io) {
     eventsMediator.on('newMessageRoom', function (data) {
         io.to(data.roomId).emit('newMessageRoom', data);
     });
+
+    eventsMediator.on('newNotificationRoomMessage', function (data) {
+
+        let usersNotification = data.userIds.filter(function (id) {
+            return id !== data.userId;
+        });
+
+        usersNotification.forEach(function (id) {
+
+            let socket = sockets.get(id);
+
+            if (socket) {
+                socket.emit('newNotificationRoomMessage', data);
+            }
+        });
+
+    });
 };

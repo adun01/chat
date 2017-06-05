@@ -1,5 +1,6 @@
 'use strict';
 const roomModel = require('../../db/room/room.model'),
+    roomApi = require('../room/'),
     userApi = require('../user/'),
     config = require('../../config'),
     _ = require('lodash');
@@ -45,7 +46,8 @@ module.exports = {
 
             resolve({
                 success: true,
-                message: lastMessage
+                message: lastMessage,
+                userIds: room.userAgreed
             });
 
         });
@@ -92,5 +94,26 @@ module.exports = {
                 messages: messages
             });
         });
+    },
+
+    getRoomsLastMessage: function (data) {
+        return new Promise(async function (resolve) {
+            let roomsSearch = await roomApi.searchCollection(data.roomIds);
+            let roomsLastMessage = roomsSearch.rooms.map(function (room) {
+                if (room.message.length) {
+                    return {
+                        id: room.id,
+                        lastMessageId: room.message[room.message.length - 1]['id']
+                    };
+                } else {
+                    return {
+                        id: room.id,
+                        lastMessageId: 0
+                    };
+                }
+            });
+            resolve(roomsLastMessage);
+        });
+
     }
 };

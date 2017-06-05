@@ -103,6 +103,11 @@
                     <room-list></room-list>
                 </div>
 
+                <div data-ng-cloak
+                     data-ng-if="_ctrlSideBar.isAuth">
+                    <conversation-list></conversation-list>
+                </div>
+
                 <md-list class="sidebar__row sidebar__eventsList"
                          data-ng-cloak
                          data-ng-if="!_ctrlSideBar.isAuth">

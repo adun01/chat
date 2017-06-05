@@ -1,0 +1,55 @@
+<md-dialog flex="40">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Приглашения в комнаты.</h2>
+        </div>
+    </md-toolbar>
+    <md-dialog-content class="chat-room-list chat-room-list--notify">
+        <div class="chat-room-list__item chat-room-list__item--notify"
+             layout
+             layout-align="space-between center"
+             data-ng-repeat="room in _ctrlNSRoom.data.list">
+
+
+            <div>
+                <md-button class="md-fab chat-icon-action">
+                    {{room.shortName.toUpperCase()}}
+                </md-button>
+                <span>{{room.name}}</span>
+            </div>
+
+            <div>
+                <md-button class="md-raised md-warn chat-icon-action chat-icon-action--square"
+                           aria-label="Отказаться"
+                           data-ng-click="_ctrlNSRoom.remove(room)">
+                    <ng-md-icon size="30"
+                                style="fill: white"
+                                icon="close">
+                    </ng-md-icon>
+                </md-button>
+                <md-button class="md-raised md-primary chat-icon-action chat-icon-action--square"
+                           aria-label="Принять"
+                           data-ng-click="_ctrlNSRoom.save(room)">
+                    <ng-md-icon size="30"
+                                style="fill: white"
+                                icon="done">
+                    </ng-md-icon>
+                </md-button>
+            </div>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row" class="chat-dialog__actions">
+        <md-button class="md-fab md-mini chat-icon-action"
+                   aria-label="Выйти"
+                   layout
+                   layout-align="center center"
+                   data-ng-click="_ctrlNSRoom.close()">
+            <ng-md-icon size="30"
+                        style="fill: white"
+                        icon="close">
+            </ng-md-icon>
+        </md-button>
+
+    </md-dialog-actions>
+</md-dialog>

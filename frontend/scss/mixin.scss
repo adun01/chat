@@ -1,14 +1,1 @@
-// Alerts
-
-@mixin alert-variant($background, $border, $text-color) {
-  background-color: $background;
-  border-color: $border;
-  color: $text-color;
-
-  hr {
-    border-top-color: darken($border, 5%);
-  }
-  .alert-link {
-    color: darken($text-color, 10%);
-  }
-}
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_mixins.scss";
