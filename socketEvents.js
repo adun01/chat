@@ -67,6 +67,10 @@ module.exports = function (io) {
         io.to(data.roomId).emit('newMessageRoom', data);
     });
 
+    eventsMediator.on('newMessageConversation', function (data) {
+        io.to(data.roomId).emit('newMessageRoom', data);
+    });
+
     eventsMediator.on('newNotificationRoomMessage', function (data) {
 
         let usersNotification = data.userIds.filter(function (id) {
@@ -81,6 +85,16 @@ module.exports = function (io) {
                 socket.emit('newNotificationRoomMessage', data);
             }
         });
+
+    });
+
+    eventsMediator.on('newNotificationConversationMessage', function (data) {
+
+        let socket = sockets.get(data.userInterlocutor);
+
+        if (socket) {
+            socket.emit('newNotificationConversationMessage', data);
+        }
 
     });
 };

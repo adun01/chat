@@ -24,6 +24,13 @@
 
                 <div class="chat-room-list__descr">
 
+                    <a href="#" class="badge badge-danger notification-room__counter notification-room__counter--room-list"
+                       data-ng-click="_ctrlRoomList.openRoom(room)"
+                       data-ng-if="conversation.notificationCount">
+
+                        {{conversation.notificationCount}}
+                    </a>
+
                     <img alt="{{conversation.user.login}}"
                          class="chat-room-list__photo"
                          data-ng-click="_ctrlConversationList.openConversation(conversation)"

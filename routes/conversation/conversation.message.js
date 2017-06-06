@@ -1,6 +1,6 @@
 const router = require('express').Router(),
     eventsMediator = require('../../events.mediator'),
-    messageApi = require('../../api/message/conservation.message');
+    messageApi = require('../../api/message/conversation.message');
 
 router.get('/api/conversation/:conversationId/message', async function (req, res) {
 
@@ -23,6 +23,12 @@ router.post('/api/conversation/:conversationId/message', async function (req, re
 
     eventsMediator.emit('newMessageRoom', {
         message: newMessageResult.message,
+        roomId: newMessageResult.conversationId
+    });
+
+    eventsMediator.emit('newNotificationConversationMessage', {
+        userId: req.session.user.id,
+        userInterlocutor: +req.params.conversationId,
         roomId: newMessageResult.conversationId
     });
 

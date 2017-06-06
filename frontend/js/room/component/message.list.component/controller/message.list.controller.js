@@ -1,7 +1,7 @@
 import module from '../../../';
 
 module.controller('messageListController',
-    function ($scope, $timeout, roomService, roomMessageService, conversationMessageService, userService, notificationRoomMessageService, $rootScope) {
+    function ($scope, $timeout, roomService, roomMessageService, conversationMessageService, userService, notificationRoomMessageService, notificationConversationMessageService, $rootScope) {
 
         const _ctrlMessageList = this;
 
@@ -23,7 +23,7 @@ module.controller('messageListController',
         _ctrlMessageList.getPathPhoto = userService.photo;
 
         _ctrlMessageList.getMessage = _ctrlMessageList.room.conversation ? conversationMessageService.get : roomMessageService.get;
-        _ctrlMessageList.notificationServise = _ctrlMessageList.room.conversation ? null : notificationRoomMessageService;
+        _ctrlMessageList.notificationServise = _ctrlMessageList.room.conversation ? notificationConversationMessageService : notificationRoomMessageService;
 
         _ctrlMessageList.init = function () {
 
@@ -39,10 +39,19 @@ module.controller('messageListController',
 
         _ctrlMessageList.sendNotificationMesage = function () {
             if (_ctrlMessageList.data.messages.length) {
+                let roomId;
+
+                if (_ctrlMessageList.room.conversation) {
+                    roomId = _ctrlMessageList.room.accessUserId.find(function (id) {
+                        return _ctrlMessageList.user.id !== id;
+                    });
+                } else {
+                    roomId = _ctrlMessageList.room.id;
+                }
 
                 _ctrlMessageList.notificationServise.save({
-                    roomId: _ctrlMessageList.room.id,
-                    conversationId: _ctrlMessageList.room.conversation ? _ctrlMessageList.room.conversation.userId : null,
+                    roomId: roomId,
+                    conversationId: roomId,
                     messageId: _ctrlMessageList.data.messages[_ctrlMessageList.data.messages.length - 1]['id']
                 });
             }

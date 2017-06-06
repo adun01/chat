@@ -122,5 +122,29 @@ module.exports = {
                 });
             }
         });
-    }
+    },
+    searchCollection: function (collection) {
+        let conversations = [], allPromise = [];
+
+        return new Promise(function (resolve) {
+
+            collection.forEach(function (id) {
+                let Ipromise = conversationModel.findOne({id:id});
+
+                allPromise.push(Ipromise);
+
+                Ipromise.then(function (conversation) {
+                    conversations.push(conversation);
+                });
+            });
+
+            Promise.all(allPromise).then(function () {
+                resolve({
+                    success: true,
+                    conversations: conversations
+                });
+            });
+
+        });
+    },
 };
