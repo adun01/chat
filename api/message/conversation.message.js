@@ -11,10 +11,16 @@ function searchAccessRoom(conservation, userId) {
     });
 }
 
+function clearUserData(obj) {
+    return _.pick(obj, config.user.field);
+}
+
 function clearMesagerData(obj) {
     return _.pick(obj, config.message.field);
 }
-
+function clearRoomData(obj) {
+    return _.pick(obj, ['id', 'accessUserId', 'create']);
+}
 module.exports = {
     add: function (data) {
         return new Promise(async function (resolve) {
@@ -45,16 +51,19 @@ module.exports = {
             let conservationChange = await searchConservation.conversation.save(),
                 lastMessage = clearMesagerData(conservationChange.message[conservationChange.message.length - 1]);
 
-            let searchUsser = await userApi.search({
+            let searchUser = await userApi.search({
                 id: lastMessage.creatorId
             });
 
-            lastMessage.user = searchUsser.user;
+            conservationChange = clearRoomData(conservationChange);
+
+            conservationChange.user = clearUserData(searchUser.user);
 
             resolve({
                 success: true,
                 conversationId: +searchConservation.conversation.id,
-                message: lastMessage
+                message: lastMessage,
+                conversation: conservationChange
             });
 
         });

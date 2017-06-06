@@ -40,15 +40,28 @@ module.controller('conversationListController',
         getListConversation();
 
         _ctrlConversationList.updateNotification = function (notification) {
-            _ctrlConversationList.data.conversations.forEach(function (iConversation) {
 
-                if (+iConversation.id === notification.roomId) {
-                    if (!iConversation.notificationCount) {
-                        iConversation.notificationCount = 0;
-                    }
-                    iConversation.notificationCount++;
-                }
+            let conversation = _ctrlConversationList.data.conversations.find(function (conversationData) {
+                return +notification.conversation.id === +conversationData.id;
             });
+
+            if (conversation) {
+
+                if (!conversation.notificationCount) {
+                    conversation.notificationCount = 0;
+                }
+
+                conversation.notificationCount++;
+
+            } else {
+
+                let newConversation = notification.conversation;
+
+                newConversation.notificationCount = 1;
+
+                _ctrlConversationList.data.conversations.push(newConversation);
+            }
+
         };
 
         _ctrlConversationList.clearNotification = function (notification) {

@@ -139,13 +139,6 @@ module.exports = {
 
                 let rooms = await roomModel.find({userAgreed: {$in: [data.userId]}});
 
-                if (!rooms.length) {
-                    return resolve({
-                        success: false,
-                        message: 'Не создано ни одной комнаты'
-                    });
-                }
-
                 resolve({success: true, rooms: clearRoomField(rooms)});
 
             } else if (Number.isNaN(+data.roomId)) {

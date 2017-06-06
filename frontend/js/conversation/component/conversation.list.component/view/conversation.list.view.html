@@ -1,8 +1,8 @@
-<div class="sidebar__row">
+<div class="sidebar__row" data-ng-if="_ctrlConversationList.data.conversations.length">
     <div layout="row"
          layout-align="space-between center">
         <h3 class="chat-room-list-nav">
-            Беседы
+            Диалоги
         </h3>
         <div layout
              layout-align="center center">
@@ -12,11 +12,6 @@
     </div>
     <div>
         <div class="chat-room-list">
-            <div data-ng-if="!_ctrlConversationList.data.conversations.length">
-                <a class="chat-room-list__link">
-                    Вы не учавствуете ни в одной беседе.
-                </a>
-            </div>
             <div class="chat-room-list__item"
                  layout
                  layout-align="space-between center"

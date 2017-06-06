@@ -27348,6 +27348,17 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('socketServiceMediator', func
 
     });
 
+    socket.on('newMessageConversation', function (data) {
+
+        let currentRoom = roomService.getCurrentRoom();
+
+        if (currentRoom && +currentRoom.id === +data.roomId) {
+
+            $rootScope.$emit('newMessageRoom', data);
+        }
+
+    });
+
     socket.on('newNotificationRoomMessage', function (data) {
 
         let currentRoom = roomService.getCurrentRoom();
@@ -27495,15 +27506,28 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('conversationListControlle
         getListConversation();
 
         _ctrlConversationList.updateNotification = function (notification) {
-            _ctrlConversationList.data.conversations.forEach(function (iConversation) {
 
-                if (+iConversation.id === notification.roomId) {
-                    if (!iConversation.notificationCount) {
-                        iConversation.notificationCount = 0;
-                    }
-                    iConversation.notificationCount++;
-                }
+            let conversation = _ctrlConversationList.data.conversations.find(function (conversationData) {
+                return +notification.conversation.id === +conversationData.id;
             });
+
+            if (conversation) {
+
+                if (!conversation.notificationCount) {
+                    conversation.notificationCount = 0;
+                }
+
+                conversation.notificationCount++;
+
+            } else {
+
+                let newConversation = notification.conversation;
+
+                newConversation.notificationCount = 1;
+
+                _ctrlConversationList.data.conversations.push(newConversation);
+            }
+
         };
 
         _ctrlConversationList.clearNotification = function (notification) {
@@ -28204,7 +28228,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('messageListController',
         _ctrlMessageList.init();
 
         let newMessageRoom = $rootScope.$on('newMessageRoom', function ($event, data) {
-
+            debugger;
             $timeout(function () {
                 _ctrlMessageList.data.messages.push(data.message);
                 _ctrlMessageList.sendNotificationMesage();
@@ -28258,7 +28282,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('roomHeaderController', fu
     _ctrlHeaderList.user = userService.get();
 
     if (_ctrlHeaderList.room.conversation) {
-        _ctrlHeaderList.title = 'Беседа ' + _ctrlHeaderList.user.login + ' и ' + _ctrlHeaderList.room.user.login;
+        _ctrlHeaderList.title = 'Диалог ' + _ctrlHeaderList.user.login + ' и ' + _ctrlHeaderList.room.user.login;
     } else {
         _ctrlHeaderList.title = 'Комната ' + _ctrlHeaderList.room.name;
     }
@@ -106320,13 +106344,13 @@ module.exports = "<md-dialog flex=40> <md-toolbar> <div class=md-toolbar-tools> 
 /* 99 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=chat-base layout=row layout-align=\"center center\" data-ui-view> <div flex=100> <div class=chat-base__container> <div flex=50> <md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск комнат</span> </div> </md-toolbar> <room-search></room-search> </div> </div> </md-card> </div> <div flex=50> <md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск участников</span> </div> </md-toolbar> <user-search></user-search> </div> </div> </md-card> </div> <div flex=100> <h4 class=chat-base__intro> Зайдти в интересующую вас комнату, или выберете участника с кем хотите побеседовать. </h4> </div> </div> </div> </div>";
+module.exports = "<div class=chat-base layout=row layout-align=\"center center\" data-ui-view> <div flex=100> <div class=chat-base__container> <div flex=50> <md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск комнат</span> </div> </md-toolbar> <room-search></room-search> </div> </div> </md-card> </div> <div flex=50> <md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск участников</span> </div> </md-toolbar> <user-search></user-search> </div> </div> </md-card> </div> <div flex=100> <h4 class=chat-base__intro> Зайдти в интересующую вас комнату, или выберете участника с кем хотите начать диалог. </h4> </div> </div> </div> </div>";
 
 /***/ }),
 /* 100 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=sidebar__row> <div layout=row layout-align=\"space-between center\"> <h3 class=chat-room-list-nav> Беседы </h3> <div layout layout-align=\"center center\"> <notification-conversation class=notification-conversation></notification-conversation> </div> </div> <div> <div class=chat-room-list> <div data-ng-if=!_ctrlConversationList.data.conversations.length> <a class=chat-room-list__link> Вы не учавствуете ни в одной беседе. </a> </div> <div class=chat-room-list__item layout layout-align=\"space-between center\" data-ng-repeat=\"conversation in _ctrlConversationList.data.conversations\"> <div class=chat-room-list__descr> <a href=# class=\"badge badge-danger notification-room__counter notification-room__counter--room-list\" data-ng-click=_ctrlRoomList.openRoom(room) data-ng-if=conversation.notificationCount> {{conversation.notificationCount}} </a> <img alt={{conversation.user.login}} class=chat-room-list__photo data-ng-click=_ctrlConversationList.openConversation(conversation) data-ng-src={{_ctrlConversationList.photo(conversation.user)}}> {{conversation.user.login}} </div> <user-actions data-user=conversation.user></user-actions> </div> </div> </div> </div>";
+module.exports = "<div class=sidebar__row data-ng-if=_ctrlConversationList.data.conversations.length> <div layout=row layout-align=\"space-between center\"> <h3 class=chat-room-list-nav> Диалоги </h3> <div layout layout-align=\"center center\"> <notification-conversation class=notification-conversation></notification-conversation> </div> </div> <div> <div class=chat-room-list> <div class=chat-room-list__item layout layout-align=\"space-between center\" data-ng-repeat=\"conversation in _ctrlConversationList.data.conversations\"> <div class=chat-room-list__descr> <a href=# class=\"badge badge-danger notification-room__counter notification-room__counter--room-list\" data-ng-click=_ctrlRoomList.openRoom(room) data-ng-if=conversation.notificationCount> {{conversation.notificationCount}} </a> <img alt={{conversation.user.login}} class=chat-room-list__photo data-ng-click=_ctrlConversationList.openConversation(conversation) data-ng-src={{_ctrlConversationList.photo(conversation.user)}}> {{conversation.user.login}} </div> <user-actions data-user=conversation.user></user-actions> </div> </div> </div> </div>";
 
 /***/ }),
 /* 101 */

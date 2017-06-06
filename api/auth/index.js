@@ -49,7 +49,7 @@ module.exports = {
 
             let session = await sessionApi.get(data.sessionID);
 
-            if (!session.user || !session.user.id) {
+            if (!session.user || typeof session.user.id === 'undefined') {
                 resolve({
                     success: false,
                     message: 'Не авторизован.'

@@ -22,6 +22,10 @@ module.exports = {
 
             if (conversation) {
 
+                let userSearch = await userApi.search({id: data.userInterlocutor});
+
+                conversation.user = userSearch.user;
+
                 return resolve({
                     success: true,
                     conversation: conversation

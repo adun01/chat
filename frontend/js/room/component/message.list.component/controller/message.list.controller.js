@@ -60,7 +60,7 @@ module.controller('messageListController',
         _ctrlMessageList.init();
 
         let newMessageRoom = $rootScope.$on('newMessageRoom', function ($event, data) {
-
+            debugger;
             $timeout(function () {
                 _ctrlMessageList.data.messages.push(data.message);
                 _ctrlMessageList.sendNotificationMesage();

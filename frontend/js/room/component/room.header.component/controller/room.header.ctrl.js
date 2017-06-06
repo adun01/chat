@@ -8,7 +8,7 @@ module.controller('roomHeaderController', function (roomService, $mdDialog, user
     _ctrlHeaderList.user = userService.get();
 
     if (_ctrlHeaderList.room.conversation) {
-        _ctrlHeaderList.title = 'Беседа ' + _ctrlHeaderList.user.login + ' и ' + _ctrlHeaderList.room.user.login;
+        _ctrlHeaderList.title = 'Диалог ' + _ctrlHeaderList.user.login + ' и ' + _ctrlHeaderList.room.user.login;
     } else {
         _ctrlHeaderList.title = 'Комната ' + _ctrlHeaderList.room.name;
     }

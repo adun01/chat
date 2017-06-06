@@ -21,16 +21,22 @@ router.post('/api/conversation/:conversationId/message', async function (req, re
         userInterlocutor: +req.params.conversationId
     });
 
-    eventsMediator.emit('newMessageRoom', {
-        message: newMessageResult.message,
-        roomId: newMessageResult.conversationId
-    });
+    if (newMessageResult.success) {
 
-    eventsMediator.emit('newNotificationConversationMessage', {
-        userId: req.session.user.id,
-        userInterlocutor: +req.params.conversationId,
-        roomId: newMessageResult.conversationId
-    });
+        eventsMediator.emit('newMessageConversation', {
+            message: newMessageResult.message,
+            userInterlocutor: +req.params.conversationId,
+            roomId: newMessageResult.conversation.id
+        });
+
+        eventsMediator.emit('newNotificationConversationMessage', {
+            userId: req.session.user.id,
+            userInterlocutor: +req.params.conversationId,
+            roomId: newMessageResult.conversationId,
+            conversation: newMessageResult.conversation
+        });
+    }
+
 
     res.send(JSON.stringify(newMessageResult));
 
