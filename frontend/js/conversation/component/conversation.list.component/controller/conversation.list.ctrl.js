@@ -84,9 +84,16 @@ module.controller('conversationListController',
             });
         });
 
+        let updateConversationList = $rootScope.$on('conversationListChange', function () {
+            $timeout(function () {
+                getListConversation();
+            });
+        });
+
         $scope.$on('$destroy', function () {
             clearNotificationCount();
             newNotificationMessage();
+            updateConversationList();
         });
 
 

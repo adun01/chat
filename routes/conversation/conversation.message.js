@@ -20,6 +20,12 @@ router.post('/api/conversation/:conversationId/message', async function (req, re
         message: req.body.message,
         userInterlocutor: +req.params.conversationId
     });
+    
+    if (newMessageResult.alert) {
+        eventsMediator.emit('conversationListChange', {
+            userId: +req.session.user.id
+        });
+    }
 
     if (newMessageResult.success) {
 

@@ -1,4 +1,5 @@
 const router = require('express').Router(),
+    eventsMediator = require('../../events.mediator'),
     conversationApi = require('../../api/conversation/');
 
 router.get('/api/conversation/:id', async function (req, res) {

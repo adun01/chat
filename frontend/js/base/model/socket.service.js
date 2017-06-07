@@ -34,6 +34,10 @@ module.service('socketServiceMediator', function ($rootScope, $timeout, $q, room
         $rootScope.$emit('roomListChange', data);
     });
 
+    socket.on('conversationListChange', function () {
+        $rootScope.$emit('conversationListChange');
+    });
+
     socket.on('roomListChangeRemove', function (data) {
         let currentRoom = roomService.getCurrentRoom();
 

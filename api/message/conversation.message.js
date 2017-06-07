@@ -64,7 +64,8 @@ module.exports = {
                 success: true,
                 conversationId: +searchConservation.conversation.id,
                 message: lastMessage,
-                conversation: conservationChange
+                conversation: conservationChange,
+                alert: lastMessage.id === 1
             });
 
         });

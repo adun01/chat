@@ -34,8 +34,16 @@ module.exports = function (io) {
 
     eventsMediator.on('roomListChange', function (data) {
         let socket = sockets.get(data.userId);
+
         if (socket) {
             socket.emit('roomListChange');
+        }
+    });
+
+    eventsMediator.on('conversationListChange', function (data) {
+        let socket = sockets.get(data.userId);
+        if (socket) {
+            socket.emit('conversationListChange');
         }
     });
 

@@ -27329,6 +27329,10 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('socketServiceMediator', func
         $rootScope.$emit('roomListChange', data);
     });
 
+    socket.on('conversationListChange', function () {
+        $rootScope.$emit('conversationListChange');
+    });
+
     socket.on('roomListChangeRemove', function (data) {
         let currentRoom = roomService.getCurrentRoom();
 
@@ -27555,9 +27559,16 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('conversationListControlle
             });
         });
 
+        let updateConversationList = $rootScope.$on('conversationListChange', function () {
+            $timeout(function () {
+                getListConversation();
+            });
+        });
+
         $scope.$on('$destroy', function () {
             clearNotificationCount();
             newNotificationMessage();
+            updateConversationList();
         });
 
 
