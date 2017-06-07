@@ -43,6 +43,10 @@ module.exports = {
 
             let conversations = await conversationModel.find({accessUserId: {$in: [data.userId]}});
 
+            conversations = conversations.filter(function (conversation) {
+                return conversation.message.length;
+            });
+
             let userIds = conversations.map(function (conservation) {
                 return +conservation.id.replace(data.userId, '');
             });
@@ -133,7 +137,7 @@ module.exports = {
         return new Promise(function (resolve) {
 
             collection.forEach(function (id) {
-                let Ipromise = conversationModel.findOne({id:id});
+                let Ipromise = conversationModel.findOne({id: id});
 
                 allPromise.push(Ipromise);
 

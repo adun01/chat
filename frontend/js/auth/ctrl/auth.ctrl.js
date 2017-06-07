@@ -1,7 +1,9 @@
 import module from '../';
 
-module.controller('authController', function ($rootScope, authService, $timeout) {
+module.controller('authController', function ($rootScope, authService, $timeout, sideBarService) {
     const _ctrlAuth = this;
+
+    sideBarService.showNavOut();
 
     _ctrlAuth.error = {};
     _ctrlAuth.errorMessage = null;

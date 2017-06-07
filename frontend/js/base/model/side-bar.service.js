@@ -33,6 +33,9 @@ module.service('sideBarService', function ($mdSidenav) {
         },
         hideNavOut: function () {
             document.getElementById(sidebar.navOutId).classList.add('chat-hide');
+        },
+        showNavOut: function () {
+            document.getElementById(sidebar.navOutId).classList.remove('chat-hide');
         }
     };
 

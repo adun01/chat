@@ -26998,8 +26998,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(5);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('authController', function ($rootScope, authService, $timeout) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('authController', function ($rootScope, authService, $timeout, sideBarService) {
     const _ctrlAuth = this;
+
+    sideBarService.showNavOut();
 
     _ctrlAuth.error = {};
     _ctrlAuth.errorMessage = null;
@@ -27276,6 +27278,9 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].service('sideBarService', function ($
         },
         hideNavOut: function () {
             document.getElementById(sidebar.navOutId).classList.add('chat-hide');
+        },
+        showNavOut: function () {
+            document.getElementById(sidebar.navOutId).classList.remove('chat-hide');
         }
     };
 
@@ -28058,9 +28063,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(7);
 
 
-__WEBPACK_IMPORTED_MODULE_0____["default"].controller('registrationController', function ($rootScope, userService, $timeout, $state) {
+__WEBPACK_IMPORTED_MODULE_0____["default"].controller('registrationController', function ($rootScope, userService, $timeout, sideBarService) {
 
     const _ctrlReg = this;
+
+    sideBarService.showNavOut();
 
     _ctrlReg.error = {};
 
@@ -28228,7 +28235,7 @@ __WEBPACK_IMPORTED_MODULE_0____["default"].controller('messageListController',
         _ctrlMessageList.init();
 
         let newMessageRoom = $rootScope.$on('newMessageRoom', function ($event, data) {
-            debugger;
+
             $timeout(function () {
                 _ctrlMessageList.data.messages.push(data.message);
                 _ctrlMessageList.sendNotificationMesage();

@@ -43,7 +43,8 @@ module.exports = {
 
             searchConservation.conversation.message.push({
                 creatorId: data.userId,
-                text: data.message
+                text: data.message,
+                conversationId: searchConservation.conversation.id
             });
 
             searchConservation.conversation.markModified('message');

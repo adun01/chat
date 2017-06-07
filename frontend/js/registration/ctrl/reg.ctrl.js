@@ -1,8 +1,10 @@
 import module from '../';
 
-module.controller('registrationController', function ($rootScope, userService, $timeout, $state) {
+module.controller('registrationController', function ($rootScope, userService, $timeout, sideBarService) {
 
     const _ctrlReg = this;
+
+    sideBarService.showNavOut();
 
     _ctrlReg.error = {};
 

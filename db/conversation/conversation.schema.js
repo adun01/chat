@@ -1,5 +1,5 @@
 const Schema = require('mongoose').Schema,
-    messageSchema = require('../message/message.schema.js');
+    messageSchema = require('../message/conversation.message.schema.js');
 
 const conversationSchema = new Schema({
     id: {

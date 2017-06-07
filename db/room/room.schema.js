@@ -1,5 +1,5 @@
 const Schema = require('mongoose').Schema,
-    messageSchema = require('../message/message.schema.js');
+    messageSchema = require('../message/room.message.schema.js');
 
 const roomSchema = new Schema({
     name: {

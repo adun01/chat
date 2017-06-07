@@ -30,7 +30,8 @@ module.exports = {
 
             room.message.push({
                 creatorId: data.userId,
-                text: data.message
+                text: data.message,
+                roomId: room.id
             });
 
             room.markModified('message');
