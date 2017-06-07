@@ -7,13 +7,16 @@
         </md-toolbar>
         <md-dialog-content class="chat-user-edit">
             <div class="chat-user-edit__action-photo" flex="40">
-                <img class="md-user-avatar chat-user-edit__photo" data-ng-src="{{_ctrlUserEdit.getPathPhoto()}}">
+                <img class="md-user-avatar chat-user-edit__photo"
+                     data-ng-src="{{_ctrlUserEdit.getPathPhoto()}}">
+
                 <ng-md-icon class="chat-user-edit__add-photo"
                             size="100"
                             style="fill: #fff"
                             icon="add_a_photo"
                             data-ng-click="_ctrlUserEdit.close()">
                 </ng-md-icon>
+
                 <input type="file"
                        nv-file-select
                        class="chat-user-edit__uploader"
@@ -39,6 +42,7 @@
                             <label>Логин</label>
                             <input type="text"
                                    required
+                                   md-auto-focus
                                    data-ng-minlength="2"
                                    data-ng-model="_ctrlUserEdit.changeLogin">
                         </md-input-container>

@@ -1,6 +1,7 @@
 <form class="chat-form">
     <md-input-container class="chat-form__row">
         <input type="text"
+               md-auto-focus
                data-ng-attr-placeholder="{{_ctrlUserSearch.placeholder}}"
                data-ng-change="_ctrlUserSearch.searchUsers(_ctrlUserSearch.query)"
                data-ng-model="_ctrlUserSearch.query">
