@@ -7,6 +7,10 @@
     justify-content: flex-end;
   }
 
+  &-intro {
+    margin: auto;
+  }
+
   &-item {
     margin: 16px;
 
@@ -74,5 +78,16 @@
       text-overflow: ellipsis;
     }
 
+  }
+
+  &-send {
+
+    &__box {
+      padding: $layout-offset;
+    }
+
+    &__area {
+      width: 100%;
+    }
   }
 }

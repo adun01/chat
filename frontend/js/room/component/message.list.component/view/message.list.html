@@ -1,4 +1,5 @@
-<h3 data-ng-if="!_ctrlMessageList.data.messages.length">История комнаты пуста.</h3>
+<h3 class="chat-message-intro"
+    data-ng-if="!_ctrlMessageList.data.messages.length">История пуста.</h3>
 
 <div class="chat-message-item"
      data-ng-class="{'chat-message-item--self' : _ctrlMessageList.user.id === message.creatorId}"
