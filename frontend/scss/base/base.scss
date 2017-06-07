@@ -1,11 +1,16 @@
 .chat-base {
-  padding-left: 320px;
   width: 100%;
   background-image: url('../images/background.jpg');
+
+  &__offset {
+    width: 25%;
+    min-width: 320px;
+  }
 
   &__container {
     display: flex;
     height: 100%;
+    width: 75%;
     flex-wrap: wrap;
   }
 

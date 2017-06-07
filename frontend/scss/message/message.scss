@@ -5,6 +5,7 @@
     flex-grow: 2;
     flex-direction: column;
     justify-content: flex-end;
+    min-height: 350px;
   }
 
   &-intro {
@@ -83,6 +84,8 @@
   &-send {
 
     &__box {
+      height: 96px;
+      overflow: hidden;
       padding: $layout-offset;
     }
 

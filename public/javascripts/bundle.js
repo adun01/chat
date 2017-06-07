@@ -106362,7 +106362,7 @@ module.exports = "<md-dialog flex=40> <md-toolbar> <div class=md-toolbar-tools> 
 /* 99 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=chat-base layout=row layout-align=\"center center\" data-ui-view> <div flex=100> <div class=chat-base__container> <div flex=50> <md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск комнат</span> </div> </md-toolbar> <room-search></room-search> </div> </div> </md-card> </div> <div flex=50> <md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск участников</span> </div> </md-toolbar> <user-search></user-search> </div> </div> </md-card> </div> <div flex=100> <h4 class=chat-base__intro> Зайдти в интересующую вас комнату, или выберете участника с кем хотите начать диалог. </h4> </div> </div> </div> </div>";
+module.exports = "<div class=chat-base layout=row layout-align=\"center top\" data-ui-view> <div class=chat-base__offset></div> <div class=chat-base__container> <div flex=50> <md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск комнат</span> </div> </md-toolbar> <room-search></room-search> </div> </div> </md-card> </div> <div flex=50> <md-card class=chat-room-search> <div layout=row layout-align=\"left center\"> <div flex=100> <md-toolbar layout=row> <div class=md-toolbar-tools> <span>Поиск участников</span> </div> </md-toolbar> <user-search></user-search> </div> </div> </md-card> </div> <div flex=100> <h4 class=chat-base__intro> Зайдти в интересующую вас комнату, или выберете участника с кем хотите начать диалог. </h4> </div> </div> </div>";
 
 /***/ }),
 /* 100 */
@@ -106374,7 +106374,7 @@ module.exports = "<div class=sidebar__row data-ng-if=_ctrlConversationList.data.
 /* 101 */
 /***/ (function(module, exports) {
 
-module.exports = "<sidebar></sidebar> <div flex=75> <room-header></room-header> <md-content class=chat-message-content> <message-list></message-list> </md-content> <message-add></message-add> </div>";
+module.exports = "<sidebar></sidebar> <div flex=75> <room-header></room-header> <div style=\"min-height:350px;max-height:calc(100% - 190px);overflow:auto\"> <message-list class=chat-message-content layout=column layout-align=\"left bottom\"></message-list> </div> <message-add></message-add> </div>";
 
 /***/ }),
 /* 102 */
@@ -106398,7 +106398,7 @@ module.exports = "<div class=chat-form-container layout layout-align=\"center ce
 /* 105 */
 /***/ (function(module, exports) {
 
-module.exports = "<div data-ng-if=!_ctrlMessageAdd.access layout layout-align=\"center center\"> <md-button class=\"md-raised md-primary\" flex=33 data-ng-click=_ctrlMessageAdd.userAgreed()> Принять участие в комнате. </md-button> </div> <div data-ng-if=_ctrlMessageAdd.access data-ng-form=messageForm layout layout-align=\"left top\"> <div flex=90 class=chat-message-send__box> <md-input-container class=chat-message-send__area> <label>Отправить сообщение</label> <textarea name=message required data-ng-model=_ctrlMessageAdd.message md-no-resize max-rows=2></textarea> </md-input-container> </div> <div flex=10 layout layout-align=\"center top\" class=chat-message-send__box> <md-button class=\"md-fab chat-icon-action chat-icon-action--send-message\" aria-label=Отправить layout layout-align=\"center center\" data-ng-disabled=messageForm.$invalid data-ng-click=_ctrlMessageAdd.send()> <ng-md-icon size=30 style=fill:#fff icon=send> </ng-md-icon> </md-button> </div> </div>";
+module.exports = "<div data-ng-if=!_ctrlMessageAdd.access layout layout-align=\"center center\"> <md-button class=\"md-raised md-primary\" flex=33 data-ng-click=_ctrlMessageAdd.userAgreed()> Принять участие в комнате. </md-button> </div> <div data-ng-if=_ctrlMessageAdd.access data-ng-form=messageForm layout layout-align=\"left top\"> <div flex=80 class=chat-message-send__box> <md-input-container class=chat-message-send__area> <label>Отправить сообщение</label> <textarea name=message required data-ng-model=_ctrlMessageAdd.message md-no-resize max-rows=2></textarea> </md-input-container> </div> <div flex=20 layout layout-align=\"center top\" class=chat-message-send__box> <md-button class=\"md-fab chat-icon-action chat-icon-action--send-message\" aria-label=Отправить layout layout-align=\"center center\" data-ng-disabled=messageForm.$invalid data-ng-click=_ctrlMessageAdd.send()> <ng-md-icon size=30 style=fill:#fff icon=send> </ng-md-icon> </md-button> </div> </div>";
 
 /***/ }),
 /* 106 */

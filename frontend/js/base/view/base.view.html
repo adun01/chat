@@ -1,51 +1,49 @@
 <div class="chat-base"
      layout="row"
-     layout-align="center center"
+     layout-align="center top"
      data-ui-view>
+    <div class="chat-base__offset"></div>
+    <div class="chat-base__container">
+        <div flex="50">
+            <md-card class="chat-room-search">
+                <div layout="row"
+                     layout-align="left center">
 
-    <div flex="100">
-        <div class="chat-base__container">
-            <div flex="50">
-                <md-card class="chat-room-search">
-                    <div layout="row"
-                         layout-align="left center">
+                    <div flex="100">
+                        <md-toolbar layout="row">
+                            <div class="md-toolbar-tools">
+                                <span>Поиск комнат</span>
+                            </div>
+                        </md-toolbar>
 
-                        <div flex="100">
-                            <md-toolbar layout="row">
-                                <div class="md-toolbar-tools">
-                                    <span>Поиск комнат</span>
-                                </div>
-                            </md-toolbar>
+                        <room-search></room-search>
 
-                            <room-search></room-search>
-
-                        </div>
                     </div>
-                </md-card>
-            </div>
-            <div flex="50">
-                <md-card class="chat-room-search">
-                    <div layout="row"
-                         layout-align="left center">
+                </div>
+            </md-card>
+        </div>
+        <div flex="50">
+            <md-card class="chat-room-search">
+                <div layout="row"
+                     layout-align="left center">
 
-                        <div flex="100">
-                            <md-toolbar layout="row">
-                                <div class="md-toolbar-tools">
-                                    <span>Поиск участников</span>
-                                </div>
-                            </md-toolbar>
+                    <div flex="100">
+                        <md-toolbar layout="row">
+                            <div class="md-toolbar-tools">
+                                <span>Поиск участников</span>
+                            </div>
+                        </md-toolbar>
 
-                            <user-search></user-search>
+                        <user-search></user-search>
 
-                        </div>
                     </div>
-                </md-card>
-            </div>
-            <div flex="100">
-                <h4 class="chat-base__intro">
-                    Зайдти в интересующую вас комнату, или выберете участника с кем хотите начать диалог.
-                </h4>
-            </div>
+                </div>
+            </md-card>
+        </div>
+        <div flex="100">
+            <h4 class="chat-base__intro">
+                Зайдти в интересующую вас комнату, или выберете участника с кем хотите начать диалог.
+            </h4>
         </div>
     </div>
 </div>

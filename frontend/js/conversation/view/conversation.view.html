@@ -3,9 +3,12 @@
 
     <room-header></room-header>
 
-    <md-content class="chat-message-content">
-        <message-list></message-list>
-    </md-content>
+    <div style="min-height: 350px;
+                max-height: calc(100% - 190px);
+                overflow: auto;">
+
+        <message-list class="chat-message-content" layout="column" layout-align="left bottom"></message-list>
+    </div>
 
     <message-add></message-add>
 </div>

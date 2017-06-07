@@ -2,6 +2,8 @@
   background-color: rgb(63, 81, 181);
   padding: $layout-offset $layout-offset 0 $layout-offset;
   min-height: 100vh;
+  max-width: none;
+  min-width: 320px;
 
   &--main {
     display: block !important;
@@ -51,4 +53,5 @@
 
 sidebar {
   width: 25%;
+  min-width: 320px;
 }

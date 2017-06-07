@@ -1,9 +1,12 @@
 html, body {
   height: auto;
+  min-width: 960px;
+  min-height: 560px;
 }
 
 .chat-layout {
-  min-height: 100vh;
+  max-height: 100vh;
+  min-height: 560px;
   min-width: 320px;
   position: relative;
   z-index: 20;
