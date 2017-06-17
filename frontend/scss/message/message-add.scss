@@ -1,0 +1,36 @@
+.message-add {
+
+  background: #3f51b5;;
+
+  &--no-access {
+    min-height: 96px;
+    background: none;
+  }
+
+  &__box {
+    height: 96px;
+    overflow: hidden;
+    padding: $layout-offset;
+  }
+
+  &__area {
+    width: 100%;
+
+    & > textarea , & > label{
+      color: #fff !important;
+      border-color: #fff !important;
+    }
+
+    & > label:after {
+      color: #fff !important;
+    }
+  }
+
+  &__btn {
+    padding-right: $layout-offset;
+
+    &--banned {
+      color: #000 !important;
+    }
+  }
+}

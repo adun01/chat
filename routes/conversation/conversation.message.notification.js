@@ -1,23 +1,14 @@
 const router = require('express').Router(),
-    eventsMediator = require('../../events.mediator'),
-    messageNotApi = require('../../api/notification/conversation.message.notification');
+    userApi = require('../../api/user/');
 
-router.get('/api/conversation/notification/message', async function (req, res) {
+router.post('/api/conversation/:conversationId/notification/message/:messageId', async(req, res) => {
 
-    let searchNotificationResult = await messageNotApi.get({
-        userId: +req.session.user.id
-    });
-
-    res.send(JSON.stringify(searchNotificationResult));
-});
-
-router.post('/api/conversation/:conversationId/notification/message/:messageId', async function (req, res) {
-
-    let saveResult = await messageNotApi.save({
-        userId: req.session.user.id,
-        userInterlocutor: +req.params.conversationId,
-        messageId: +req.params.messageId
-    });
+    let saveResult = await userApi.setNewReadMessage(
+        req.session.user.id,
+        +req.params.conversationId,
+        +req.params.messageId,
+        'conversations'
+    );
 
     res.send(JSON.stringify(saveResult));
 });

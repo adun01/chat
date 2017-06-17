@@ -1,175 +1,289 @@
 const roomModel = require('../../db/room/room.model'),
-    _ = require('lodash'),
-    fieldAllow = ['name', 'id', 'modify', 'photo', 'creatorId', 'userInvited', 'userAgreed', 'public'];
+    roomMessage = require('./message'),
+    userApi = require('../user/'),
+    helper = require('../helper');
 
-function clearRoomField(rooms) {
-    if (_.isArray(rooms)) {
-        return rooms.map(function (room) {
-            return _.pick(room, fieldAllow);
-        })
-    } else {
-        return _.pick(rooms, fieldAllow);
-    }
-}
+class RoomApi {
+    create(name, userId, userInvited = '') {
+        return new Promise(async resolve => {
+            let users = userInvited.split(','),
+                inviteSelf, repeatRoom, room;
 
-function allowRoom(userId, userAgreed) {
-    return userAgreed.some(function (id) {
-        return id === userId;
-    })
-}
+            users = users.map(iUserId => {
+                return +iUserId;
+            });
 
-module.exports = {
-    create: function (data) {
-        let userInvited = data.userInvited ? data.userInvited.split(',') : [],
-            userAgreed = [];
+            inviteSelf = users.some(iUserId => {
+                return userId === iUserId;
+            });
 
-        userInvited = userInvited.map(function (id) {
-            return +id;
-        });
+            if (!inviteSelf) {
+                users.push(userId);
+            }
 
-        if (userInvited.indexOf(+data.user.id) === -1) {
-            userInvited.push(+data.user.id);
-        }
+            repeatRoom = await roomModel.findOne({name: name});
 
-        userAgreed.push(+data.user.id);
+            if (repeatRoom) {
 
-        return new Promise(async function (resolve) {
-
-            let checkName = await roomModel.findOne({name: data.name});
-
-            if (checkName) {
                 return resolve({
                     success: false,
                     message: 'Комната с таким именем уже существует.'
                 });
             }
 
-            let newRoom = await new roomModel({
-                name: data.name,
-                creatorId: +data.user.id,
-                userInvited: userInvited,
-                userAgreed: userAgreed,
-                public: data.public ? data.public : true
+            room = await new roomModel({
+                name: name,
+                creatorId: userId,
+                users: users
             }).save();
 
             return resolve({
                 success: true,
-                room: clearRoomField(newRoom)
+                room: helper.clearRoom(room)
             });
         });
-    },
+    }
 
-    searchCollection: function (collection) {
-        let rooms = [], allPromise = [];
+    query(query) {
 
-        return new Promise(function (resolve) {
+        return new Promise(async resolve => {
+            let reg = new RegExp(query, 'img'), rooms;
 
-            collection.forEach(function (id) {
-                let Ipromise = roomModel.findOne({id:id});
+            rooms = await roomModel.find({name: {$regex: reg, $options: "sig"}});
 
-                allPromise.push(Ipromise);
-
-                Ipromise.then(function (room) {
-                    rooms.push(room);
-                });
-            });
-
-            Promise.all(allPromise).then(function () {
-                resolve({
-                    success: true,
-                    rooms: rooms
-                });
+            resolve({
+                rooms: helper.clearRoom(rooms),
+                success: true
             });
 
         });
-    },
+    }
 
-    search: function (id) {
-        return new Promise(function (resolve) {
-            roomModel.findOne({id: id}, function (err, room) {
-                if (err) {
-                    return resolve({
-                        success: false,
-                        message: err
-                    });
-                }
-                if (!room) {
-                    return resolve({
-                        success: false,
-                        message: 'Комната не найдена'
-                    });
-                }
-                resolve({
-                    success: true,
-                    room: clearRoomField(room)
-                });
-            });
-        });
-    },
-    searchQuery: function (data) {
-        return new Promise(function (resolve) {
-            let reg = new RegExp(data.query, 'img');
-
-            roomModel.find({name: {$regex: reg, $options: "sig"}}).then(function (rooms) {
-
-                resolve({
-                    rooms: rooms,
-                    success: true
-                });
-            });
-        });
-    },
-    get: function (data) {
-        let self = this;
-        return new Promise(async function (resolve) {
-
-            if (data.search) {
-
-                let searchRooms = await self.searchQuery({
-                    query: data.query
-                });
-
-                return resolve({
-                    success: true,
-                    rooms: clearRoomField(searchRooms.rooms)
-                });
-            }
-
-            if (typeof data.roomId === 'undefined') {
-
-                let rooms = await roomModel.find({userAgreed: {$in: [data.userId]}});
-
-                resolve({success: true, rooms: clearRoomField(rooms)});
-
-            } else if (Number.isNaN(+data.roomId)) {
-                return resolve({
-                    success: false,
-                    message: 'Нет такой комнаты'
-                });
+    getSimple(ids) {
+        return new Promise(async resolve => {
+            if (typeof ids === 'number') {
+                resolve(await roomModel.findOne(ids));
             } else {
-                let room = await roomModel.findOne({id: +data.roomId});
+                resolve(await roomModel.find({id: {$in: ids}}));
+            }
+        });
+    }
+
+    get(ids, userId) {
+        return new Promise(async resolve => {
+            let user = await userApi.getSimple(userId);
+            if (typeof ids === 'number') {
+                let room = await this.getSimple(ids),
+                    banned;
 
                 if (!room) {
+
                     return resolve({
                         success: false,
                         message: 'Нет такой комнаты'
                     });
                 }
 
-                if (!room.public) {
-                    if (!allowRoom(data.userId, room.userAgreed)) {
-                        return resolve({
-                            success: false,
-                            message: 'Нет доступа'
-                        });
-                    }
-                }
+                banned = room.bans.some(iBanned => {
+                    return iBanned === userId;
+                });
 
-                resolve({
+                room.banned = banned;
+
+                room.lastMessage = await roomMessage.getLastMessage(room.id);
+
+                room.notification = this.notification(user, room.lastMessage);
+
+                return resolve({
                     success: true,
-                    room: clearRoomField(room)
-                })
+                    room: helper.clearRoom(room)
+                });
+            } else {
+                let rooms = await this.getSimple(ids),
+                    messageList;
+
+                messageList = await roomMessage.getLastMessage(rooms.map(room => {
+                    return room.id;
+                }));
+
+                rooms = rooms.map(room => {
+                    room.lastMessage = messageList.find(message => {
+                        return message.roomId = room.id;
+                    });
+                    room.room = true;
+                    room.notification = this.notification(user, room.lastMessage);
+
+                });
+
+                return resolve({
+                    success: true,
+                    rooms: rooms
+                });
+
             }
         });
     }
-};
+
+    notification(user, lastMessage) {
+        let userRead = user.rooms.find(room => {
+            return room.id === lastMessage.roomId;
+        });
+
+        if (!userRead) {
+            return 0;
+        }
+
+        return lastMessage.id - userRead.messageId;
+    }
+
+    getUser(id) {
+        return new Promise(async resolve => {
+            let room = await roomModel.getSimple(id), users;
+
+            if (!room) {
+                resolve({
+                    success: false,
+                    message: 'Такой комнаты нет.'
+                });
+            }
+
+            users = await userApi.getSimple(room.users);
+
+            return resolve({
+                success: true,
+                users: helper.clearUser(users)
+            });
+        });
+    }
+
+    addUser(id, userId) {
+        return new Promise(async resolve => {
+            let room = await this.getSimple(id),
+                userInside, newRoom;
+
+            if (!room) {
+
+                return resolve({
+                    success: false,
+                    message: 'Такой комнаты нет.'
+                });
+            }
+
+            userInside = room.users.some(iId => {
+                return userId === iId;
+            });
+
+            if (userInside) {
+
+                return resolve({
+                    success: true,
+                    room: helper.clearRoom(room)
+                });
+            }
+
+            room.users.push(userId);
+
+            room.markModified('users');
+
+            newRoom = await room.save();
+
+            return resolve({
+                success: true,
+                room: helper.clearRoom(newRoom)
+            });
+        });
+    }
+
+    removeUser(id, userId) {
+        return new Promise(async resolve => {
+
+            let room = await roomModel.findOne({id: id}),
+                userInside, newRoom;
+
+            if (!room) {
+
+                resolve({
+                    success: false,
+                    message: 'Такой комнаты нет.'
+                });
+            }
+
+            userInside = room.users.some(iId => {
+                return userId === iId;
+            });
+
+            if (!userInside) {
+
+                return resolve({
+                    success: true,
+                    room: history.clearRoom(room)
+                });
+            }
+
+            room.users = room.users.filter(iuserId => {
+                return userId !== iuserId;
+            });
+
+            room.markModified('users');
+
+            newRoom = room.save();
+
+            return resolve({
+                success: true,
+                room: history.clearRoom(newRoom)
+            });
+
+        });
+    }
+
+    bannedUser(id, userId, bannedId) {
+
+        return new Promise(async resolve => {
+            let room = await roomModel.getSimple(id), bannedInside,
+                helper;
+
+            if (!room) {
+
+                return resolve({
+                    success: false,
+                    message: 'Такой комнаты нет.'
+                });
+            }
+
+            if (room.creatorId !== userId) {
+
+                return resolve({
+                    success: false,
+                    message: 'Только создатель комнаты, может банить.'
+                });
+            }
+
+            bannedInside = room.bans.some(iId => {
+                return bannedId === iId;
+            });
+
+            if (bannedInside) {
+
+                return resolve({
+                    success: true,
+                    room: helper.clearRoomField(room)
+                });
+            }
+
+            room.bans.push(bannedId);
+
+            room.markModified('users');
+
+            newRoom = await room.save();
+
+            return resolve({
+                success: true,
+                room: helper.clearRoom(newRoom)
+            });
+
+        });
+
+    }
+}
+
+module.exports = new RoomApi();

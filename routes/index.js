@@ -1,7 +1,7 @@
 const router = require('express').Router(),
     path = require('path');
 
-router.get('/*', function (req, res, next) {
+router.get('/*', (req, res) => {
     res.render('../views/index.html');
 });
 

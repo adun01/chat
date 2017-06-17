@@ -1,40 +1,41 @@
-const session = require('../session/'),
-    userApi = require('../user/'),
+const userApi = require('../user/'),
+    helper = require('../helper'),
     sessionApi = require('../session/'),
-    config = require('../../config'),
-    _ = require('lodash'),
     cryptoApi = require('../../db/crypto');
 
-function clearUserData(obj) {
-    return _.pick(obj, config.user.field);
-}
+class AuthApi {
+    logIn(login, password, session) {
 
-module.exports = {
-    logIn: async function (data) {
+        return new Promise(async(resolve) => {
 
-        return new Promise(async function (resolve) {
+            let searchUser = await userApi.search({
+                login: login
+            }), user;
 
-            let searchUser = await userApi.search(data), user;
+            if (!searchUser.users.length) {
 
-            if (!searchUser.user) {
                 return resolve({
                     success: false,
                     message: 'Пользователя с таким логином не существует'
                 });
             }
 
-            if (cryptoApi.generatePassword(data.password, searchUser.user.salt) === searchUser.user.password) {
+            user = searchUser.users[0];
 
-                user = clearUserData(searchUser.user);
+            if (cryptoApi.generatePassword(password, user.salt) === user.password) {
 
-                await sessionApi.save({
-                    session: data.session,
-                    extend: {user: user}
-                });
+                user = helper.clearUser(user);
+
+                await sessionApi.save(
+                    session, {
+                        user: helper.clearUser(user),
+                        auth: true
+                    }
+                );
 
                 return resolve({
                     success: true,
-                    user: user
+                    user: helper.clearUser(user)
                 });
             }
 
@@ -43,26 +44,34 @@ module.exports = {
                 message: 'Не правильный логин или пароль'
             });
         });
-    },
-    isAuth: function (data) {
-        return new Promise(async function (resolve) {
+    }
 
-            let session = await sessionApi.get(data.sessionID);
+    isAuth(sessionID) {
 
-            if (!session.user || typeof session.user.id === 'undefined') {
-                resolve({
+        return new Promise(async(resolve) => {
+
+            let session = await sessionApi.get(sessionID);
+
+            if (!session.auth) {
+
+                return resolve({
                     success: false,
                     message: 'Не авторизован.'
                 });
+
             } else {
-                resolve({
+
+                return resolve({
                     success: true,
                     user: session.user
                 });
             }
         });
-    },
-    logOut: async function (data) {
-        return await session.destroy(data.sessionID);
     }
-};
+
+    async logOut(sessionID) {
+        return await sessionApi.destroy(sessionID);
+    }
+}
+
+module.exports = new AuthApi();

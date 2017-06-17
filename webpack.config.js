@@ -30,7 +30,7 @@ webpack({
     context: __dirname,
     //ignored: /node_modules/,
     watch: true
-}, function (error, stats) {
+}, (error, stats) => {
     if (error) {
         console.log(error);
     } else {

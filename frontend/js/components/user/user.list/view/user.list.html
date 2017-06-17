@@ -1,0 +1,24 @@
+<div layout
+     layout-align="space-between center">
+
+    <md-button class="md-raised"
+               data-ng-class="{'md-primary' : !_ctrlUserList.filterOnline}"
+               data-ng-click="_ctrlUserList.onlineFilter(false)">Все</md-button>
+
+    <md-button class="md-raised"
+               data-ng-class="{'md-primary' : _ctrlUserList.filterOnline}"
+               data-ng-click="_ctrlUserList.onlineFilter(true)">Онлайн</md-button>
+</div>
+
+<md-content class="sidebar__content">
+
+    <div class="user-list">
+        <div class="user-list__item"
+             layout
+             layout-align="space-between center"
+             data-ng-repeat="user in _ctrlUserList.data.userList">
+
+            <user-item class="user-item user-item--user-list" data-user="user"></user-item>
+        </div>
+    </div>
+</md-content>

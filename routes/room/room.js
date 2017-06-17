@@ -1,41 +1,44 @@
 const router = require('express').Router(),
-    eventsMediator = require('../../events.mediator'),
+    conversationApi = require('../../api/conversation/'),
     roomApi = require('../../api/room/');
 
-router.get('/api/room/:id?/', async function (req, res) {
+router.get('/api/room/:id/', async  (req, res) => {
 
-    let result = await roomApi.get({
-        roomId: req.params.id,
-        userId: req.session.user.id,
-        search: req.query.search,
-        query: req.query.query
-    });
+    let result = await roomApi.get(
+        +req.params.id,
+        req.session.user.id
+    );
 
     res.send(JSON.stringify(result));
 });
 
-router.post('/api/room/', async function (req, res) {
+router.get('/api/room/', async  (req, res) => {
 
-    let roomCreateResult = await roomApi.create({
-        name: req.body.name,
-        public: req.body.public,
-        user: req.session.user,
-        userInvited: req.body.userInvited
-    });
+    let result = {
+            success: true,
+            collection: []
+        },
 
-    if (roomCreateResult.success) {
-        eventsMediator.emit('roomListChange', {
-            userId: req.session.user.id
-        });
+        conversationSearch = await conversationApi.get(req.session.user.id),
+        roomSearch = await roomApi.get(req.session.user.id),
+        conversations, rooms;
 
-        roomCreateResult.room.userInvited.forEach(function (userId) {
-            eventsMediator.emit('newNotificationRoom', {
-                roomId: +roomCreateResult.room.id,
-                userId: +userId
-            });
-        });
+    conversations = conversationSearch.conversations
 
-    }
+    rooms = roomSearch.rooms;
+
+    result.collection.push(...conversations, ...rooms);
+
+    res.send(JSON.stringify(result));
+});
+
+router.post('/api/room/', async  (req, res) => {
+
+    let roomCreateResult = await roomApi.create(
+        req.body.name,
+        req.session.user.id,
+        req.body.userInvited
+    );
 
     res.send(JSON.stringify(roomCreateResult));
 });

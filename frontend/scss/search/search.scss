@@ -1,0 +1,29 @@
+search {
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 100vh;
+
+  & .search-field {
+    color: #fff;
+    display: block;
+
+    & > input, label {
+      color: #fff !important;
+      border-color: #fff;
+    }
+  }
+}
+
+.search {
+
+  &-not-result {
+    color: #fff;
+  }
+
+  &-list {
+
+    &__name {
+      color: #fff;
+    }
+  }
+}

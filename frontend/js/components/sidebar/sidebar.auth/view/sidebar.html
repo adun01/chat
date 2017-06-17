@@ -1,0 +1,24 @@
+<div class="sidebar sidebar-auth">
+
+    <div class="sidebar-helper-nav">
+
+        <md-button class="md-fab chat-icon-action"
+                   layout
+                   layout-align="center center"
+                   aria-label="Сайдбар"
+                   data-ng-click="_ctrlSideBar.toggle()">
+
+            <ng-md-icon size="30"
+                        style="fill: white"
+                        icon="forward">
+            </ng-md-icon>
+        </md-button>
+    </div>
+
+    <div class="sidebar-link" data-ng-repeat="action in _ctrlSideBar.data.listAuth">
+        <md-button class="md-raised"
+                   data-ng-click="_ctrlSideBar.changeState(action.state)">
+            {{action.name}}
+        </md-button>
+    </div>
+</div>

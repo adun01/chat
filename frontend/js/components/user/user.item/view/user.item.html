@@ -1,0 +1,64 @@
+<div class="md-3-line"
+     layout
+     layout-align="space-between center"
+     data-ng-if="!_ctrlUserItem.lastMessage">
+
+    <div layout
+         layout-align="center center">
+
+        <div class="user-item__status"
+             data-ng-class="{'user-item__status--online': _ctrlUserItem.user.online}"></div>
+
+        <img class="user-item__photo"
+             alt="{{_ctrlUserItem.user.login}}"
+             data-ng-click="_ctrlUserItem.openConversation()"
+             data-ng-src="{{_ctrlUserItem.photo(_ctrlUserItem.user)}}"/>
+
+        <div layout="column"
+             layout-align="center left">
+
+            <div class="user-item__login">{{ _ctrlUserItem.user.login }}</div>
+            <div class="user-item__email">{{ _ctrlUserItem.user.email }}</div>
+        </div>
+
+    </div>
+
+    <user-actions data-ng-if="!_ctrlUserItem.hideActions"
+                  data-user="_ctrlUserItem.currentUser"
+                  data-show-user="true"></user-actions>
+</div>
+
+<div class="md-3-line"
+     layout
+     layout-align="space-between center"
+     data-ng-if="_ctrlUserItem.lastMessage">
+
+    <div flex="20">
+
+        <div class="user-item__status"
+             data-ng-class="{'user-item__status--online': _ctrlUserItem.user.online}"></div>
+
+        <img class="room-list__photo"
+             alt="{{_ctrlUserItem.user.login}}"
+             data-ng-click="_ctrlUserItem.openConversation()"
+             data-ng-src="{{_ctrlUserItem.photo(_ctrlUserItem.user)}}"/>
+    </div>
+
+    <div flex="70">
+        <div class="room-item__desc">
+            <div class="room-item__header">
+                {{_ctrlUserItem.user.login}}
+            </div>
+            <div class="room-item__message">
+
+                <span class="room-item__login">
+
+                    {{_ctrlUserItem.user.lastMessage.user.login}}</span>{{_ctrlUserItem.user.lastMessage.text ? ': ' +
+                _ctrlUserItem.user.lastMessage.text : 'История пуста.'}}
+            </div>
+        </div>
+    </div>
+    <div flex="10" data-ng-if="!_ctrlUserItem.hideActions">
+        <user-actions data-user="_ctrlUserItem.user"></user-actions>
+    </div>
+</div>

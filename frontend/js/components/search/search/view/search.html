@@ -1,0 +1,29 @@
+<div>
+    <md-input-container class="search-field">
+        <input type="text"
+               data-ng-attr-placeholder="{{_ctrlSearch.placeholder}}"
+               data-ng-change="_ctrlSearch.searchRooms(_ctrlSearch.query)"
+               data-ng-model="_ctrlSearch.query">
+    </md-input-container>
+
+    <div class="search-list">
+
+        <div data-ng-if="!_ctrlSearch.data.collection.length && _ctrlSearch.query">
+            <div class="md-3-line search-not-result"
+                 layout
+                 layout-align="center center">
+
+                Ничего не найдено
+            </div>
+        </div>
+
+        <div data-ng-if="_ctrlSearch.data.collection.length"
+             data-ng-repeat="room in _ctrlSearch.data.collection">
+
+            <room-item class="room-item" data-room="room" data-ng-if="room.room"></room-item>
+
+            <user-item class="user-item" data-user="room" data-ng-if="!room.room"></user-item>
+
+        </div>
+    </div>
+</div>

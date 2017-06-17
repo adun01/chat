@@ -1,18 +1,18 @@
-const listUserOnline = (function () {
+const listUserOnline = (() => {
     let usersList = [];
 
     return {
-        get: function (userId) {
+        get: userId => {
             if (!userId) {
                 return usersList;
             } else {
-                return usersList.find(function (iUser) {
+                return usersList.find(iUser => {
                     return userId === iUser.id;
                 });
             }
         },
-        add: function (user) {
-            let currentUser = usersList.find(function (iUser) {
+        add: user => {
+            let currentUser = usersList.find(iUser => {
                 return user.id === iUser.id;
             });
 
@@ -21,12 +21,12 @@ const listUserOnline = (function () {
             }
 
         },
-        remove: function (userId) {
-            usersList = usersList.filter(function (user) {
+        remove: userId => {
+            usersList = usersList.filter(user => {
                 return user.id !== userId;
             });
         }
     }
-}());
+})();
 
 module.exports = listUserOnline;

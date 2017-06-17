@@ -1,0 +1,22 @@
+.room-header {
+
+  &__toolbar {
+    padding: 0 $layout-offset;
+    min-height: 88px;
+  }
+
+  &__description {
+    outline: none;
+    cursor: pointer;
+  }
+
+  &__name {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  &__forward {
+    transform: rotate(180deg);
+  }
+}

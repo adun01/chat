@@ -1,0 +1,62 @@
+<div class="message-add message-add--no-access"
+     data-ng-if="!_ctrlMessageAdd.access && !_ctrlMessageAdd.room.banned"
+     layout
+     layout-align="center center">
+
+    <md-button class="md-raised md-primary"
+               flex="100"
+               data-ng-click="_ctrlMessageAdd.userAgreed()">
+
+        Принять участие в комнате.
+    </md-button>
+</div>
+
+<div class="message-add message-add--no-access"
+     data-ng-if="_ctrlMessageAdd.room.banned"
+     layout
+     layout-align="center center">
+
+    <md-button class="md-raised md-primary message-add__btn--banned"
+               disabled="disabled"
+               flex="100">
+
+        Нет доступа.
+    </md-button>
+</div>
+
+<div class="message-add"
+     data-ng-if="_ctrlMessageAdd.access && !_ctrlMessageAdd.room.banned"
+     data-ng-form="messageForm"
+     layout
+     layout-align="left center">
+
+    <div flex="80" class="message-add__box">
+        <md-input-container class="message-add__area">
+            <label>Отправить сообщение</label>
+            <textarea name="message"
+                      required
+                      data-ng-model="_ctrlMessageAdd.message"
+                      md-no-resize
+                      max-rows="2"></textarea>
+        </md-input-container>
+    </div>
+
+    <div class="message-add__btn"
+         flex="20"
+         layout
+         layout-align="center center">
+
+        <md-button class="md-fab chat-icon-action chat-icon-action--send-message"
+                   aria-label="Отправить"
+                   layout
+                   layout-align="center center"
+                   data-ng-disabled="messageForm.$invalid"
+                   data-ng-click="_ctrlMessageAdd.send()">
+
+            <ng-md-icon size="30"
+                        style="fill: white"
+                        icon="send">
+            </ng-md-icon>
+        </md-button>
+    </div>
+</div>

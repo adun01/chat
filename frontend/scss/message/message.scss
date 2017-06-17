@@ -1,15 +1,20 @@
-.chat-message {
+.message {
+
+  &-overflow {
+    height: calc(100vh - 184px);
+    overflow-y: auto;
+  }
 
   &-content {
     background-image: url('../images/background.jpg');
     flex-grow: 2;
     flex-direction: column;
     justify-content: flex-end;
-    min-height: 350px;
   }
 
   &-intro {
-    margin: auto;
+    margin: 0;
+    height: 100%;
   }
 
   &-item {
@@ -24,6 +29,7 @@
       border-radius: 50%;
       margin: 0 8px 8px 0;
       cursor: pointer;
+      vertical-align: bottom;
 
       &--self {
         margin: 0 0 8px 8px;
@@ -35,7 +41,7 @@
       padding: 16px;
       background-color: #fff;
       border-radius: 16px 16px 16px 0;
-      max-width: 70%;
+      max-width: 60%;
       position: relative;
 
       &:after {
@@ -79,18 +85,5 @@
       text-overflow: ellipsis;
     }
 
-  }
-
-  &-send {
-
-    &__box {
-      height: 96px;
-      overflow: hidden;
-      padding: $layout-offset;
-    }
-
-    &__area {
-      width: 100%;
-    }
   }
 }

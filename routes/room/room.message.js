@@ -1,41 +1,31 @@
 const router = require('express').Router(),
-    eventsMediator = require('../../events.mediator'),
-    messageApi = require('../../api/message/room.message');
+    eventPublish = require('../../eventPublish'),
+    messageApi = require('../../api/room/message');
 
-router.get('/api/room/:roomId/message', async function (req, res) {
-    let seacrMessagesResult = await messageApi.get({
-        roomId: +req.params.roomId,
-        userId: +req.session.user.id
-    });
+router.get('/api/room/:roomId/message', async(req, res) => {
 
-    res.send(JSON.stringify(seacrMessagesResult));
+    let seachMessagesResult = await messageApi.get(
+        +req.params.roomId,
+        req.session.user.id
+    );
+
+    res.send(JSON.stringify(seachMessagesResult));
 
 });
 
-router.post('/api/room/:roomId/message', async function (req, res) {
+router.post('/api/room/:roomId/message', async(req, res) => {
 
-    let newMessageResult = await messageApi.add({
-        userId: req.session.user.id,
-        message: req.body.message,
-        roomId: +req.params.roomId
-    });
+    let newMessageResult = await messageApi.add(
+        req.session.user.id,
+        +req.params.roomId,
+        req.body.message
+    );
 
-    eventsMediator.emit('newMessageRoom', {
-        message: newMessageResult.message,
-        roomId: +req.params.roomId,
-        userIds: newMessageResult.userIds,
-        userId: req.session.user.id
-    });
-
-    eventsMediator.emit('newNotificationRoomMessage', {
-        userIds: newMessageResult.userIds,
-        userId: req.session.user.id,
-        roomId: +req.params.roomId
-    });
+    if (newMessageResult.success) {
+        //eventPublish
+    }
 
     res.send(JSON.stringify(newMessageResult));
-
-
 });
 
 module.exports = router;

@@ -10,9 +10,11 @@
 @import "layout/layout";
 @import "forms/form";
 @import "sidebar/sidebar";
-@import "user/user";
-@import "room/room";
+
+@import "user/index";
+
+@import "search/search";
+@import "room/index";
 @import "icon/icon";
 @import "dialog/dialog";
-@import "message/message";
-@import "notification/notification";
+@import "message/index";

@@ -15,8 +15,8 @@ const roomSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    userAgreed: [Number],
-    userInvited: [Number],
+    users: [Number],
+    bans: [Number],
     creatorId: {
         type: Number,
         default: 0
@@ -25,11 +25,7 @@ const roomSchema = new Schema({
         type: String,
         default: ''
     },
-    message: [messageSchema],
-    public: {
-        type: Boolean,
-        default: true
-    }
+    message: [messageSchema]
 });
 
 autoIncrement = require('mongoose-auto-increment');

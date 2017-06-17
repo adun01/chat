@@ -1,0 +1,110 @@
+<md-menu>
+
+    <ng-md-icon size="30"
+                icon="menu"
+                class="chat-icon-action chat-icon-action--actions-user"
+                style="fill: #fff;"
+                data-ng-click="_ctrlUserAction.openMenu($mdMenu, $event)">
+    </ng-md-icon>
+
+    <md-menu-content>
+
+        <md-menu-item data-ng-if="!_ctrlUserAction.selfUser"
+                      data-ng-click="_ctrlUserAction.openConversation($event, user)">
+
+            <md-button>
+                <div layout
+                     layout-align="left center">
+
+                    <ng-md-icon class="chat-user-actions__icon"
+                                layout
+                                layout-align="center center"
+                                size="30"
+                                style="fill: black"
+                                icon="message">
+                    </ng-md-icon>
+
+                    Открыть диалог
+                </div>
+            </md-button>
+        </md-menu-item>
+        <md-menu-divider></md-menu-divider>
+
+        <md-menu-item data-ng-click="_ctrlUserAction.showUser($event, user)">
+
+            <md-button>
+                <div layout
+                     layout-align="left center">
+
+                    <ng-md-icon class="chat-user-actions__icon"
+                                layout
+                                layout-align="center center"
+                                size="30"
+                                style="fill: black"
+                                icon="face"
+                                data-ng-if="!_ctrlUserAction.selfUser">
+                    </ng-md-icon>
+
+                    <ng-md-icon class="chat-user-actions__icon"
+                                layout
+                                layout-align="center center"
+                                size="30"
+                                style="fill: black"
+                                icon="edit"
+                                data-ng-if="_ctrlUserAction.selfUser">
+                    </ng-md-icon>
+
+                    {{!_ctrlUserAction.selfUser ? 'Посмотреть профиль' : 'Редактировать профиль'}}
+                </div>
+            </md-button>
+        </md-menu-item>
+        <md-menu-divider></md-menu-divider>
+
+        <md-menu-item data-ng-if="_ctrlUserAction.canLeaveRoom() && _ctrlUserAction.selfUser"
+                      data-ng-click="_ctrlUserAction.leaveRoom()">
+
+            <md-button>
+
+                <div layout
+                     layout-align="left center">
+
+                    <ng-md-icon class="chat-user-actions__icon"
+                                layout
+                                layout-align="center center"
+                                size="30"
+                                style="fill: black"
+                                icon="delete">
+                    </ng-md-icon>
+
+                    Покинуть комнату
+                </div>
+            </md-button>
+        </md-menu-item>
+
+        <md-menu-divider data-ng-if="_ctrlUserAction.canLeaveRoom()"></md-menu-divider>
+
+        <md-menu-item data-ng-if="_ctrlUserAction.canBannedInRoom"
+                      data-ng-click="_ctrlUserAction.removInRoom()">
+
+            <md-button>
+
+                <div layout
+                     layout-align="left center">
+
+                    <ng-md-icon class="chat-user-actions__icon"
+                                layout
+                                layout-align="center center"
+                                size="30"
+                                style="fill: black"
+                                icon="delete">
+                    </ng-md-icon>
+
+                    Закрыть доступ к комнате.
+                </div>
+            </md-button>
+        </md-menu-item>
+
+        <md-menu-divider data-ng-if="_ctrlUserAction.canBannedInRoom"></md-menu-divider>
+
+    </md-menu-content>
+</md-menu>

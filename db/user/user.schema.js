@@ -50,6 +50,7 @@ var userSchema = new Schema({
     date: {type: Date, default: Date.now}
 });
 
+// оставил для получения контекста
 userSchema.path('password').set(function (pass) {
     return criptoApi.generatePassword(pass, this.salt);
 });

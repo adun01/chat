@@ -1,108 +1,47 @@
-const eventsMediator = require('./events.mediator'),
+const eventPublish = require('./eventPublish'),
     config = require('./config'),
     listUserOnline = require('./listUserOnline');
 
-const sockets = (function () {
+const sockets = (() => {
     let socketList = [];
 
     return {
-        get: function (idUser) {
+        get: (idUser) => {
             return socketList[idUser];
         },
-        add: function (socket) {
+        add: (socket) => {
             socketList[socket.user.id] = socket;
         }
     }
-}());
+})();
 
 
-module.exports = function (io) {
-    io.on('connection', function (socket) {
+module.exports = (io) => {
+    io.on('connection', (socket) => {
 
         sockets.add(socket);
         listUserOnline.add(socket.user);
 
-
-        socket.on('roomOpen', function (data) {
-            socket.join(data.roomId);
-        });
-
-        socket.on('disconnect', function () {
+        socket.on('disconnect', () => {
             listUserOnline.remove(socket.user.id);
         });
     });
 
-    eventsMediator.on('roomListChange', function (data) {
-        let socket = sockets.get(data.userId);
+    eventPublish.on('newMessageRoom', (data) => {
 
-        if (socket) {
-            socket.emit('roomListChange');
-        }
-    });
-
-    eventsMediator.on('conversationListChange', function (data) {
-        let socket = sockets.get(data.userId);
-        if (socket) {
-            socket.emit('conversationListChange');
-        }
-    });
-
-    eventsMediator.on('roomListChangeRemove', async function (data) {
-        let socket = sockets.get(data.userId);
-
-        await socket.leave(data.userId);
-
-        if (socket) {
-            socket.emit('roomListChangeRemove', {
-                roomId: data.roomId
-            });
-        }
-    });
-
-    eventsMediator.on('newNotificationRoom', function (data) {
-        let socket = sockets.get(data.userId);
-
-        if (socket) {
-            socket.emit('newNotificationRoom', data);
-        }
-    });
-
-    eventsMediator.on('userListChange', function (data) {
-        io.to(data.roomId).emit('userListChange', data);
-    });
-
-    eventsMediator.on('newMessageRoom', function (data) {
-        io.to(data.roomId).emit('newMessageRoom', data);
-    });
-
-    eventsMediator.on('newMessageConversation', function (data) {
-        io.to(data.roomId).emit('newMessageRoom', data);
-    });
-
-    eventsMediator.on('newNotificationRoomMessage', function (data) {
-
-        let usersNotification = data.userIds.filter(function (id) {
-            return id !== data.userId;
-        });
-
-        usersNotification.forEach(function (id) {
-
-            let socket = sockets.get(id);
+        data.userIds.forEach((userId) => {
+            let socket = sockets.get(userId);
 
             if (socket) {
-                socket.emit('newNotificationRoomMessage', data);
+                socket.emit('newMessageRoom', data);
+                socket.emit('messageNotification', data);
             }
         });
-
     });
 
-    eventsMediator.on('newNotificationConversationMessage', function (data) {
+    eventPublish.on('banned', (data) => {
+        let socket = sockets.get(data.userId);
 
-        let socket = sockets.get(data.userInterlocutor);
-
-        if (socket) {
-            socket.emit('newNotificationConversationMessage', data);
-        }
-
+        socket.emit('banned', data);
     });
 };

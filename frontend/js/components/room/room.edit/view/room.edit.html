@@ -1,0 +1,21 @@
+<md-toolbar>
+    <div class="md-toolbar-tools room-header__toolbar"
+         layout
+         layout-align="center center">
+
+        <h3>
+            {{_ctrlHeaderList.title}}
+        </h3>
+        <md-button class="md-fab chat-icon-action room-header__open-list"
+                   layout
+                   layout-align="center center"
+                   aria-label="Список участников"
+                   data-ng-click="_ctrlHeaderList.searchUsers()">
+
+            <ng-md-icon size="30"
+                        style="fill: white"
+                        icon="people">
+            </ng-md-icon>
+        </md-button>
+    </div>
+</md-toolbar>

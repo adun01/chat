@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "supervisor -i frontend,public --inspect --harmony ./app.js",
+    "start": "supervisor --inspect --harmony -i frontend,public ./app.js",
     "build": "node ./webpack.config.js",
     "style": "node ./gulpfile.js"
   },
@@ -30,7 +30,6 @@
     "formidable": "^1.1.1",
     "hammerjs": "^2.0.8",
     "install": "^0.9.6",
-    "lodash": "^4.17.4",
     "mongoose": "^4.9.7",
     "mongoose-auto-increment": "^5.0.1",
     "mongoose-sequence": "^3.2.0",

@@ -1,0 +1,43 @@
+.user-list {
+  margin: $layout-offset;
+  display: block;
+
+  &__item {
+    color: #000;
+  }
+
+  $photo_size: 56px;
+
+  &__photo {
+    width: $photo_size;
+    height: $photo_size;
+    position: relative;
+    display: inline-block;
+    margin: 6px 8px;
+    cursor: pointer;
+
+    & img {
+      border-radius: 50%;
+      max-width: 100%;
+      max-height: 100%;
+      width: $photo_size;
+      height: $photo_size;
+    }
+  }
+
+  &__status {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    display: inline-block;
+    vertical-align: top;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+
+    &--online {
+      background-color: green;
+    }
+  }
+}

@@ -1,0 +1,50 @@
+.room-item {
+  color: #fff;
+  width: 100%;
+  position: relative;
+
+  &--room-list {
+    color: #000;
+
+    & room-actions {
+
+      & ng-md-icon {
+        fill: #000 !important;
+      }
+    }
+  }
+
+  &__notification {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 21;
+  }
+
+  &__desc {
+    margin: 6px 8px;
+  }
+
+  &__header {
+    color: #000;
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+
+  &__btn {
+    margin: 8px 0;
+  }
+
+  &__message {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: grey;
+    margin: 5px 0;
+  }
+
+  &__login {
+    color: #3f51b5;
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,49 @@
+.room-list {
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 100vh;
+  width: 100%;
+  padding: $layout-offset/2 $layout-offset $layout-offset $layout-offset;
+  box-sizing: border-box;
+
+  &__empty-message{
+    min-height: 150px;
+    display: flex;
+    font-size: 21px;
+  }
+
+  &__desc {
+    margin: 6px 8px;
+  }
+
+  &__header {
+    color: #000;
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+
+  &__btn {
+    margin: 8px 0;
+  }
+
+  &__photo {
+    width: $photo_size;
+    height: $photo_size;
+    border-radius: 50%;
+    margin: 6px 0;
+    cursor: pointer;
+  }
+
+  &__message {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: grey;
+    margin: 5px 0;
+  }
+
+  &__login {
+    color: #3f51b5;
+    font-size: 16px;
+  }
+}

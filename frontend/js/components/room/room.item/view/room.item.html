@@ -1,0 +1,57 @@
+<div class="md-3-line"
+     layout
+     layout-align="space-between center"
+     data-ng-if="!_ctrlRoomItem.room.lastMessage">
+
+    <div>
+        <button class="md-fab md-button md-ink-ripple room-item__btn"
+                data-ng-click="_ctrlRoomItem.openRoom()">
+
+            {{_ctrlRoomItem.room.shortName.toUpperCase()}}
+        </button>
+
+        <span>
+            {{_ctrlRoomItem.room.name}}
+        </span>
+    </div>
+
+    <room-actions data-ng-if="!_ctrlRoomItem.hideActions"
+                  data-room="_ctrlRoomItem.room"></room-actions>
+</div>
+
+<div class="md-3-line"
+     layout
+     layout-align="space-between center"
+     data-ng-if="_ctrlRoomItem.room.lastMessage">
+
+    <div flex=20>
+        <div class="badge badge-danger room-item__notification"
+             data-ng-if="_ctrlRoomItem.room.notification">
+
+            {{_ctrlRoomItem.room.notification}}
+        </div>
+        <button class="md-fab md-button md-ink-ripple room-item__btn"
+                data-ng-click="_ctrlRoomItem.openRoom()">
+
+            {{_ctrlRoomItem.room.shortName.toUpperCase()}}
+        </button>
+    </div>
+
+    <div flex="70">
+        <div class="room-item__desc">
+            <div class="room-item__header">
+                {{_ctrlRoomItem.room.name}}
+            </div>
+            <div class="room-item__message">
+
+                <span class="room-item__login">
+
+                    {{_ctrlRoomItem.room.lastMessage.user.login}}</span>{{_ctrlRoomItem.room.lastMessage.text ? ': ' +
+                _ctrlRoomItem.room.lastMessage.text : 'История пуста.'}}
+            </div>
+        </div>
+    </div>
+    <div flex="10" data-ng-if="!_ctrlRoomItem.hideActions">
+        <room-actions data-room="_ctrlRoomItem.room"></room-actions>
+    </div>
+</div>

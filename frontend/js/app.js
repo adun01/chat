@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import 'angular';
 import 'angular-ui-router';
 import 'angular-material';
@@ -23,6 +22,8 @@ angular.module('chat', [
     'ngResource',
     'ui.router',
     'ngMdIcons',
+    'components',
+    'socket',
     'notifications',
     'user',
     'conversation',
@@ -31,7 +32,7 @@ angular.module('chat', [
     'auth',
     'registration',
     'room'])
-    .config(function ($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider) {
+    .config(($stateProvider, $locationProvider, $httpProvider, $urlRouterProvider) => {
 
         $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 
@@ -39,22 +40,20 @@ angular.module('chat', [
             .state('main', {
                 abstract: true,
                 url: '/',
-                template: '<div class="chat-layout"' +
+                template: '<div class="chat-layout-container"' +
                 'layout="row"' +
-                'layout-align="left top"' +
+                'layout-align="center center"' +
                 'data-ui-view>',
                 resolve: {
-                    userData: function ($q, authService, $rootScope, userService) {
+                    userData: ($q, authService, $rootScope, userService, $state) => {
                         let defer = $q.defer();
 
-                        authService.isLogin().then(function (response) {
+                        authService.isLogin().then(response => {
                             if (!response.success) {
                                 defer.resolve('auth is error');
                             } else {
                                 userService.set(response.user);
-
-                                $rootScope.$emit('isAuth');
-                                defer.resolve('isAuth');
+                                defer.resolve();
                             }
                         });
                         return defer.promise;
@@ -67,5 +66,5 @@ angular.module('chat', [
 
         $urlRouterProvider.otherwise('/base/');
 
-    }).run(function ($rootScope, $state, socketServiceMediator) {
+    }).run(($rootScope, $state, socketMediator) => {
 });

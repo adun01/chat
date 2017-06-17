@@ -1,57 +1,49 @@
 .sidebar {
-  background-color: rgb(63, 81, 181);
-  padding: $layout-offset $layout-offset 0 $layout-offset;
-  min-height: 100vh;
-  max-width: none;
+  background-color: #3f51b5;
+  padding: 0 $layout-offset 0 $layout-offset;
   min-width: 320px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 21;
+  transition: all ease 0.25s;
+  transform: translateX(-100%);
 
-  &--main {
-    display: block !important;
-    width: 25%;
-    // кастыль что б не прыгала прокрутка
+  &-base {
+    align-items: flex-start;
+    justify-content: flex-start;
   }
 
-  &--room {
-    height: 100%;
-    width: 100%;
+  &-link {
+    text-align: center;
   }
 
-  &__row {
-    border-bottom: 1px solid #fff;
-    padding: $layout-offset 0;
+  &--open {
+    transform: translateX(0%);
   }
 
-  &__header {
-    padding-top: 0;
-  }
-
-  &__content {
-    background-color: rgb(63, 81, 181);
-  }
-
-  &-opener {
+  &-helper-nav {
     position: absolute;
-    left: 16px;
-    top: 14px;
-    z-index: 21;
-  }
+    top: $layout-offset;
+    right: -72px;
+    left: auto;
+    transition: all .25s ease .25s;
 
-  &-closener {
-    position: absolute;
-    bottom: 0;
-    left: 5px;
-  }
+    &--open {
+      right: auto;
+      left: $layout-offset;
+      transform: rotate(180deg);
+    }
 
-  &__eventsList {
-
-    & > .md-subheader {
-      background: none;
-      color: #fff;
+    &--hide {
+      right: auto;
+      left: 0;
     }
   }
-}
-
-sidebar {
-  width: 25%;
-  min-width: 320px;
 }

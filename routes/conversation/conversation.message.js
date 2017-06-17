@@ -1,52 +1,31 @@
 const router = require('express').Router(),
-    eventsMediator = require('../../events.mediator'),
-    messageApi = require('../../api/message/conversation.message');
+    conversationApi = require('../../api/conversation/'),
+    eventPublish = require('../../eventPublish');
 
-router.get('/api/conversation/:conversationId/message', async function (req, res) {
+router.get('/api/conversation/:conversationId/message', async(req, res) => {
 
-    let searchMessagesResult = await messageApi.get({
-        userInterlocutor: +req.params.conversationId,
-        userId: +req.session.user.id
-    });
+    let searchMessagesResult = await conversationApi.getMessage(
+        req.session.user.id,
+        +req.params.conversationId
+    );
 
     res.send(JSON.stringify(searchMessagesResult));
 
 });
 
-router.post('/api/conversation/:conversationId/message', async function (req, res) {
+router.post('/api/conversation/:conversationId/message', async(req, res) => {
 
-    let newMessageResult = await messageApi.add({
-        userId: req.session.user.id,
-        message: req.body.message,
-        userInterlocutor: +req.params.conversationId
-    });
-    
-    if (newMessageResult.alert) {
-        eventsMediator.emit('conversationListChange', {
-            userId: +req.session.user.id
-        });
-    }
+    let newMessageResult = await conversationApi.addMessage(
+        req.session.user.id,
+        +req.params.conversationId,
+        req.body.message
+    );
 
     if (newMessageResult.success) {
-
-        eventsMediator.emit('newMessageConversation', {
-            message: newMessageResult.message,
-            userInterlocutor: +req.params.conversationId,
-            roomId: newMessageResult.conversation.id
-        });
-
-        eventsMediator.emit('newNotificationConversationMessage', {
-            userId: req.session.user.id,
-            userInterlocutor: +req.params.conversationId,
-            roomId: newMessageResult.conversationId,
-            conversation: newMessageResult.conversation
-        });
+        //eventPublish
     }
 
-
     res.send(JSON.stringify(newMessageResult));
-
-
 });
 
 module.exports = router;

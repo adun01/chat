@@ -1,158 +1,243 @@
 const conversationModel = require('../../db/conversation/conversation.model'),
-    config = require('../../config'),
-    _ = require('lodash'),
-    userApi = require('../user/');
+    userApi = require('../user/'),
+    helper = require('../helper');
 
-function clearUserData(obj) {
-    return _.pick(obj, config.user.field);
-}
+class ConversationApi {
 
-function clearRoomData(obj) {
-    return _.pick(obj, ['id', 'accessUserId', 'create']);
-}
+    getById(conversationIds) {
+        return new Promise(async resolve => {
+            if (typeof conversationIds === 'number') {
+                return resolve(await conversationModel.findOne({id: conversationIds}));
+            } else {
+                return resolve(await conversationModel.find({id: {$in: conversationIds}}));
+            }
+        });
+    }
 
-module.exports = {
-    search: function (data) {
-        return new Promise(async function (resolve) {
+    search(userId, userInterlocutor) {
+        return new Promise(async resolve => {
 
-            let sId = data.userId + '' + data.userInterlocutor,
-                sId2 = data.userInterlocutor + '' + data.userId;
+            let sId = userId + '' + userInterlocutor,
+                sId2 = userInterlocutor + '' + userId,
+                conversation;
 
-            let conversation = await conversationModel.findOne({$or: [{id: sId}, {id: sId2}]});
+            conversation = await conversationModel.findOne({$or: [{id: sId}, {id: sId2}]});
 
-            if (conversation) {
+            conversation.user = await userApi.getSimple(userInterlocutor);
 
-                let userSearch = await userApi.search({id: data.userInterlocutor});
+            return resolve(conversation);
+        })
+    }
 
-                conversation.user = userSearch.user;
+    create(userId = false, userInterlocutorId = false) {
+        return new Promise(async resolve => {
+            let sId = userId + '' + userInterlocutorId,
+                conversation;
 
-                return resolve({
-                    success: true,
-                    conversation: conversation
+            if (!userId || !userInterlocutorId) {
+                resolve({
+                    success: false,
+                    message: 'Нет данных.'
                 });
             }
+
+            conversation = await new conversationModel({
+                id: sId,
+                users: [userId, userInterlocutorId]
+            }).save();
+
+            conversation = helper.clearRoom(conversation);
 
             return resolve({
-                success: false,
-                message: 'Беседа не найдена.'
+                success: true,
+                conversation: conversation
             });
         })
-    },
-    getAll: function (data) {
-        return new Promise(async function (resolve) {
+    }
 
-            let conversations = await conversationModel.find({accessUserId: {$in: [data.userId]}});
+    get(userId, userInterlocutorId = false) {
+        return new Promise(async resolve => {
 
-            conversations = conversations.filter(function (conversation) {
-                return conversation.message.length;
-            });
+            if (userInterlocutorId) {
 
-            let userIds = conversations.map(function (conservation) {
-                return +conservation.id.replace(data.userId, '');
-            });
+                if (userId === userInterlocutorId) {
 
-            let usersList = await userApi.searchCollection(userIds);
+                    return resolve({
+                        success: false,
+                        message: 'Нельзя начать беседу с самим собой.'
+                    });
+                }
 
-            conversations = conversations.map(function (conversation) {
-                let userId = +conversation.id.replace(data.userId, '');
+                let conversation = this.search(userId, userInterlocutorId),
+                    user = await userApi.getSimple(userInterlocutorId);
 
-                let user = usersList.users.find(function (user) {
-                    return user.id === userId;
+                if (conversation) {
+
+                    conversation = helper.clearRoom(conversation);
+                    conversation.user = helper.clearUser(user);
+
+                    conversation.lastMessage = await this.getLastMessage(conversation.id);
+
+                    return resolve({
+                        success: true,
+                        conversation: conversation
+                    });
+
+                } else {
+
+                    conversation = await this.create(userId, userInterlocutorId);
+
+                    conversation = helper.clearRoom(conversation);
+
+                    conversation.user = user;
+
+                    return resolve({
+                        success: true,
+                        conversation: conversation
+                    });
+                }
+            } else {
+                let conversations = await conversationModel.find({users: {$in: [userId]}}),
+                    user = await userApi.getSimple(userId),
+                    messageList;
+
+                messageList = await this.getLastMessage(conversations.map(conversation => {
+                    return conversation.id;
+                }));
+
+                conversations = conversations.forEach(conversation => {
+
+                    conversation = helper.clearRoom(conversation);
+
+                    conversation.conversation = true;
+
+                    conversation.lastMessage = messageList.find(message => {
+                        return message.conversationId === conversation.id;
+                    });
+
+                    conversation.notification = this.notification(user, conversation.lastMessage);
                 });
 
-                conversation = clearRoomData(conversation);
-
-                conversation.user = user;
-                return conversation;
-            });
-
-            resolve({
-                success: true,
-                conversations: conversations
-            });
-
-        });
-    },
-    get: function (data) {
-
-        let self = this;
-
-        return new Promise(async function (resolve) {
-
-            let searchConversation = await self.search(data);
-
-            if (searchConversation.success) {
-                searchConversation.conversation = clearRoomData(searchConversation.conversation);
-                let userSearch = await userApi.search({id: data.userInterlocutor});
-
-                if (!userSearch.success) {
-                    return resolve(userSearch);
-                }
-
-                if (userSearch.success && userSearch.user.id === data.userId) {
-                    return resolve({
-                        success: false,
-                        message: 'Нельзя начать беседу с самим собой.'
-                    })
-                }
-
-                searchConversation.conversation.user = clearUserData(userSearch.user);
-
-                return resolve(searchConversation);
-            } else {
-                let sId = data.userId + '' + data.userInterlocutor;
-
-                let userSearch = await userApi.search({id: data.userInterlocutor});
-
-                if (!userSearch.success) {
-                    return resolve(userSearch);
-                }
-
-                if (userSearch.success && userSearch.user.id === data.userId) {
-                    return resolve({
-                        success: false,
-                        message: 'Нельзя начать беседу с самим собой.'
-                    })
-                }
-
-                let conversation = await new conversationModel({
-                    id: sId,
-                    accessUserId: [data.userId, data.userInterlocutor]
-                }).save();
-
-                conversation = clearRoomData(conversation);
-
-                conversation.user = clearUserData(userSearch.user);
 
                 return resolve({
-                    success: true,
-                    conversation: conversation
-                });
-            }
-        });
-    },
-    searchCollection: function (collection) {
-        let conversations = [], allPromise = [];
-
-        return new Promise(function (resolve) {
-
-            collection.forEach(function (id) {
-                let Ipromise = conversationModel.findOne({id: id});
-
-                allPromise.push(Ipromise);
-
-                Ipromise.then(function (conversation) {
-                    conversations.push(conversation);
-                });
-            });
-
-            Promise.all(allPromise).then(function () {
-                resolve({
                     success: true,
                     conversations: conversations
                 });
+            }
+        });
+    }
+
+    notification(user, lastMessage) {
+        let userRead = user.conversation.find(conversation => {
+            return conversation.id === lastMessage.conversationId;
+        });
+
+
+        if (!userRead) {
+            return 0;
+        }
+
+        return lastMessage.id - userRead.messageId;
+    }
+
+    getLastMessage(conversationIds) {
+
+        return new Promise(async resolve => {
+
+            if (typeof conversationIds === 'number') {
+
+                let conversation = await this.getById(conversationIds),
+                    message, user;
+
+                message = conversation.message[conversation.message.length - 1];
+
+                user = await userApi.getSimple(message.creatorId);
+
+                message.user = helper.clearUser(user);
+
+                message.conversationId = conversationIds;
+
+                return resolve(message);
+            } else {
+
+                let conversations = await this.getById(conversationIds),
+                    messages, users;
+
+                messages = conversations.map(conversation => {
+                    return conversation.message[conversation.message - 1];
+                });
+
+                users = userApi.getSimple(messages.map(message => {
+                    return message.creatorId;
+                }));
+
+                messages = messages.forEach(message => {
+                    messages.user = users.find(user => {
+                        return user.id === message.creatorId;
+                    })
+                });
+
+                return resolve(messages);
+
+            }
+        });
+    }
+
+    addMessage(userId, userInterlocutor, message) {
+        return new Promise(async resolve => {
+            let conversation = await conversationApi.search(userId, userInterlocutor),
+                user = await userApi.getSimple(userId), lastMessage;
+
+            if (conversation) {
+
+                return resolve({
+                    success: false,
+                    message: 'Диалог не найдена.'
+                });
+            }
+
+            conversation.message.push({
+                creatorId: userId,
+                text: message,
+                conversationId: conversation.id,
+                user: helper.clearUser(user)
+            });
+
+            conversation.markModified('message');
+
+            await conversation.save();
+
+            lastMessage = await this.getLastMessage(conversation.id);
+
+            resolve({
+                success: true,
+                lastMessage: lastMessage,
+                conversation: helper.clearRoom(conversation)
             });
 
         });
-    },
-};
+    }
+
+    getMessage(userId, userInterlocutor) {
+        return new Promise(async resolve => {
+            let conversation = await this.search(userId, userInterlocutor);
+
+            if (conversation) {
+
+                return resolve({
+                    success: false,
+                    message: 'Диалог не найдена.'
+                });
+            }
+
+            resolve({
+                success: true,
+                message: helper.clearMessage(conversation.message)
+            });
+
+        });
+
+    }
+}
+
+module.exports = new ConversationApi();

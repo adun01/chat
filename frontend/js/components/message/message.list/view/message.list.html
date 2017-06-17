@@ -1,0 +1,67 @@
+<div class="message-overflow"
+     data-ng-if="!_ctrlMessageList.data.messages.length && !_ctrlMessageList.room.banned">
+
+    <h3 layout
+        layout-align="center center"
+        class="message-intro">
+        История пуста.
+    </h3>
+</div>
+
+<div class="message-overflow"
+     data-ng-if="_ctrlMessageList.room.banned">
+
+    <h3 layout
+        layout-align="center center"
+        class="message-intro">
+        Вы были заблокированы.
+    </h3>
+</div>
+
+<div class="message-overflow"
+     data-ng-if="!_ctrlMessageList.room.banned && _ctrlMessageList.data.messages.length">
+
+    <div class="message-item"
+         data-ng-class="{'message-item--self' : _ctrlMessageList.user.id === message.creatorId}"
+         data-ng-repeat="message in _ctrlMessageList.data.messages">
+
+        <div class="message-item__container message-item__container--self"
+             data-ng-if="_ctrlMessageList.user.id === message.creatorId">
+            <div class="message-item__login">
+                {{message.user.login}}
+            </div>
+            <div class="message-item__content">
+                {{message.text}}
+            </div>
+            <div class="message-item__date">
+                {{message.date | date: 'yyyy-MM-dd HH:mm'}}
+            </div>
+        </div>
+
+        <img alt="{{message.user.login}}"
+             class="message-item__avatar message-item__avatar--self"
+             data-ng-if="_ctrlMessageList.user.id === message.creatorId"
+             data-ng-click="_ctrlMessageList.showUser($event, message.user)"
+             data-ng-src="{{_ctrlMessageList.getPathPhoto(message.user)}}">
+
+        <img alt="{{message.user.login}}"
+             class="message-item__avatar"
+             data-ng-if="_ctrlMessageList.user.id !== message.creatorId"
+             data-ng-click="_ctrlMessageList.showUser($event, message.user)"
+             data-ng-src="{{_ctrlMessageList.getPathPhoto(message.user)}}">
+
+        <div class="message-item__container"
+             data-ng-if="_ctrlMessageList.user.id !== message.creatorId">
+            <div class="message-item__login">
+                {{message.user.login}}
+            </div>
+            <div class="message-item__content">
+                {{message.text}}
+            </div>
+            <div class="message-item__date">
+                {{message.date | date: 'yyyy-MM-dd : HH:mm'}}
+            </div>
+        </div>
+
+    </div>
+</div>

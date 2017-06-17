@@ -1,29 +1,16 @@
-.chat-base {
-  width: 100%;
-  background-image: url('../images/background.jpg');
-
-  &__offset {
-    width: 25%;
-    min-width: 320px;
-  }
-
-  &__container {
-    display: flex;
-    height: 100%;
-    width: 75%;
-    flex-wrap: wrap;
-  }
-
-  &__intro {
-    font-size: 17px;
-    text-align: center;
-  }
-}
-
-.chat-hide {
-  display: none;
-}
-
 img {
   outline: none;
+}
+
+.base {
+  height: 100%;
+  width: 100%;
+
+  &-header {
+    padding: 0 $layout-offset;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 18px;
+    box-sizing: border-box;
+  }
 }

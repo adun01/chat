@@ -4,10 +4,10 @@ const mongoose = require('mongoose'),
 
 mongoose.connect('mongodb://localhost/chatexpress');
 
-db.on('error', function (err) {
+db.on('error', (err) => {
     console.log(err);
 });
-db.once('open', function () {
+db.once('open', () => {
     console.log('mongoose connect!');
 });
 

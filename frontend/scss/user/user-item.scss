@@ -1,0 +1,43 @@
+.user-item {
+  color: #fff;
+  width: 100%;
+  position: relative;
+
+  &--room-list, &--user-list {
+    color: #000;
+
+    & user-actions {
+
+      & ng-md-icon {
+        fill: #000 !important;
+      }
+    }
+  }
+
+  &__email {
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  &__photo {
+    width: $photo_size;
+    height: $photo_size;
+    border-radius: 50%;
+    margin: 6px 8px 6px 0;
+    cursor: pointer;
+  }
+
+  &__status {
+    width: 10px;
+    height: 10px;
+    background: red;
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    top: 10px;
+
+    &--online {
+      background: green;
+    }
+  }
+}

@@ -14,7 +14,7 @@ const conversationSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    accessUserId: [Number],
+    users: [Number],
     message: [messageSchema]
 });
 

@@ -1,0 +1,22 @@
+<div class="room-list__empty-message"
+     layout
+     layout-align="center center"
+     data-ng-if="!_ctrlRoomList.data.collection.length">
+    Список пуст
+</div>
+
+<div layout
+     layout-align="space-between center"
+     data-ng-if="_ctrlRoomList.data.collection.length"
+     data-ng-repeat="room in _ctrlRoomList.data.collection">
+
+    <room-item class="room-item room-item--room-list"
+               data-ng-if="room.room"
+               data-last-message="true"
+               data-room="room"></room-item>
+
+    <user-item class="user-item user-item--room-list"
+               data-ng-if="room.conversation"
+               data-last-message="true"
+               data-user="room.user"></user-item>
+</div>

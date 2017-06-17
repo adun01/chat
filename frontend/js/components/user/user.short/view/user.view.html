@@ -1,0 +1,29 @@
+<div layout="row" layout-align="space-between center">
+    <div>
+        <img class="chat-user-intro__avatar"
+             data-ng-click="_ctrlUser.editUser($event)"
+             data-ng-src="{{_ctrlUser.photo()}}">
+
+        <div class="chat-user-intro__descr">
+            <div class="chat-user-intro__info chat-user-intro__info&#45;&#45;login">
+                {{_ctrlUser.user.login}}
+            </div>
+            <div class="chat-user-intro__info">
+                {{_ctrlUser.user.email}}
+            </div>
+        </div>
+    </div>
+    <div>
+        <md-button class="md-fab chat-icon-action"
+                   aria-label="Редактировать"
+                   layout
+                   layout-align="center center"
+                   data-ng-click="_ctrlUser.editUser($event)">
+
+            <ng-md-icon size="30"
+                        style="fill: white"
+                        icon="mode_edit">
+            </ng-md-icon>
+        </md-button>
+    </div>
+</div>

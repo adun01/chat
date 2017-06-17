@@ -1,22 +1,12 @@
 const router = require('express').Router(),
-    eventsMediator = require('../../events.mediator'),
     conversationApi = require('../../api/conversation/');
 
-router.get('/api/conversation/:id', async function (req, res) {
+router.get('/api/conversation/:id', async(req, res) => {
 
-    let result = await conversationApi.get({
-        userId: +req.session.user.id,
-        userInterlocutor: +req.params.id
-    });
-
-    res.send(JSON.stringify(result));
-});
-
-router.get('/api/conversation/', async function (req, res) {
-
-    let result = await conversationApi.getAll({
-        userId: +req.session.user.id
-    });
+    let result = await conversationApi.get(
+        req.session.user.id,
+        +req.params.id
+    );
 
     res.send(JSON.stringify(result));
 });
