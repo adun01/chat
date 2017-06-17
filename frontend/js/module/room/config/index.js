@@ -9,27 +9,17 @@ export default module.config(function ($stateProvider) {
             controllerAs: '_ctrlRoom',
             template: roomTpl,
             resolve: {
-                roomData: function (authService, $stateParams, roomService, $q, $state) {
+                baseData: ($q, roomService, authService) => {
                     let defer = $q.defer();
 
-                    authService.isLogin().then(function (response) {
-                        if (!response.success) {
+                    authService.isLogin().then((user) => {
+
+                        if (!user) {
                             $state.go('main.auth');
-                            defer.resolve('auth is error');
                         } else {
-                            roomService.get({id: $stateParams.id}).then(function (response) {
-
-                                if (!response.success) {
-                                    defer.resolve(response);
-                                    $state.go('main.base');
-                                } else {
-                                    defer.resolve(response);
-                                }
-
-                            });
+                            defer.resolve();
                         }
                     });
-
                     return defer.promise;
                 }
             }

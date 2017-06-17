@@ -88763,26 +88763,17 @@ exports.default = _2.default.config(function ($stateProvider) {
         controllerAs: '_ctrlRoom',
         template: _roomView2.default,
         resolve: {
-            roomData: function roomData(authService, $stateParams, roomService, $q, $state) {
+            baseData: function baseData($q, roomService, authService) {
                 var defer = $q.defer();
 
-                authService.isLogin().then(function (response) {
-                    if (!response.success) {
-                        $state.go('main.auth');
-                        defer.resolve('auth is error');
-                    } else {
-                        roomService.get({ id: $stateParams.id }).then(function (response) {
+                authService.isLogin().then(function (user) {
 
-                            if (!response.success) {
-                                defer.resolve(response);
-                                $state.go('main.base');
-                            } else {
-                                defer.resolve(response);
-                            }
-                        });
+                    if (!user) {
+                        $state.go('main.auth');
+                    } else {
+                        defer.resolve();
                     }
                 });
-
                 return defer.promise;
             }
         }
@@ -89608,7 +89599,7 @@ module.exports = "<md-toolbar> <div class=\"md-toolbar-tools room-header__toolba
 /* 117 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=!_ctrlRoomItem.room.lastMessage> <div> <button class=\"md-fab md-button md-ink-ripple room-item__btn\" data-ng-click=_ctrlRoomItem.openRoom()> {{_ctrlRoomItem.room.shortName.toUpperCase()}} </button> <span> {{_ctrlRoomItem.room.name}} </span> </div> <room-actions data-ng-if=!_ctrlRoomItem.hideActions data-room=_ctrlRoomItem.room></room-actions> </div> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=_ctrlRoomItem.room.lastMessage> <div flex=20> <div class=\"badge badge-danger room-item__notification\" data-ng-if=_ctrlRoomItem.room.notification> {{_ctrlRoomItem.room.notification}} </div> <button class=\"md-fab md-button md-ink-ripple room-item__btn\" data-ng-click=_ctrlRoomItem.openRoom()> {{_ctrlRoomItem.room.shortName.toUpperCase()}} </button> </div> <div flex=70> <div class=room-item__desc> <div class=room-item__header> {{_ctrlRoomItem.room.name}} </div> <div class=room-item__message> <span class=room-item__login> {{_ctrlRoomItem.room.lastMessage.user.login}}</span>{{_ctrlRoomItem.room.lastMessage.text ? ': ' + _ctrlRoomItem.room.lastMessage.text : 'История пуста.'}} </div> </div> </div> <div flex=10 data-ng-if=!_ctrlRoomItem.hideActions> <room-actions data-room=_ctrlRoomItem.room></room-actions> </div> </div>";
+module.exports = "<div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=!_ctrlRoomItem.lastMessage> <div> <button class=\"md-fab md-button md-ink-ripple room-item__btn\" data-ng-click=_ctrlRoomItem.openRoom()> {{_ctrlRoomItem.room.shortName.toUpperCase()}} </button> <span> {{_ctrlRoomItem.room.name}} </span> </div> <room-actions data-ng-if=!_ctrlRoomItem.hideActions data-room=_ctrlRoomItem.room></room-actions> </div> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=_ctrlRoomItem.lastMessage> <div flex=20> <div class=\"badge badge-danger room-item__notification\" data-ng-if=_ctrlRoomItem.room.notification> {{_ctrlRoomItem.room.notification}} </div> <button class=\"md-fab md-button md-ink-ripple room-item__btn\" data-ng-click=_ctrlRoomItem.openRoom()> {{_ctrlRoomItem.room.shortName.toUpperCase()}} </button> </div> <div flex=70> <div class=room-item__desc> <div class=room-item__header> {{_ctrlRoomItem.room.name}} </div> <div class=room-item__message> <span class=room-item__login> {{_ctrlRoomItem.room.lastMessage.user.login}}</span>{{_ctrlRoomItem.room.lastMessage.text ? ': ' + _ctrlRoomItem.room.lastMessage.text : 'История пуста.'}} </div> </div> </div> <div flex=10 data-ng-if=!_ctrlRoomItem.hideActions> <room-actions data-room=_ctrlRoomItem.room></room-actions> </div> </div>";
 
 /***/ }),
 /* 118 */

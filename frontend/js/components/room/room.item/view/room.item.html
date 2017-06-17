@@ -1,7 +1,7 @@
 <div class="md-3-line"
      layout
      layout-align="space-between center"
-     data-ng-if="!_ctrlRoomItem.room.lastMessage">
+     data-ng-if="!_ctrlRoomItem.lastMessage">
 
     <div>
         <button class="md-fab md-button md-ink-ripple room-item__btn"
@@ -22,7 +22,7 @@
 <div class="md-3-line"
      layout
      layout-align="space-between center"
-     data-ng-if="_ctrlRoomItem.room.lastMessage">
+     data-ng-if="_ctrlRoomItem.lastMessage">
 
     <div flex=20>
         <div class="badge badge-danger room-item__notification"
@@ -45,7 +45,6 @@
             <div class="room-item__message">
 
                 <span class="room-item__login">
-
                     {{_ctrlRoomItem.room.lastMessage.user.login}}</span>{{_ctrlRoomItem.room.lastMessage.text ? ': ' +
                 _ctrlRoomItem.room.lastMessage.text : 'История пуста.'}}
             </div>

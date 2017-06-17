@@ -338,10 +338,10 @@ class RoomApi {
                 let rooms = await this.getSimple(roomIds),
                     messages, users;
 
-                messages = rooms.map(room => {
-                    let message = helper.clearMessage(room.message[room.message.length - 1]);
-                    message.roomId = room.id;
-                    return message;
+                messages = rooms.filter((room) => {
+                    return room.message[room.message.length - 1];
+                }).map(room => {
+                    return helper.clearMessage(room.message[room.message.length - 1]);
                 });
 
                 users = await userApi.getSimple(messages.map(message => {

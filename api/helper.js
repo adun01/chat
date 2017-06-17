@@ -4,7 +4,7 @@ const config = require('../config'),
 class Helper {
 
     clearUser(obj) {
-        if (typeof obj.length !== 'undefined') {
+        if (obj && typeof obj.length !== 'undefined') {
             let clearCollection = obj.map(user => {
                 return this.clearUser(user);
             });
@@ -16,7 +16,7 @@ class Helper {
     }
 
     clearMessage(obj) {
-        if (typeof obj.length !== 'undefined') {
+        if (obj && typeof obj.length !== 'undefined') {
             let clearCollection = obj.map(user => {
                 return this.clearMessage(user);
             });
@@ -28,7 +28,7 @@ class Helper {
     }
 
     clearRoom(obj) {
-        if (typeof obj.length !== 'undefined') {
+        if (obj && typeof obj.length !== 'undefined') {
             let clearCollection = obj.map(user => {
                 return this.clearRoom(user);
             });
