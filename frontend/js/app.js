@@ -43,23 +43,7 @@ angular.module('chat', [
                 template: '<div class="chat-layout-container"' +
                 'layout="row"' +
                 'layout-align="center center"' +
-                'data-ui-view>',
-                resolve: {
-                    userData: ($q, authService, $rootScope, userService, $state) => {
-                        let defer = $q.defer();
-
-                        authService.isLogin().then(response => {
-                            if (!response.success) {
-                                defer.resolve('auth is error');
-                            } else {
-                                userService.set(response.user);
-                                defer.resolve();
-                            }
-                        });
-                        return defer.promise;
-                    }
-
-                }
+                'data-ui-view>'
             });
 
         $locationProvider.html5Mode(true);

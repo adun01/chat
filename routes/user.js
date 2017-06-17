@@ -17,9 +17,10 @@ router.put('/api/user/', async(req, res) => {
 
     let result = await userApi.update(
         req.body.login,
-        req.session.id,
+        req.session.user.id,
         req.headers,
-        req
+        req,
+        req.session
     );
 
     res.send(JSON.stringify(result));

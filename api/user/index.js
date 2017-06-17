@@ -123,8 +123,10 @@ class userApi {
             let reg = new RegExp(query, 'img'), result, users;
 
             result = await userModel.find({
-                login: {$regex: reg, $options: "sig"},
-                email: {$regex: reg, $options: "sig"}
+                $or: [
+                    {login: {$regex: reg, $options: "sig"}},
+                    {email: {$regex: reg, $options: "sig"}}
+                ]
             });
 
             users = result.map(user => {
@@ -139,9 +141,11 @@ class userApi {
         });
     }
 
-    update(login = false, id, headers, request) {
+    update(login = false, id, headers, request, session) {
 
         return new Promise(async resolve => {
+
+            let user = await this.getSimple(id);
 
             if (login) {
 
@@ -149,6 +153,14 @@ class userApi {
 
                 if (!changeLogin.success) {
                     return resolve(changeLogin);
+                } else {
+                    user = changeLogin.user;
+
+                    sessionApi.save(
+                        session, {
+                            user: user
+                        }
+                    );
                 }
             }
 
@@ -159,7 +171,20 @@ class userApi {
 
                     if (!changeImage.success) {
                         return resolve(changeImage);
+                    } else {
+                        user = changeImage.user;
+                        sessionApi.save(
+                            session, {
+                                user: user
+                            }
+                        );
+                        return resolve(changeImage);
                     }
+                } else {
+                    return resolve({
+                        success: true,
+                        user: user
+                    });
                 }
             }
         });
@@ -168,7 +193,7 @@ class userApi {
     _changeLogin(login, id) {
 
         return new Promise(async resolve => {
-            let user = await userModel.find({id: id}),
+            let user = await userModel.findOne({id: id}),
                 searchUserLogin = await this.search({login: login}),
                 userChange;
 
@@ -179,7 +204,14 @@ class userApi {
                 });
             }
 
-            if (searchUserLogin.success && searchUserLogin.user.id !== user.id) {
+            if (searchUserLogin.users.length > 1) {
+                return resolve({
+                    success: false,
+                    message: 'Это имя уже занято.'
+                });
+            }
+
+            if (searchUserLogin.users.length == 1 && searchUserLogin.users[0].id !== user.id) {
                 return resolve({
                     success: false,
                     message: 'Это имя уже занято.'
@@ -201,10 +233,10 @@ class userApi {
 
     _upload(request, id) {
         return new Promise(async resolve => {
-            form = new formidable.IncomingForm(),
+            let form = new formidable.IncomingForm(),
                 fileName,
                 imageDirectory = path.resolve('public/images/users/') + '/' + id + '/',
-                user = await await userModel.find({id: id});
+                user = await userModel.findOne({id: id});
 
             form.uploadDir = imageDirectory;
             form.encoding = 'utf-8';

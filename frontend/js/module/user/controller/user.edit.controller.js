@@ -67,8 +67,10 @@ module.controller('userEditController',
                 login: _ctrlUser.changeLogin
             }).then(function (response) {
                 _ctrlUser.handlerResponse(response);
-                if (response.success) {
-                    $mdDialog.cancel(_ctrlUser.user);
+
+                if (response.success && response.user) {
+                    $rootScope.$emit('userReboot');
+                    $mdDialog.hide();
                 }
             });
         };

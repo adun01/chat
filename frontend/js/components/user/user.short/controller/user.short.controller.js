@@ -1,7 +1,7 @@
 import module from '../../../';
 
-module.controller('userController',
-    function (userService) {
+module.controller('userShortController',
+    function (userService, $rootScope) {
         const _ctrlUser = this;
 
         _ctrlUser.user = userService.get();
@@ -9,4 +9,8 @@ module.controller('userController',
         _ctrlUser.photo = userService.photo;
 
         _ctrlUser.editUser = userService.editUser;
+
+        $rootScope.$on('userReboot', ($event) => {
+            _ctrlUser.user = userService.get();
+        });
     });

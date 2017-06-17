@@ -9,8 +9,8 @@ router.get('/api/search?:query', async(req, res) => {
             collection: []
         },
 
-        userSearch = await userApi.query({query: req.query.query}),
-        roomSearch = await roomApi.query({query: req.query.query}),
+        userSearch = await userApi.query(req.query.query),
+        roomSearch = await roomApi.query(req.query.query),
         users, rooms;
 
     users = userSearch.users.map(user => {

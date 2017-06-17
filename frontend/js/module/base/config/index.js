@@ -1,7 +1,7 @@
 import module from '../';
 import baseTpl from '../view/base.view.html';
 
-export default module.config(function ($stateProvider) {
+export default module.config($stateProvider => {
     $stateProvider
         .state('main.base', {
             url: 'base/',
@@ -10,8 +10,18 @@ export default module.config(function ($stateProvider) {
                 message: null
             },
             resolve: {
-                baseData: function (sideBarAuthService, roomService) {
+                baseData: ($q, roomService, authService) => {
+                    let defer = $q.defer();
                     roomService.set(null);
+                    authService.isLogin().then((user) => {
+
+                        if (!user) {
+                            $state.go('main.auth');
+                        } else {
+                            defer.resolve();
+                        }
+                    });
+                    return defer.promise;
                 }
             }
         });
