@@ -47,11 +47,11 @@ class userApi {
     getSimple(ids) {
         return new Promise(async resolve => {
             if (typeof ids === 'number') {
-                let user = await userModel.find({id: ids});
+                let user = await userModel.findOne({id: ids});
                 return resolve(helper.clearUser(user));
             } else {
-                let users = await userModel.find({id: {$in: ids}});
-                return resolve(helper.clearUser(users));
+                let user = await userModel.find({id: {$in: ids}});
+                return resolve(helper.clearUser(user));
             }
         });
     }

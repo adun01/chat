@@ -20,10 +20,10 @@ router.get('/api/room/', async  (req, res) => {
         },
 
         conversationSearch = await conversationApi.get(req.session.user.id),
-        roomSearch = await roomApi.get(req.session.user.id),
+        roomSearch = await roomApi.get(null, req.session.user.id),
         conversations, rooms;
 
-    conversations = conversationSearch.conversations
+    conversations = conversationSearch.conversations;
 
     rooms = roomSearch.rooms;
 

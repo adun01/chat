@@ -4,12 +4,44 @@ module.exports = {
         live: 3000
     },
     user: {
-        field: ['login', 'id', 'photo', 'email', 'date', 'online', 'rooms', 'conversations']
+        field: [
+            'login',
+            'email',
+            'photo',
+            'rooms',
+            'conversations',
+            'login',
+            'id'
+        ]
     },
     message: {
-        field: ['id', 'text', 'date', 'creatorId']
+        field: [
+            'text',
+            'creatorId',
+            'date',
+            'roomId',
+            'conversationId',
+            'text',
+            'id',
+            'user'
+        ]
     },
     room: {
-        field: ['id', 'creatorId', 'date', 'name', 'message', 'photo', 'create', 'notification']
+        field: [
+            'name',
+            'create',
+            'modify',
+            'users',
+            'bans',
+            'creatorId',
+            'photo',
+            'message',
+            'id',
+            'lastMessage',
+            'banned',
+            'notification',
+            'room',
+            'conversation'
+        ]
     }
 };

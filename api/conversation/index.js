@@ -105,7 +105,7 @@ class ConversationApi {
                     return conversation.id;
                 }));
 
-                conversations = conversations.forEach(conversation => {
+                conversations = conversations.map(conversation => {
 
                     conversation = helper.clearRoom(conversation);
 
@@ -116,8 +116,9 @@ class ConversationApi {
                     });
 
                     conversation.notification = this.notification(user, conversation.lastMessage);
-                });
 
+                    return conversation;
+                });
 
                 return resolve({
                     success: true,
@@ -128,7 +129,7 @@ class ConversationApi {
     }
 
     notification(user, lastMessage) {
-        let userRead = user.conversation.find(conversation => {
+        let userRead = user.conversations.find(conversation => {
             return conversation.id === lastMessage.conversationId;
         });
 
@@ -157,28 +158,27 @@ class ConversationApi {
 
                 message.conversationId = conversationIds;
 
-                return resolve(message);
-            } else {
+                return resolve(helper.clearMessage(message));
+            } else if (conversationIds && typeof conversationIds.length !== 'undefined') {
 
                 let conversations = await this.getById(conversationIds),
-                    messages, users;
+                    messages, users = [];
 
                 messages = conversations.map(conversation => {
-                    return conversation.message[conversation.message - 1];
+                    return conversation.message[conversation.message.length - 1];
                 });
 
-                users = userApi.getSimple(messages.map(message => {
+                users.push(...await userApi.getSimple(messages.map(message => {
                     return message.creatorId;
-                }));
+                })));
 
-                messages = messages.forEach(message => {
-                    messages.user = users.find(user => {
+                messages.forEach(message => {
+                    message.user = users.find(user => {
                         return user.id === message.creatorId;
-                    })
+                    });
                 });
 
-                return resolve(messages);
-
+                return resolve(helper.clearMessage(messages));
             }
         });
     }

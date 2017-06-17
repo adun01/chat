@@ -15,12 +15,28 @@ class Helper {
         }
     }
 
-    clearMessage() {
-        return _.pick(obj, ['id', 'users', 'create']);
+    clearMessage(obj) {
+        if (typeof obj.length !== 'undefined') {
+            let clearCollection = obj.map(user => {
+                return this.clearMessage(user);
+            });
+            return clearCollection;
+        } else {
+            return _.pick(obj, config.message.field);
+
+        }
     }
 
-    clearRoom() {
-        return _.pick(obj, ['id', 'users', 'create']);
+    clearRoom(obj) {
+        if (typeof obj.length !== 'undefined') {
+            let clearCollection = obj.map(user => {
+                return this.clearRoom(user);
+            });
+            return clearCollection;
+        } else {
+            return _.pick(obj, config.room.field);
+
+        }
     }
 }
 

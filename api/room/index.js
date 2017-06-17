@@ -1,5 +1,4 @@
 const roomModel = require('../../db/room/room.model'),
-    roomMessage = require('./message'),
     userApi = require('../user/'),
     helper = require('../helper');
 
@@ -63,7 +62,7 @@ class RoomApi {
         return new Promise(async resolve => {
             if (typeof ids === 'number') {
                 resolve(await roomModel.findOne(ids));
-            } else {
+            } else if (ids && typeof ids.length !== 'undefined') {
                 resolve(await roomModel.find({id: {$in: ids}}));
             }
         });
@@ -71,6 +70,7 @@ class RoomApi {
 
     get(ids, userId) {
         return new Promise(async resolve => {
+
             let user = await userApi.getSimple(userId);
             if (typeof ids === 'number') {
                 let room = await this.getSimple(ids),
@@ -90,7 +90,7 @@ class RoomApi {
 
                 room.banned = banned;
 
-                room.lastMessage = await roomMessage.getLastMessage(room.id);
+                room.lastMessage = await this.getLastMessage(room.id);
 
                 room.notification = this.notification(user, room.lastMessage);
 
@@ -98,28 +98,57 @@ class RoomApi {
                     success: true,
                     room: helper.clearRoom(room)
                 });
-            } else {
+            } else if (ids && typeof ids.length !== 'undefined') {
+
                 let rooms = await this.getSimple(ids),
                     messageList;
 
-                messageList = await roomMessage.getLastMessage(rooms.map(room => {
+                messageList = await this.getLastMessage(rooms.map(room => {
                     return room.id;
                 }));
 
                 rooms = rooms.map(room => {
+
                     room.lastMessage = messageList.find(message => {
                         return message.roomId = room.id;
                     });
+
                     room.room = true;
+
                     room.notification = this.notification(user, room.lastMessage);
 
                 });
 
                 return resolve({
                     success: true,
-                    rooms: rooms
+                    rooms: helper.clearRoom(rooms)
                 });
 
+            } else {
+
+                let rooms = await roomModel.find({users: {$in: [userId]}}),
+                    messageList;
+
+                messageList = await this.getLastMessage(rooms.map(room => {
+                    return room.id;
+                }));
+
+                rooms = rooms.map(room => {
+
+                    room.lastMessage = messageList.find(message => {
+                        return message.roomId === room.id;
+                    });
+
+                    room.room = true;
+
+                    room.notification = this.notification(user, room.lastMessage);
+                    return room;
+                });
+
+                return resolve({
+                    success: true,
+                    rooms: helper.clearRoom(rooms)
+                });
             }
         });
     }
@@ -138,6 +167,7 @@ class RoomApi {
 
     getUser(id) {
         return new Promise(async resolve => {
+
             let room = await roomModel.getSimple(id), users;
 
             if (!room) {
@@ -158,6 +188,7 @@ class RoomApi {
 
     addUser(id, userId) {
         return new Promise(async resolve => {
+
             let room = await this.getSimple(id),
                 userInside, newRoom;
 
@@ -230,7 +261,7 @@ class RoomApi {
 
             return resolve({
                 success: true,
-                room: history.clearRoom(newRoom)
+                room: helper.clearRoom(newRoom)
             });
 
         });
@@ -240,7 +271,7 @@ class RoomApi {
 
         return new Promise(async resolve => {
             let room = await roomModel.getSimple(id), bannedInside,
-                helper;
+                helper, newRoom;
 
             if (!room) {
 
@@ -266,7 +297,7 @@ class RoomApi {
 
                 return resolve({
                     success: true,
-                    room: helper.clearRoomField(room)
+                    room: helper.clearRoom(room)
                 });
             }
 
@@ -279,6 +310,106 @@ class RoomApi {
             return resolve({
                 success: true,
                 room: helper.clearRoom(newRoom)
+            });
+
+        });
+    }
+
+    getLastMessage(roomIds) {
+
+        return new Promise(async resolve => {
+
+            if (typeof roomIds === 'number') {
+
+                let room = await this.getSimple(roomIds),
+                    message, user;
+
+                message = helper.clearMessage(room.message[room.message.length - 1]);
+
+                user = await userApi.getSimple(message.creatorId);
+
+                message.user = helper.clearUser(user);
+
+                message.roomId = roomIds;
+
+                return resolve(message);
+            } else {
+
+                let rooms = await this.getSimple(roomIds),
+                    messages, users;
+
+                messages = rooms.map(room => {
+                    let message = helper.clearMessage(room.message[room.message.length - 1]);
+                    message.roomId = room.id;
+                    return message;
+                });
+
+                users = await userApi.getSimple(messages.map(message => {
+                    return message.creatorId;
+                }));
+
+                messages.forEach(message => {
+                    message.user = users.find(user => {
+                        return user.id === message.creatorId;
+                    });
+                });
+
+                return resolve(messages);
+
+            }
+        });
+    }
+
+    addMessage(userId, roomId, message) {
+        return new Promise(async resolve => {
+            let room = await this.search(roomId),
+                user = await userApi.getSimple(userId), lastMessage;
+
+            if (room) {
+
+                return resolve({
+                    success: false,
+                    message: 'Диалог не найдена.'
+                });
+            }
+
+            room.message.push({
+                creatorId: userId,
+                text: message,
+                roomId: room.id,
+                user: helper.clearUser(user)
+            });
+
+            room.markModified('message');
+
+            await room.save();
+
+            lastMessage = await this.getLastMessage(room.id);
+
+            resolve({
+                success: true,
+                lastMessage: lastMessage,
+                room: helper.clearRoom(room)
+            });
+
+        });
+    }
+
+    getMessage(roomId) {
+        return new Promise(async resolve => {
+            let room = await this.search(roomId);
+
+            if (room) {
+
+                return resolve({
+                    success: false,
+                    message: 'Диалог не найдена.'
+                });
+            }
+
+            resolve({
+                success: true,
+                message: helper.clearMessage(room.message)
             });
 
         });

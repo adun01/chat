@@ -12,7 +12,7 @@ const Schema = require('mongoose').Schema,
             type: Date,
             default: Date.now
         },
-        conversationId: Number,
+        conversationId: String,
         id: Number
     });
 

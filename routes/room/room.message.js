@@ -1,10 +1,10 @@
 const router = require('express').Router(),
     eventPublish = require('../../eventPublish'),
-    messageApi = require('../../api/room/message');
+    roomApi = require('../../api/room/');
 
 router.get('/api/room/:roomId/message', async(req, res) => {
 
-    let seachMessagesResult = await messageApi.get(
+    let seachMessagesResult = await roomApi.getMessage(
         +req.params.roomId,
         req.session.user.id
     );
@@ -15,7 +15,7 @@ router.get('/api/room/:roomId/message', async(req, res) => {
 
 router.post('/api/room/:roomId/message', async(req, res) => {
 
-    let newMessageResult = await messageApi.add(
+    let newMessageResult = await roomApi.addMessage(
         req.session.user.id,
         +req.params.roomId,
         req.body.message
