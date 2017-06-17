@@ -5,14 +5,7 @@ class SessioApi {
     get(sessionID) {
 
         return new Promise(async resolve => {
-
-            let session = await store.get(sessionID);
-
-            resolve({
-                success: true,
-                session: session,
-                user: session ? session.user : null
-            });
+            resolve(await store.get(sessionID));
         });
     }
 

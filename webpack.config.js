@@ -1,5 +1,6 @@
 const path = require('path'),
-    webpack = require('webpack');
+    webpack = require('webpack'),
+    AsyncAwaitPlugin = require('webpack-async-await');
 
 webpack({
     entry: './frontend/js/app.js',
@@ -16,15 +17,23 @@ webpack({
         extensions: [".js", ".json", ".jsx", ".css"],
     },
     module: {
-        rules: [{
-            test: /\.html$/,
-            use: [{
-                loader: 'html-loader',
-                options: {
-                    minimize: true
-                }
-            }]
-        }]
+        rules: [
+            {
+                test: /\.html$/,
+                use: [{
+                    loader: 'html-loader',
+                    options: {
+                        minimize: true
+                    }
+                }]
+            }, {
+                test: /\.js$/,
+                exclude: [/node_modules/],
+                use: [{
+                    loader: 'babel-loader'
+                }],
+            }
+        ]
     },
     devtool: "source-map",
     context: __dirname,
