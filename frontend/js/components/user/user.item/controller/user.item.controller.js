@@ -8,13 +8,14 @@ module.controller('userItemController',
         _ctrlUserItem.user = $scope.user;
         _ctrlUserItem.lastMessage = $scope.lastMessage;
         _ctrlUserItem.hideActions = $scope.hideActions;
+        _ctrlUserItem.align = $scope.align || 'left';
 
         _ctrlUserItem.photo = userService.photo;
 
-        _ctrlUserItem.openConversation = function () {
+        _ctrlUserItem.openConversation = function ($event) {
 
             if (_ctrlUserItem.currentUser.id === _ctrlUserItem.user.id) {
-                userService.editUser();
+                userService.showUser($event, _ctrlUserItem.user);
             } else {
                 $state.go('main.conversation', {
                     id: _ctrlUserItem.user.id

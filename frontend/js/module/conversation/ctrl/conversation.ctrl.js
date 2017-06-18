@@ -2,13 +2,11 @@ import module from '../';
 import userSearchTpl from '../../room/view/user.search.html';
 
 module.controller('conversationController',
-    function (roomService, socketService) {
+    function (roomService, conversationData) {
 
         const _ctrlConversation = this;
 
-        _ctrlConversation.room = roomService.getCurrentRoom();
+        roomService.set(conversationData);
 
-        socketService.emit('roomOpen', {
-            roomId: _ctrlConversation.room.id
-        });
+        _ctrlConversation.room = roomService.getCurrentRoom();
     });

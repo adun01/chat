@@ -33,14 +33,7 @@ module.controller('userActionsController',
             _ctrlUserAction.canBannedInRoom = false;
         }
 
-        _ctrlUserAction.showUser = function ($event, user) {
-
-            if (_ctrlUserAction.selfUser) {
-                userService.editUser();
-            } else {
-                userService.showUser($event, user);
-            }
-        };
+        _ctrlUserAction.showUser = userService.showUser;
 
         _ctrlUserAction.leaveRoom = function () {
             roomUserService.remove({

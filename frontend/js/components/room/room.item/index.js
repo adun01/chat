@@ -9,7 +9,8 @@ module.directive('roomItem', function () {
         scope: {
             room: '=',
             lastMessage: '=',
-            hideActions: '='
+            hideActions: '=',
+            align: '@'
         }
     }
 });

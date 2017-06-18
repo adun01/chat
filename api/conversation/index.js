@@ -4,16 +4,6 @@ const conversationModel = require('../../db/conversation/conversation.model'),
 
 class ConversationApi {
 
-    getById(conversationIds) {
-        return new Promise(async resolve => {
-            if (typeof conversationIds === 'number') {
-                return resolve(await conversationModel.findOne({id: conversationIds}));
-            } else {
-                return resolve(await conversationModel.find({id: {$in: conversationIds}}));
-            }
-        });
-    }
-
     search(userId, userInterlocutor) {
         return new Promise(async resolve => {
 
@@ -21,9 +11,18 @@ class ConversationApi {
                 sId2 = userInterlocutor + '' + userId,
                 conversation;
 
-            conversation = await conversationModel.findOne({$or: [{id: sId}, {id: sId2}]});
+            conversation = await conversationModel.findOne({
+                $or: [
+                    {id: sId},
+                    {id: sId2}
+                ]
+            });
 
-            conversation.user = await userApi.getSimple(userInterlocutor);
+            conversation.conversation = true;
+
+            if (conversation) {
+                conversation.user = await userApi.getSimple(userInterlocutor);
+            }
 
             return resolve(conversation);
         })
@@ -34,7 +33,8 @@ class ConversationApi {
             let sId = userId + '' + userInterlocutorId,
                 conversation;
 
-            if (!userId || !userInterlocutorId) {
+            if (typeof userId !== 'number' || typeof userInterlocutorId !== 'number') {
+
                 resolve({
                     success: false,
                     message: 'Нет данных.'
@@ -48,6 +48,8 @@ class ConversationApi {
 
             conversation = helper.clearRoom(conversation);
 
+            conversation.conversation = true;
+
             return resolve({
                 success: true,
                 conversation: conversation
@@ -58,7 +60,7 @@ class ConversationApi {
     get(userId, userInterlocutorId = false) {
         return new Promise(async resolve => {
 
-            if (userInterlocutorId) {
+            if (typeof userInterlocutorId === 'number') {
 
                 if (userId === userInterlocutorId) {
 
@@ -68,7 +70,7 @@ class ConversationApi {
                     });
                 }
 
-                let conversation = this.search(userId, userInterlocutorId),
+                let conversation = await this.search(userId, userInterlocutorId),
                     user = await userApi.getSimple(userInterlocutorId);
 
                 if (conversation) {
@@ -76,7 +78,7 @@ class ConversationApi {
                     conversation = helper.clearRoom(conversation);
                     conversation.user = helper.clearUser(user);
 
-                    conversation.lastMessage = await this.getLastMessage(conversation);
+                    conversation.user.lastMessage = await this.getLastMessage(conversation);
 
                     return resolve({
                         success: true,
@@ -85,9 +87,14 @@ class ConversationApi {
 
                 } else {
 
-                    conversation = await this.create(userId, userInterlocutorId);
+                    let conversationCreate = await this.create(userId, userInterlocutorId),
+                        conversation;
 
-                    conversation = helper.clearRoom(conversation);
+                    if (!conversationCreate.success) {
+                        return resolve(conversationCreate);
+                    }
+
+                    conversation = helper.clearRoom(conversationCreate.conversation);
 
                     conversation.user = user;
 
@@ -103,17 +110,19 @@ class ConversationApi {
 
                 messageList = await this.getLastMessage(conversations);
 
+                conversations = await this.searchUserFoConversation(conversations, userId);
+
                 conversations = conversations.map(conversation => {
 
                     conversation = helper.clearRoom(conversation);
 
                     conversation.conversation = true;
 
-                    conversation.lastMessage = messageList.find(message => {
+                    conversation.user.lastMessage = messageList.find(message => {
                         return message.conversationId === conversation.id;
                     });
 
-                    conversation.notification = this.notification(user, conversation.lastMessage);
+                    conversation.notification = this.notification(user, conversation.user.lastMessage);
 
                     return conversation;
                 });
@@ -143,17 +152,17 @@ class ConversationApi {
 
         return new Promise(async resolve => {
 
-            if (typeof conversations === 'number') {
+            if (typeof conversations.length === 'undefined') {
 
                 let message, user;
 
                 message = conversations.message[conversations.message.length - 1];
 
-                user = await userApi.getSimple(message.creatorId);
-
-                message.user = helper.clearUser(user);
-
-                message.conversationId = conversationIds;
+                if (message) {
+                    user = await userApi.getSimple(message.creatorId);
+                    message.user = helper.clearUser(user);
+                    message.conversationId = conversations.id;
+                }
 
                 return resolve(helper.clearMessage(message));
             } else if (conversations && typeof conversations.length !== 'undefined') {
@@ -181,10 +190,10 @@ class ConversationApi {
 
     addMessage(userId, userInterlocutor, message) {
         return new Promise(async resolve => {
-            let conversation = await conversationApi.search(userId, userInterlocutor),
+            let conversation = await this.search(userId, userInterlocutor),
                 user = await userApi.getSimple(userId), lastMessage;
 
-            if (conversation) {
+            if (!conversation) {
 
                 return resolve({
                     success: false,
@@ -207,7 +216,7 @@ class ConversationApi {
 
             resolve({
                 success: true,
-                lastMessage: lastMessage,
+                lastMessage: helper.clearMessage(lastMessage),
                 conversation: helper.clearRoom(conversation)
             });
 
@@ -216,9 +225,11 @@ class ConversationApi {
 
     getMessage(userId, userInterlocutor) {
         return new Promise(async resolve => {
-            let conversation = await this.search(userId, userInterlocutor);
 
-            if (conversation) {
+            let conversation = await this.search(userId, userInterlocutor),
+                users, messages;
+
+            if (!conversation) {
 
                 return resolve({
                     success: false,
@@ -226,13 +237,53 @@ class ConversationApi {
                 });
             }
 
+            users = await userApi.getSimple(conversation.users);
+
+            messages = conversation.message.map((message) => {
+
+                message.user = users.find((user) => {
+                    return user.id === message.creatorId;
+                });
+
+                return message;
+            });
+
             resolve({
                 success: true,
-                message: helper.clearMessage(conversation.message)
+                messages: helper.clearMessage(messages)
             });
 
         });
 
+    }
+
+    searchUserFoConversation(conversations, userId) {
+        return new Promise(async (resolve) => {
+            if (typeof conversations.length !== 'undefined') {
+                let users = await userApi.getSimple(conversations.map((conversation) => {
+                    return +conversation.users.join('').replace(userId, '');
+                }));
+
+                conversations = conversations.map((conversation) => {
+
+                    let userInterlocutorId = +conversation.users.join('').replace(userId, '');
+
+                    conversation.user = users.find((user) => {
+                        return user.id === userInterlocutorId;
+                    });
+
+                    return conversation;
+                });
+
+                return resolve(conversations);
+            } else {
+                let user = await userApi.getSimple(+conversations.users.join('').replace(userId, ''));
+
+                conversations.user = user;
+
+                return resolve(conversations);
+            }
+        });
     }
 }
 

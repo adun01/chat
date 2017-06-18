@@ -12,14 +12,7 @@ module.controller('messageListController',
             messages: []
         };
 
-        _ctrlMessageList.showUser = function ($event, user) {
-
-            if (user.id === _ctrlMessageList.user.id) {
-                userService.editUser($event);
-            } else {
-                userService.showUser($event, user);
-            }
-        };
+        _ctrlMessageList.showUser = userService.showUser;
 
         _ctrlMessageList.getPathPhoto = userService.photo;
 
@@ -30,15 +23,16 @@ module.controller('messageListController',
 
             _ctrlMessageList.getMessage({
                 roomId: _ctrlMessageList.room.id,
-                conversationId: _ctrlMessageList.room.user ? _ctrlMessageList.room.user.id : null
+                conversationId: _ctrlMessageList.room.conversation ? _ctrlMessageList.room.user.id : null
             }).then(function (resp) {
 
                 _ctrlMessageList.data.messages = resp.messages;
                 _ctrlMessageList.sendNotificationMesage();
 
                 $timeout(function () {
+                    debugger;
                     document.querySelector('.message-overflow').scrollTop = $element[0].clientHeight;
-                }, 150);
+                }, 1500);
             });
         };
 

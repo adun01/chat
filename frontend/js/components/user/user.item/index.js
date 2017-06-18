@@ -9,7 +9,8 @@ module.directive('userItem', function () {
         scope: {
             user: '=',
             hideActions: '=',
-            lastMessage: '='
+            lastMessage: '=',
+            align: '@'
         }
     }
 });

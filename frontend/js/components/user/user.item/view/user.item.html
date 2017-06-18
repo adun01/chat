@@ -1,7 +1,7 @@
 <div class="md-3-line"
      layout
      layout-align="space-between center"
-     data-ng-if="!_ctrlUserItem.lastMessage">
+     data-ng-if="!_ctrlUserItem.lastMessage && _ctrlUserItem.align === 'left'">
 
     <div layout
          layout-align="center center">
@@ -11,7 +11,7 @@
 
         <img class="user-item__photo"
              alt="{{_ctrlUserItem.user.login}}"
-             data-ng-click="_ctrlUserItem.openConversation()"
+             data-ng-click="_ctrlUserItem.openConversation($event)"
              data-ng-src="{{_ctrlUserItem.photo(_ctrlUserItem.user)}}"/>
 
         <div layout="column"
@@ -28,6 +28,39 @@
                   data-show-user="true"></user-actions>
 </div>
 
+
+
+<div class="md-3-line user-item__align-box user-item__align-box--right"
+     layout
+     layout-align="space-between center"
+     data-ng-if="!_ctrlUserItem.lastMessage && _ctrlUserItem.align === 'right'">
+
+    <user-actions data-ng-if="!_ctrlUserItem.hideActions"
+                  data-user="_ctrlUserItem.user"
+                  data-show-user="true"></user-actions>
+
+    <div data-ng-if="_ctrlUserItem.hideActions"></div>
+
+    <div layout
+         layout-align="center center">
+
+        <div layout="column"
+             layout-align="center left">
+
+            <div class="user-item__login">{{ _ctrlUserItem.user.login }}</div>
+            <div class="user-item__email">{{ _ctrlUserItem.user.email }}</div>
+        </div>
+
+        <img class="user-item__photo"
+             alt="{{_ctrlUserItem.user.login}}"
+             data-ng-click="_ctrlUserItem.openConversation($event)"
+             data-ng-src="{{_ctrlUserItem.photo(_ctrlUserItem.user)}}"/>
+
+        <div class="user-item__status"
+             data-ng-class="{'user-item__status--online': _ctrlUserItem.user.online}"></div>
+    </div>
+</div>
+
 <div class="md-3-line"
      layout
      layout-align="space-between center"
@@ -40,7 +73,7 @@
 
         <img class="room-list__photo"
              alt="{{_ctrlUserItem.user.login}}"
-             data-ng-click="_ctrlUserItem.openConversation()"
+             data-ng-click="_ctrlUserItem.openConversation($event)"
              data-ng-src="{{_ctrlUserItem.photo(_ctrlUserItem.user)}}"/>
     </div>
 

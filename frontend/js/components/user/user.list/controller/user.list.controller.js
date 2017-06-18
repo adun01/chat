@@ -13,13 +13,7 @@ module.controller('userListController',
             userListTrue: []
         };
 
-        _ctrlUserList.showUser = function (ev, user) {
-            if (_ctrlUserList.user.id === user.id) {
-                userService.editUser();
-            } else {
-                userService.showUser(ev, user);
-            }
-        };
+        _ctrlUserList.showUser = userService.showUser;
 
         _ctrlUserList.onlineFilter = function (online) {
 

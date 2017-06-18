@@ -23,7 +23,7 @@
     width: $photo_size;
     height: $photo_size;
     border-radius: 50%;
-    margin: 6px 8px 6px 0;
+    margin: 6px 18px 6px 0;
     cursor: pointer;
   }
 
@@ -38,6 +38,17 @@
 
     &--online {
       background: green;
+    }
+  }
+
+  &__align-box {
+    width: 100%;
+
+    &--right {
+
+      & .user-item__photo {
+        margin: 6px 0 6px 18px;
+      }
     }
   }
 }

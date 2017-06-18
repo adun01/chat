@@ -12,7 +12,8 @@ module.exports = {
             'conversations',
             'login',
             'id',
-            'online'
+            'online',
+            'date'
         ]
     },
     message: {
@@ -32,6 +33,7 @@ module.exports = {
             'name',
             'create',
             'modify',
+            'user',
             'users',
             'bans',
             'creatorId',

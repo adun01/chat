@@ -19,4 +19,8 @@ body {
   padding-top: $layout-offset;
   width: 100%;
   min-height: 72px;
+
+  &--offset {
+    margin-top: 72px;
+  }
 }

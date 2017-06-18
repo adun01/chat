@@ -9,33 +9,20 @@ export default module.config(function ($stateProvider) {
             controllerAs: '_ctrlConversation',
             template: conversationTpl,
             resolve: {
-                conversationData: function (conversationService, authService, $stateParams, roomService, $q, $state) {
+                conversationData: ($q, conversationService, authService, $stateParams) => {
                     let defer = $q.defer();
 
-                    authService.isLogin().then(function (response) {
-                        if (!response.success) {
+                    authService.isLogin().then((user) => {
+
+                        if (!user) {
                             $state.go('main.auth');
-                            defer.resolve('auth is error');
                         } else {
 
-                            conversationService.get({id: $stateParams.id}).then(function (response) {
-
-                                if (response.success) {
-
-                                    response.conversation.conversation = true;
-
-                                    roomService.set(response.conversation);
-
-                                    defer.resolve(response.conversation);
-                                } else {
-                                    $state.go('main.base', {
-                                        message: response.message
-                                    });
-                                }
+                            conversationService.get($stateParams).then((response) => {
+                                defer.resolve(response.conversation);
                             });
                         }
                     });
-
                     return defer.promise;
                 }
             }

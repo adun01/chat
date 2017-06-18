@@ -27,12 +27,12 @@
     &__avatar {
       width: 50px;
       border-radius: 50%;
-      margin: 0 8px 8px 0;
+      margin: 0 12px 8px 0;
       cursor: pointer;
       vertical-align: bottom;
 
       &--self {
-        margin: 0 0 8px 8px;
+        margin: 0 0 8px 12px;
       }
     }
 

@@ -3,26 +3,9 @@
          layout
          layout-align="space-between center">
 
-        <div flex="80"
-             class="room-header__description"
-             data-ng-click="_ctrlHeaderRoom.openRoom($event)">
-
-            <user-item class="user-item room-header__name"
-                       data-user="_ctrlHeaderRoom.room.user"
-                       data-hide-actions="true"
-                       data-ng-if="_ctrlHeaderRoom.room.conversation">
-            </user-item>
-
-            <room-item class="room-item room-header__name"
-                       data-room="_ctrlHeaderRoom.room"
-                       data-hide-actions="true"
-                       data-ng-if="!_ctrlHeaderRoom.room.conversation">
-            </room-item>
-        </div>
-
         <div flex="20"
              layout
-             layout-align="end center">
+             layout-align="start center">
 
             <md-button class="md-fab chat-icon-action room-header__forward"
                        layout
@@ -36,6 +19,25 @@
                             icon="forward">
                 </ng-md-icon>
             </md-button>
+        </div>
+
+        <div flex="80"
+             class="room-header__description"
+             data-ng-click="_ctrlHeaderRoom.openRoom($event)">
+
+            <user-item class="user-item room-header__name"
+                       data-user="_ctrlHeaderRoom.room.user"
+                       data-hide-actions="true"
+                       data-align="right"
+                       data-ng-if="_ctrlHeaderRoom.room.conversation">
+            </user-item>
+
+            <room-item class="room-item room-header__name"
+                       data-room="_ctrlHeaderRoom.room"
+                       data-hide-actions="true"
+                       data-align="right"
+                       data-ng-if="!_ctrlHeaderRoom.room.conversation">
+            </room-item>
         </div>
     </div>
 </md-toolbar>

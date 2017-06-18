@@ -1,8 +1,7 @@
 <div class="md-3-line"
      layout
      layout-align="space-between center"
-     data-ng-if="!_ctrlRoomItem.lastMessage">
-
+     data-ng-if="!_ctrlRoomItem.lastMessage && _ctrlRoomItem.align === 'left'">
     <div>
         <button class="md-fab md-button md-ink-ripple room-item__btn"
                 data-ng-click="_ctrlRoomItem.openRoom()">
@@ -11,12 +10,37 @@
         </button>
 
         <span>
-            {{_ctrlRoomItem.room.name}}
-        </span>
+                {{_ctrlRoomItem.room.name}}
+            </span>
     </div>
 
     <room-actions data-ng-if="!_ctrlRoomItem.hideActions"
                   data-room="_ctrlRoomItem.room"></room-actions>
+</div>
+
+<div class="md-3-line room-item__align-box room-item__align-box--right"
+     layout
+     layout-align="space-between center"
+     data-ng-if="!_ctrlRoomItem.lastMessage && _ctrlRoomItem.align === 'right'">
+
+    <room-actions data-ng-if="!_ctrlRoomItem.hideActions"
+                  data-room="_ctrlRoomItem.room"></room-actions>
+
+    <div data-ng-if="_ctrlRoomItem.hideActions"></div>
+
+    <div>
+            <span>
+                {{_ctrlRoomItem.room.name}}
+            </span>
+
+        <button class="md-fab md-button md-ink-ripple room-item__btn"
+                data-ng-click="_ctrlRoomItem.openRoom()">
+
+            {{_ctrlRoomItem.room.shortName.toUpperCase()}}
+        </button>
+
+
+    </div>
 </div>
 
 <div class="md-3-line"

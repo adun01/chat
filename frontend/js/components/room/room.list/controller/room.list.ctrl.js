@@ -1,7 +1,7 @@
 import module from '../../../';
 
 module.controller('roomListController',
-    function ($scope, roomService, userService, $timeout, $rootScope, $state) {
+    function ($scope, roomService, userService, $timeout, $rootScope) {
         const _ctrlRoomList = this;
 
         _ctrlRoomList.data = {

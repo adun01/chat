@@ -7,16 +7,6 @@ module.controller('userSearchController', function (roomService, $q, userService
         users: []
     };
 
-    _ctrlUserSearch.photo = userService.photo;
-
-    _ctrlUserSearch.showUser = function (user) {
-        if (_ctrlUserSearch.user.id === user.id) {
-            userService.editUser();
-        } else {
-            userService.showUser(null, user);
-        }
-    };
-
     _ctrlUserSearch.room = roomService.getCurrentRoom();
 
     _ctrlUserSearch.user = userService.get();

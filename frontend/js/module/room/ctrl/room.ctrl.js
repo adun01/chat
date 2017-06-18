@@ -9,10 +9,6 @@ module.controller('roomController',
 
         _ctrlRoom.room = roomService.getCurrentRoom();
 
-        if (!_ctrlRoom.room.banned) {
-            socketService.emit('roomOpen', {roomId: _ctrlRoom.room.id});
-        }
-
         let roomListChangeRemove = $rootScope.$on('banned', function ($event, data) {
 
             if (+data.roomId === +_ctrlRoom.room.id) {
