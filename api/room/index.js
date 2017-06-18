@@ -61,7 +61,7 @@ class RoomApi {
     getSimple(ids) {
         return new Promise(async resolve => {
             if (typeof ids === 'number') {
-                resolve(await roomModel.findOne(ids));
+                resolve(await roomModel.findOne({id: ids}));
             } else if (ids && typeof ids.length !== 'undefined') {
                 resolve(await roomModel.find({id: {$in: ids}}));
             }
@@ -72,6 +72,7 @@ class RoomApi {
         return new Promise(async resolve => {
 
             let user = await userApi.getSimple(userId);
+
             if (typeof ids === 'number') {
                 let room = await this.getSimple(ids),
                     banned;
@@ -90,7 +91,7 @@ class RoomApi {
 
                 room.banned = banned;
 
-                room.lastMessage = await this.getLastMessage(room.id);
+                room.lastMessage = await this.getLastMessage(room);
 
                 room.notification = this.notification(user, room.lastMessage);
 
@@ -103,9 +104,7 @@ class RoomApi {
                 let rooms = await this.getSimple(ids),
                     messageList;
 
-                messageList = await this.getLastMessage(rooms.map(room => {
-                    return room.id;
-                }));
+                messageList = await this.getLastMessage(rooms);
 
                 rooms = rooms.map(room => {
 
@@ -129,9 +128,7 @@ class RoomApi {
                 let rooms = await roomModel.find({users: {$in: [userId]}}),
                     messageList;
 
-                messageList = await this.getLastMessage(rooms.map(room => {
-                    return room.id;
-                }));
+                messageList = await this.getLastMessage(rooms);
 
                 rooms = rooms.map(room => {
 
@@ -168,7 +165,7 @@ class RoomApi {
     getUser(id) {
         return new Promise(async resolve => {
 
-            let room = await roomModel.getSimple(id), users;
+            let room = await this.getSimple(id), users;
 
             if (!room) {
                 resolve({
@@ -315,28 +312,30 @@ class RoomApi {
         });
     }
 
-    getLastMessage(roomIds) {
+    getLastMessage(rooms) {
 
         return new Promise(async resolve => {
 
-            if (typeof roomIds === 'number') {
+            if (typeof rooms.length === 'undefined') {
 
-                let room = await this.getSimple(roomIds),
-                    message, user;
+                let message, user;
 
-                message = helper.clearMessage(room.message[room.message.length - 1]);
+                message = helper.clearMessage(rooms.message[rooms.message.length - 1]);
+
+                if (!message) {
+                    return resolve(message);
+                }
 
                 user = await userApi.getSimple(message.creatorId);
 
                 message.user = helper.clearUser(user);
 
-                message.roomId = roomIds;
+                message.roomId = rooms.id;
 
                 return resolve(message);
             } else {
 
-                let rooms = await this.getSimple(roomIds),
-                    messages, users;
+                let messages, users;
 
                 messages = rooms.filter((room) => {
                     return room.message[room.message.length - 1];
@@ -360,31 +359,46 @@ class RoomApi {
         });
     }
 
-    addMessage(userId, roomId, message) {
+    addMessage(userId, id, message) {
         return new Promise(async resolve => {
-            let room = await this.search(roomId),
+            let room = await this.getSimple(id),
                 user = await userApi.getSimple(userId), lastMessage;
 
-            if (room) {
+            if (!room) {
 
                 return resolve({
                     success: false,
-                    message: 'Диалог не найдена.'
+                    message: 'Комната не найдена.'
+                });
+            }
+
+            if (this.isBanned(room, userId)) {
+
+                return resolve({
+                    success: false,
+                    message: 'нет доступа.'
+                });
+            }
+
+            if (!this.isParticipant(room, userId)) {
+
+                return resolve({
+                    success: false,
+                    message: 'Только участники могут отправлять сообщения.'
                 });
             }
 
             room.message.push({
                 creatorId: userId,
                 text: message,
-                roomId: room.id,
-                user: helper.clearUser(user)
+                roomId: room.id
             });
 
             room.markModified('message');
 
             await room.save();
 
-            lastMessage = await this.getLastMessage(room.id);
+            lastMessage = await this.getLastMessage(room);
 
             resolve({
                 success: true,
@@ -395,25 +409,59 @@ class RoomApi {
         });
     }
 
-    getMessage(roomId) {
+    getMessage(roomId, userId) {
         return new Promise(async resolve => {
-            let room = await this.search(roomId);
+            let room = await this.getSimple(roomId),
+                users, messages;
 
-            if (room) {
+            if (!room) {
 
                 return resolve({
                     success: false,
-                    message: 'Диалог не найдена.'
+                    message: 'Комната не найдена.'
                 });
             }
 
+            if (this.isBanned(room, userId)) {
+
+                return resolve({
+                    success: false,
+                    message: 'нет доступа.'
+                });
+            }
+
+            users = await userApi.getSimple(room.message.map((message) => {
+                return message.creatorId;
+            }));
+
+            messages = room.message.map((message) => {
+
+                message.user = users.find((user) => {
+                    return user.id === message.creatorId;
+                });
+
+                return message;
+            });
+
             resolve({
                 success: true,
-                message: helper.clearMessage(room.message)
+                messages: helper.clearMessage(messages)
             });
 
         });
 
+    }
+
+    isBanned(room, userId) {
+        return room.bans.some((userBannedId) => {
+            return userBannedId === userId;
+        });
+    }
+
+    isParticipant(room, userId) {
+        return room.users.some((userPartiId) => {
+            return userPartiId === userId;
+        });
     }
 }
 

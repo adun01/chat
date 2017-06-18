@@ -1,8 +1,9 @@
-const router = require('express').Router();
+const router = require('express').Router(),
+    userApi = require('../../api/user/');
 
 router.post('/api/room/:roomId/notification/message/:messageId', async (req, res) => {
 
-    let saveResult = await messageNotApi.save(
+    let saveResult = await userApi.setNewReadMessage(
         req.session.user.id,
         +req.params.roomId,
         +req.params.messageId

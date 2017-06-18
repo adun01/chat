@@ -3,7 +3,7 @@ const listUserOnline = (() => {
 
     return {
         get: userId => {
-            if (!userId) {
+            if (typeof userId === 'undefined') {
                 return usersList;
             } else {
                 return usersList.find(iUser => {

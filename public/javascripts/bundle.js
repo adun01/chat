@@ -88004,8 +88004,8 @@ _2.default.controller('userListController', function (userService, roomService, 
     _ctrlUserList.getUsers = function () {
         roomUserService.get({ roomId: _ctrlUserList.room.id }).then(function (response) {
 
-            _ctrlUserList.data.userList = response.room.collection;
-            _ctrlUserList.data.userListTrue = response.room.collection;
+            _ctrlUserList.data.userList = response.users;
+            _ctrlUserList.data.userListTrue = response.users;
         });
     };
 
@@ -88763,7 +88763,7 @@ exports.default = _2.default.config(function ($stateProvider) {
         controllerAs: '_ctrlRoom',
         template: _roomView2.default,
         resolve: {
-            baseData: function baseData($q, roomService, authService) {
+            roomData: function roomData($q, roomService, authService, $stateParams) {
                 var defer = $q.defer();
 
                 authService.isLogin().then(function (user) {
@@ -88771,7 +88771,10 @@ exports.default = _2.default.config(function ($stateProvider) {
                     if (!user) {
                         $state.go('main.auth');
                     } else {
-                        defer.resolve();
+
+                        roomService.get($stateParams).then(function (response) {
+                            defer.resolve(response.room);
+                        });
                     }
                 });
                 return defer.promise;
@@ -88848,7 +88851,7 @@ _2.default.controller('roomController', function ($scope, roomService, $rootScop
 
     var _ctrlRoom = this;
 
-    roomService.set(roomData.room);
+    roomService.set(roomData);
 
     _ctrlRoom.room = roomService.getCurrentRoom();
 

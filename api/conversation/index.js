@@ -76,7 +76,7 @@ class ConversationApi {
                     conversation = helper.clearRoom(conversation);
                     conversation.user = helper.clearUser(user);
 
-                    conversation.lastMessage = await this.getLastMessage(conversation.id);
+                    conversation.lastMessage = await this.getLastMessage(conversation);
 
                     return resolve({
                         success: true,
@@ -101,9 +101,7 @@ class ConversationApi {
                     user = await userApi.getSimple(userId),
                     messageList;
 
-                messageList = await this.getLastMessage(conversations.map(conversation => {
-                    return conversation.id;
-                }));
+                messageList = await this.getLastMessage(conversations);
 
                 conversations = conversations.map(conversation => {
 
@@ -141,16 +139,15 @@ class ConversationApi {
         return lastMessage.id - userRead.messageId;
     }
 
-    getLastMessage(conversationIds) {
+    getLastMessage(conversations) {
 
         return new Promise(async resolve => {
 
-            if (typeof conversationIds === 'number') {
+            if (typeof conversations === 'number') {
 
-                let conversation = await this.getById(conversationIds),
-                    message, user;
+                let message, user;
 
-                message = conversation.message[conversation.message.length - 1];
+                message = conversations.message[conversations.message.length - 1];
 
                 user = await userApi.getSimple(message.creatorId);
 
@@ -159,10 +156,9 @@ class ConversationApi {
                 message.conversationId = conversationIds;
 
                 return resolve(helper.clearMessage(message));
-            } else if (conversationIds && typeof conversationIds.length !== 'undefined') {
+            } else if (conversations && typeof conversations.length !== 'undefined') {
 
-                let conversations = await this.getById(conversationIds),
-                    messages, users = [];
+                let messages, users = [];
 
                 messages = conversations.map(conversation => {
                     return conversation.message[conversation.message.length - 1];
@@ -192,7 +188,7 @@ class ConversationApi {
 
                 return resolve({
                     success: false,
-                    message: 'Диалог не найдена.'
+                    message: 'Диалог не найден.'
                 });
             }
 
@@ -207,7 +203,7 @@ class ConversationApi {
 
             await conversation.save();
 
-            lastMessage = await this.getLastMessage(conversation.id);
+            lastMessage = await this.getLastMessage(conversation);
 
             resolve({
                 success: true,
@@ -226,7 +222,7 @@ class ConversationApi {
 
                 return resolve({
                     success: false,
-                    message: 'Диалог не найдена.'
+                    message: 'Диалог не найден.'
                 });
             }
 

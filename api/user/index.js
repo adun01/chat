@@ -47,11 +47,21 @@ class userApi {
     getSimple(ids) {
         return new Promise(async resolve => {
             if (typeof ids === 'number') {
+
                 let user = await userModel.findOne({id: ids});
+
+                user.online = !!usersOnline.get(user.id);
+
                 return resolve(helper.clearUser(user));
             } else {
-                let user = await userModel.find({id: {$in: ids}});
-                return resolve(helper.clearUser(user));
+
+                let users = await userModel.find({id: {$in: ids}});
+
+                users.forEach((user) => {
+                    user.online = !!usersOnline.get(user.id);
+                });
+
+                return resolve(helper.clearUser(users));
             }
         });
     }
@@ -298,13 +308,20 @@ class userApi {
 
     setNewReadMessage(id, roomId, messageId, collectionName = 'rooms') {
         return new Promise(async resolve => {
-            let user = this.getSimple(id);
+            let user = await userModel.findOne({id: id});
 
             let room = user[collectionName].find(room => {
                 return room.id === roomId;
             });
 
-            room.messageId = messageId;
+            if (room && room.messageId < messageId) {
+                room.messageId = messageId;
+            } else {
+                user[collectionName].push({
+                    id: roomId,
+                    messageId: messageId
+                });
+            }
 
             user.markModified(collectionName);
 

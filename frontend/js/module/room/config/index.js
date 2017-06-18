@@ -1,7 +1,7 @@
 import module from '../';
 import roomTpl from '../view/room.view.html'
 
-export default module.config(function ($stateProvider) {
+export default module.config(($stateProvider) => {
     $stateProvider
         .state('main.room', {
             url: 'room/:id/',
@@ -9,7 +9,7 @@ export default module.config(function ($stateProvider) {
             controllerAs: '_ctrlRoom',
             template: roomTpl,
             resolve: {
-                baseData: ($q, roomService, authService) => {
+                roomData: ($q, roomService, authService, $stateParams) => {
                     let defer = $q.defer();
 
                     authService.isLogin().then((user) => {
@@ -17,7 +17,10 @@ export default module.config(function ($stateProvider) {
                         if (!user) {
                             $state.go('main.auth');
                         } else {
-                            defer.resolve();
+
+                            roomService.get($stateParams).then((response) => {
+                                defer.resolve(response.room);
+                            });
                         }
                     });
                     return defer.promise;

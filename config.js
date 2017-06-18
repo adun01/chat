@@ -11,7 +11,8 @@ module.exports = {
             'rooms',
             'conversations',
             'login',
-            'id'
+            'id',
+            'online'
         ]
     },
     message: {

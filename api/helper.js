@@ -5,36 +5,33 @@ class Helper {
 
     clearUser(obj) {
         if (obj && typeof obj.length !== 'undefined') {
-            let clearCollection = obj.map(user => {
+            return obj.map(user => {
                 return this.clearUser(user);
             });
-            return clearCollection;
         } else {
-            return _.pick(obj, config.user.field);
+            return obj ? _.pick(obj, config.user.field) : obj;
 
         }
     }
 
     clearMessage(obj) {
         if (obj && typeof obj.length !== 'undefined') {
-            let clearCollection = obj.map(user => {
+            return obj.map(user => {
                 return this.clearMessage(user);
             });
-            return clearCollection;
         } else {
-            return _.pick(obj, config.message.field);
+            return obj ? _.pick(obj, config.message.field) : obj;
 
         }
     }
 
     clearRoom(obj) {
         if (obj && typeof obj.length !== 'undefined') {
-            let clearCollection = obj.map(user => {
+            return obj.map(user => {
                 return this.clearRoom(user);
             });
-            return clearCollection;
         } else {
-            return _.pick(obj, config.room.field);
+            return obj ? _.pick(obj, config.room.field) : obj;
 
         }
     }

@@ -5,7 +5,7 @@ module.controller('roomController',
 
         const _ctrlRoom = this;
 
-        roomService.set(roomData.room);
+        roomService.set(roomData);
 
         _ctrlRoom.room = roomService.getCurrentRoom();
 
