@@ -361,8 +361,7 @@ class RoomApi {
 
     addMessage(userId, id, message) {
         return new Promise(async resolve => {
-            let room = await this.getSimple(id),
-                user = await userApi.getSimple(userId), lastMessage;
+            let room = await this.getSimple(id);
 
             if (!room) {
 
@@ -398,11 +397,10 @@ class RoomApi {
 
             await room.save();
 
-            lastMessage = await this.getLastMessage(room);
+            room.lastMessage = await this.getLastMessage(room);
 
             resolve({
                 success: true,
-                lastMessage: lastMessage,
                 room: helper.clearRoom(room)
             });
 

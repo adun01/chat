@@ -27,14 +27,14 @@ module.exports = (io) => {
         });
     });
 
-    eventPublish.on('newMessageRoom', (data) => {
+    eventPublish.on('newMessageRoom', (room) => {
 
-        data.userIds.forEach((userId) => {
+        room.users.forEach((userId) => {
             let socket = sockets.get(userId);
 
             if (socket) {
-                socket.emit('newMessageRoom', data);
-                socket.emit('messageNotification', data);
+                socket.emit('newMessageRoom', room);
+                socket.emit('messageNotification', room);
             }
         });
     });

@@ -11,7 +11,6 @@ module.controller('baseController', function ($mdDialog, $stateParams) {
     };
 
     if ($stateParams.message) {
-        debugger;
         /*$mdDialog.show({
             controller: 'baseMessageController',
             controllerAs: '_ctrlBaseMessage',

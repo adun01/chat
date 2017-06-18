@@ -23,6 +23,7 @@ router.post('/api/room/:roomId/message', async(req, res) => {
 
     if (newMessageResult.success) {
         //eventPublish
+        eventPublish.emit('newMessageRoom', newMessageResult.room);
     }
 
     res.send(JSON.stringify(newMessageResult));

@@ -30,7 +30,6 @@ module.controller('messageListController',
                 _ctrlMessageList.sendNotificationMesage();
 
                 $timeout(function () {
-                    debugger;
                     document.querySelector('.message-overflow').scrollTop = $element[0].clientHeight;
                 }, 1500);
             });
@@ -61,10 +60,15 @@ module.controller('messageListController',
             _ctrlMessageList.init();
         }
 
-        let newMessageRoom = $rootScope.$on('newMessageRoom', function ($event, data) {
-
+        let newMessageRoom = $rootScope.$on('newMessageRoom', function ($event, room) {
             $timeout(function () {
-                _ctrlMessageList.data.messages.push(data.message);
+
+                if (room.conversation) {
+                    _ctrlMessageList.data.messages.push(room.user.lastMessage);
+                } else {
+                    _ctrlMessageList.data.messages.push(room.lastMessage);
+                }
+
                 _ctrlMessageList.sendNotificationMesage();
             });
         });

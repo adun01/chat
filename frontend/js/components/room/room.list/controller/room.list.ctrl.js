@@ -16,7 +16,7 @@ module.controller('roomListController',
 
         function getRoom(data) {
             roomService.get(data).then(function () {
-                debugger;
+
             });
         }
 

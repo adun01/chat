@@ -86784,7 +86784,6 @@ _2.default.controller('baseController', function ($mdDialog, $stateParams) {
     };
 
     if ($stateParams.message) {
-        debugger;
         /*$mdDialog.show({
             controller: 'baseMessageController',
             controllerAs: '_ctrlBaseMessage',
@@ -86984,7 +86983,6 @@ _2.default.controller('messageListController', function ($element, $scope, $time
             _ctrlMessageList.sendNotificationMesage();
 
             $timeout(function () {
-                debugger;
                 document.querySelector('.message-overflow').scrollTop = $element[0].clientHeight;
             }, 1500);
         });
@@ -87014,10 +87012,15 @@ _2.default.controller('messageListController', function ($element, $scope, $time
         _ctrlMessageList.init();
     }
 
-    var newMessageRoom = $rootScope.$on('newMessageRoom', function ($event, data) {
-
+    var newMessageRoom = $rootScope.$on('newMessageRoom', function ($event, room) {
         $timeout(function () {
-            _ctrlMessageList.data.messages.push(data.message);
+
+            if (room.conversation) {
+                _ctrlMessageList.data.messages.push(room.user.lastMessage);
+            } else {
+                _ctrlMessageList.data.messages.push(room.lastMessage);
+            }
+
             _ctrlMessageList.sendNotificationMesage();
         });
     });
@@ -87389,9 +87392,7 @@ _2.default.controller('roomListController', function ($scope, roomService, userS
     }
 
     function getRoom(data) {
-        roomService.get(data).then(function () {
-            debugger;
-        });
+        roomService.get(data).then(function () {});
     }
 
     getListRoom();
@@ -89105,7 +89106,7 @@ _2.default.service('socketMediator', function (socketService, $rootScope, $timeo
 
         var currentRoom = roomService.getCurrentRoom();
 
-        if (currentRoom && +currentRoom.id === +data.roomId) {
+        if (currentRoom && +currentRoom.id === +data.id) {
 
             $rootScope.$emit('newMessageRoom', data);
         }

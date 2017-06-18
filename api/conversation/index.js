@@ -212,11 +212,12 @@ class ConversationApi {
 
             await conversation.save();
 
-            lastMessage = await this.getLastMessage(conversation);
+            conversation = await this.searchUserFoConversation(conversation, userId);
+
+            conversation.user.lastMessage = await this.getLastMessage(conversation);
 
             resolve({
                 success: true,
-                lastMessage: helper.clearMessage(lastMessage),
                 conversation: helper.clearRoom(conversation)
             });
 
@@ -277,9 +278,7 @@ class ConversationApi {
 
                 return resolve(conversations);
             } else {
-                let user = await userApi.getSimple(+conversations.users.join('').replace(userId, ''));
-
-                conversations.user = user;
+                conversations.user = await userApi.getSimple(+conversations.users.join('').replace(userId, ''));
 
                 return resolve(conversations);
             }

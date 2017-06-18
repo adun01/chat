@@ -23,6 +23,7 @@ router.post('/api/conversation/:conversationId/message', async(req, res) => {
 
     if (newMessageResult.success) {
         //eventPublish
+        eventPublish.emit('newMessageRoom', newMessageResult.conversation);
     }
 
     res.send(JSON.stringify(newMessageResult));
