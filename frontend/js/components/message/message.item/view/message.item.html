@@ -1,0 +1,43 @@
+<div class="message-item message-item--self"
+     data-ng-if="_ctrlMessage.self">
+
+    <div class="message-item__container message-item__container--self">
+        <div class="message-item__login">
+            {{_ctrlMessage.message.user.login}}
+        </div>
+        <div class="message-item__content">
+            {{_ctrlMessage.message.text}}
+        </div>
+        <div class="message-item__date">
+            {{_ctrlMessage.message.date | date: 'yyyy-MM-dd HH:mm'}}
+        </div>
+    </div>
+
+    <img alt="{{_ctrlMessage.message.user.login}}"
+         class="message-item__avatar message-item__avatar--self"
+         data-ng-click="_ctrlMessage.showUser($event, _ctrlMessage.message.user)"
+         data-ng-src="{{_ctrlMessage.photo(_ctrlMessage.message.user)}}">
+
+</div>
+
+<div class="message-item"
+     data-ng-if="!_ctrlMessage.self">
+
+    <img alt="{{_ctrlMessage.message.user.login}}"
+         class="message-item__avatar"
+         data-ng-click="_ctrlMessage.showUser($event, _ctrlMessage.message.user)"
+         data-ng-src="{{_ctrlMessage.photo(_ctrlMessage.message.user)}}">
+
+    <div class="message-item__container">
+        <div class="message-item__login">
+            {{_ctrlMessage.message.user.login}}
+        </div>
+        <div class="message-item__content">
+            {{_ctrlMessage.message.text}}
+        </div>
+        <div class="message-item__date">
+            {{_ctrlMessage.message.date | date: 'yyyy-MM-dd : HH:mm'}}
+        </div>
+    </div>
+
+</div>

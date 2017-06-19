@@ -254,6 +254,8 @@ var map = {
 	"./components/index.js": 0,
 	"./components/message/message.add/controller/message.add.controller.js": 37,
 	"./components/message/message.add/index.js": 38,
+	"./components/message/message.item/controller/message.item.controller.js": 142,
+	"./components/message/message.item/index.js": 139,
 	"./components/message/message.list/controller/message.list.controller.js": 39,
 	"./components/message/message.list/index.js": 40,
 	"./components/registration/registration/controller/reg.ctrl.js": 41,
@@ -89544,7 +89546,7 @@ module.exports = "<div class=\"message-add message-add--no-access\" data-ng-if=\
 /* 112 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=message-overflow data-ng-if=\"!_ctrlMessageList.data.messages.length && !_ctrlMessageList.room.banned\"> <h3 layout layout-align=\"center center\" class=message-intro> История пуста. </h3> </div> <div class=message-overflow data-ng-if=_ctrlMessageList.room.banned> <h3 layout layout-align=\"center center\" class=message-intro> Вы были заблокированы. </h3> </div> <div class=message-overflow data-ng-if=\"!_ctrlMessageList.room.banned && _ctrlMessageList.data.messages.length\"> <div class=message-item data-ng-class=\"{'message-item--self' : _ctrlMessageList.user.id === message.creatorId}\" data-ng-repeat=\"message in _ctrlMessageList.data.messages\"> <div class=\"message-item__container message-item__container--self\" data-ng-if=\"_ctrlMessageList.user.id === message.creatorId\"> <div class=message-item__login> {{message.user.login}} </div> <div class=message-item__content> {{message.text}} </div> <div class=message-item__date> {{message.date | date: 'yyyy-MM-dd HH:mm'}} </div> </div> <img alt={{message.user.login}} class=\"message-item__avatar message-item__avatar--self\" data-ng-if=\"_ctrlMessageList.user.id === message.creatorId\" data-ng-click=\"_ctrlMessageList.showUser($event, message.user)\" data-ng-src={{_ctrlMessageList.getPathPhoto(message.user)}}> <img alt={{message.user.login}} class=message-item__avatar data-ng-if=\"_ctrlMessageList.user.id !== message.creatorId\" data-ng-click=\"_ctrlMessageList.showUser($event, message.user)\" data-ng-src={{_ctrlMessageList.getPathPhoto(message.user)}}> <div class=message-item__container data-ng-if=\"_ctrlMessageList.user.id !== message.creatorId\"> <div class=message-item__login> {{message.user.login}} </div> <div class=message-item__content> {{message.text}} </div> <div class=message-item__date> {{message.date | date: 'yyyy-MM-dd : HH:mm'}} </div> </div> </div> </div>";
+module.exports = "<div class=message-overflow data-ng-if=\"!_ctrlMessageList.data.messages.length && !_ctrlMessageList.room.banned\"> <h3 layout layout-align=\"center center\" class=message-intro> История пуста. </h3> </div> <div class=message-overflow data-ng-if=_ctrlMessageList.room.banned> <h3 layout layout-align=\"center center\" class=message-intro> Вы были заблокированы. </h3> </div> <div class=message-overflow data-ng-if=\"!_ctrlMessageList.room.banned && _ctrlMessageList.data.messages.length\"> <message-item age-item data-message=message data-ng-repeat=\"message in _ctrlMessageList.data.messages\"> </message-item> </div>";
 
 /***/ }),
 /* 113 */
@@ -89695,6 +89697,71 @@ module.exports = "<md-dialog flex=80> <div data-ng-cloak data-ng-form=userEdit> 
 /***/ (function(module, exports) {
 
 module.exports = "<md-dialog flex=80> <md-toolbar> <div class=md-toolbar-tools layout layout-align=\"space-between center\"> <h2>{{_ctrlUser.user.login}}</h2> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=\"Открыть диалог\" layout layout-align=\"center center\" data-ng-click=_ctrlUser.openConversation()> <ng-md-icon size=20 style=fill:#fff icon=message> </ng-md-icon> </md-button> </div> </md-toolbar> <div class=chat-user-show> <div class=chat-user-show__box> <img class=chat-user-show__photo data-ng-src={{_ctrlUser.getPathPhoto()}}> </div> <div class=\"chat-user-show__box chat-user-show__box--fields\"> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text disabled=disabled data-ng-value=_ctrlUser.user.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text disabled=disabled data-ng-value=_ctrlUser.user.email> </md-input-container> <md-input-container class=chat-form__row> <label>Дата регистрации</label> <input type=text disabled=disabled data-ng-value=\"_ctrlUser.user.date | date : 'yyyy-MM-dd'\"> </md-input-container> </div> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Закрыть layout layout-align=\"center center\" data-ng-click=_ctrlUser.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </div> </md-dialog>";
+
+/***/ }),
+/* 138 */,
+/* 139 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _ = __webpack_require__(0);
+
+var _2 = _interopRequireDefault(_);
+
+var _messageItem = __webpack_require__(141);
+
+var _messageItem2 = _interopRequireDefault(_messageItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_2.default.directive('messageItem', function () {
+    return {
+        controller: 'messageItemController',
+        controllerAs: '_ctrlMessage',
+        template: _messageItem2.default,
+        scope: {
+            message: '='
+        }
+    };
+});
+
+/***/ }),
+/* 140 */,
+/* 141 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"message-item message-item--self\" data-ng-if=_ctrlMessage.self> <div class=\"message-item__container message-item__container--self\"> <div class=message-item__login> {{_ctrlMessage.message.user.login}} </div> <div class=message-item__content> {{_ctrlMessage.message.text}} </div> <div class=message-item__date> {{_ctrlMessage.message.date | date: 'yyyy-MM-dd HH:mm'}} </div> </div> <img alt={{_ctrlMessage.message.user.login}} class=\"message-item__avatar message-item__avatar--self\" data-ng-click=\"_ctrlMessage.showUser($event, _ctrlMessage.message.user)\" data-ng-src={{_ctrlMessage.photo(_ctrlMessage.message.user)}}> </div> <div class=message-item data-ng-if=!_ctrlMessage.self> <img alt={{_ctrlMessage.message.user.login}} class=message-item__avatar data-ng-click=\"_ctrlMessage.showUser($event, _ctrlMessage.message.user)\" data-ng-src={{_ctrlMessage.photo(_ctrlMessage.message.user)}}> <div class=message-item__container> <div class=message-item__login> {{_ctrlMessage.message.user.login}} </div> <div class=message-item__content> {{_ctrlMessage.message.text}} </div> <div class=message-item__date> {{_ctrlMessage.message.date | date: 'yyyy-MM-dd : HH:mm'}} </div> </div> </div>";
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _ = __webpack_require__(0);
+
+var _2 = _interopRequireDefault(_);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_2.default.controller('messageItemController', function ($scope, roomService, userService) {
+
+    var _ctrlMessage = this;
+
+    _ctrlMessage.room = roomService.getCurrentRoom();
+    _ctrlMessage.user = userService.get();
+
+    _ctrlMessage.message = $scope.message;
+
+    _ctrlMessage.self = _ctrlMessage.message.user.id === _ctrlMessage.user.id;
+
+    _ctrlMessage.showUser = userService.showUser;
+
+    _ctrlMessage.photo = userService.photo;
+});
 
 /***/ })
 /******/ ]);
