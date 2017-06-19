@@ -1,6 +1,4 @@
 import module from '../';
-import roomShowTpl from '../view/room.show.html';
-import roomAddTpl from '../view/room.add.html';
 
 module.service('roomService', function (roomResource, $q, $mdDialog) {
 
@@ -41,9 +39,9 @@ module.service('roomService', function (roomResource, $q, $mdDialog) {
 
     function addRoom(ev) {
         $mdDialog.show({
-            controller: 'roomAddController',
-            controllerAs: 'roomAddCtrl',
-            template: roomAddTpl,
+            template: '<md-dialog flex="80">' +
+            '<room-add></room-add>' +
+            '</md-dialog>',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose: true
@@ -53,14 +51,20 @@ module.service('roomService', function (roomResource, $q, $mdDialog) {
     function showRoom(ev, room) {
 
         $mdDialog.show({
-            controller: 'roomShowController',
-            controllerAs: '_ctrlRoomShow',
-            template: roomShowTpl,
+            controller: function(room) {
+                const _ctrl = this;
+                _ctrl.room = room;
+            },
+            controllerAs: '_ctrl',
+            template: '<md-dialog flex="80">' +
+            '<room-show data-room="_ctrl.room">' +
+            '</room-show>' +
+            '</md-dialog>',
             parent: angular.element(document.body),
             targetEvent: ev,
             clickOutsideToClose: true,
             resolve: {
-                roomData: function () {
+                room: () => {
                     return room;
                 }
             }

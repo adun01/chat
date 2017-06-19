@@ -1,5 +1,4 @@
 import module from '../';
-import userSearchTpl from '../../room/view/user.search.html';
 
 module.controller('conversationController',
     function (roomService, conversationData) {

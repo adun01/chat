@@ -9,18 +9,4 @@ module.controller('baseController', function ($mdDialog, $stateParams) {
     _ctrlBase.openSideBar = function () {
         _ctrlBase.show = true;
     };
-
-    if ($stateParams.message) {
-        /*$mdDialog.show({
-            controller: 'baseMessageController',
-            controllerAs: '_ctrlBaseMessage',
-            template: baseMessageTpl,
-            parent: angular.element(document.body),
-            resolve: {
-                baseMessageData: function () {
-                    return $stateParams;
-                }
-            }
-        });*/
-    }
 });

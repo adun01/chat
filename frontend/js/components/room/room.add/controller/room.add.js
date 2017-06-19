@@ -1,18 +1,18 @@
-import module from '../';
+import module from '../../../';
 
 module.controller('roomAddController', function (FileUploader, $mdDialog, roomService, $rootScope, $state) {
 
-    const roomAddCtrl = this;
+    const _ctrlRoom = this;
 
-    roomAddCtrl.userInvited = [];
+    _ctrlRoom.userInvited = [];
 
-    roomAddCtrl.error = false;
-    roomAddCtrl.message = '';
+    _ctrlRoom.error = false;
+    _ctrlRoom.message = '';
 
-    roomAddCtrl.addRoom = function () {
+    _ctrlRoom.addRoom = function () {
         roomService.create({
-            name: roomAddCtrl.name,
-            userInvited: roomAddCtrl.userInvited.reduce(function (prev, current) {
+            name: _ctrlRoom.name,
+            userInvited: _ctrlRoom.userInvited.reduce(function (prev, current) {
                 if (prev === '') {
                     prev += current.id;
                 } else {
@@ -22,18 +22,18 @@ module.controller('roomAddController', function (FileUploader, $mdDialog, roomSe
             }, '')
         }).then(function (response) {
             if (response.success) {
-                roomAddCtrl.close();
+                _ctrlRoom.close();
                 $state.go('main.room', {
                     id: response.room.id
                 });
             } else {
-                roomAddCtrl.error = true;
-                roomAddCtrl.message = response.message || 'Не известная ошибка. Попробуйте позже.';
+                _ctrlRoom.error = true;
+                _ctrlRoom.message = response.message || 'Не известная ошибка. Попробуйте позже.';
             }
         });
     };
 
-    roomAddCtrl.close = function () {
+    _ctrlRoom.close = function () {
         $mdDialog.cancel();
     };
 
