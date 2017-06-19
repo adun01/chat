@@ -87307,13 +87307,15 @@ var _2 = _interopRequireDefault(_);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_2.default.controller('roomItemController', function ($attrs, $scope, $state, $rootScope, $timeout) {
+_2.default.controller('roomItemController', function ($scope, $state, $rootScope, $timeout, roomService) {
     var _ctrlRoomItem = this;
 
     _ctrlRoomItem.room = $scope.room;
     _ctrlRoomItem.lastMessage = $scope.lastMessage;
     _ctrlRoomItem.hideActions = $scope.hideActions;
     _ctrlRoomItem.align = $scope.align || 'left';
+
+    _ctrlRoomItem.showRoom = roomService.showRoom;
 
     _ctrlRoomItem.openRoom = function () {
         $state.go('main.room', {
@@ -87898,16 +87900,21 @@ _2.default.controller('userItemController', function ($scope, userService, $stat
 
     _ctrlUserItem.currentUser = userService.get();
     _ctrlUserItem.user = $scope.user;
+
     _ctrlUserItem.lastMessage = $scope.lastMessage;
     _ctrlUserItem.hideActions = $scope.hideActions;
     _ctrlUserItem.align = $scope.align || 'left';
 
+    _ctrlUserItem.self = _ctrlUserItem.user.id === _ctrlUserItem.currentUser.id;
+
     _ctrlUserItem.photo = userService.photo;
 
-    _ctrlUserItem.openConversation = function ($event) {
+    _ctrlUserItem.showUser = userService.showUser;
+
+    _ctrlUserItem.openConversation = function () {
 
         if (_ctrlUserItem.currentUser.id === _ctrlUserItem.user.id) {
-            userService.showUser($event, _ctrlUserItem.user);
+            return;
         } else {
             $state.go('main.conversation', {
                 id: _ctrlUserItem.user.id
@@ -88279,7 +88286,7 @@ exports.default = _2.default.config(function ($stateProvider) {
             message: null
         },
         resolve: {
-            baseData: function baseData($q, roomService, authService) {
+            baseData: function baseData($q, roomService, authService, $mdDialog) {
                 var defer = $q.defer();
                 roomService.set(null);
                 authService.isLogin().then(function (user) {
@@ -88417,8 +88424,10 @@ exports.default = _2.default.config(function ($stateProvider) {
         controllerAs: '_ctrlConversation',
         template: _conversationView2.default,
         resolve: {
-            conversationData: function conversationData($q, conversationService, authService, $stateParams) {
+            conversationData: function conversationData($q, conversationService, authService, $stateParams, $mdDialog) {
                 var defer = $q.defer();
+
+                $mdDialog.cancel();
 
                 authService.isLogin().then(function (user) {
 
@@ -89298,7 +89307,7 @@ var _2 = _interopRequireDefault(_);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_2.default.controller('userShowController', function ($mdDialog, userService, userData, commonService) {
+_2.default.controller('userShowController', function ($mdDialog, userService, userData, commonService, $state) {
     var _ctrlUser = this;
 
     _ctrlUser.user = angular.copy(userData);
@@ -89306,6 +89315,12 @@ _2.default.controller('userShowController', function ($mdDialog, userService, us
     _ctrlUser.user.date = commonService.createDateFromW3C(_ctrlUser.user.date);
 
     _ctrlUser.getPathPhoto = userService.photo;
+
+    _ctrlUser.openConversation = function () {
+        $state.go('main.conversation', {
+            id: _ctrlUser.user.id
+        });
+    };
 
     _ctrlUser.close = function () {
         $mdDialog.cancel();
@@ -89559,7 +89574,7 @@ module.exports = "<md-toolbar> <div class=\"md-toolbar-tools room-header__toolba
 /* 117 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=\"!_ctrlRoomItem.lastMessage && _ctrlRoomItem.align === 'left'\"> <div> <button class=\"md-fab md-button md-ink-ripple room-item__btn\" data-ng-click=_ctrlRoomItem.openRoom()> {{_ctrlRoomItem.room.shortName.toUpperCase()}} </button> <span> {{_ctrlRoomItem.room.name}} </span> </div> <room-actions data-ng-if=!_ctrlRoomItem.hideActions data-room=_ctrlRoomItem.room></room-actions> </div> <div class=\"md-3-line room-item__align-box room-item__align-box--right\" layout layout-align=\"space-between center\" data-ng-if=\"!_ctrlRoomItem.lastMessage && _ctrlRoomItem.align === 'right'\"> <room-actions data-ng-if=!_ctrlRoomItem.hideActions data-room=_ctrlRoomItem.room></room-actions> <div data-ng-if=_ctrlRoomItem.hideActions></div> <div> <span> {{_ctrlRoomItem.room.name}} </span> <button class=\"md-fab md-button md-ink-ripple room-item__btn\" data-ng-click=_ctrlRoomItem.openRoom()> {{_ctrlRoomItem.room.shortName.toUpperCase()}} </button> </div> </div> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=_ctrlRoomItem.lastMessage> <div flex=20> <div class=\"badge badge-danger room-item__notification\" data-ng-if=_ctrlRoomItem.room.notification> {{_ctrlRoomItem.room.notification}} </div> <button class=\"md-fab md-button md-ink-ripple room-item__btn\" data-ng-click=_ctrlRoomItem.openRoom()> {{_ctrlRoomItem.room.shortName.toUpperCase()}} </button> </div> <div flex=70> <div class=room-item__desc> <div class=room-item__header> {{_ctrlRoomItem.room.name}} </div> <div class=room-item__message> <span class=room-item__login> {{_ctrlRoomItem.room.lastMessage.user.login}}</span>{{_ctrlRoomItem.room.lastMessage.text ? ': ' + _ctrlRoomItem.room.lastMessage.text : 'История пуста.'}} </div> </div> </div> <div flex=10 data-ng-if=!_ctrlRoomItem.hideActions> <room-actions data-room=_ctrlRoomItem.room></room-actions> </div> </div>";
+module.exports = "<div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=\"!_ctrlRoomItem.lastMessage && _ctrlRoomItem.align === 'left'\"> <div flex=20> <button class=\"md-fab md-button md-ink-ripple room-item__btn\" data-ng-click=\"_ctrlRoomItem.showRoom($event, _ctrlRoomItem.room)\"> {{_ctrlRoomItem.room.shortName.toUpperCase()}} </button> </div> <div flex=70 class=room-item__desc data-ng-click=_ctrlRoomItem.openRoom()> {{_ctrlRoomItem.room.name}} </div> <div flex=10> <room-actions data-ng-if=!_ctrlRoomItem.hideActions data-room=_ctrlRoomItem.room></room-actions> </div> </div> <div class=\"md-3-line room-item__align-box room-item__align-box--right\" layout layout-align=\"space-between center\" data-ng-if=\"!_ctrlRoomItem.lastMessage && _ctrlRoomItem.align === 'right'\"> <room-actions data-ng-if=!_ctrlRoomItem.hideActions data-room=_ctrlRoomItem.room></room-actions> <div data-ng-if=_ctrlRoomItem.hideActions></div> <div> <span> {{_ctrlRoomItem.room.name}} </span> <button class=\"md-fab md-button md-ink-ripple room-item__btn\" data-ng-click=_ctrlRoomItem.openRoom()> {{_ctrlRoomItem.room.shortName.toUpperCase()}} </button> </div> </div> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=_ctrlRoomItem.lastMessage> <div flex=20> <div class=\"badge badge-danger room-item__notification\" data-ng-if=_ctrlRoomItem.room.notification> {{_ctrlRoomItem.room.notification}} </div> <button class=\"md-fab md-button md-ink-ripple room-item__btn\" data-ng-click=\"_ctrlRoomItem.showRoom($event, _ctrlRoomItem.room)\"> {{_ctrlRoomItem.room.shortName.toUpperCase()}} </button> </div> <div flex=70> <div class=room-item__desc data-ng-click=_ctrlRoomItem.openRoom()> <div class=room-item__header> {{_ctrlRoomItem.room.name}} </div> <div class=room-item__message> <span class=room-item__login> {{_ctrlRoomItem.room.lastMessage.user.login}}</span>{{_ctrlRoomItem.room.lastMessage.text ? ': ' + _ctrlRoomItem.room.lastMessage.text : 'История пуста.'}} </div> </div> </div> <div flex=10 data-ng-if=!_ctrlRoomItem.hideActions> <room-actions data-room=_ctrlRoomItem.room></room-actions> </div> </div>";
 
 /***/ }),
 /* 118 */
@@ -89595,7 +89610,7 @@ module.exports = "<md-menu> <ng-md-icon size=30 icon=menu class=\"chat-icon-acti
 /* 123 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=\"!_ctrlUserItem.lastMessage && _ctrlUserItem.align === 'left'\"> <div layout layout-align=\"center center\"> <div class=user-item__status data-ng-class=\"{'user-item__status--online': _ctrlUserItem.user.online}\"></div> <img class=user-item__photo alt={{_ctrlUserItem.user.login}} data-ng-click=_ctrlUserItem.openConversation($event) data-ng-src={{_ctrlUserItem.photo(_ctrlUserItem.user)}} /> <div layout=column layout-align=\"center left\"> <div class=user-item__login>{{ _ctrlUserItem.user.login }}</div> <div class=user-item__email>{{ _ctrlUserItem.user.email }}</div> </div> </div> <user-actions data-ng-if=!_ctrlUserItem.hideActions data-user=_ctrlUserItem.user data-show-user=true></user-actions> </div> <div class=\"md-3-line user-item__align-box user-item__align-box--right\" layout layout-align=\"space-between center\" data-ng-if=\"!_ctrlUserItem.lastMessage && _ctrlUserItem.align === 'right'\"> <user-actions data-ng-if=!_ctrlUserItem.hideActions data-user=_ctrlUserItem.user data-show-user=true></user-actions> <div data-ng-if=_ctrlUserItem.hideActions></div> <div layout layout-align=\"center center\"> <div layout=column layout-align=\"center left\"> <div class=user-item__login>{{ _ctrlUserItem.user.login }}</div> <div class=user-item__email>{{ _ctrlUserItem.user.email }}</div> </div> <img class=user-item__photo alt={{_ctrlUserItem.user.login}} data-ng-click=_ctrlUserItem.openConversation($event) data-ng-src={{_ctrlUserItem.photo(_ctrlUserItem.user)}} /> <div class=user-item__status data-ng-class=\"{'user-item__status--online': _ctrlUserItem.user.online}\"></div> </div> </div> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=_ctrlUserItem.lastMessage> <div flex=20> <div class=user-item__status data-ng-class=\"{'user-item__status--online': _ctrlUserItem.user.online}\"></div> <img class=room-list__photo alt={{_ctrlUserItem.user.login}} data-ng-click=_ctrlUserItem.openConversation($event) data-ng-src={{_ctrlUserItem.photo(_ctrlUserItem.user)}} /> </div> <div flex=70> <div class=room-item__desc> <div class=room-item__header> {{_ctrlUserItem.user.login}} </div> <div class=room-item__message> <span class=room-item__login> {{_ctrlUserItem.user.lastMessage.user.login}}</span>{{_ctrlUserItem.user.lastMessage.text ? ': ' + _ctrlUserItem.user.lastMessage.text : 'История пуста.'}} </div> </div> </div> <div flex=10 data-ng-if=!_ctrlUserItem.hideActions> <user-actions data-user=_ctrlUserItem.user></user-actions> </div> </div>";
+module.exports = "<div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=\"!_ctrlUserItem.lastMessage && _ctrlUserItem.align === 'left'\"> <div class=user-item__align-box layout layout-align=\"start center\"> <div class=user-item__status data-ng-class=\"{'user-item__status--online': _ctrlUserItem.user.online}\"></div> <img class=user-item__photo alt={{_ctrlUserItem.user.login}} data-ng-click=\"_ctrlUserItem.showUser($event, _ctrlUserItem.user)\" data-ng-src={{_ctrlUserItem.photo(_ctrlUserItem.user)}} /> <div class=user-item__desc data-ng-class=\"{'user-item__desc--conversation': !_ctrlUserItem.self}\" data-ng-click=_ctrlUserItem.openConversation() layout=column layout-align=\"center left\"> <div class=user-item__login>{{ _ctrlUserItem.user.login }}</div> <div class=user-item__email>{{ _ctrlUserItem.user.email }}</div> </div> </div> <user-actions data-ng-if=!_ctrlUserItem.hideActions data-user=_ctrlUserItem.user data-show-user=true></user-actions> </div> <div class=\"md-3-line user-item__align-box user-item__align-box--right\" layout layout-align=\"space-between center\" data-ng-if=\"!_ctrlUserItem.lastMessage && _ctrlUserItem.align === 'right'\"> <user-actions data-ng-if=!_ctrlUserItem.hideActions data-user=_ctrlUserItem.user data-show-user=true></user-actions> <div data-ng-if=_ctrlUserItem.hideActions></div> <div layout layout-align=\"center center\"> <div layout=column layout-align=\"center left\"> <div class=user-item__login>{{ _ctrlUserItem.user.login }}</div> <div class=user-item__email>{{ _ctrlUserItem.user.email }}</div> </div> <img class=user-item__photo alt={{_ctrlUserItem.user.login}} data-ng-click=\"_ctrlUserItem.showUser($event, _ctrlUserItem.user)\" data-ng-src={{_ctrlUserItem.photo(_ctrlUserItem.user)}} /> <div class=user-item__status data-ng-class=\"{'user-item__status--online': _ctrlUserItem.user.online}\"></div> </div> </div> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=_ctrlUserItem.lastMessage> <div flex=20> <div class=user-item__status data-ng-class=\"{'user-item__status--online': _ctrlUserItem.user.online}\"></div> <img class=room-list__photo alt={{_ctrlUserItem.user.login}} data-ng-click=\"_ctrlUserItem.showUser($event, _ctrlUserItem.user)\" data-ng-src={{_ctrlUserItem.photo(_ctrlUserItem.user)}} /> </div> <div flex=70> <div class=user-item__desc data-ng-class=\"{'user-item__desc--conversation': !_ctrlUserItem.self}\" data-ng-click=_ctrlUserItem.openConversation()> <div class=room-item__header> {{_ctrlUserItem.user.login}} </div> <div class=room-item__message> <span class=room-item__login> {{_ctrlUserItem.user.lastMessage.user.login}}</span>{{_ctrlUserItem.user.lastMessage.text ? ': ' + _ctrlUserItem.user.lastMessage.text : 'История пуста.'}} </div> </div> </div> <div flex=10 data-ng-if=!_ctrlUserItem.hideActions> <user-actions data-user=_ctrlUserItem.user></user-actions> </div> </div>";
 
 /***/ }),
 /* 124 */
@@ -89679,7 +89694,7 @@ module.exports = "<md-dialog flex=80> <div data-ng-cloak data-ng-form=userEdit> 
 /* 137 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-dialog flex=80> <md-toolbar> <div class=md-toolbar-tools> <h2>{{_ctrlUser.user.login}}</h2> </div> </md-toolbar> <div class=chat-user-show> <div class=chat-user-show__box> <img class=chat-user-show__photo data-ng-src={{_ctrlUser.getPathPhoto()}}> </div> <div class=\"chat-user-show__box chat-user-show__box--fields\"> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text disabled=disabled data-ng-value=_ctrlUser.user.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text disabled=disabled data-ng-value=_ctrlUser.user.email> </md-input-container> <md-input-container class=chat-form__row> <label>Дата регистрации</label> <input type=text disabled=disabled data-ng-value=\"_ctrlUser.user.date | date : 'yyyy-MM-dd'\"> </md-input-container> </div> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Закрыть layout layout-align=\"center center\" data-ng-click=_ctrlUser.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </div> </md-dialog>";
+module.exports = "<md-dialog flex=80> <md-toolbar> <div class=md-toolbar-tools layout layout-align=\"space-between center\"> <h2>{{_ctrlUser.user.login}}</h2> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=\"Открыть диалог\" layout layout-align=\"center center\" data-ng-click=_ctrlUser.openConversation()> <ng-md-icon size=20 style=fill:#fff icon=message> </ng-md-icon> </md-button> </div> </md-toolbar> <div class=chat-user-show> <div class=chat-user-show__box> <img class=chat-user-show__photo data-ng-src={{_ctrlUser.getPathPhoto()}}> </div> <div class=\"chat-user-show__box chat-user-show__box--fields\"> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text disabled=disabled data-ng-value=_ctrlUser.user.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text disabled=disabled data-ng-value=_ctrlUser.user.email> </md-input-container> <md-input-container class=chat-form__row> <label>Дата регистрации</label> <input type=text disabled=disabled data-ng-value=\"_ctrlUser.user.date | date : 'yyyy-MM-dd'\"> </md-input-container> </div> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Закрыть layout layout-align=\"center center\" data-ng-click=_ctrlUser.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </div> </md-dialog>";
 
 /***/ })
 /******/ ]);

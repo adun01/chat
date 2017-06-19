@@ -10,7 +10,7 @@ export default module.config($stateProvider => {
                 message: null
             },
             resolve: {
-                baseData: ($q, roomService, authService) => {
+                baseData: ($q, roomService, authService, $mdDialog) => {
                     let defer = $q.defer();
                     roomService.set(null);
                     authService.isLogin().then((user) => {

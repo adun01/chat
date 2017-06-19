@@ -9,8 +9,10 @@ export default module.config(function ($stateProvider) {
             controllerAs: '_ctrlConversation',
             template: conversationTpl,
             resolve: {
-                conversationData: ($q, conversationService, authService, $stateParams) => {
+                conversationData: ($q, conversationService, authService, $stateParams, $mdDialog) => {
                     let defer = $q.defer();
+
+                    $mdDialog.cancel();
 
                     authService.isLogin().then((user) => {
 

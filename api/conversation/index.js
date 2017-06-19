@@ -18,7 +18,9 @@ class ConversationApi {
                 ]
             });
 
-            conversation.conversation = true;
+            if (conversation) {
+                conversation.conversation = true;
+            }
 
             if (conversation) {
                 conversation.user = await userApi.getSimple(userInterlocutor);
@@ -112,6 +114,10 @@ class ConversationApi {
 
                 conversations = await this.searchUserFoConversation(conversations, userId);
 
+                conversations = conversations.filter((conversation) => {
+                    return conversation.message.length;
+                });
+
                 conversations = conversations.map(conversation => {
 
                     conversation = helper.clearRoom(conversation);
@@ -136,10 +142,14 @@ class ConversationApi {
     }
 
     notification(user, lastMessage) {
+
+        if (!lastMessage) {
+            return 0;
+        }
+
         let userRead = user.conversations.find(conversation => {
             return conversation.id === lastMessage.conversationId;
         });
-
 
         if (!userRead) {
             return 0;
@@ -169,7 +179,9 @@ class ConversationApi {
 
                 let messages, users = [];
 
-                messages = conversations.map(conversation => {
+                messages = conversations.filter((conversation) => {
+                    return conversation.message.length;
+                }).map(conversation => {
                     return conversation.message[conversation.message.length - 1];
                 });
 

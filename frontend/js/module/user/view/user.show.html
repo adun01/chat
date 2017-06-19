@@ -1,8 +1,23 @@
 <md-dialog flex="80">
 
     <md-toolbar>
-        <div class="md-toolbar-tools">
+        <div class="md-toolbar-tools"
+             layout
+             layout-align="space-between center">
+
             <h2>{{_ctrlUser.user.login}}</h2>
+
+            <md-button class="md-fab md-mini chat-icon-action"
+                       aria-label="Открыть диалог"
+                       layout
+                       layout-align="center center"
+                       data-ng-click="_ctrlUser.openConversation()">
+
+                <ng-md-icon size="20"
+                            style="fill: white"
+                            icon="message">
+                </ng-md-icon>
+            </md-button>
         </div>
     </md-toolbar>
 

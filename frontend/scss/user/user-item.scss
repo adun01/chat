@@ -23,7 +23,7 @@
     width: $photo_size;
     height: $photo_size;
     border-radius: 50%;
-    margin: 6px 18px 6px 0;
+    margin: 8px 8px 6px 0;
     cursor: pointer;
   }
 
@@ -49,6 +49,16 @@
       & .user-item__photo {
         margin: 6px 0 6px 18px;
       }
+    }
+  }
+
+  &__desc {
+    margin: 6px 8px;
+    outline: none;
+    width: 100%;
+
+    &--conversation {
+      cursor: pointer;
     }
   }
 }

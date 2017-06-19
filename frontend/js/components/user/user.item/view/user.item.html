@@ -3,18 +3,22 @@
      layout-align="space-between center"
      data-ng-if="!_ctrlUserItem.lastMessage && _ctrlUserItem.align === 'left'">
 
-    <div layout
-         layout-align="center center">
+    <div class="user-item__align-box"
+         layout
+         layout-align="start center">
 
         <div class="user-item__status"
              data-ng-class="{'user-item__status--online': _ctrlUserItem.user.online}"></div>
 
         <img class="user-item__photo"
              alt="{{_ctrlUserItem.user.login}}"
-             data-ng-click="_ctrlUserItem.openConversation($event)"
+             data-ng-click="_ctrlUserItem.showUser($event, _ctrlUserItem.user)"
              data-ng-src="{{_ctrlUserItem.photo(_ctrlUserItem.user)}}"/>
 
-        <div layout="column"
+        <div class="user-item__desc"
+             data-ng-class="{'user-item__desc--conversation': !_ctrlUserItem.self}"
+             data-ng-click="_ctrlUserItem.openConversation()"
+             layout="column"
              layout-align="center left">
 
             <div class="user-item__login">{{ _ctrlUserItem.user.login }}</div>
@@ -27,7 +31,6 @@
                   data-user="_ctrlUserItem.user"
                   data-show-user="true"></user-actions>
 </div>
-
 
 
 <div class="md-3-line user-item__align-box user-item__align-box--right"
@@ -53,7 +56,7 @@
 
         <img class="user-item__photo"
              alt="{{_ctrlUserItem.user.login}}"
-             data-ng-click="_ctrlUserItem.openConversation($event)"
+             data-ng-click="_ctrlUserItem.showUser($event, _ctrlUserItem.user)"
              data-ng-src="{{_ctrlUserItem.photo(_ctrlUserItem.user)}}"/>
 
         <div class="user-item__status"
@@ -73,19 +76,21 @@
 
         <img class="room-list__photo"
              alt="{{_ctrlUserItem.user.login}}"
-             data-ng-click="_ctrlUserItem.openConversation($event)"
+             data-ng-click="_ctrlUserItem.showUser($event, _ctrlUserItem.user)"
              data-ng-src="{{_ctrlUserItem.photo(_ctrlUserItem.user)}}"/>
     </div>
 
     <div flex="70">
-        <div class="room-item__desc">
+        <div class="user-item__desc"
+             data-ng-class="{'user-item__desc--conversation': !_ctrlUserItem.self}"
+             data-ng-click="_ctrlUserItem.openConversation()">
+
             <div class="room-item__header">
                 {{_ctrlUserItem.user.login}}
             </div>
+
             <div class="room-item__message">
-
                 <span class="room-item__login">
-
                     {{_ctrlUserItem.user.lastMessage.user.login}}</span>{{_ctrlUserItem.user.lastMessage.text ? ': ' +
                 _ctrlUserItem.user.lastMessage.text : 'История пуста.'}}
             </div>

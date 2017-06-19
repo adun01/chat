@@ -1,12 +1,14 @@
 import module from '../../../';
 
-module.controller('roomItemController', function ($attrs, $scope, $state, $rootScope, $timeout) {
+module.controller('roomItemController', function ($scope, $state, $rootScope, $timeout, roomService) {
     const _ctrlRoomItem = this;
 
     _ctrlRoomItem.room = $scope.room;
     _ctrlRoomItem.lastMessage = $scope.lastMessage;
     _ctrlRoomItem.hideActions = $scope.hideActions;
     _ctrlRoomItem.align = $scope.align || 'left';
+
+    _ctrlRoomItem.showRoom = roomService.showRoom;
 
     _ctrlRoomItem.openRoom = function () {
         $state.go('main.room', {

@@ -2,20 +2,25 @@
      layout
      layout-align="space-between center"
      data-ng-if="!_ctrlRoomItem.lastMessage && _ctrlRoomItem.align === 'left'">
-    <div>
+
+    <div flex="20">
         <button class="md-fab md-button md-ink-ripple room-item__btn"
-                data-ng-click="_ctrlRoomItem.openRoom()">
+                data-ng-click="_ctrlRoomItem.showRoom($event, _ctrlRoomItem.room)">
 
             {{_ctrlRoomItem.room.shortName.toUpperCase()}}
         </button>
-
-        <span>
-                {{_ctrlRoomItem.room.name}}
-            </span>
     </div>
 
-    <room-actions data-ng-if="!_ctrlRoomItem.hideActions"
-                  data-room="_ctrlRoomItem.room"></room-actions>
+    <div flex="70"
+         class="room-item__desc"
+         data-ng-click="_ctrlRoomItem.openRoom()">
+        {{_ctrlRoomItem.room.name}}
+    </div>
+
+    <div flex="10">
+        <room-actions data-ng-if="!_ctrlRoomItem.hideActions"
+                      data-room="_ctrlRoomItem.room"></room-actions>
+    </div>
 </div>
 
 <div class="md-3-line room-item__align-box room-item__align-box--right"
@@ -29,16 +34,16 @@
     <div data-ng-if="_ctrlRoomItem.hideActions"></div>
 
     <div>
-            <span>
-                {{_ctrlRoomItem.room.name}}
-            </span>
+
+        <span>
+            {{_ctrlRoomItem.room.name}}
+        </span>
 
         <button class="md-fab md-button md-ink-ripple room-item__btn"
                 data-ng-click="_ctrlRoomItem.openRoom()">
 
             {{_ctrlRoomItem.room.shortName.toUpperCase()}}
         </button>
-
 
     </div>
 </div>
@@ -55,14 +60,14 @@
             {{_ctrlRoomItem.room.notification}}
         </div>
         <button class="md-fab md-button md-ink-ripple room-item__btn"
-                data-ng-click="_ctrlRoomItem.openRoom()">
+                data-ng-click="_ctrlRoomItem.showRoom($event, _ctrlRoomItem.room)">
 
             {{_ctrlRoomItem.room.shortName.toUpperCase()}}
         </button>
     </div>
 
     <div flex="70">
-        <div class="room-item__desc">
+        <div class="room-item__desc" data-ng-click="_ctrlRoomItem.openRoom()">
             <div class="room-item__header">
                 {{_ctrlRoomItem.room.name}}
             </div>
