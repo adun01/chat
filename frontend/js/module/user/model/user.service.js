@@ -1,5 +1,4 @@
 import module from '../';
-import userEditTpl from '../view/user.edit.html';
 
 module.service('userService', function (userResource, $q, $mdDialog) {
 
@@ -40,9 +39,9 @@ module.service('userService', function (userResource, $q, $mdDialog) {
 
     function editUser(e) {
         $mdDialog.show({
-            controller: 'userEditController',
-            controllerAs: '_ctrlUser',
-            template: userEditTpl,
+            template: '<md-dialog flex="80">' +
+            '<user-edit></user-edit>' +
+            '</md-dialog>',
             parent: angular.element(document.body),
             targetEvent: e,
             clickOutsideToClose: true

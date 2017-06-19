@@ -1,0 +1,72 @@
+<div data-ng-cloak data-ng-form="userEdit">
+
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>{{_ctrlUser.user.login}}</h2>
+        </div>
+    </md-toolbar>
+
+    <div class="chat-user-show">
+
+        <div class="chat-user-show__box">
+
+            <img class="chat-user-show__photo"
+                 data-ng-src="{{_ctrlUser.getPathPhoto()}}">
+
+            <div class="chat-user-show__box-upload">
+                <md-button class="md-fab chat-icon-action chat-user-show__icon-upload"
+                           aria-label="Отмена"
+                           layout
+                           layout-align="center center"
+                           data-ng-click="_ctrlUser.close()">
+                    <ng-md-icon size="30"
+                                style="fill: white"
+                                icon="add_a_photo"
+                                data-ng-click="_ctrlUser.close()">
+                    </ng-md-icon>
+                </md-button>
+
+                <input type="file"
+                       nv-file-select
+                       class="chat-user-show__uploader"
+                       uploader="_ctrlUser.uploader"/>
+            </div>
+        </div>
+
+        <div class="chat-user-show__box chat-user-show__box--fields">
+
+            <md-input-container class="chat-form__row">
+                <label>Логин</label>
+                <input type="text"
+                       required
+                       md-auto-focus
+                       data-ng-minlength="2"
+                       data-ng-model="_ctrlUser.changeLogin">
+            </md-input-container>
+
+            <div class="alert alert-danger"
+                 data-ng-if="_ctrlUser.data.form.error.length">
+
+                <div data-ng-repeat="message in _ctrlUser.data.form.error">
+                    {{message}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <md-dialog-actions layout="row" class="chat-dialog__actions">
+
+        <md-button class="md-fab md-mini chat-icon-action"
+                   aria-label="Ок"
+                   layout
+                   layout-align="center center"
+                   data-ng-click="_ctrlUser.update()">
+            <ng-md-icon size="30"
+                        style="fill: white"
+                        icon="done">
+            </ng-md-icon>
+        </md-button>
+
+    </md-dialog-actions>
+</div>

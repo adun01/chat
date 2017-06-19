@@ -1,4 +1,4 @@
-import module from '../';
+import module from '../../../';
 
 module.controller('userEditController',
     function (FileUploader, userService, $timeout, $rootScope, $mdDialog) {
