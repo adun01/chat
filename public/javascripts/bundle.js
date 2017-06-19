@@ -292,6 +292,8 @@ var map = {
 	"./components/user/user.search/index.js": 74,
 	"./components/user/user.short/controller/user.short.controller.js": 75,
 	"./components/user/user.short/index.js": 76,
+	"./components/user/user.show/controller/user.show.controller.js": 139,
+	"./components/user/user.show/index.js": 140,
 	"./module/auth/config/index.js": 77,
 	"./module/auth/index.js": 5,
 	"./module/auth/model/auth.resourse.js": 78,
@@ -328,7 +330,6 @@ var map = {
 	"./module/socket/models/socket.mediator.service.js": 102,
 	"./module/socket/models/socket.service.js": 103,
 	"./module/user/controller/user.edit.controller.js": 104,
-	"./module/user/controller/user.show.controller.js": 105,
 	"./module/user/directive/user.search.collection.directive/controller/user.search.collection.controller.js": 106,
 	"./module/user/directive/user.search.collection.directive/index.js": 107,
 	"./module/user/index.js": 3,
@@ -89312,39 +89313,7 @@ _2.default.controller('userEditController', function (FileUploader, userService,
 });
 
 /***/ }),
-/* 105 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _ = __webpack_require__(3);
-
-var _2 = _interopRequireDefault(_);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_2.default.controller('userShowController', function ($mdDialog, userService, userData, commonService, $state) {
-    var _ctrlUser = this;
-
-    _ctrlUser.user = angular.copy(userData);
-
-    _ctrlUser.user.date = commonService.createDateFromW3C(_ctrlUser.user.date);
-
-    _ctrlUser.getPathPhoto = userService.photo;
-
-    _ctrlUser.openConversation = function () {
-        $state.go('main.conversation', {
-            id: _ctrlUser.user.id
-        });
-    };
-
-    _ctrlUser.close = function () {
-        $mdDialog.cancel();
-    };
-});
-
-/***/ }),
+/* 105 */,
 /* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -89453,10 +89422,6 @@ var _ = __webpack_require__(3);
 
 var _2 = _interopRequireDefault(_);
 
-var _userShow = __webpack_require__(138);
-
-var _userShow2 = _interopRequireDefault(_userShow);
-
 var _userEdit = __webpack_require__(137);
 
 var _userEdit2 = _interopRequireDefault(_userEdit);
@@ -89511,17 +89476,20 @@ _2.default.service('userService', function (userResource, $q, $mdDialog) {
         });
     }
 
-    function showUser(e, user) {
+    function showUser(e, _user) {
         $mdDialog.show({
-            controller: 'userShowController',
-            controllerAs: '_ctrlUser',
-            template: _userShow2.default,
+            controller: function controller(user) {
+                var _ctrl = this;
+                _ctrl.user = user;
+            },
+            controllerAs: '_ctrl',
+            template: '<md-dialog flex="80">' + '<user-show data-user="_ctrl.user"></user-show>' + '</md-dialog>',
             parent: angular.element(document.body),
             targetEvent: e,
             clickOutsideToClose: true,
             resolve: {
-                userData: function userData() {
-                    return user;
+                user: function user() {
+                    return _user;
                 }
             }
         });
@@ -89703,10 +89671,72 @@ module.exports = "<md-contact-chips name=userInvited data-ng-model=_ctrlSearchCo
 module.exports = "<md-dialog flex=80> <div data-ng-cloak data-ng-form=userEdit> <md-toolbar> <div class=md-toolbar-tools> <h2>{{_ctrlUser.user.login}}</h2> </div> </md-toolbar> <div class=chat-user-show> <div class=chat-user-show__box> <img class=chat-user-show__photo data-ng-src={{_ctrlUser.getPathPhoto()}}> <div class=chat-user-show__box-upload> <md-button class=\"md-fab chat-icon-action chat-user-show__icon-upload\" aria-label=Отмена layout layout-align=\"center center\" data-ng-click=_ctrlUser.close()> <ng-md-icon size=30 style=fill:#fff icon=add_a_photo data-ng-click=_ctrlUser.close()> </ng-md-icon> </md-button> <input type=file nv-file-select class=chat-user-show__uploader uploader=_ctrlUser.uploader /> </div> </div> <div class=\"chat-user-show__box chat-user-show__box--fields\"> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required md-auto-focus data-ng-minlength=2 data-ng-model=_ctrlUser.changeLogin> </md-input-container> <div class=\"alert alert-danger\" data-ng-if=_ctrlUser.data.form.error.length> <div data-ng-repeat=\"message in _ctrlUser.data.form.error\"> {{message}} </div> </div> </div> </div> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Ок layout layout-align=\"center center\" data-ng-click=_ctrlUser.update()> <ng-md-icon size=30 style=fill:#fff icon=done> </ng-md-icon> </md-button> </md-dialog-actions> </div> </md-dialog>";
 
 /***/ }),
-/* 138 */
+/* 138 */,
+/* 139 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _ = __webpack_require__(0);
+
+var _2 = _interopRequireDefault(_);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_2.default.controller('userShowController', function ($scope, $mdDialog, userService, commonService, $state) {
+    var _ctrlUser = this;
+
+    _ctrlUser.user = angular.copy($scope.user);
+
+    _ctrlUser.user.date = commonService.createDateFromW3C(_ctrlUser.user.date);
+
+    _ctrlUser.getPathPhoto = userService.photo;
+
+    _ctrlUser.openConversation = function () {
+        $state.go('main.conversation', {
+            id: _ctrlUser.user.id
+        });
+    };
+
+    _ctrlUser.close = function () {
+        $mdDialog.cancel();
+    };
+});
+
+/***/ }),
+/* 140 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _ = __webpack_require__(0);
+
+var _2 = _interopRequireDefault(_);
+
+var _userShow = __webpack_require__(141);
+
+var _userShow2 = _interopRequireDefault(_userShow);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_2.default.directive('userShow', function () {
+    return {
+        controller: 'userShowController',
+        controllerAs: '_ctrlUser',
+        template: _userShow2.default,
+        scope: {
+            user: '='
+        }
+    };
+});
+
+/***/ }),
+/* 141 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-dialog flex=80> <md-toolbar> <div class=md-toolbar-tools layout layout-align=\"space-between center\"> <h2>{{_ctrlUser.user.login}}</h2> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=\"Открыть диалог\" layout layout-align=\"center center\" data-ng-click=_ctrlUser.openConversation()> <ng-md-icon size=20 style=fill:#fff icon=message> </ng-md-icon> </md-button> </div> </md-toolbar> <div class=chat-user-show> <div class=chat-user-show__box> <img class=chat-user-show__photo data-ng-src={{_ctrlUser.getPathPhoto()}}> </div> <div class=\"chat-user-show__box chat-user-show__box--fields\"> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text disabled=disabled data-ng-value=_ctrlUser.user.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text disabled=disabled data-ng-value=_ctrlUser.user.email> </md-input-container> <md-input-container class=chat-form__row> <label>Дата регистрации</label> <input type=text disabled=disabled data-ng-value=\"_ctrlUser.user.date | date : 'yyyy-MM-dd'\"> </md-input-container> </div> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Закрыть layout layout-align=\"center center\" data-ng-click=_ctrlUser.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </div> </md-dialog>";
+module.exports = "<md-toolbar> <div class=md-toolbar-tools layout layout-align=\"space-between center\"> <h2>{{_ctrlUser.user.login}}</h2> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=\"Открыть диалог\" layout layout-align=\"center center\" data-ng-click=_ctrlUser.openConversation()> <ng-md-icon size=20 style=fill:#fff icon=message> </ng-md-icon> </md-button> </div> </md-toolbar> <div class=chat-user-show> <div class=chat-user-show__box> <img class=chat-user-show__photo data-ng-src={{_ctrlUser.getPathPhoto()}}> </div> <div class=\"chat-user-show__box chat-user-show__box--fields\"> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text disabled=disabled data-ng-value=_ctrlUser.user.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text disabled=disabled data-ng-value=_ctrlUser.user.email> </md-input-container> <md-input-container class=chat-form__row> <label>Дата регистрации</label> <input type=text disabled=disabled data-ng-value=\"_ctrlUser.user.date | date : 'yyyy-MM-dd'\"> </md-input-container> </div> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Закрыть layout layout-align=\"center center\" data-ng-click=_ctrlUser.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </div> ";
 
 /***/ })
 /******/ ]);

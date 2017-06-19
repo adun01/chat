@@ -1,0 +1,65 @@
+<md-toolbar>
+    <div class="md-toolbar-tools"
+         layout
+         layout-align="space-between center">
+
+        <h2>{{_ctrlUser.user.login}}</h2>
+
+        <md-button class="md-fab md-mini chat-icon-action"
+                   aria-label="Открыть диалог"
+                   layout
+                   layout-align="center center"
+                   data-ng-click="_ctrlUser.openConversation()">
+
+            <ng-md-icon size="20"
+                        style="fill: white"
+                        icon="message">
+            </ng-md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+
+<div class="chat-user-show">
+    <div class="chat-user-show__box">
+        <img class="chat-user-show__photo"
+             data-ng-src="{{_ctrlUser.getPathPhoto()}}">
+    </div>
+
+    <div class="chat-user-show__box chat-user-show__box--fields">
+        <md-input-container class="chat-form__row">
+            <label>Логин</label>
+            <input type="text"
+                   disabled
+                   data-ng-value="_ctrlUser.user.login">
+        </md-input-container>
+
+        <md-input-container class="chat-form__row">
+            <label>Email</label>
+            <input type="text"
+                   disabled
+                   data-ng-value="_ctrlUser.user.email">
+        </md-input-container>
+
+        <md-input-container class="chat-form__row">
+            <label>Дата регистрации</label>
+            <input type="text"
+                   disabled
+                   data-ng-value="_ctrlUser.user.date | date : 'yyyy-MM-dd'">
+        </md-input-container>
+    </div>
+
+    <md-dialog-actions layout="row" class="chat-dialog__actions">
+
+        <md-button class="md-fab md-mini chat-icon-action"
+                   aria-label="Закрыть"
+                   layout
+                   layout-align="center center"
+                   data-ng-click="_ctrlUser.close()">
+            <ng-md-icon size="30"
+                        style="fill: white"
+                        icon="close">
+            </ng-md-icon>
+        </md-button>
+
+    </md-dialog-actions>
+</div>

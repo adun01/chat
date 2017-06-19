@@ -1,5 +1,4 @@
 import module from '../';
-import userShowTpl from '../view/user.show.html';
 import userEditTpl from '../view/user.edit.html';
 
 module.service('userService', function (userResource, $q, $mdDialog) {
@@ -52,14 +51,19 @@ module.service('userService', function (userResource, $q, $mdDialog) {
 
     function showUser(e, user) {
         $mdDialog.show({
-            controller: 'userShowController',
-            controllerAs: '_ctrlUser',
-            template: userShowTpl,
+            controller: function (user) {
+                const _ctrl = this;
+                _ctrl.user = user;
+            },
+            controllerAs: '_ctrl',
+            template: '<md-dialog flex="80">' +
+            '<user-show data-user="_ctrl.user"></user-show>' +
+            '</md-dialog>',
             parent: angular.element(document.body),
             targetEvent: e,
             clickOutsideToClose: true,
             resolve: {
-                userData: function () {
+                user: function () {
                     return user;
                 }
             }

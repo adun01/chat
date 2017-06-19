@@ -1,9 +1,9 @@
-import module from '../';
+import module from '../../../';
 
-module.controller('userShowController', function ($mdDialog, userService, userData, commonService, $state) {
+module.controller('userShowController', function ($scope, $mdDialog, userService, commonService, $state) {
     const _ctrlUser = this;
 
-    _ctrlUser.user = angular.copy(userData);
+    _ctrlUser.user = angular.copy($scope.user);
 
     _ctrlUser.user.date = commonService.createDateFromW3C(_ctrlUser.user.date);
 
