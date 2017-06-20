@@ -258,8 +258,6 @@ var map = {
 	"./components/message/message.item/index.js": 40,
 	"./components/message/message.list/controller/message.list.controller.js": 41,
 	"./components/message/message.list/index.js": 42,
-	"./components/registration/registration/controller/reg.ctrl.js": 43,
-	"./components/registration/registration/index.js": 44,
 	"./components/room/room.actions/controller/room.actions.controller.js": 45,
 	"./components/room/room.actions/index.js": 46,
 	"./components/room/room.add/controller/room.add.js": 47,
@@ -284,6 +282,8 @@ var map = {
 	"./components/sidebar/sidebar.base/model/sidebar.base.service.js": 66,
 	"./components/user/user.actions/controller/user.actions.controller.js": 67,
 	"./components/user/user.actions/index.js": 68,
+	"./components/user/user.create/controller/create.ctrl.js": 143,
+	"./components/user/user.create/index.js": 141,
 	"./components/user/user.edit/controller/user.edit.controller.js": 69,
 	"./components/user/user.edit/index.js": 70,
 	"./components/user/user.item/controller/user.item.controller.js": 71,
@@ -87100,72 +87100,8 @@ _2.default.component('messageList', {
 });
 
 /***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _ = __webpack_require__(0);
-
-var _2 = _interopRequireDefault(_);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_2.default.controller('registrationController', function (userService, $timeout) {
-
-    var _ctrlReg = this;
-
-    _ctrlReg.error = {};
-
-    _ctrlReg.create = function () {
-        userService.create({
-            login: _ctrlReg.login,
-            email: _ctrlReg.email,
-            password: _ctrlReg.password
-        }).then(function (data) {
-            _ctrlReg.error = {};
-            _ctrlReg.errorMessage = null;
-
-            if (!data.success) {
-
-                _ctrlReg.errorMessage = data.message;
-                _ctrlReg.error.create = true;
-                $timeout(function () {
-                    _ctrlReg.error = {};
-                    _ctrlReg.errorMessage = null;
-                }, 5000);
-            } else {
-                window.location.href = 'base/';
-            }
-        });
-    };
-});
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _ = __webpack_require__(0);
-
-var _2 = _interopRequireDefault(_);
-
-var _reg = __webpack_require__(117);
-
-var _reg2 = _interopRequireDefault(_reg);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_2.default.component('registration', {
-    template: _reg2.default,
-    controller: 'registrationController',
-    controllerAs: '_ctrlReg'
-});
-
-/***/ }),
+/* 43 */,
+/* 44 */,
 /* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -89616,12 +89552,7 @@ module.exports = "<div class=\"message-item message-item--self\" data-ng-if=_ctr
 module.exports = "<div class=message-overflow data-ng-if=\"!_ctrlMessageList.data.messages.length && !_ctrlMessageList.room.banned\"> <h3 layout layout-align=\"center center\" class=message-intro> История пуста. </h3> </div> <div class=message-overflow data-ng-if=_ctrlMessageList.room.banned> <h3 layout layout-align=\"center center\" class=message-intro> Вы были заблокированы. </h3> </div> <div class=message-overflow data-ng-if=\"!_ctrlMessageList.room.banned && _ctrlMessageList.data.messages.length\"> <message-item age-item data-message=message data-ng-repeat=\"message in _ctrlMessageList.data.messages\"> </message-item> </div>";
 
 /***/ }),
-/* 117 */
-/***/ (function(module, exports) {
-
-module.exports = "<md-card data-ng-form=reg novalidate> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Регистрация</h2> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required name=login data-ng-minlength=2 data-ng-model=_ctrlReg.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text required name=email data-ng-pattern=/^([\\w-]+.)*[\\w-]+@[\\w-]+(\\.[\\w-]+)*\\.[a-z]{2,6}$/ data-ng-model=_ctrlReg.email> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required name=password data-ng-pattern=\"/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9!@#$%]+$/\" data-ng-model=_ctrlReg.password> </md-input-container> <md-input-container class=chat-form__row> <label>Повторите пароль</label> <input type=password required name=password_duble data-identity=_ctrlReg.password data-ng-model=_ctrlReg.password_duble> <div data-ng-messages=reg.password_duble.$error> <div data-ng-message=identity> Пароли должны совпадать </div> </div> </md-input-container> <div data-ng-messages=_ctrlReg.error> <div class=\"alert alert-danger\" data-ng-message=create> {{_ctrlReg.errorMessage}} </div> </div> </md-card-content> <md-card-footer layout layout-align=end> <md-button class=\"md-fab chat-icon-action chat-icon-action--create\" aria-label=Зарегестрироваться layout layout-align=\"center center\" data-ng-click=_ctrlReg.create() data-ng-disabled=reg.$invalid> <ng-md-icon size=30 style=fill:#fff icon=done> </ng-md-icon> </md-button> </md-card-footer> </md-card>";
-
-/***/ }),
+/* 117 */,
 /* 118 */
 /***/ (function(module, exports) {
 
@@ -89745,13 +89676,86 @@ module.exports = "<div class=room layout=column layout-align=\"left top\"> <room
 /* 138 */
 /***/ (function(module, exports) {
 
-module.exports = "<sidebar-auth></sidebar-auth> <div class=chat-form flex=80> <registration></registration> </div>";
+module.exports = "<sidebar-auth></sidebar-auth> <div class=chat-form flex=80> <user-create></user-create> </div>";
 
 /***/ }),
 /* 139 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=room layout=column layout-align=\"left top\"> <room-header></room-header> <message-list class=chat-message-content layout=column layout-align=\"left bottom\"></message-list> <message-add></message-add> </div>";
+
+/***/ }),
+/* 140 */,
+/* 141 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _ = __webpack_require__(0);
+
+var _2 = _interopRequireDefault(_);
+
+var _create = __webpack_require__(142);
+
+var _create2 = _interopRequireDefault(_create);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_2.default.component('userCreate', {
+    template: _create2.default,
+    controller: 'userCreateController',
+    controllerAs: '_ctrlUser'
+});
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports) {
+
+module.exports = "<md-card data-ng-form=reg novalidate> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Регистрация</h2> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required name=login data-ng-minlength=2 data-ng-model=_ctrlReg.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text required name=email data-ng-pattern=/^([\\w-]+.)*[\\w-]+@[\\w-]+(\\.[\\w-]+)*\\.[a-z]{2,6}$/ data-ng-model=_ctrlReg.email> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required name=password data-ng-pattern=\"/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9!@#$%]+$/\" data-ng-model=_ctrlReg.password> </md-input-container> <md-input-container class=chat-form__row> <label>Повторите пароль</label> <input type=password required name=password_duble data-identity=_ctrlReg.password data-ng-model=_ctrlReg.password_duble> <div data-ng-messages=reg.password_duble.$error> <div data-ng-message=identity> Пароли должны совпадать </div> </div> </md-input-container> <div data-ng-messages=_ctrlReg.error> <div class=\"alert alert-danger\" data-ng-message=create> {{_ctrlReg.errorMessage}} </div> </div> </md-card-content> <md-card-footer layout layout-align=end> <md-button class=\"md-fab chat-icon-action chat-icon-action--create\" aria-label=Зарегестрироваться layout layout-align=\"center center\" data-ng-click=_ctrlReg.create() data-ng-disabled=reg.$invalid> <ng-md-icon size=30 style=fill:#fff icon=done> </ng-md-icon> </md-button> </md-card-footer> </md-card>";
+
+/***/ }),
+/* 143 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _ = __webpack_require__(0);
+
+var _2 = _interopRequireDefault(_);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_2.default.controller('userCreateController', function (userService, $timeout) {
+
+    var _ctrlUser = this;
+
+    _ctrlUser.error = {};
+
+    _ctrlUser.create = function () {
+        userService.create({
+            login: _ctrlUser.login,
+            email: _ctrlUser.email,
+            password: _ctrlUser.password
+        }).then(function (data) {
+            _ctrlUser.error = {};
+            _ctrlUser.errorMessage = null;
+
+            if (!data.success) {
+
+                _ctrlUser.errorMessage = data.message;
+                _ctrlUser.error.create = true;
+                $timeout(function () {
+                    _ctrlUser.error = {};
+                    _ctrlUser.errorMessage = null;
+                }, 5000);
+            } else {
+                window.location.href = 'base/';
+            }
+        });
+    };
+});
 
 /***/ })
 /******/ ]);

@@ -151,6 +151,11 @@ class RoomApi {
     }
 
     notification(user, lastMessage) {
+
+        if (!lastMessage) {
+            return 0;
+        }
+
         let userRead = user.rooms.find(room => {
             return room.id === lastMessage.roomId;
         });
