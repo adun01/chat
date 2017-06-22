@@ -258,32 +258,32 @@ var map = {
 	"./components/message/message.item/index.js": 40,
 	"./components/message/message.list/controller/message.list.controller.js": 41,
 	"./components/message/message.list/index.js": 42,
-	"./components/room/room.actions/controller/room.actions.controller.js": 45,
-	"./components/room/room.actions/index.js": 46,
-	"./components/room/room.add/controller/room.add.js": 47,
-	"./components/room/room.add/index.js": 48,
-	"./components/room/room.header/controller/room.header.ctrl.js": 49,
-	"./components/room/room.header/index.js": 50,
-	"./components/room/room.item/controller/room.item.controller.js": 51,
-	"./components/room/room.item/index.js": 52,
-	"./components/room/room.list/controller/room.list.ctrl.js": 53,
-	"./components/room/room.list/index.js": 54,
-	"./components/room/room.show/controller/room.show.ctrl.js": 55,
-	"./components/room/room.show/index.js": 56,
-	"./components/search/search/controller/search.controller.js": 57,
-	"./components/search/search/index.js": 58,
-	"./components/search/search/model/search.resource.js": 59,
-	"./components/search/search/model/search.service.js": 60,
-	"./components/sidebar/sidebar.auth/controller/side-bar-auth.ctrl.js": 61,
-	"./components/sidebar/sidebar.auth/index.js": 62,
-	"./components/sidebar/sidebar.auth/model/sidebar.auth.service.js": 63,
-	"./components/sidebar/sidebar.base/controller/sidebar.ctrl.js": 64,
-	"./components/sidebar/sidebar.base/index.js": 65,
-	"./components/sidebar/sidebar.base/model/sidebar.base.service.js": 66,
-	"./components/user/user.actions/controller/user.actions.controller.js": 67,
-	"./components/user/user.actions/index.js": 68,
-	"./components/user/user.create/controller/create.ctrl.js": 143,
-	"./components/user/user.create/index.js": 141,
+	"./components/room/room.actions/controller/room.actions.controller.js": 43,
+	"./components/room/room.actions/index.js": 44,
+	"./components/room/room.add/controller/room.add.js": 45,
+	"./components/room/room.add/index.js": 46,
+	"./components/room/room.header/controller/room.header.ctrl.js": 47,
+	"./components/room/room.header/index.js": 48,
+	"./components/room/room.item/controller/room.item.controller.js": 49,
+	"./components/room/room.item/index.js": 50,
+	"./components/room/room.list/controller/room.list.ctrl.js": 51,
+	"./components/room/room.list/index.js": 52,
+	"./components/room/room.show/controller/room.show.ctrl.js": 53,
+	"./components/room/room.show/index.js": 54,
+	"./components/search/search/controller/search.controller.js": 55,
+	"./components/search/search/index.js": 56,
+	"./components/search/search/model/search.resource.js": 57,
+	"./components/search/search/model/search.service.js": 58,
+	"./components/sidebar/sidebar.auth/controller/side-bar-auth.ctrl.js": 59,
+	"./components/sidebar/sidebar.auth/index.js": 60,
+	"./components/sidebar/sidebar.auth/model/sidebar.auth.service.js": 61,
+	"./components/sidebar/sidebar.base/controller/sidebar.ctrl.js": 62,
+	"./components/sidebar/sidebar.base/index.js": 63,
+	"./components/sidebar/sidebar.base/model/sidebar.base.service.js": 64,
+	"./components/user/user.actions/controller/user.actions.controller.js": 65,
+	"./components/user/user.actions/index.js": 66,
+	"./components/user/user.create/controller/create.ctrl.js": 67,
+	"./components/user/user.create/index.js": 68,
 	"./components/user/user.edit/controller/user.edit.controller.js": 69,
 	"./components/user/user.edit/index.js": 70,
 	"./components/user/user.item/controller/user.item.controller.js": 71,
@@ -87011,6 +87011,13 @@ _2.default.controller('messageListController', function ($element, $scope, $time
         messages: []
     };
 
+    if (_ctrlMessageList.room.conversation) {
+
+        _ctrlMessageList.room.userId = _ctrlMessageList.room.users.find(function (userId) {
+            return _ctrlMessageList.user.id !== userId;
+        });
+    }
+
     _ctrlMessageList.showUser = userService.showUser;
 
     _ctrlMessageList.getPathPhoto = userService.photo;
@@ -87022,11 +87029,11 @@ _2.default.controller('messageListController', function ($element, $scope, $time
 
         _ctrlMessageList.getMessage({
             roomId: _ctrlMessageList.room.id,
-            conversationId: _ctrlMessageList.room.conversation ? _ctrlMessageList.room.user.id : null
+            conversationId: _ctrlMessageList.room.conversation ? _ctrlMessageList.room.userId : null
         }).then(function (resp) {
 
             _ctrlMessageList.data.messages = resp.messages;
-            _ctrlMessageList.sendNotificationMesage();
+            _ctrlMessageList.sendNotificationMessage();
 
             $timeout(function () {
                 document.querySelector('.message-overflow').scrollTop = $element[0].clientHeight;
@@ -87034,21 +87041,12 @@ _2.default.controller('messageListController', function ($element, $scope, $time
         });
     };
 
-    _ctrlMessageList.sendNotificationMesage = function () {
+    _ctrlMessageList.sendNotificationMessage = function () {
         if (_ctrlMessageList.data.messages.length) {
-            var roomId = void 0;
-
-            if (_ctrlMessageList.room.conversation) {
-                roomId = _ctrlMessageList.room.users.find(function (id) {
-                    return _ctrlMessageList.user.id !== id;
-                });
-            } else {
-                roomId = _ctrlMessageList.room.id;
-            }
 
             _ctrlMessageList.notificationServise.save({
-                roomId: roomId,
-                conversationId: roomId,
+                roomId: _ctrlMessageList.room.id,
+                conversationId: _ctrlMessageList.room.userId,
                 messageId: _ctrlMessageList.data.messages[_ctrlMessageList.data.messages.length - 1]['id']
             });
         }
@@ -87060,14 +87058,8 @@ _2.default.controller('messageListController', function ($element, $scope, $time
 
     var newMessageRoom = $rootScope.$on('newMessageRoom', function ($event, room) {
         $timeout(function () {
-
-            if (room.conversation) {
-                _ctrlMessageList.data.messages.push(room.user.lastMessage);
-            } else {
-                _ctrlMessageList.data.messages.push(room.lastMessage);
-            }
-
-            _ctrlMessageList.sendNotificationMesage();
+            _ctrlMessageList.data.messages.push(room.lastMessage);
+            _ctrlMessageList.sendNotificationMessage();
         });
     });
 
@@ -87100,9 +87092,7 @@ _2.default.component('messageList', {
 });
 
 /***/ }),
-/* 43 */,
-/* 44 */,
-/* 45 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87153,7 +87143,7 @@ _2.default.controller('roomActionsController', function ($mdMenu, $scope, userSe
 });
 
 /***/ }),
-/* 46 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87163,7 +87153,7 @@ var _ = __webpack_require__(0);
 
 var _2 = _interopRequireDefault(_);
 
-var _roomActions = __webpack_require__(118);
+var _roomActions = __webpack_require__(117);
 
 var _roomActions2 = _interopRequireDefault(_roomActions);
 
@@ -87181,7 +87171,7 @@ _2.default.directive('roomActions', function () {
 });
 
 /***/ }),
-/* 47 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87232,7 +87222,7 @@ _2.default.controller('roomAddController', function (FileUploader, $mdDialog, ro
 });
 
 /***/ }),
-/* 48 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87242,7 +87232,7 @@ var _ = __webpack_require__(0);
 
 var _2 = _interopRequireDefault(_);
 
-var _roomAdd = __webpack_require__(119);
+var _roomAdd = __webpack_require__(118);
 
 var _roomAdd2 = _interopRequireDefault(_roomAdd);
 
@@ -87258,7 +87248,7 @@ _2.default.component('roomAdd', {
 });
 
 /***/ }),
-/* 49 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87285,10 +87275,17 @@ _2.default.controller('roomHeaderController', function (roomService, $mdDialog, 
 
     _ctrlHeaderRoom.room = roomService.getCurrentRoom();
     _ctrlHeaderRoom.user = userService.get();
+
+    if (_ctrlHeaderRoom.room.conversation) {
+
+        _ctrlHeaderRoom.room.user = _ctrlHeaderRoom.room.usersCollection.find(function (user) {
+            return _ctrlHeaderRoom.user.id !== user.id;
+        });
+    }
 });
 
 /***/ }),
-/* 50 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87298,7 +87295,7 @@ var _ = __webpack_require__(0);
 
 var _2 = _interopRequireDefault(_);
 
-var _roomHeader = __webpack_require__(120);
+var _roomHeader = __webpack_require__(119);
 
 var _roomHeader2 = _interopRequireDefault(_roomHeader);
 
@@ -87311,7 +87308,7 @@ _2.default.component('roomHeader', {
 });
 
 /***/ }),
-/* 51 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87353,7 +87350,7 @@ _2.default.controller('roomItemController', function ($scope, $state, $rootScope
 });
 
 /***/ }),
-/* 52 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87363,7 +87360,7 @@ var _ = __webpack_require__(0);
 
 var _2 = _interopRequireDefault(_);
 
-var _roomItem = __webpack_require__(121);
+var _roomItem = __webpack_require__(120);
 
 var _roomItem2 = _interopRequireDefault(_roomItem);
 
@@ -87384,7 +87381,7 @@ _2.default.directive('roomItem', function () {
 });
 
 /***/ }),
-/* 53 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87399,41 +87396,48 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _2.default.controller('roomListController', function ($scope, roomService, userService, $timeout, $rootScope) {
     var _ctrlRoomList = this;
 
+    _ctrlRoomList.user = userService.get();
+
     _ctrlRoomList.data = {
         collection: []
     };
 
-    function getListRoom() {
+    _ctrlRoomList.getUserConversation = function (users) {
+
+        return users.find(function (user) {
+            return _ctrlRoomList.user.id !== user;
+        });
+    };
+
+    var getListRoom = function getListRoom() {
         roomService.get().then(function (response) {
             _ctrlRoomList.data.collection = response.collection;
         });
-    }
-
-    function getRoom(data) {
-        roomService.get(data).then(function () {});
-    }
+    };
 
     getListRoom();
 
-    $rootScope.$on('messageNotification', function ($event, data) {
+    var messageNotificationRemove = $rootScope.$on('newNotification', function ($event, room) {
 
-        var issetList = _ctrlRoomList.data.collection.find(function (room) {
-            return room.id === data.roomId;
+        var issetRoom = _ctrlRoomList.data.collection.some(function (iRoom) {
+            return iRoom.id === room.id;
         });
 
-        if (!issetList) {
+        if (!issetRoom) {
 
             $timeout(function () {
-                getRoom({
-                    id: data.roomId
-                });
+                _ctrlRoomList.data.collection.push(room);
             });
         }
+    });
+
+    $scope.$on('destroy', function () {
+        messageNotificationRemove();
     });
 });
 
 /***/ }),
-/* 54 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87443,7 +87447,7 @@ var _ = __webpack_require__(0);
 
 var _2 = _interopRequireDefault(_);
 
-var _roomList = __webpack_require__(122);
+var _roomList = __webpack_require__(121);
 
 var _roomList2 = _interopRequireDefault(_roomList);
 
@@ -87456,7 +87460,7 @@ _2.default.component('roomList', {
 });
 
 /***/ }),
-/* 55 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87475,7 +87479,7 @@ _2.default.controller('roomShowController', function ($scope) {
 });
 
 /***/ }),
-/* 56 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87485,7 +87489,7 @@ var _ = __webpack_require__(0);
 
 var _2 = _interopRequireDefault(_);
 
-var _roomShow = __webpack_require__(123);
+var _roomShow = __webpack_require__(122);
 
 var _roomShow2 = _interopRequireDefault(_roomShow);
 
@@ -87503,7 +87507,7 @@ _2.default.directive('roomShow', function () {
 });
 
 /***/ }),
-/* 57 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87522,7 +87526,15 @@ _2.default.controller('searchController', function (searchService, userService, 
         collection: []
     };
 
+    _ctrlSearch.user = userService.get();
+
     _ctrlSearch.placeholder = 'Поиск';
+
+    _ctrlSearch.getUserConversation = function (users) {
+        return users.find(function (user) {
+            return _ctrlSearch.user.id !== user.id;
+        });
+    };
 
     _ctrlSearch.openRoom = function (room) {
         $state.go('main.room', {
@@ -87544,7 +87556,7 @@ _2.default.controller('searchController', function (searchService, userService, 
 });
 
 /***/ }),
-/* 58 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87554,7 +87566,7 @@ var _ = __webpack_require__(0);
 
 var _2 = _interopRequireDefault(_);
 
-var _search = __webpack_require__(124);
+var _search = __webpack_require__(123);
 
 var _search2 = _interopRequireDefault(_search);
 
@@ -87567,7 +87579,7 @@ _2.default.component('search', {
 });
 
 /***/ }),
-/* 59 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87589,7 +87601,7 @@ _2.default.service('searchResource', function ($resource) {
 });
 
 /***/ }),
-/* 60 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87631,7 +87643,7 @@ _2.default.service('searchService', function (searchResource, $q) {
 });
 
 /***/ }),
-/* 61 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87665,7 +87677,7 @@ _2.default.controller('sideBarAuthController', function ($state, sideBarAuthServ
 });
 
 /***/ }),
-/* 62 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87675,7 +87687,7 @@ var _ = __webpack_require__(0);
 
 var _2 = _interopRequireDefault(_);
 
-var _sidebar = __webpack_require__(125);
+var _sidebar = __webpack_require__(124);
 
 var _sidebar2 = _interopRequireDefault(_sidebar);
 
@@ -87688,7 +87700,7 @@ _2.default.component('sidebarAuth', {
 });
 
 /***/ }),
-/* 63 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87744,7 +87756,7 @@ _2.default.service('sideBarAuthService', function () {
 });
 
 /***/ }),
-/* 64 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87765,7 +87777,7 @@ _2.default.controller('sidebarController', function (sideBarBaseService, authSer
 });
 
 /***/ }),
-/* 65 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87775,7 +87787,7 @@ var _ = __webpack_require__(0);
 
 var _2 = _interopRequireDefault(_);
 
-var _sidebar = __webpack_require__(126);
+var _sidebar = __webpack_require__(125);
 
 var _sidebar2 = _interopRequireDefault(_sidebar);
 
@@ -87788,7 +87800,7 @@ _2.default.component('sidebarBase', {
 });
 
 /***/ }),
-/* 66 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87841,7 +87853,7 @@ _2.default.service('sideBarBaseService', function () {
 });
 
 /***/ }),
-/* 67 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87917,7 +87929,7 @@ _2.default.controller('userActionsController', function ($scope, $mdMenu, userSe
 });
 
 /***/ }),
-/* 68 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87927,7 +87939,7 @@ var _ = __webpack_require__(0);
 
 var _2 = _interopRequireDefault(_);
 
-var _userActions = __webpack_require__(127);
+var _userActions = __webpack_require__(126);
 
 var _userActions2 = _interopRequireDefault(_userActions);
 
@@ -87943,6 +87955,72 @@ _2.default.directive('userActions', function () {
             actionsRoom: '='
         }
     };
+});
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _ = __webpack_require__(0);
+
+var _2 = _interopRequireDefault(_);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_2.default.controller('userCreateController', function (userService, $timeout) {
+
+    var _ctrlUser = this;
+
+    _ctrlUser.error = {};
+
+    _ctrlUser.create = function () {
+        userService.create({
+            login: _ctrlUser.login,
+            email: _ctrlUser.email,
+            password: _ctrlUser.password
+        }).then(function (data) {
+            _ctrlUser.error = {};
+            _ctrlUser.errorMessage = null;
+
+            if (!data.success) {
+
+                _ctrlUser.errorMessage = data.message;
+                _ctrlUser.error.create = true;
+                $timeout(function () {
+                    _ctrlUser.error = {};
+                    _ctrlUser.errorMessage = null;
+                }, 5000);
+            } else {
+                window.location.href = 'base/';
+            }
+        });
+    };
+});
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _ = __webpack_require__(0);
+
+var _2 = _interopRequireDefault(_);
+
+var _create = __webpack_require__(127);
+
+var _create2 = _interopRequireDefault(_create);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_2.default.component('userCreate', {
+    template: _create2.default,
+    controller: 'userCreateController',
+    controllerAs: '_ctrlUser'
 });
 
 /***/ }),
@@ -88106,9 +88184,7 @@ _2.default.controller('userItemController', function ($scope, userService, $stat
 
     _ctrlUserItem.openConversation = function () {
 
-        if (_ctrlUserItem.currentUser.id === _ctrlUserItem.user.id) {
-            return;
-        } else {
+        if (_ctrlUserItem.currentUser.id !== _ctrlUserItem.user.id) {
             $state.go('main.conversation', {
                 id: _ctrlUserItem.user.id
             });
@@ -88396,7 +88472,7 @@ _2.default.controller('userShortController', function (userService, $rootScope) 
 
     _ctrlUser.editUser = userService.editUser;
 
-    $rootScope.$on('userReboot', function ($event) {
+    $rootScope.$on('userReboot', function () {
         _ctrlUser.user = userService.get();
     });
 });
@@ -89341,6 +89417,8 @@ _2.default.service('socketMediator', function (socketService, $rootScope, $timeo
         if (currentRoom && +currentRoom.id === +data.id) {
 
             $rootScope.$emit('newMessageRoom', data);
+        } else if (!currentRoom) {
+            $rootScope.$emit('newNotification', data);
         }
     });
 
@@ -89475,10 +89553,12 @@ _2.default.service('userService', function (userResource, $q, $mdDialog) {
     }
 
     function photoPath(userCur) {
+
         if (userCur) {
             return userCur.photo ? '/images/users/' + userCur.id + '/' + userCur.photo : '/images/user_null.png';
         }
-        return user.photo ? '/images/users/' + user.id + '/' + user.photo : '/images/user_null.png';
+
+        return '/images/user_null.png';
     }
 
     function editUser(e) {
@@ -89549,80 +89629,85 @@ module.exports = "<div class=\"message-item message-item--self\" data-ng-if=_ctr
 /* 116 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=message-overflow data-ng-if=\"!_ctrlMessageList.data.messages.length && !_ctrlMessageList.room.banned\"> <h3 layout layout-align=\"center center\" class=message-intro> История пуста. </h3> </div> <div class=message-overflow data-ng-if=_ctrlMessageList.room.banned> <h3 layout layout-align=\"center center\" class=message-intro> Вы были заблокированы. </h3> </div> <div class=message-overflow data-ng-if=\"!_ctrlMessageList.room.banned && _ctrlMessageList.data.messages.length\"> <message-item age-item data-message=message data-ng-repeat=\"message in _ctrlMessageList.data.messages\"> </message-item> </div>";
+module.exports = "<div class=message-overflow data-ng-if=\"!_ctrlMessageList.data.messages.length && !_ctrlMessageList.room.banned\"> <h3 layout layout-align=\"center center\" class=message-intro> История пуста. </h3> </div> <div class=message-overflow data-ng-if=_ctrlMessageList.room.banned> <h3 layout layout-align=\"center center\" class=message-intro> Вы были заблокированы. </h3> </div> <div class=message-overflow data-ng-if=\"!_ctrlMessageList.room.banned && _ctrlMessageList.data.messages.length\"> <message-item data-message=message data-ng-repeat=\"message in _ctrlMessageList.data.messages\"> </message-item> </div>";
 
 /***/ }),
-/* 117 */,
-/* 118 */
+/* 117 */
 /***/ (function(module, exports) {
 
 module.exports = "<md-menu> <ng-md-icon size=30 icon=menu class=\"chat-icon-action chat-icon-action--actions-user\" style=fill:#fff data-ng-click=\"_ctrlRoomAction.openMenu($mdMenu, $event)\"> </ng-md-icon> <md-menu-content> <md-menu-item data-ng-click=_ctrlRoomAction.openRoom()> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-room-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=message> </ng-md-icon> Зайти в комнату </div> </md-button> </md-menu-item> <md-menu-divider></md-menu-divider> <md-menu-item data-ng-if=_ctrlRoomAction.canLeaveRoom()> <md-button data-ng-click=_ctrlRoomAction.leaveRoom()> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-room-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=delete> </ng-md-icon> Покинуть комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlRoomAction.canLeaveRoom()></md-menu-divider> <md-menu-item data-ng-if=!_ctrlRoomAction.creator data-ui-sref=\"main.conversation({id: _ctrlRoomAction.room.creatorId})\"> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-room-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=message> </ng-md-icon> Открыть диалог c создателем комнаты </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=!_ctrlRoomAction.creator></md-menu-divider> </md-menu-content> </md-menu>";
 
 /***/ }),
-/* 119 */
+/* 118 */
 /***/ (function(module, exports) {
 
 module.exports = "<form data-ng-cloak name=addRoom> <md-toolbar> <div class=md-toolbar-tools> <h2>Создать комнату</h2> </div> </md-toolbar> <md-dialog-content> <div class=md-dialog-content> <md-input-container class=chat-form__row> <label>Название комнаты</label> <input type=text required name=name md-auto-focus data-ng-minlength=2 data-ng-pattern=/^[а-яА-ЯёЁa-zA-Z0-9]+$/i data-ng-model=_ctrlRoom.name> <div data-ng-messages=addRoom.name.$error> <div data-ng-message=required> Поля обязательное для заполнения </div> <div data-ng-message=minlength> Название не может быть короче 2 символов. </div> <div data-ng-message=pattern> Название должно содержать только буквы и цифры. </div> </div> </md-input-container> <user-search-collection class=\"chat-form__row chat-form__row--offset\" data-add-room=true data-collection=_ctrlRoom.userInvited data-placeholder=\"Пригласите участников\"></user-search-collection> <div data-ng-if=_ctrlRoom.error class=\"alert alert-danger\"> {{_ctrlRoom.message}} </div> </div> </md-dialog-content> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" layout layout-align=\"center center\" aria-label=\"Создать комнату\" data-ng-disabled=addRoom.$invalid data-ng-click=_ctrlRoom.addRoom($event)> <ng-md-icon size=30 style=fill:#fff icon=add> </ng-md-icon> </md-button> <md-button class=\"md-fab md-mini chat-icon-action\" layout layout-align=\"center center\" aria-label=Отмена data-ng-click=_ctrlRoom.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </form>";
 
 /***/ }),
-/* 120 */
+/* 119 */
 /***/ (function(module, exports) {
 
 module.exports = "<md-toolbar> <div class=\"md-toolbar-tools room-header__toolbar\" layout layout-align=\"space-between center\"> <div flex=20 layout layout-align=\"start center\"> <md-button class=\"md-fab chat-icon-action room-header__forward\" layout layout-align=\"center center\" aria-label=\"Вернуться в главное меню\" data-ui-sref=main.base data-ng-click=_ctrlHeaderRoom.searchUsers()> <ng-md-icon size=30 style=fill:#fff icon=forward> </ng-md-icon> </md-button> </div> <div flex=80 class=room-header__description data-ng-click=_ctrlHeaderRoom.openRoom($event)> <user-item class=\"user-item room-header__name\" data-user=_ctrlHeaderRoom.room.user data-hide-actions=true data-align=right data-ng-if=_ctrlHeaderRoom.room.conversation> </user-item> <room-item class=\"room-item room-header__name\" data-room=_ctrlHeaderRoom.room data-hide-actions=true data-align=right data-ng-if=!_ctrlHeaderRoom.room.conversation> </room-item> </div> </div> </md-toolbar>";
 
 /***/ }),
-/* 121 */
+/* 120 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=\"!_ctrlRoomItem.lastMessage && _ctrlRoomItem.align === 'left'\"> <div flex=20> <button class=\"md-fab md-button md-ink-ripple room-item__btn\" data-ng-click=\"_ctrlRoomItem.showRoom($event, _ctrlRoomItem.room)\"> {{_ctrlRoomItem.room.shortName.toUpperCase()}} </button> </div> <div flex=70 class=room-item__desc data-ng-click=_ctrlRoomItem.openRoom()> {{_ctrlRoomItem.room.name}} </div> <div flex=10> <room-actions data-ng-if=!_ctrlRoomItem.hideActions data-room=_ctrlRoomItem.room></room-actions> </div> </div> <div class=\"md-3-line room-item__align-box room-item__align-box--right\" layout layout-align=\"space-between center\" data-ng-if=\"!_ctrlRoomItem.lastMessage && _ctrlRoomItem.align === 'right'\"> <room-actions data-ng-if=!_ctrlRoomItem.hideActions data-room=_ctrlRoomItem.room></room-actions> <div data-ng-if=_ctrlRoomItem.hideActions></div> <div> <span> {{_ctrlRoomItem.room.name}} </span> <button class=\"md-fab md-button md-ink-ripple room-item__btn\" data-ng-click=_ctrlRoomItem.openRoom()> {{_ctrlRoomItem.room.shortName.toUpperCase()}} </button> </div> </div> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=_ctrlRoomItem.lastMessage> <div flex=20> <div class=\"badge badge-danger room-item__notification\" data-ng-if=_ctrlRoomItem.room.notification> {{_ctrlRoomItem.room.notification}} </div> <button class=\"md-fab md-button md-ink-ripple room-item__btn\" data-ng-click=\"_ctrlRoomItem.showRoom($event, _ctrlRoomItem.room)\"> {{_ctrlRoomItem.room.shortName.toUpperCase()}} </button> </div> <div flex=70> <div class=room-item__desc data-ng-click=_ctrlRoomItem.openRoom()> <div class=room-item__header> {{_ctrlRoomItem.room.name}} </div> <div class=room-item__message> <span class=room-item__login> {{_ctrlRoomItem.room.lastMessage.user.login}}</span>{{_ctrlRoomItem.room.lastMessage.text ? ': ' + _ctrlRoomItem.room.lastMessage.text : 'История пуста.'}} </div> </div> </div> <div flex=10 data-ng-if=!_ctrlRoomItem.hideActions> <room-actions data-room=_ctrlRoomItem.room></room-actions> </div> </div>";
 
 /***/ }),
-/* 122 */
+/* 121 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=room-list__empty-message layout layout-align=\"center center\" data-ng-if=!_ctrlRoomList.data.collection.length> Список пуст </div> <div layout layout-align=\"space-between center\" data-ng-if=_ctrlRoomList.data.collection.length data-ng-repeat=\"room in _ctrlRoomList.data.collection\"> <room-item class=\"room-item room-item--room-list\" data-ng-if=room.room data-last-message=true data-room=room></room-item> <user-item class=\"user-item user-item--room-list\" data-ng-if=room.conversation data-last-message=true data-user=room.user></user-item> </div>";
+module.exports = "<div class=room-list__empty-message layout layout-align=\"center center\" data-ng-if=!_ctrlRoomList.data.collection.length> Список пуст </div> <div layout layout-align=\"space-between center\" data-ng-if=_ctrlRoomList.data.collection.length data-ng-repeat=\"room in _ctrlRoomList.data.collection\"> <room-item class=\"room-item room-item--room-list\" data-ng-if=room.room data-last-message=true data-room=room></room-item> <user-item class=\"user-item user-item--room-list\" data-ng-if=room.conversation data-last-message=room.lastMessage data-user=_ctrlRoomList.getUserConversation(room.usersCollection)></user-item> </div>";
 
 /***/ }),
-/* 123 */
+/* 122 */
 /***/ (function(module, exports) {
 
 module.exports = "<md-toolbar> <h3 class=md-toolbar-tools> {{_ctrlRoomShow.room.name}} </h3> </md-toolbar> <div> <user-list class=user-list data-room=_ctrlRoomShow.room></user-list> </div>";
 
 /***/ }),
-/* 124 */
+/* 123 */
 /***/ (function(module, exports) {
 
 module.exports = "<div> <md-input-container class=search-field> <input type=text data-ng-attr-placeholder={{_ctrlSearch.placeholder}} data-ng-change=_ctrlSearch.searchRooms(_ctrlSearch.query) data-ng-model=_ctrlSearch.query> </md-input-container> <div class=search-list> <div data-ng-if=\"!_ctrlSearch.data.collection.length && _ctrlSearch.query\"> <div class=\"md-3-line search-not-result\" layout layout-align=\"center center\"> Ничего не найдено </div> </div> <div data-ng-if=_ctrlSearch.data.collection.length data-ng-repeat=\"room in _ctrlSearch.data.collection\"> <room-item class=room-item data-room=room data-ng-if=room.room></room-item> <user-item class=user-item data-user=room data-ng-if=!room.room></user-item> </div> </div> </div>";
 
 /***/ }),
-/* 125 */
+/* 124 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"sidebar sidebar-auth\"> <div class=sidebar-helper-nav> <md-button class=\"md-fab chat-icon-action\" layout layout-align=\"center center\" aria-label=Сайдбар data-ng-click=_ctrlSideBar.toggle()> <ng-md-icon size=30 style=fill:#fff icon=forward> </ng-md-icon> </md-button> </div> <div class=sidebar-link data-ng-repeat=\"action in _ctrlSideBar.data.listAuth\"> <md-button class=md-raised data-ng-click=_ctrlSideBar.changeState(action.state)> {{action.name}} </md-button> </div> </div>";
 
 /***/ }),
-/* 126 */
+/* 125 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"sidebar sidebar-base\"> <div class=sidebar-helper-nav> <md-button class=\"md-fab chat-icon-action\" layout layout-align=\"center center\" aria-label=Сайдбар data-ng-click=_ctrlSideBar.toggle()> <ng-md-icon size=30 style=fill:#fff icon=forward> </ng-md-icon> </md-button> </div> <user-short class=\"chat-line chat-line--offset\"></user-short> <search class=chat-line></search> </div>";
 
 /***/ }),
-/* 127 */
+/* 126 */
 /***/ (function(module, exports) {
 
 module.exports = "<md-menu> <ng-md-icon size=30 icon=menu class=\"chat-icon-action chat-icon-action--actions-user\" style=fill:#fff data-ng-click=\"_ctrlUserAction.openMenu($mdMenu, $event)\"> </ng-md-icon> <md-menu-content> <md-menu-item data-ng-if=!_ctrlUserAction.selfUser data-ng-click=\"_ctrlUserAction.openConversation($event, user)\"> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=message> </ng-md-icon> Открыть диалог </div> </md-button> </md-menu-item> <md-menu-divider></md-menu-divider> <md-menu-item data-ng-click=\"_ctrlUserAction.showUser($event, user)\"> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=face data-ng-if=!_ctrlUserAction.selfUser> </ng-md-icon> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=edit data-ng-if=_ctrlUserAction.selfUser> </ng-md-icon> {{!_ctrlUserAction.selfUser ? 'Посмотреть профиль' : 'Редактировать профиль'}} </div> </md-button> </md-menu-item> <md-menu-divider></md-menu-divider> <md-menu-item data-ng-if=\"_ctrlUserAction.canLeaveRoom() && _ctrlUserAction.selfUser\" data-ng-click=_ctrlUserAction.leaveRoom()> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=delete> </ng-md-icon> Покинуть комнату </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlUserAction.canLeaveRoom()></md-menu-divider> <md-menu-item data-ng-if=_ctrlUserAction.canBannedInRoom data-ng-click=_ctrlUserAction.removInRoom()> <md-button> <div layout layout-align=\"left center\"> <ng-md-icon class=chat-user-actions__icon layout layout-align=\"center center\" size=30 style=fill:#000 icon=delete> </ng-md-icon> Закрыть доступ к комнате. </div> </md-button> </md-menu-item> <md-menu-divider data-ng-if=_ctrlUserAction.canBannedInRoom></md-menu-divider> </md-menu-content> </md-menu>";
 
 /***/ }),
+/* 127 */
+/***/ (function(module, exports) {
+
+module.exports = "<md-card data-ng-form=reg novalidate> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Регистрация</h2> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required name=login data-ng-minlength=2 data-ng-model=_ctrlReg.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text required name=email data-ng-pattern=/^([\\w-]+.)*[\\w-]+@[\\w-]+(\\.[\\w-]+)*\\.[a-z]{2,6}$/ data-ng-model=_ctrlReg.email> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required name=password data-ng-pattern=\"/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9!@#$%]+$/\" data-ng-model=_ctrlReg.password> </md-input-container> <md-input-container class=chat-form__row> <label>Повторите пароль</label> <input type=password required name=password_duble data-identity=_ctrlReg.password data-ng-model=_ctrlReg.password_duble> <div data-ng-messages=reg.password_duble.$error> <div data-ng-message=identity> Пароли должны совпадать </div> </div> </md-input-container> <div data-ng-messages=_ctrlReg.error> <div class=\"alert alert-danger\" data-ng-message=create> {{_ctrlReg.errorMessage}} </div> </div> </md-card-content> <md-card-footer layout layout-align=end> <md-button class=\"md-fab chat-icon-action chat-icon-action--create\" aria-label=Зарегестрироваться layout layout-align=\"center center\" data-ng-click=_ctrlReg.create() data-ng-disabled=reg.$invalid> <ng-md-icon size=30 style=fill:#fff icon=done> </ng-md-icon> </md-button> </md-card-footer> </md-card>";
+
+/***/ }),
 /* 128 */
 /***/ (function(module, exports) {
 
-module.exports = "<div data-ng-cloak data-ng-form=userEdit> <md-toolbar> <div class=md-toolbar-tools> <h2>{{_ctrlUser.user.login}}</h2> </div> </md-toolbar> <div class=chat-user-show> <div class=chat-user-show__box> <img class=chat-user-show__photo data-ng-src={{_ctrlUser.getPathPhoto()}}> <div class=chat-user-show__box-upload> <md-button class=\"md-fab chat-icon-action chat-user-show__icon-upload\" aria-label=Отмена layout layout-align=\"center center\" data-ng-click=_ctrlUser.close()> <ng-md-icon size=30 style=fill:#fff icon=add_a_photo data-ng-click=_ctrlUser.close()> </ng-md-icon> </md-button> <input type=file nv-file-select class=chat-user-show__uploader uploader=_ctrlUser.uploader /> </div> </div> <div class=\"chat-user-show__box chat-user-show__box--fields\"> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required md-auto-focus data-ng-minlength=2 data-ng-model=_ctrlUser.changeLogin> </md-input-container> <div class=\"alert alert-danger\" data-ng-if=_ctrlUser.data.form.error.length> <div data-ng-repeat=\"message in _ctrlUser.data.form.error\"> {{message}} </div> </div> </div> </div> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Ок layout layout-align=\"center center\" data-ng-click=_ctrlUser.update()> <ng-md-icon size=30 style=fill:#fff icon=done> </ng-md-icon> </md-button> </md-dialog-actions> </div>";
+module.exports = "<div data-ng-cloak data-ng-form=userEdit> <md-toolbar> <div class=md-toolbar-tools> <h2>{{_ctrlUser.user.login}}</h2> </div> </md-toolbar> <div class=chat-user-show> <div class=chat-user-show__box> <img class=chat-user-show__photo data-ng-src={{_ctrlUser.getPathPhoto(_ctrlUser.user)}}> <div class=chat-user-show__box-upload> <md-button class=\"md-fab chat-icon-action chat-user-show__icon-upload\" aria-label=Отмена layout layout-align=\"center center\" data-ng-click=_ctrlUser.close()> <ng-md-icon size=30 style=fill:#fff icon=add_a_photo data-ng-click=_ctrlUser.close()> </ng-md-icon> </md-button> <input type=file nv-file-select class=chat-user-show__uploader uploader=_ctrlUser.uploader /> </div> </div> <div class=\"chat-user-show__box chat-user-show__box--fields\"> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required md-auto-focus data-ng-minlength=2 data-ng-model=_ctrlUser.changeLogin> </md-input-container> <div class=\"alert alert-danger\" data-ng-if=_ctrlUser.data.form.error.length> <div data-ng-repeat=\"message in _ctrlUser.data.form.error\"> {{message}} </div> </div> </div> </div> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Ок layout layout-align=\"center center\" data-ng-click=_ctrlUser.update()> <ng-md-icon size=30 style=fill:#fff icon=done> </ng-md-icon> </md-button> </md-dialog-actions> </div>";
 
 /***/ }),
 /* 129 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=\"!_ctrlUserItem.lastMessage && _ctrlUserItem.align === 'left'\"> <div class=user-item__align-box layout layout-align=\"start center\"> <div class=user-item__status data-ng-class=\"{'user-item__status--online': _ctrlUserItem.user.online}\"></div> <img class=user-item__photo alt={{_ctrlUserItem.user.login}} data-ng-click=\"_ctrlUserItem.showUser($event, _ctrlUserItem.user)\" data-ng-src={{_ctrlUserItem.photo(_ctrlUserItem.user)}} /> <div class=user-item__desc data-ng-class=\"{'user-item__desc--conversation': !_ctrlUserItem.self}\" data-ng-click=_ctrlUserItem.openConversation() layout=column layout-align=\"center left\"> <div class=user-item__login>{{ _ctrlUserItem.user.login }}</div> <div class=user-item__email>{{ _ctrlUserItem.user.email }}</div> </div> </div> <user-actions data-ng-if=!_ctrlUserItem.hideActions data-user=_ctrlUserItem.user data-show-user=true></user-actions> </div> <div class=\"md-3-line user-item__align-box user-item__align-box--right\" layout layout-align=\"space-between center\" data-ng-if=\"!_ctrlUserItem.lastMessage && _ctrlUserItem.align === 'right'\"> <user-actions data-ng-if=!_ctrlUserItem.hideActions data-user=_ctrlUserItem.user data-show-user=true></user-actions> <div data-ng-if=_ctrlUserItem.hideActions></div> <div layout layout-align=\"center center\"> <div layout=column layout-align=\"center left\"> <div class=user-item__login>{{ _ctrlUserItem.user.login }}</div> <div class=user-item__email>{{ _ctrlUserItem.user.email }}</div> </div> <img class=user-item__photo alt={{_ctrlUserItem.user.login}} data-ng-click=\"_ctrlUserItem.showUser($event, _ctrlUserItem.user)\" data-ng-src={{_ctrlUserItem.photo(_ctrlUserItem.user)}} /> <div class=user-item__status data-ng-class=\"{'user-item__status--online': _ctrlUserItem.user.online}\"></div> </div> </div> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=_ctrlUserItem.lastMessage> <div flex=20> <div class=user-item__status data-ng-class=\"{'user-item__status--online': _ctrlUserItem.user.online}\"></div> <img class=room-list__photo alt={{_ctrlUserItem.user.login}} data-ng-click=\"_ctrlUserItem.showUser($event, _ctrlUserItem.user)\" data-ng-src={{_ctrlUserItem.photo(_ctrlUserItem.user)}} /> </div> <div flex=70> <div class=user-item__desc data-ng-class=\"{'user-item__desc--conversation': !_ctrlUserItem.self}\" data-ng-click=_ctrlUserItem.openConversation()> <div class=room-item__header> {{_ctrlUserItem.user.login}} </div> <div class=room-item__message> <span class=room-item__login> {{_ctrlUserItem.user.lastMessage.user.login}}</span>{{_ctrlUserItem.user.lastMessage.text ? ': ' + _ctrlUserItem.user.lastMessage.text : 'История пуста.'}} </div> </div> </div> <div flex=10 data-ng-if=!_ctrlUserItem.hideActions> <user-actions data-user=_ctrlUserItem.user></user-actions> </div> </div>";
+module.exports = "<div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=\"!_ctrlUserItem.lastMessage && _ctrlUserItem.align === 'left'\"> <div class=user-item__align-box layout layout-align=\"start center\"> <div class=user-item__status data-ng-class=\"{'user-item__status--online': _ctrlUserItem.user.online}\"></div> <img class=user-item__photo alt={{_ctrlUserItem.user.login}} data-ng-click=\"_ctrlUserItem.showUser($event, _ctrlUserItem.user)\" data-ng-src={{_ctrlUserItem.photo(_ctrlUserItem.user)}} /> <div class=user-item__desc data-ng-class=\"{'user-item__desc--conversation': !_ctrlUserItem.self}\" data-ng-click=_ctrlUserItem.openConversation() layout=column layout-align=\"center left\"> <div class=user-item__login>{{ _ctrlUserItem.user.login }}</div> <div class=user-item__email>{{ _ctrlUserItem.user.email }}</div> </div> </div> <user-actions data-ng-if=!_ctrlUserItem.hideActions data-user=_ctrlUserItem.user data-show-user=true></user-actions> </div> <div class=\"md-3-line user-item__align-box user-item__align-box--right\" layout layout-align=\"space-between center\" data-ng-if=\"!_ctrlUserItem.lastMessage && _ctrlUserItem.align === 'right'\"> <user-actions data-ng-if=!_ctrlUserItem.hideActions data-user=_ctrlUserItem.user data-show-user=true></user-actions> <div data-ng-if=_ctrlUserItem.hideActions></div> <div layout layout-align=\"center center\"> <div layout=column layout-align=\"center left\"> <div class=user-item__login>{{ _ctrlUserItem.user.login }}</div> <div class=user-item__email>{{ _ctrlUserItem.user.email }}</div> </div> <img class=user-item__photo alt={{_ctrlUserItem.user.login}} data-ng-click=\"_ctrlUserItem.showUser($event, _ctrlUserItem.user)\" data-ng-src={{_ctrlUserItem.photo(_ctrlUserItem.user)}} /> <div class=user-item__status data-ng-class=\"{'user-item__status--online': _ctrlUserItem.user.online}\"></div> </div> </div> <div class=md-3-line layout layout-align=\"space-between center\" data-ng-if=_ctrlUserItem.lastMessage> <div flex=20> <div class=user-item__status data-ng-class=\"{'user-item__status--online': _ctrlUserItem.user.online}\"></div> <img class=room-list__photo alt={{_ctrlUserItem.user.login}} data-ng-click=\"_ctrlUserItem.showUser($event, _ctrlUserItem.user)\" data-ng-src={{_ctrlUserItem.photo(_ctrlUserItem.user)}} /> </div> <div flex=70> <div class=user-item__desc data-ng-class=\"{'user-item__desc--conversation': !_ctrlUserItem.self}\" data-ng-click=_ctrlUserItem.openConversation()> <div class=room-item__header> {{_ctrlUserItem.user.login}} </div> <div class=room-item__message> <span class=room-item__login> {{_ctrlUserItem.lastMessage.user.login}}</span>{{_ctrlUserItem.lastMessage.text ? ': ' + _ctrlUserItem.lastMessage.text : 'История пуста.'}} </div> </div> </div> <div flex=10 data-ng-if=!_ctrlUserItem.hideActions> <user-actions data-user=_ctrlUserItem.user></user-actions> </div> </div>";
 
 /***/ }),
 /* 130 */
@@ -89646,13 +89731,13 @@ module.exports = "<form class=chat-form> <md-input-container class=chat-form__ro
 /* 133 */
 /***/ (function(module, exports) {
 
-module.exports = "<div layout=row layout-align=\"space-between center\"> <div> <img class=chat-user-intro__avatar data-ng-click=_ctrlUser.editUser($event) data-ng-src={{_ctrlUser.photo()}}> <div class=chat-user-intro__descr> <div class=\"chat-user-intro__info chat-user-intro__info&#45;&#45;login\"> {{_ctrlUser.user.login}} </div> <div class=chat-user-intro__info> {{_ctrlUser.user.email}} </div> </div> </div> <div> <md-button class=\"md-fab chat-icon-action\" aria-label=Редактировать layout layout-align=\"center center\" data-ng-click=_ctrlUser.editUser($event)> <ng-md-icon size=30 style=fill:#fff icon=mode_edit> </ng-md-icon> </md-button> </div> </div>";
+module.exports = "<div layout=row layout-align=\"space-between center\"> <div> <img class=chat-user-intro__avatar data-ng-click=c.editUser($event) data-ng-src={{_ctrlUser.photo(_ctrlUser.user)}}> <div class=chat-user-intro__descr> <div class=\"chat-user-intro__info chat-user-intro__info&#45;&#45;login\"> {{_ctrlUser.user.login}} </div> <div class=chat-user-intro__info> {{_ctrlUser.user.email}} </div> </div> </div> <div> <md-button class=\"md-fab chat-icon-action\" aria-label=Редактировать layout layout-align=\"center center\" data-ng-click=_ctrlUser.editUser($event)> <ng-md-icon size=30 style=fill:#fff icon=mode_edit> </ng-md-icon> </md-button> </div> </div>";
 
 /***/ }),
 /* 134 */
 /***/ (function(module, exports) {
 
-module.exports = "<md-toolbar> <div class=md-toolbar-tools layout layout-align=\"space-between center\"> <h2>{{_ctrlUser.user.login}}</h2> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=\"Открыть диалог\" layout layout-align=\"center center\" data-ng-click=_ctrlUser.openConversation()> <ng-md-icon size=20 style=fill:#fff icon=message> </ng-md-icon> </md-button> </div> </md-toolbar> <div class=chat-user-show> <div class=chat-user-show__box> <img class=chat-user-show__photo data-ng-src={{_ctrlUser.getPathPhoto()}}> </div> <div class=\"chat-user-show__box chat-user-show__box--fields\"> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text disabled=disabled data-ng-value=_ctrlUser.user.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text disabled=disabled data-ng-value=_ctrlUser.user.email> </md-input-container> <md-input-container class=chat-form__row> <label>Дата регистрации</label> <input type=text disabled=disabled data-ng-value=\"_ctrlUser.user.date | date : 'yyyy-MM-dd'\"> </md-input-container> </div> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Закрыть layout layout-align=\"center center\" data-ng-click=_ctrlUser.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </div> ";
+module.exports = "<md-toolbar> <div class=md-toolbar-tools layout layout-align=\"space-between center\"> <h2>{{_ctrlUser.user.login}}</h2> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=\"Открыть диалог\" layout layout-align=\"center center\" data-ng-click=_ctrlUser.openConversation()> <ng-md-icon size=20 style=fill:#fff icon=message> </ng-md-icon> </md-button> </div> </md-toolbar> <div class=chat-user-show> <div class=chat-user-show__box> <img class=chat-user-show__photo data-ng-src={{_ctrlUser.getPathPhoto(_ctrlUser.user)}}> </div> <div class=\"chat-user-show__box chat-user-show__box--fields\"> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text disabled=disabled data-ng-value=_ctrlUser.user.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text disabled=disabled data-ng-value=_ctrlUser.user.email> </md-input-container> <md-input-container class=chat-form__row> <label>Дата регистрации</label> <input type=text disabled=disabled data-ng-value=\"_ctrlUser.user.date | date : 'yyyy-MM-dd'\"> </md-input-container> </div> <md-dialog-actions layout=row class=chat-dialog__actions> <md-button class=\"md-fab md-mini chat-icon-action\" aria-label=Закрыть layout layout-align=\"center center\" data-ng-click=_ctrlUser.close()> <ng-md-icon size=30 style=fill:#fff icon=close> </ng-md-icon> </md-button> </md-dialog-actions> </div> ";
 
 /***/ }),
 /* 135 */
@@ -89683,79 +89768,6 @@ module.exports = "<sidebar-auth></sidebar-auth> <div class=chat-form flex=80> <u
 /***/ (function(module, exports) {
 
 module.exports = "<div class=room layout=column layout-align=\"left top\"> <room-header></room-header> <message-list class=chat-message-content layout=column layout-align=\"left bottom\"></message-list> <message-add></message-add> </div>";
-
-/***/ }),
-/* 140 */,
-/* 141 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _ = __webpack_require__(0);
-
-var _2 = _interopRequireDefault(_);
-
-var _create = __webpack_require__(142);
-
-var _create2 = _interopRequireDefault(_create);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_2.default.component('userCreate', {
-    template: _create2.default,
-    controller: 'userCreateController',
-    controllerAs: '_ctrlUser'
-});
-
-/***/ }),
-/* 142 */
-/***/ (function(module, exports) {
-
-module.exports = "<md-card data-ng-form=reg novalidate> <md-toolbar class=md-theme-indigo> <h2 class=md-toolbar-tools>Регистрация</h2> </md-toolbar> <md-card-content> <md-input-container class=chat-form__row> <label>Логин</label> <input type=text required name=login data-ng-minlength=2 data-ng-model=_ctrlReg.login> </md-input-container> <md-input-container class=chat-form__row> <label>Email</label> <input type=text required name=email data-ng-pattern=/^([\\w-]+.)*[\\w-]+@[\\w-]+(\\.[\\w-]+)*\\.[a-z]{2,6}$/ data-ng-model=_ctrlReg.email> </md-input-container> <md-input-container class=chat-form__row> <label>Пароль</label> <input type=password required name=password data-ng-pattern=\"/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9!@#$%]+$/\" data-ng-model=_ctrlReg.password> </md-input-container> <md-input-container class=chat-form__row> <label>Повторите пароль</label> <input type=password required name=password_duble data-identity=_ctrlReg.password data-ng-model=_ctrlReg.password_duble> <div data-ng-messages=reg.password_duble.$error> <div data-ng-message=identity> Пароли должны совпадать </div> </div> </md-input-container> <div data-ng-messages=_ctrlReg.error> <div class=\"alert alert-danger\" data-ng-message=create> {{_ctrlReg.errorMessage}} </div> </div> </md-card-content> <md-card-footer layout layout-align=end> <md-button class=\"md-fab chat-icon-action chat-icon-action--create\" aria-label=Зарегестрироваться layout layout-align=\"center center\" data-ng-click=_ctrlReg.create() data-ng-disabled=reg.$invalid> <ng-md-icon size=30 style=fill:#fff icon=done> </ng-md-icon> </md-button> </md-card-footer> </md-card>";
-
-/***/ }),
-/* 143 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _ = __webpack_require__(0);
-
-var _2 = _interopRequireDefault(_);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_2.default.controller('userCreateController', function (userService, $timeout) {
-
-    var _ctrlUser = this;
-
-    _ctrlUser.error = {};
-
-    _ctrlUser.create = function () {
-        userService.create({
-            login: _ctrlUser.login,
-            email: _ctrlUser.email,
-            password: _ctrlUser.password
-        }).then(function (data) {
-            _ctrlUser.error = {};
-            _ctrlUser.errorMessage = null;
-
-            if (!data.success) {
-
-                _ctrlUser.errorMessage = data.message;
-                _ctrlUser.error.create = true;
-                $timeout(function () {
-                    _ctrlUser.error = {};
-                    _ctrlUser.errorMessage = null;
-                }, 5000);
-            } else {
-                window.location.href = 'base/';
-            }
-        });
-    };
-});
 
 /***/ })
 /******/ ]);

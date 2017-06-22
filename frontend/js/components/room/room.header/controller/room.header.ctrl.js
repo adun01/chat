@@ -16,4 +16,11 @@ module.controller('roomHeaderController', function (roomService, $mdDialog, user
     _ctrlHeaderRoom.room = roomService.getCurrentRoom();
     _ctrlHeaderRoom.user = userService.get();
 
+    if (_ctrlHeaderRoom.room.conversation) {
+
+        _ctrlHeaderRoom.room.user = _ctrlHeaderRoom.room.usersCollection.find((user) => {
+            return _ctrlHeaderRoom.user.id !== user.id;
+        });
+    }
+
 });

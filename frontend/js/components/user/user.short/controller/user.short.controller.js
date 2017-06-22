@@ -10,7 +10,7 @@ module.controller('userShortController',
 
         _ctrlUser.editUser = userService.editUser;
 
-        $rootScope.$on('userReboot', ($event) => {
+        $rootScope.$on('userReboot', () => {
             _ctrlUser.user = userService.get();
         });
     });

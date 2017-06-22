@@ -17,6 +17,6 @@
 
     <user-item class="user-item user-item--room-list"
                data-ng-if="room.conversation"
-               data-last-message="true"
-               data-user="room.user"></user-item>
+               data-last-message="room.lastMessage"
+               data-user="_ctrlRoomList.getUserConversation(room.usersCollection)"></user-item>
 </div>

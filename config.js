@@ -35,6 +35,7 @@ module.exports = {
             'modify',
             'user',
             'users',
+            'usersCollection',
             'bans',
             'creatorId',
             'photo',

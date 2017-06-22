@@ -7,7 +7,15 @@ module.controller('searchController', function (searchService, userService, $sta
         collection: []
     };
 
+    _ctrlSearch.user = userService.get();
+
     _ctrlSearch.placeholder = 'Поиск';
+
+    _ctrlSearch.getUserConversation = (users) => {
+        return users.find((user) => {
+            return _ctrlSearch.user.id !== user.id;
+        });
+    };
 
     _ctrlSearch.openRoom = function (room) {
         $state.go('main.room', {

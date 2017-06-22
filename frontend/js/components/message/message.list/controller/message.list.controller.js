@@ -12,6 +12,13 @@ module.controller('messageListController',
             messages: []
         };
 
+        if (_ctrlMessageList.room.conversation) {
+
+            _ctrlMessageList.room.userId = _ctrlMessageList.room.users.find((userId) => {
+                return _ctrlMessageList.user.id !== userId;
+            });
+        }
+
         _ctrlMessageList.showUser = userService.showUser;
 
         _ctrlMessageList.getPathPhoto = userService.photo;
@@ -23,11 +30,11 @@ module.controller('messageListController',
 
             _ctrlMessageList.getMessage({
                 roomId: _ctrlMessageList.room.id,
-                conversationId: _ctrlMessageList.room.conversation ? _ctrlMessageList.room.user.id : null
+                conversationId: _ctrlMessageList.room.conversation ? _ctrlMessageList.room.userId : null
             }).then(function (resp) {
 
                 _ctrlMessageList.data.messages = resp.messages;
-                _ctrlMessageList.sendNotificationMesage();
+                _ctrlMessageList.sendNotificationMessage();
 
                 $timeout(function () {
                     document.querySelector('.message-overflow').scrollTop = $element[0].clientHeight;
@@ -36,21 +43,12 @@ module.controller('messageListController',
         };
 
 
-        _ctrlMessageList.sendNotificationMesage = function () {
+        _ctrlMessageList.sendNotificationMessage = function () {
             if (_ctrlMessageList.data.messages.length) {
-                let roomId;
-
-                if (_ctrlMessageList.room.conversation) {
-                    roomId = _ctrlMessageList.room.users.find(function (id) {
-                        return _ctrlMessageList.user.id !== id;
-                    });
-                } else {
-                    roomId = _ctrlMessageList.room.id;
-                }
 
                 _ctrlMessageList.notificationServise.save({
-                    roomId: roomId,
-                    conversationId: roomId,
+                    roomId: _ctrlMessageList.room.id,
+                    conversationId: _ctrlMessageList.room.userId,
                     messageId: _ctrlMessageList.data.messages[_ctrlMessageList.data.messages.length - 1]['id']
                 });
             }
@@ -62,18 +60,12 @@ module.controller('messageListController',
 
         let newMessageRoom = $rootScope.$on('newMessageRoom', function ($event, room) {
             $timeout(function () {
-
-                if (room.conversation) {
-                    _ctrlMessageList.data.messages.push(room.user.lastMessage);
-                } else {
-                    _ctrlMessageList.data.messages.push(room.lastMessage);
-                }
-
-                _ctrlMessageList.sendNotificationMesage();
+                _ctrlMessageList.data.messages.push(room.lastMessage);
+                _ctrlMessageList.sendNotificationMessage();
             });
         });
 
-        $scope.$on('$destroy', function () {
+        $scope.$on('$destroy', () => {
             newMessageRoom();
         });
     });

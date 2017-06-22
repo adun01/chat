@@ -31,10 +31,12 @@ module.service('userService', function (userResource, $q, $mdDialog) {
     }
 
     function photoPath(userCur) {
+
         if (userCur) {
             return userCur.photo ? '/images/users/' + userCur.id + '/' + userCur.photo : '/images/user_null.png';
         }
-        return user.photo ? '/images/users/' + user.id + '/' + user.photo : '/images/user_null.png';
+
+        return '/images/user_null.png';
     }
 
     function editUser(e) {

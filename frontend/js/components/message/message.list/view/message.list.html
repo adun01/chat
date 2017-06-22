@@ -21,10 +21,7 @@
 <div class="message-overflow"
      data-ng-if="!_ctrlMessageList.room.banned && _ctrlMessageList.data.messages.length">
 
-    <message-item
-
-
-            age-item data-message="message"
-                 data-ng-repeat="message in _ctrlMessageList.data.messages">
+    <message-item data-message="message"
+                  data-ng-repeat="message in _ctrlMessageList.data.messages">
     </message-item>
 </div>

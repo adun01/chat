@@ -1,7 +1,7 @@
 const router = require('express').Router(),
     conversationApi = require('../../api/conversation/');
 
-router.get('/api/conversation/:id', async(req, res) => {
+router.get('/api/conversation/:id/', async(req, res) => {
 
     let result = await conversationApi.get(
         req.session.user.id,

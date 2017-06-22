@@ -1,8 +1,8 @@
 <div layout="row" layout-align="space-between center">
     <div>
         <img class="chat-user-intro__avatar"
-             data-ng-click="_ctrlUser.editUser($event)"
-             data-ng-src="{{_ctrlUser.photo()}}">
+             data-ng-click="c.editUser($event)"
+             data-ng-src="{{_ctrlUser.photo(_ctrlUser.user)}}">
 
         <div class="chat-user-intro__descr">
             <div class="chat-user-intro__info chat-user-intro__info&#45;&#45;login">

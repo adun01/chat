@@ -20,9 +20,13 @@
         <div data-ng-if="_ctrlSearch.data.collection.length"
              data-ng-repeat="room in _ctrlSearch.data.collection">
 
-            <room-item class="room-item" data-room="room" data-ng-if="room.room"></room-item>
+            <room-item class="room-item"
+                       data-room="room"
+                       data-ng-if="room.room"></room-item>
 
-            <user-item class="user-item" data-user="room" data-ng-if="!room.room"></user-item>
+            <user-item class="user-item"
+                       data-user="room"
+                       data-ng-if="!room.room"></user-item>
 
         </div>
     </div>

@@ -19,9 +19,7 @@ module.controller('userItemController',
 
         _ctrlUserItem.openConversation = function () {
 
-            if (_ctrlUserItem.currentUser.id === _ctrlUserItem.user.id) {
-                return;
-            } else {
+            if (_ctrlUserItem.currentUser.id !== _ctrlUserItem.user.id) {
                 $state.go('main.conversation', {
                     id: _ctrlUserItem.user.id
                 });
