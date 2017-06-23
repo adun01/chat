@@ -6,5 +6,5 @@ module.service('searchResource', function ($resource) {
         UPDATE: {
             method: 'PUT'
         }
-    })
+    });
 });

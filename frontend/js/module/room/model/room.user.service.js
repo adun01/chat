@@ -17,5 +17,5 @@ module.service('roomUserService', function (roomUserResource) {
         save: save,
         get: get,
         remove: remove
-    }
+    };
 });

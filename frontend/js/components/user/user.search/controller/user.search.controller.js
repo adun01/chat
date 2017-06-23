@@ -32,5 +32,5 @@ module.controller('userSearchController', function (roomService, $q, userService
         } else {
             _ctrlUserSearch.data.users = [];
         }
-    }
+    };
 });

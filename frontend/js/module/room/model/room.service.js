@@ -26,7 +26,7 @@ module.service('roomService', function (roomResource, $q, $mdDialog) {
                         return room;
                     });
                 } else {
-                    response.room.shortName = shortName(response.room.name)
+                    response.room.shortName = shortName(response.room.name);
                 }
 
                 defer.resolve(response);
@@ -87,5 +87,5 @@ module.service('roomService', function (roomResource, $q, $mdDialog) {
         create: create,
         showRoom: showRoom,
         shortName: shortName
-    }
+    };
 });

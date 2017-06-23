@@ -26,5 +26,5 @@ module.service('searchService', function (searchResource, $q) {
 
     return {
         get: get
-    }
+    };
 });

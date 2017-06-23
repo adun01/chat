@@ -9,5 +9,5 @@ module.directive('messageItem', () => {
         scope: {
             message: '='
         }
-    }
+    };
 });

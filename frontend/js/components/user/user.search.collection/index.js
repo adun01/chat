@@ -10,5 +10,5 @@ module.directive('userSearchCollection', function () {
             collection: '=',
             addRoom: '='
         },
-    }
+    };
 });

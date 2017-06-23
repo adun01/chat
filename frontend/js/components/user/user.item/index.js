@@ -1,5 +1,5 @@
 import module from '../../';
-import userItemTpl from './view/user.item.html'
+import userItemTpl from './view/user.item.html';
 
 module.directive('userItem', function () {
     return {
@@ -12,5 +12,5 @@ module.directive('userItem', function () {
             lastMessage: '=',
             align: '@'
         }
-    }
+    };
 });

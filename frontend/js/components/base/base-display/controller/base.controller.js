@@ -1,7 +1,6 @@
-import module from '../../../'
-import baseMessageTpl from '../view/base.html';
+import module from '../../../';
 
-module.controller('baseController', function ($mdDialog, $stateParams) {
+module.controller('baseController', function () {
     const _ctrlBase = this;
 
     _ctrlBase.show = false;

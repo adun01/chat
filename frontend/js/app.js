@@ -6,7 +6,6 @@ import '../../bower_components/angular-post-fix/postfix';
 import 'angular-material-icons';
 import 'angular-messages';
 import 'angular-file-upload';
-import 'hammerjs';
 
 function importAll(r) {
     r.keys().forEach(r);

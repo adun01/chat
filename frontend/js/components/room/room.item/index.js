@@ -1,5 +1,5 @@
 import module from '../../';
-import roomItemTpl from './view/room.item.html'
+import roomItemTpl from './view/room.item.html';
 
 module.directive('roomItem', function () {
     return {
@@ -12,5 +12,5 @@ module.directive('roomItem', function () {
             hideActions: '=',
             align: '@'
         }
-    }
+    };
 });

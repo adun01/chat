@@ -26,5 +26,5 @@ module.directive('identity', function () {
                 }
             }
         }
-    }
+    };
 });

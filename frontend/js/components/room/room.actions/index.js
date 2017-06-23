@@ -9,5 +9,5 @@ module.directive('roomActions', function () {
         scope: {
             room: '='
         }
-    }
+    };
 });

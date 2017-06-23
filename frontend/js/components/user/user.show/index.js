@@ -1,5 +1,5 @@
 import module from '../../';
-import userTpl from './view/user.show.html'
+import userTpl from './view/user.show.html';
 
 module.directive('userShow', () => {
     return {
@@ -9,5 +9,5 @@ module.directive('userShow', () => {
         scope: {
             user: '='
         }
-    }
+    };
 });

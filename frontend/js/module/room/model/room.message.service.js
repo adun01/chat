@@ -13,5 +13,5 @@ module.service('roomMessageService', function (roomMessageResource) {
     return {
         get: get,
         save: save
-    }
+    };
 });

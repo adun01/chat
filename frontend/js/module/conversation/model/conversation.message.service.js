@@ -13,5 +13,5 @@ module.service('conversationMessageService', function (conversationMessageResour
     return {
         get: get,
         save: save
-    }
+    };
 });

@@ -7,10 +7,10 @@ module.service('sideBarBaseService', function () {
         sidebar.open = false;
 
         sidebar.element = function () {
-            return document.querySelector('.sidebar-base')
+            return document.querySelector('.sidebar-base');
         };
         sidebar.elementHelper = function () {
-            return sidebar.element().querySelector('.sidebar-helper-nav')
+            return sidebar.element().querySelector('.sidebar-helper-nav');
         };
 
         function toggle() {

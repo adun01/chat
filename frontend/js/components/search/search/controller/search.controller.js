@@ -34,5 +34,5 @@ module.controller('searchController', function (searchService, userService, $sta
         } else {
             _ctrlSearch.data.collection = [];
         }
-    }
+    };
 });

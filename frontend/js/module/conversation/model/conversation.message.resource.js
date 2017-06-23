@@ -7,5 +7,5 @@ module.service('conversationMessageResource', function ($resource) {
         update: {
             method: 'PUT'
         }
-    })
+    });
 });

@@ -7,5 +7,5 @@ module.service('roomMessageResource', function ($resource) {
         update: {
             method: 'PUT'
         }
-    })
+    });
 });

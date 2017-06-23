@@ -13,5 +13,5 @@ module.service('notificationRoomMessageService', function (notificationRoomMessa
     return {
         get: get,
         save: save
-    }
+    };
 });

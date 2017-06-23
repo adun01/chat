@@ -1,5 +1,5 @@
 import module from '../';
-import roomTpl from '../view/room.view.html'
+import roomTpl from '../view/room.view.html';
 
 export default module.config(($stateProvider) => {
     $stateProvider

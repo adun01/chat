@@ -19,5 +19,5 @@ module.service('commonService', function () {
                 dateArray[5]
             );
         }
-    }
+    };
 });

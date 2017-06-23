@@ -7,5 +7,5 @@ module.service('conservationResource', function ($resource) {
         update: {
             method: 'PUT'
         }
-    })
+    });
 });

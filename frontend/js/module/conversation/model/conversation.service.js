@@ -8,5 +8,5 @@ module.service('conversationService', function (conservationResource, $q) {
 
     return {
         get: get
-    }
+    };
 });

@@ -1,4 +1,4 @@
-import module from '../../../'
+import module from '../../../';
 
 module.controller('baseHeaderController', function (roomService) {
     const _ctrlBaseHeader = this;

@@ -1,5 +1,5 @@
 import module from '../../';
-import userListTpl from './view/user.list.html'
+import userListTpl from './view/user.list.html';
 
 module.directive('userList', function () {
     return {
@@ -9,5 +9,5 @@ module.directive('userList', function () {
         scope: {
             room: '='
         }
-    }
+    };
 });

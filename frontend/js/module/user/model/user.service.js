@@ -80,5 +80,5 @@ module.service('userService', function (userResource, $q, $mdDialog) {
         photo: photoPath,
         editUser: editUser,
         showUser: showUser
-    }
+    };
 });

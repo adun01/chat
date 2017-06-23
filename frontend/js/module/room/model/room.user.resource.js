@@ -8,5 +8,5 @@ module.service('roomUserResource', function ($resource) {
         update: {
             method: 'PUT'
         }
-    })
+    });
 });

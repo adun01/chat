@@ -38,5 +38,5 @@ module.service('authService', function (authResource, $window, userService, $q, 
         logIn: logIn,
         isLogin: isLogin,
         logOut: logOut
-    }
+    };
 });

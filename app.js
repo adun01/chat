@@ -113,7 +113,7 @@ app.use((err, req, res, next) => {
 server.listen(config.port);
 
 server.on('error', error => {
-    console.log(error)
+    console.log(error);
 });
 server.on('listening', () => {
     console.log('Listening on port ' + server.address().port);

@@ -13,5 +13,5 @@ module.service('notificationConversationMessageService', function (notificationC
     return {
         get: get,
         save: save
-    }
+    };
 });

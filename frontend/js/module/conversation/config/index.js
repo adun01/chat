@@ -1,5 +1,5 @@
 import module from '../';
-import conversationTpl from '../view/conversation.view.html'
+import conversationTpl from '../view/conversation.view.html';
 
 export default module.config(function ($stateProvider) {
     $stateProvider
